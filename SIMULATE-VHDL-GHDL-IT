@@ -1,0 +1,33 @@
+ghdl -i rtl/vhdl/pkg/riscv_dbg_pkg.vhd
+ghdl -i rtl/vhdl/pkg/riscv_mpsoc_pkg.vhd
+
+ghdl -i rtl/vhdl/blocks/buffer/riscv_dii_buffer.vhd
+ghdl -i rtl/vhdl/blocks/buffer/riscv_osd_fifo.vhd
+ghdl -i rtl/vhdl/blocks/eventpacket/riscv_osd_event_packetization_fixedwidth.vhd
+ghdl -i rtl/vhdl/blocks/eventpacket/riscv_osd_event_packetization.vhd
+ghdl -i rtl/vhdl/blocks/regaccess/riscv_osd_regaccess_demux.vhd
+ghdl -i rtl/vhdl/blocks/regaccess/riscv_osd_regaccess_layer.vhd
+ghdl -i rtl/vhdl/blocks/regaccess/riscv_osd_regaccess.vhd
+ghdl -i rtl/vhdl/blocks/tracesample/riscv_osd_tracesample.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_debug_ring_expand.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_debug_ring.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router_demux.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router_gateway_demux.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router_gateway_mux.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router_gateway.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router_mux_rr.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router_mux.vhd
+ghdl -i rtl/vhdl/interconnect/riscv_ring_router.vhd
+ghdl -i rtl/vhdl/modules/common/riscv_osd_ctm.vhd
+ghdl -i rtl/vhdl/modules/common/riscv_osd_him.vhd
+ghdl -i rtl/vhdl/modules/common/riscv_osd_scm.vhd
+ghdl -i rtl/vhdl/modules/common/riscv_osd_stm.vhd
+ghdl -i rtl/vhdl/modules/template/riscv_osd_ctm_template.vhd
+ghdl -i rtl/vhdl/modules/template/riscv_osd_stm_template.vhd
+ghdl -i rtl/vhdl/riscv_debug_interface.vhd
+
+ghdl -i bench/vhdl/regression/riscv_dbg_testbench.vhd
+
+ghdl -m riscv_dbg_testbench
+
+ghdl -r riscv_dbg_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > riscv_dbg_testbench.tree

@@ -1,0 +1,21 @@
+# vsim -c -do "run.do" work.riscv_dbg_testbench 
+# Start time: 01:11:02 on Sep 23,2019
+# Loading sv_std.std
+# Loading work.riscv_dbg_testbench
+# Loading work.riscv_debug_interface
+# Loading work.riscv_ring_router_gateway
+# Loading work.riscv_ring_router_gateway_demux
+# Loading work.riscv_ring_router_mux_rr
+# Loading work.riscv_ring_router_gateway_mux
+# Loading work.riscv_dii_buffer
+# Loading work.riscv_osd_him
+# Loading work.riscv_osd_scm
+# Loading work.riscv_osd_regaccess
+# Loading work.riscv_debug_ring
+# Loading work.riscv_debug_ring_expand
+# Loading work.riscv_ring_router
+# Loading work.riscv_ring_router_demux
+# Loading work.riscv_ring_router_mux
+# do run.do
+# End time: 01:11:02 on Sep 23,2019, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0

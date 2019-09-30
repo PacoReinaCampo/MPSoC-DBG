@@ -1,0 +1,450 @@
+////////////////////////////////////////////////////////////////////////////////
+//                                            __ _      _     _               //
+//                                           / _(_)    | |   | |              //
+//                __ _ _   _  ___  ___ _ __ | |_ _  ___| | __| |              //
+//               / _` | | | |/ _ \/ _ \ '_ \|  _| |/ _ \ |/ _` |              //
+//              | (_| | |_| |  __/  __/ | | | | | |  __/ | (_| |              //
+//               \__, |\__,_|\___|\___|_| |_|_| |_|\___|_|\__,_|              //
+//                  | |                                                       //
+//                  |_|                                                       //
+//                                                                            //
+//                                                                            //
+//              MPSoC-RISCV CPU                                               //
+//              Degub Interface                                               //
+//              AMBA3 AHB-Lite Bus Interface                                  //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+/* Copyright (c) 2018-2019 by the author(s)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * =============================================================================
+ * Author(s):
+ *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ */
+
+`include "riscv_dbg_pkg.sv"
+
+module riscv_osd_regaccess #(
+  parameter XLEN = 64,
+  parameter PLEN = 64,
+
+  parameter MAX_REG_SIZE = 64
+)
+  (
+    input                          clk,
+    input                          rst,
+
+    input        [XLEN       -1:0] id,
+
+    input        [XLEN       -1:0] debug_in_data,
+    input                          debug_in_last,
+    input                          debug_in_valid,
+    output logic                   debug_in_ready,
+
+    output logic [XLEN       -1:0] debug_out_data,
+    output logic                   debug_out_last,
+    output logic                   debug_out_valid,
+    input                          debug_out_ready,
+
+    output reg                     reg_request,
+    output                         reg_write,
+    output      [PLEN        -1:0] reg_addr,
+    output      [             1:0] reg_size,
+    output      [MAX_REG_SIZE-1:0] reg_wdata,
+    input                          reg_ack,
+    input                          reg_err,
+    input       [MAX_REG_SIZE-1:0] reg_rdata,
+
+    output      [XLEN        -1:0] event_dest,
+    output                         stall
+  );
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Constants
+  //
+  localparam ACCESS_SIZE_16  = 2'b00;
+  localparam ACCESS_SIZE_32  = 2'b01;
+  localparam ACCESS_SIZE_64  = 2'b10;
+  localparam ACCESS_SIZE_128 = 2'b11;
+
+  localparam MAX_REQ_SIZE = MAX_REG_SIZE == 16 ? ACCESS_SIZE_16 :
+                            MAX_REG_SIZE == 32 ? ACCESS_SIZE_32 :
+                            MAX_REG_SIZE == 64 ? ACCESS_SIZE_64 : ACCESS_SIZE_128;
+
+  // base register addresses
+  localparam REG_MOD_VENDOR     = 16'h0;
+  localparam REG_MOD_TYPE       = 16'h1;
+  localparam REG_MOD_VERSION    = 16'h2;
+  localparam REG_MOD_CS         = 16'h3;
+  localparam REG_MOD_CS_ACTIVE  = 0;
+  localparam REG_MOD_EVENT_DEST = 16'h4;
+
+  // State machine
+  localparam [3:0] STATE_IDLE           = 4'b0000;
+  localparam [3:0] STATE_REQ_HDR_SRC    = 4'b0001; 
+  localparam [3:0] STATE_REQ_HDR_FLAGS  = 4'b0010; 
+  localparam [3:0] STATE_ADDR           = 4'b0011;
+  localparam [3:0] STATE_WRITE          = 4'b0100; 
+  localparam [3:0] STATE_RESP_HDR_DEST  = 4'b0101; 
+  localparam [3:0] STATE_RESP_HDR_SRC   = 4'b0110;
+  localparam [3:0] STATE_RESP_HDR_FLAGS = 4'b0111; 
+  localparam [3:0] STATE_RESP_VALUE     = 4'b1000;
+  localparam [3:0] STATE_DROP           = 4'b1001;
+  localparam [3:0] STATE_EXT_START      = 4'b1010;
+  localparam [3:0] STATE_EXT_WAIT       = 4'b1011;
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
+
+  // Registers
+  reg          mod_cs_active;
+  logic        nxt_mod_cs_active;
+  reg [15:0]   mod_event_dest;
+  reg [15:0]   nxt_mod_event_dest;
+
+  // State machine
+  logic [3:0] state;
+  logic [3:0] nxt_state;
+
+  // Local request/response data
+  reg                      req_write;
+  reg   [             1:0] req_size;
+  reg   [             2:0] word_it;
+  reg   [            15:0] req_addr;
+  reg   [MAX_REG_SIZE-1:0] reqresp_value;
+  reg   [            15:0] resp_dest;
+  reg                      resp_error;
+  logic                    nxt_req_write;
+  logic [             1:0] nxt_req_size;
+  logic [             2:0] nxt_word_it;
+  logic [            15:0] nxt_req_addr;
+  logic [MAX_REG_SIZE-1:0] nxt_reqresp_value;
+  logic [            15:0] nxt_resp_dest;
+  logic                    nxt_resp_error;
+
+  logic                    reg_addr_is_ext;
+  logic [             8:0] reg_addr_internal;
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Module Body
+  //
+
+  // ensure that parameters are set to allowed values
+  initial begin
+    if (MAX_REG_SIZE != 16 && MAX_REG_SIZE != 32 && MAX_REG_SIZE != 64 && MAX_REG_SIZE != 128) begin
+      $fatal("osd_regaccess: MAX_REG_SIZE must be set to '16', '32', '64', or '128'!");
+    end
+  end
+
+  assign stall = `CAN_STALL ? ~mod_cs_active : 1'b0;
+  assign event_dest = mod_event_dest;
+
+  // handle the base addresses 0x0000 - 0x01ff as "internal"
+  assign reg_addr_is_ext = (debug_in_data[15:9] != 0);
+  assign reg_addr_internal = debug_in_data[8:0];
+
+  assign reg_write = req_write;
+  assign reg_addr = req_addr;
+  assign reg_size = req_size;
+  assign reg_wdata = reqresp_value;
+
+  always @(posedge clk) begin
+    if (rst) begin
+      state <= STATE_IDLE;
+      mod_cs_active <= 0;
+      mod_event_dest <= 16'(`MOD_EVENT_DEST_DEFAULT);
+      req_write <= 0;
+      req_addr <= 0;
+      req_size <= 0;
+      reqresp_value <= 0;
+    end
+    else begin
+      state <= nxt_state;
+      mod_cs_active <= nxt_mod_cs_active;
+      mod_event_dest <= nxt_mod_event_dest;
+      req_write <= nxt_req_write;
+      req_addr <= nxt_req_addr;
+      req_size <= nxt_req_size;
+      reqresp_value <= nxt_reqresp_value;
+    end
+    resp_dest <= nxt_resp_dest;
+    resp_error <= nxt_resp_error;
+    word_it <= nxt_word_it;
+  end
+
+  always @(*) begin
+    nxt_state <= state;
+
+    nxt_req_write <= req_write;
+    nxt_req_size <= req_size;
+    nxt_word_it <= word_it;
+    nxt_req_addr <= req_addr;
+    nxt_resp_dest <= resp_dest;
+    nxt_reqresp_value <= reqresp_value;
+    nxt_resp_error <= resp_error;
+
+    nxt_mod_cs_active <= mod_cs_active;
+    nxt_mod_event_dest <= mod_event_dest;
+
+    debug_in_ready <= 0;
+
+    debug_out_data  <= 0;
+    debug_out_last  <= 0;
+    debug_out_valid <= 0;
+
+    reg_request <= 0;
+
+    case (state)
+      STATE_IDLE: begin
+        debug_in_ready <= 1;
+        if (debug_in_valid) begin
+          nxt_state <= STATE_REQ_HDR_SRC;
+        end
+      end
+      STATE_REQ_HDR_SRC: begin
+        debug_in_ready <= 1;
+        nxt_resp_dest <= debug_in_data[15:0];
+        nxt_resp_error <= 0;
+        nxt_state <= STATE_REQ_HDR_FLAGS;
+      end
+      STATE_REQ_HDR_FLAGS: begin
+        debug_in_ready <= 1;
+        nxt_req_write <= debug_in_data[12];
+        nxt_req_size <= debug_in_data[11:10];
+        if (MAX_REQ_SIZE < debug_in_data[11:10]) begin
+          nxt_resp_error <= 1;
+          nxt_state <= STATE_DROP;
+        end
+        else begin
+          case (debug_in_data[11:10])
+            ACCESS_SIZE_16: nxt_word_it <= 0;
+            ACCESS_SIZE_32: nxt_word_it <= 1;
+            ACCESS_SIZE_64: nxt_word_it <= 3;
+            ACCESS_SIZE_128: nxt_word_it <= 7;
+          endcase
+
+          if (debug_in_valid) begin
+            if (|debug_in_data[15:14]) begin
+              nxt_state <= STATE_DROP;
+            end
+            else begin
+              nxt_state <= STATE_ADDR;
+            end
+          end
+        end
+      end
+      STATE_ADDR: begin
+        debug_in_ready <= 1;
+
+        if (reg_addr_is_ext) begin
+          nxt_req_addr <= debug_in_data;
+          if (debug_in_valid) begin
+            if (req_write) begin
+              nxt_reqresp_value <= 0;
+              nxt_state <= STATE_WRITE;
+            end
+            else begin
+              nxt_state <= STATE_EXT_START;
+            end
+          end
+        end
+        else begin
+          if (req_write) begin
+            // LOCAL WRITE
+            if (req_size != ACCESS_SIZE_16) begin
+              // only 16 bit writes are supported for local writes
+              nxt_resp_error <= 1;
+            end
+            else begin
+              nxt_req_addr <= debug_in_data;
+              case (debug_in_data)
+                REG_MOD_EVENT_DEST: nxt_resp_error <= 0;
+                REG_MOD_CS: nxt_resp_error <= 0;
+                default: nxt_resp_error <= 1;
+              endcase // case (debug_in_data)
+            end
+          end
+          else begin // if (nxt_req_write)
+            // LOCAL READ
+            case (debug_in_data)
+              REG_MOD_VENDOR: nxt_reqresp_value <= 16'(`MOD_VENDOR);
+              REG_MOD_TYPE: nxt_reqresp_value <= 16'(`MOD_TYPE);
+              REG_MOD_VERSION: nxt_reqresp_value <= 16'(`MOD_VERSION);
+              REG_MOD_CS: nxt_reqresp_value <= {15'h0, ~stall};
+              REG_MOD_EVENT_DEST: nxt_reqresp_value <= mod_event_dest;
+              default: nxt_resp_error <= 1;
+            endcase // case (debug_in_data)
+          end
+
+          if (debug_in_valid) begin
+            if (req_write) begin
+              if (debug_in_last) begin
+                nxt_resp_error <= 1;
+                nxt_state <= STATE_RESP_HDR_DEST;
+              end
+              else if (nxt_resp_error) begin
+                nxt_state <= STATE_DROP;
+              end
+              else begin
+                nxt_reqresp_value <= 0;
+                nxt_state <= STATE_WRITE;
+              end
+            end
+            else begin
+              if (debug_in_last) begin
+                nxt_state <= STATE_RESP_HDR_DEST;
+              end
+              else begin
+                nxt_state <= STATE_DROP;
+              end
+            end
+          end
+        end
+      end // case: STATE_ADDR
+      STATE_WRITE: begin
+        debug_in_ready <= 1;
+
+        if (debug_in_valid) begin
+          if (req_addr[15:9] != 0) begin
+            nxt_reqresp_value <= (reqresp_value & ~(16'hffff << word_it*16)) | (debug_in_data << word_it*16);
+            if (word_it == 0) begin
+              if (debug_in_last)
+                nxt_state <= STATE_EXT_START;
+              else
+                nxt_state <= STATE_DROP;
+            end
+            else begin
+              if (debug_in_last) begin
+                nxt_resp_error <= 1;
+                nxt_state <= STATE_RESP_HDR_DEST;
+              end
+              else
+                nxt_word_it <= word_it - 1;
+            end
+          end
+          else begin
+            nxt_reqresp_value <= debug_in_data;
+            case (req_addr)
+              REG_MOD_CS: begin
+                nxt_mod_cs_active <= debug_in_data[REG_MOD_CS_ACTIVE];
+                nxt_resp_error <= 0;
+              end
+              REG_MOD_EVENT_DEST: begin
+                nxt_mod_event_dest <= debug_in_data;
+                nxt_resp_error <= 0;
+              end
+            endcase // case (req_addr)
+
+            if (debug_in_last) begin
+              nxt_state <= STATE_RESP_HDR_DEST;
+            end
+            else begin
+              nxt_state <= STATE_DROP;
+            end
+          end
+        end
+      end
+      STATE_RESP_HDR_DEST: begin
+        debug_out_valid <= 1;
+        debug_out_data <= resp_dest;
+
+        if (debug_out_ready) begin
+          nxt_state <= STATE_RESP_HDR_SRC;
+        end
+      end
+      STATE_RESP_HDR_SRC: begin
+        debug_out_valid <= 1;
+        debug_out_data <= id;
+
+        if (debug_out_ready) begin
+          nxt_state <= STATE_RESP_HDR_FLAGS;
+        end
+      end
+      STATE_RESP_HDR_FLAGS: begin
+        debug_out_valid <= 1;
+        debug_out_data[9:0] <= 10'h0; // reserved
+
+        debug_out_data[15:14] <= 2'b00; // TYPE == REG
+
+        // TYPE_SUB
+        if (req_write) begin
+          if (resp_error) begin
+            debug_out_data[13:10] <= 4'b1111; // RESP_WRITE_REG_ERROR
+          end
+          else begin
+            debug_out_data[13:10] <= 4'b1110; // RESP_WRITE_REG_SUCCESS
+          end
+        end
+        else begin
+          if (resp_error) begin
+            debug_out_data[13:10] <= 4'b1100; // RESP_READ_REG_ERROR
+          end
+          else begin
+            debug_out_data[13:10] <= {2'b10, req_size}; // RESP_READ_REG_SUCCESS_*
+          end
+        end
+
+        debug_out_last <= resp_error | req_write;
+
+        if (debug_out_ready) begin
+          if (resp_error | req_write) begin
+            nxt_state <= STATE_IDLE;
+          end
+          else begin
+            nxt_state <= STATE_RESP_VALUE;
+          end
+        end
+      end
+      STATE_RESP_VALUE: begin
+        debug_out_valid <= 1;
+        debug_out_data <= reqresp_value >> word_it*16;
+        if (debug_out_ready) begin
+          if (word_it == 0) begin
+            debug_out_last <= 1;
+            nxt_state <= STATE_IDLE;
+          end
+          else
+            nxt_word_it <= word_it - 1;
+        end
+      end
+
+      STATE_EXT_START: begin
+        reg_request <= 1;
+        if (reg_ack | reg_err) begin
+          nxt_reqresp_value <= reg_rdata;
+          nxt_resp_error <= reg_err;
+          nxt_state <= STATE_RESP_HDR_DEST;
+        end
+      end
+
+      STATE_DROP: begin
+        debug_in_ready <= 1;
+        if (debug_in_valid & debug_in_last) begin
+          nxt_state <= STATE_RESP_HDR_DEST;
+        end
+      end
+    endcase // case (state)
+  end
+endmodule

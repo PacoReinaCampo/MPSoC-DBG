@@ -1,0 +1,26 @@
+#read_verilog -sv rtl/verilog/blocks/buffer/riscv_dii_buffer.sv
+#read_verilog -sv rtl/verilog/blocks/buffer/riscv_osd_fifo.sv
+#read_verilog -sv rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization_fixedwidth.sv
+#read_verilog -sv rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization.sv
+#read_verilog -sv rtl/verilog/blocks/regaccess/riscv_osd_regaccess_demux.sv
+#read_verilog -sv rtl/verilog/blocks/regaccess/riscv_osd_regaccess_layer.sv
+#read_verilog -sv rtl/verilog/blocks/regaccess/riscv_osd_regaccess.sv
+#read_verilog -sv rtl/verilog/blocks/tracesample/riscv_osd_tracesample.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_debug_ring_expand.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_debug_ring.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_demux.sv
+read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_gateway_demux.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_gateway_mux.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_gateway.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_mux_rr.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_mux.sv
+#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router.sv
+#read_verilog -sv rtl/verilog/modules/common/riscv_osd_ctm.sv
+#read_verilog -sv rtl/verilog/modules/common/riscv_osd_him.sv
+#read_verilog -sv rtl/verilog/modules/common/riscv_osd_scm.sv
+#read_verilog -sv rtl/verilog/modules/common/riscv_osd_stm.sv
+#read_verilog -sv rtl/verilog/modules/template/riscv_osd_ctm_template.sv
+#read_verilog -sv rtl/verilog/modules/template/riscv_osd_stm_template.sv
+#read_verilog -sv rtl/verilog/riscv_debug_interface.sv
+
+#read_verilog -sv bench/verilog/regression/riscv_dbg_testbench.sv
