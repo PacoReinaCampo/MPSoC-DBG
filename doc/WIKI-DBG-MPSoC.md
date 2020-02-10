@@ -95,88 +95,88 @@ A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Ha
 
 dbg
 ├── bench
-│   ├── verilog
-│   │   └── regression
-│   │       └── mpsoc_dbg_testbench.sv
-│   └── vhdl
-│       └── regression
-│           └── mpsoc_dbg_testbench.vhd
+│   ├── verilog
+│   │   └── regression
+│   │       └── mpsoc_dbg_testbench.sv
+│   └── vhdl
+│       └── regression
+│           └── mpsoc_dbg_testbench.vhd
 ├── doc
-│   └── WIKI-DBG-MPSoC.md
+│   └── WIKI-DBG-MPSoC.md
 ├── rtl
-│   ├── verilog
-│   │   ├── ahb3
-│   │   │   ├── mpsoc_dbg_ahb3_biu.sv
-│   │   │   ├── mpsoc_dbg_ahb3_module.sv
-│   │   │   ├── mpsoc_dbg_jsp_apb_biu.sv
-│   │   │   ├── mpsoc_dbg_jsp_apb_module.sv
-│   │   │   └── mpsoc_dbg_top_ahb3.sv
-│   │   ├── core
-│   │   │   ├── mpsoc_dbg_bus_module_core.sv
-│   │   │   ├── mpsoc_dbg_bytefifo.sv
-│   │   │   ├── mpsoc_dbg_crc32.sv
-│   │   │   ├── mpsoc_dbg_jsp_module_core.sv
-│   │   │   ├── mpsoc_dbg_or1k_biu.sv
-│   │   │   ├── mpsoc_dbg_or1k_module.sv
-│   │   │   ├── mpsoc_dbg_or1k_status_reg.sv
-│   │   │   ├── mpsoc_dbg_syncflop.sv
-│   │   │   └── mpsoc_dbg_syncreg.sv
-│   │   ├── pkg
-│   │   │   └── mpsoc_dbg_pkg.sv
-│   │   └── wb
-│   │       ├── mpsoc_dbg_jsp_wb_biu.sv
-│   │       ├── mpsoc_dbg_jsp_wb_module.sv
-│   │       ├── mpsoc_dbg_top_wb.sv
-│   │       ├── mpsoc_dbg_wb_biu.sv
-│   │       └── mpsoc_dbg_wb_module.sv
-│   └── vhdl
-│       ├── ahb3
-│       │   ├── mpsoc_dbg_ahb3_biu.vhd
-│       │   ├── mpsoc_dbg_ahb3_module.vhd
-│       │   ├── mpsoc_dbg_jsp_apb_biu.vhd
-│       │   ├── mpsoc_dbg_jsp_apb_module.vhd
-│       │   └── mpsoc_dbg_top_ahb3.vhd
-│       ├── core
-│       │   ├── mpsoc_dbg_bus_module_core.vhd
-│       │   ├── mpsoc_dbg_bytefifo.vhd
-│       │   ├── mpsoc_dbg_crc32.vhd
-│       │   ├── mpsoc_dbg_jsp_module_core.vhd
-│       │   ├── mpsoc_dbg_or1k_biu.vhd
-│       │   ├── mpsoc_dbg_or1k_module.vhd
-│       │   ├── mpsoc_dbg_or1k_status_reg.vhd
-│       │   ├── mpsoc_dbg_syncflop.vhd
-│       │   └── mpsoc_dbg_syncreg.vhd
-│       ├── pkg
-│       │   └── mpsoc_dbg_pkg.vhd
-│       └── wb
-│           ├── mpsoc_dbg_jsp_wb_biu.vhd
-│           ├── mpsoc_dbg_jsp_wb_module.vhd
-│           ├── mpsoc_dbg_top_wb.vhd
-│           ├── mpsoc_dbg_wb_biu.vhd
-│           └── mpsoc_dbg_wb_module.vhd
+│   ├── verilog
+│   │   ├── ahb3
+│   │   │   ├── mpsoc_dbg_ahb3_biu.sv
+│   │   │   ├── mpsoc_dbg_ahb3_module.sv
+│   │   │   ├── mpsoc_dbg_jsp_apb_biu.sv
+│   │   │   ├── mpsoc_dbg_jsp_apb_module.sv
+│   │   │   └── mpsoc_dbg_top_ahb3.sv
+│   │   ├── core
+│   │   │   ├── mpsoc_dbg_bus_module_core.sv
+│   │   │   ├── mpsoc_dbg_bytefifo.sv
+│   │   │   ├── mpsoc_dbg_crc32.sv
+│   │   │   ├── mpsoc_dbg_jsp_module_core.sv
+│   │   │   ├── mpsoc_dbg_or1k_biu.sv
+│   │   │   ├── mpsoc_dbg_or1k_module.sv
+│   │   │   ├── mpsoc_dbg_or1k_status_reg.sv
+│   │   │   ├── mpsoc_dbg_syncflop.sv
+│   │   │   └── mpsoc_dbg_syncreg.sv
+│   │   ├── pkg
+│   │   │   └── mpsoc_dbg_pkg.sv
+│   │   └── wb
+│   │       ├── mpsoc_dbg_jsp_wb_biu.sv
+│   │       ├── mpsoc_dbg_jsp_wb_module.sv
+│   │       ├── mpsoc_dbg_top_wb.sv
+│   │       ├── mpsoc_dbg_wb_biu.sv
+│   │       └── mpsoc_dbg_wb_module.sv
+│   └── vhdl
+│       ├── ahb3
+│       │   ├── mpsoc_dbg_ahb3_biu.vhd
+│       │   ├── mpsoc_dbg_ahb3_module.vhd
+│       │   ├── mpsoc_dbg_jsp_apb_biu.vhd
+│       │   ├── mpsoc_dbg_jsp_apb_module.vhd
+│       │   └── mpsoc_dbg_top_ahb3.vhd
+│       ├── core
+│       │   ├── mpsoc_dbg_bus_module_core.vhd
+│       │   ├── mpsoc_dbg_bytefifo.vhd
+│       │   ├── mpsoc_dbg_crc32.vhd
+│       │   ├── mpsoc_dbg_jsp_module_core.vhd
+│       │   ├── mpsoc_dbg_or1k_biu.vhd
+│       │   ├── mpsoc_dbg_or1k_module.vhd
+│       │   ├── mpsoc_dbg_or1k_status_reg.vhd
+│       │   ├── mpsoc_dbg_syncflop.vhd
+│       │   └── mpsoc_dbg_syncreg.vhd
+│       ├── pkg
+│       │   └── mpsoc_dbg_pkg.vhd
+│       └── wb
+│           ├── mpsoc_dbg_jsp_wb_biu.vhd
+│           ├── mpsoc_dbg_jsp_wb_module.vhd
+│           ├── mpsoc_dbg_top_wb.vhd
+│           ├── mpsoc_dbg_wb_biu.vhd
+│           └── mpsoc_dbg_wb_module.vhd
 ├── sim
-│   ├── mixed
-│   │   └── regression
-│   │       └── bin
-│   │           ├── mpsoc_dbg_verilog.vc
-│   │           ├── mpsoc_dbg_vhdl.vc
-│   │           ├── Makefile
-│   │           ├── run.do
-│   │           └── transcript
-│   ├── verilog
-│   │   └── regression
-│   │       └── bin
-│   │           ├── mpsoc_dbg.vc
-│   │           ├── Makefile
-│   │           ├── run.do
-│   │           └── transcript
-│   └── vhdl
-│       └── regression
-│           └── bin
-│               ├── mpsoc_dbg.vc
-│               ├── Makefile
-│               ├── run.do
-│               └── transcript
+│   ├── mixed
+│   │   └── regression
+│   │       └── bin
+│   │           ├── mpsoc_dbg_verilog.vc
+│   │           ├── mpsoc_dbg_vhdl.vc
+│   │           ├── Makefile
+│   │           ├── run.do
+│   │           └── transcript
+│   ├── verilog
+│   │   └── regression
+│   │       └── bin
+│   │           ├── mpsoc_dbg.vc
+│   │           ├── Makefile
+│   │           ├── run.do
+│   │           └── transcript
+│   └── vhdl
+│       └── regression
+│           └── bin
+│               ├── mpsoc_dbg.vc
+│               ├── Makefile
+│               ├── run.do
+│               └── transcript
 ├── system.vtor
 ├── system.qf
 ├── system.ys
