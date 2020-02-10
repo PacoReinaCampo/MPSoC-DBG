@@ -1,27 +1,31 @@
-# vsim -c -do "run.do" work.riscv_dbg_testbench 
-# Start time: 01:10:48 on Sep 23,2019
+# vsim -c -do "run.do" work.mpsoc_dbg_testbench 
+# Start time: 17:42:29 on Feb 10,2020
 # Loading std.standard
 # Loading std.textio(body)
 # Loading ieee.std_logic_1164(body)
 # Loading ieee.numeric_std(body)
 # Loading ieee.math_real(body)
-# Loading work.riscv_mpsoc_pkg
-# Loading work.riscv_dbg_pkg
-# Loading work.riscv_dbg_testbench(rtl)
-# Loading work.riscv_debug_interface(rtl)
-# Loading work.riscv_ring_router_gateway(rtl)
-# Loading work.riscv_ring_router_gateway_demux(rtl)
-# Loading work.riscv_ring_router_mux_rr(rtl)
-# Loading work.riscv_ring_router_gateway_mux(rtl)
-# Loading work.riscv_dii_buffer(rtl)
-# Loading work.riscv_osd_him(rtl)
-# Loading work.riscv_osd_scm(rtl)
-# Loading work.riscv_osd_regaccess(rtl)
-# Loading work.riscv_debug_ring(rtl)
-# Loading work.riscv_debug_ring_expand(rtl)
-# Loading work.riscv_ring_router(rtl)
-# Loading work.riscv_ring_router_demux(rtl)
-# Loading work.riscv_ring_router_mux(rtl)
+# Loading work.mpsoc_dbg_pkg
+# Loading work.mpsoc_dbg_testbench(rtl)
+# Loading work.mpsoc_dbg_top_ahb3(rtl)
+# Loading work.mpsoc_dbg_ahb3_module(rtl)
+# Loading work.mpsoc_dbg_bus_module_core(rtl)
+# Loading work.mpsoc_dbg_crc32(rtl)
+# Loading work.mpsoc_dbg_ahb3_biu(rtl)
+# Loading work.mpsoc_dbg_or1k_module(rtl)
+# Loading work.mpsoc_dbg_or1k_status_reg(rtl)
+# Loading work.mpsoc_dbg_or1k_biu(rtl)
+# Loading work.mpsoc_dbg_jsp_apb_module(rtl)
+# Loading work.mpsoc_dbg_jsp_module_core(rtl)
+# Loading work.mpsoc_dbg_jsp_apb_biu(rtl)
+# Loading work.mpsoc_dbg_syncflop(rtl)
+# Loading work.mpsoc_dbg_syncreg(rtl)
+# Loading work.mpsoc_dbg_bytefifo(rtl)
+# Loading work.mpsoc_dbg_top_wb(rtl)
+# Loading work.mpsoc_dbg_wb_module(rtl)
+# Loading work.mpsoc_dbg_wb_biu(rtl)
+# Loading work.mpsoc_dbg_jsp_wb_module(rtl)
+# Loading work.mpsoc_dbg_jsp_wb_biu(rtl)
 # do run.do
-# End time: 01:10:49 on Sep 23,2019, Elapsed time: 0:00:01
+# End time: 17:42:29 on Feb 10,2020, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0

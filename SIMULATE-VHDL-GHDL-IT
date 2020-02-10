@@ -1,33 +1,29 @@
-ghdl -i rtl/vhdl/pkg/riscv_dbg_pkg.vhd
-ghdl -i rtl/vhdl/pkg/riscv_mpsoc_pkg.vhd
+ghdl -i rtl/vhdl/pkg/mpsoc_dbg_pkg.vhd
 
-ghdl -i rtl/vhdl/blocks/buffer/riscv_dii_buffer.vhd
-ghdl -i rtl/vhdl/blocks/buffer/riscv_osd_fifo.vhd
-ghdl -i rtl/vhdl/blocks/eventpacket/riscv_osd_event_packetization_fixedwidth.vhd
-ghdl -i rtl/vhdl/blocks/eventpacket/riscv_osd_event_packetization.vhd
-ghdl -i rtl/vhdl/blocks/regaccess/riscv_osd_regaccess_demux.vhd
-ghdl -i rtl/vhdl/blocks/regaccess/riscv_osd_regaccess_layer.vhd
-ghdl -i rtl/vhdl/blocks/regaccess/riscv_osd_regaccess.vhd
-ghdl -i rtl/vhdl/blocks/tracesample/riscv_osd_tracesample.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_debug_ring_expand.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_debug_ring.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router_demux.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router_gateway_demux.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router_gateway_mux.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router_gateway.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router_mux_rr.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router_mux.vhd
-ghdl -i rtl/vhdl/interconnect/riscv_ring_router.vhd
-ghdl -i rtl/vhdl/modules/common/riscv_osd_ctm.vhd
-ghdl -i rtl/vhdl/modules/common/riscv_osd_him.vhd
-ghdl -i rtl/vhdl/modules/common/riscv_osd_scm.vhd
-ghdl -i rtl/vhdl/modules/common/riscv_osd_stm.vhd
-ghdl -i rtl/vhdl/modules/template/riscv_osd_ctm_template.vhd
-ghdl -i rtl/vhdl/modules/template/riscv_osd_stm_template.vhd
-ghdl -i rtl/vhdl/riscv_debug_interface.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_bus_module_core.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_bytefifo.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_crc32.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_jsp_module_core.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_or1k_biu.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_or1k_module.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_or1k_status_reg.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_syncflop.vhd
+ghdl -i rtl/vhdl/core/mpsoc_dbg_syncreg.vhd
 
-ghdl -i bench/vhdl/regression/riscv_dbg_testbench.vhd
+ghdl -i rtl/vhdl/ahb3/mpsoc_dbg_ahb3_biu.vhd
+ghdl -i rtl/vhdl/ahb3/mpsoc_dbg_ahb3_module.vhd
+ghdl -i rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_biu.vhd
+ghdl -i rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_module.vhd
+ghdl -i rtl/vhdl/ahb3/mpsoc_dbg_top_ahb3.vhd
 
-ghdl -m riscv_dbg_testbench
+ghdl -i rtl/vhdl/wb/mpsoc_dbg_jsp_wb_biu.vhd
+ghdl -i rtl/vhdl/wb/mpsoc_dbg_jsp_wb_module.vhd
+ghdl -i rtl/vhdl/wb/mpsoc_dbg_top_wb.vhd
+ghdl -i rtl/vhdl/wb/mpsoc_dbg_wb_biu.vhd
+ghdl -i rtl/vhdl/wb/mpsoc_dbg_wb_module.vhd
 
-ghdl -r riscv_dbg_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > riscv_dbg_testbench.tree
+ghdl -i bench/vhdl/regression/mpsoc_dbg_testbench.vhd
+
+ghdl -m mpsoc_dbg_testbench
+
+ghdl -r mpsoc_dbg_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > mpsoc_dbg_testbench.tree

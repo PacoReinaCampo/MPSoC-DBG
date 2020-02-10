@@ -1,9 +1,10 @@
 **Implementation in VHDL & (System)Verilog of a Debugger on Chip and simulation in GHDL & Icarus Verilog**
 
-A debugger (DBG) is a computer program that is used to test and debug hardware descriptions languages. The code to be examined is running on a simulator, a technique that allows great power in its ability to halt when specific conditions are encountered. When a hardware description crashes, debuggers show the position of the error in the target description.
+A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Hardware Description Languages. The code to be examined is running on a simulator, a technique that allows great power in its ability to halt when specific conditions are encountered. When a hardware description crashes, debuggers show the position of the error in the target description.
 
 
 **MIT License**
+
 Copyright (c) 2018-2019 by the author(s)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

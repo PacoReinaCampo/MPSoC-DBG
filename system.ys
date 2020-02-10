@@ -1,26 +1,23 @@
-#read_verilog -sv rtl/verilog/blocks/buffer/riscv_dii_buffer.sv
-#read_verilog -sv rtl/verilog/blocks/buffer/riscv_osd_fifo.sv
-#read_verilog -sv rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization_fixedwidth.sv
-#read_verilog -sv rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization.sv
-#read_verilog -sv rtl/verilog/blocks/regaccess/riscv_osd_regaccess_demux.sv
-#read_verilog -sv rtl/verilog/blocks/regaccess/riscv_osd_regaccess_layer.sv
-#read_verilog -sv rtl/verilog/blocks/regaccess/riscv_osd_regaccess.sv
-#read_verilog -sv rtl/verilog/blocks/tracesample/riscv_osd_tracesample.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_debug_ring_expand.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_debug_ring.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_demux.sv
-read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_gateway_demux.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_gateway_mux.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_gateway.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_mux_rr.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router_mux.sv
-#read_verilog -sv rtl/verilog/interconnect/riscv_ring_router.sv
-#read_verilog -sv rtl/verilog/modules/common/riscv_osd_ctm.sv
-#read_verilog -sv rtl/verilog/modules/common/riscv_osd_him.sv
-#read_verilog -sv rtl/verilog/modules/common/riscv_osd_scm.sv
-#read_verilog -sv rtl/verilog/modules/common/riscv_osd_stm.sv
-#read_verilog -sv rtl/verilog/modules/template/riscv_osd_ctm_template.sv
-#read_verilog -sv rtl/verilog/modules/template/riscv_osd_stm_template.sv
-#read_verilog -sv rtl/verilog/riscv_debug_interface.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_bus_module_core.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_bytefifo.sv
+read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_crc32.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_jsp_module_core.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_or1k_biu.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_or1k_module.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_or1k_status_reg.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_syncflop.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/core/mpsoc_dbg_syncreg.sv
 
-#read_verilog -sv bench/verilog/regression/riscv_dbg_testbench.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ahb3/mpsoc_dbg_ahb3_biu.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ahb3/mpsoc_dbg_ahb3_module.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ahb3/mpsoc_dbg_jsp_apb_biu.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ahb3/mpsoc_dbg_jsp_apb_module.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/ahb3/mpsoc_dbg_top_ahb3.sv
+
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/wb/mpsoc_dbg_jsp_wb_biu.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/wb/mpsoc_dbg_jsp_wb_module.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/wb/mpsoc_dbg_top_wb.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/wb/mpsoc_dbg_wb_biu.sv
+#read_verilog -I rtl/verilog/pkg -sv rtl/verilog/wb/mpsoc_dbg_wb_module.sv
+
+#read_verilog -I rtl/verilog/pkg -sv bench/verilog/regression/mpsoc_dbg_testbench.sv

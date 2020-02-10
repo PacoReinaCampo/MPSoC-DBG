@@ -41,26 +41,65 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-../../../../rtl/vhdl/pkg/mpsoc_dbg_pkg.vhd
+// Top module
+module mpsoc_dbg_syncflop (
+  input  RESET,     // asynchronous reset
 
-../../../../rtl/vhdl/core/mpsoc_dbg_bus_module_core.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_module.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_bytefifo.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_crc32.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_jsp_module_core.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_biu.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_status_reg.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_syncflop.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_syncreg.vhd
+  input  DEST_CLK,  // destination clock domain clock
+  input  D_SET,     // synchronously set output to '1' (synchronous to dest.clock domain)
+  input  D_RST,     // synchronously reset output to '0' (synch. to dest.clock domain)
+  input  TOGGLE_IN, // toggle data from source clock domain
+  output D_OUT      // output (synch. to dest.clock domain)
+);
 
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_ahb3_biu.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_ahb3_module.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_biu.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_module.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_top_ahb3.vhd
+  //////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
+  reg sync1, sync2, syncprev;
+  reg srflop;
 
-../../../../rtl/vhdl/wb/mpsoc_dbg_jsp_wb_biu.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_jsp_wb_module.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_wb_biu.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_wb_module.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_top_wb.vhd
+  // Combinatorial assignments
+  wire toggle;
+  wire srinput;
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Module body
+  //
+
+  // Synchronise toggle signal to destination clock domain
+
+  // First synchronisation stage
+  always @(posedge DEST_CLK,posedge RESET) begin
+    if (RESET) sync1 <= 1'b0;
+    else       sync1 <= TOGGLE_IN;
+  end
+
+  // Second synchronisation stage
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if (RESET) sync2 <= 1'b0;
+    else       sync2 <= sync1;
+  end
+
+  // Detect toggle
+
+  // Previous synchronized value
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if (RESET) syncprev <= 1'b0;
+    else       syncprev <= sync2;
+  end
+
+  // Combinatorial assignments
+  assign toggle  = sync2 ^ syncprev;
+  assign srinput = toggle | D_SET;
+
+  assign D_OUT   = toggle | srflop;
+
+  // Set/Reset FF (holds detected toggles)
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if      (RESET  ) srflop <= 1'b0;
+    else if (D_RST  ) srflop <= 1'b0;
+    else if (srinput) srflop <= 1'b1;
+  end
+endmodule

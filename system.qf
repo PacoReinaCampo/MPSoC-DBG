@@ -1,0 +1,34 @@
+rm -rf synthesis
+mkdir synthesis
+mkdir synthesis/mpsoc_dbg
+mkdir synthesis/mpsoc_dbg/source
+mkdir synthesis/mpsoc_dbg/synthesis
+mkdir synthesis/mpsoc_dbg/layout
+
+#cp rtl/verilog/core/mpsoc_dbg_bus_module_core.sv synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_bytefifo.sv        synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_crc32.sv           synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_jsp_module_core.sv synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_or1k_biu.sv        synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_or1k_module.sv     synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_or1k_status_reg.sv synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_syncflop.sv        synthesis/mpsoc_dbg/source
+#cp rtl/verilog/core/mpsoc_dbg_syncreg.sv         synthesis/mpsoc_dbg/source
+
+#cp rtl/verilog/ahb3/mpsoc_dbg_ahb3_biu.sv       synthesis/mpsoc_dbg/source
+#cp rtl/verilog/ahb3/mpsoc_dbg_ahb3_module.sv    synthesis/mpsoc_dbg/source
+#cp rtl/verilog/ahb3/mpsoc_dbg_jsp_apb_biu.sv    synthesis/mpsoc_dbg/source
+#cp rtl/verilog/ahb3/mpsoc_dbg_jsp_apb_module.sv synthesis/mpsoc_dbg/source
+#cp rtl/verilog/ahb3/mpsoc_dbg_top_ahb3.sv       synthesis/mpsoc_dbg/source
+
+#cp rtl/verilog/wb/mpsoc_dbg_jsp_wb_biu.sv    synthesis/mpsoc_dbg/source
+#cp rtl/verilog/wb/mpsoc_dbg_jsp_wb_module.sv synthesis/mpsoc_dbg/source
+#cp rtl/verilog/wb/mpsoc_dbg_top_wb.sv        synthesis/mpsoc_dbg/source
+#cp rtl/verilog/wb/mpsoc_dbg_wb_biu.sv        synthesis/mpsoc_dbg/source
+#cp rtl/verilog/wb/mpsoc_dbg_wb_module.sv     synthesis/mpsoc_dbg/source
+
+#cp bench/verilog/regression/mpsoc_dbg_testbench.sv synthesis/mpsoc_dbg/source
+
+cd synthesis/mpsoc_dbg
+
+qflow -T osu018 synthesize place route mpsoc_dbg_top_ahb3

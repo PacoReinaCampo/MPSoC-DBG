@@ -9,13 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RV64 CPU                                                //
-//              Network on Chip Makefile                                      //
-//              Mesh Topology                                                 //
+//              MPSoC-RISCV CPU                                               //
+//              Degub Interface                                               //
+//              AMBA3 AHB-Lite Bus Interface                                  //
+//              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2019-2020 by the author(s)
+/* Copyright (c) 2018-2019 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -40,32 +41,26 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-../../../../rtl/verilog/blocks/buffer/riscv_dii_buffer.sv
-../../../../rtl/verilog/blocks/buffer/riscv_osd_fifo.sv
-../../../../rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization_fixedwidth.sv
-../../../../rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization.sv
-../../../../rtl/verilog/blocks/regaccess/riscv_osd_regaccess_demux.sv
-../../../../rtl/verilog/blocks/regaccess/riscv_osd_regaccess_layer.sv
-../../../../rtl/verilog/blocks/regaccess/riscv_osd_regaccess.sv
-../../../../rtl/verilog/blocks/tracesample/riscv_osd_tracesample.sv
+../../../../rtl/verilog/core/mpsoc_dbg_bus_module_core.sv
+../../../../rtl/verilog/core/mpsoc_dbg_bytefifo.sv
+../../../../rtl/verilog/core/mpsoc_dbg_crc32.sv
+../../../../rtl/verilog/core/mpsoc_dbg_jsp_module_core.sv
+../../../../rtl/verilog/core/mpsoc_dbg_or1k_biu.sv
+../../../../rtl/verilog/core/mpsoc_dbg_or1k_module.sv
+../../../../rtl/verilog/core/mpsoc_dbg_or1k_status_reg.sv
+../../../../rtl/verilog/core/mpsoc_dbg_syncflop.sv
+../../../../rtl/verilog/core/mpsoc_dbg_syncreg.sv
 
-../../../../rtl/verilog/interconnect/riscv_debug_ring_expand.sv
-../../../../rtl/verilog/interconnect/riscv_debug_ring.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router_demux.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router_gateway_demux.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router_gateway_mux.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router_gateway.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router_mux_rr.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router_mux.sv
-../../../../rtl/verilog/interconnect/riscv_ring_router.sv
+../../../../rtl/verilog/ahb3/mpsoc_dbg_ahb3_biu.sv
+../../../../rtl/verilog/ahb3/mpsoc_dbg_ahb3_module.sv
+../../../../rtl/verilog/ahb3/mpsoc_dbg_jsp_apb_biu.sv
+../../../../rtl/verilog/ahb3/mpsoc_dbg_jsp_apb_module.sv
+../../../../rtl/verilog/ahb3/mpsoc_dbg_top_ahb3.sv
 
-../../../../rtl/verilog/modules/common/riscv_osd_ctm.sv
-../../../../rtl/verilog/modules/common/riscv_osd_him.sv
-../../../../rtl/verilog/modules/common/riscv_osd_scm.sv
-../../../../rtl/verilog/modules/common/riscv_osd_stm.sv
-../../../../rtl/verilog/modules/template/riscv_osd_ctm_template.sv
-../../../../rtl/verilog/modules/template/riscv_osd_stm_template.sv
+../../../../rtl/verilog/wb/mpsoc_dbg_jsp_wb_biu.sv
+../../../../rtl/verilog/wb/mpsoc_dbg_jsp_wb_module.sv
+../../../../rtl/verilog/wb/mpsoc_dbg_top_wb.sv
+../../../../rtl/verilog/wb/mpsoc_dbg_wb_biu.sv
+../../../../rtl/verilog/wb/mpsoc_dbg_wb_module.sv
 
-../../../../rtl/verilog/riscv_debug_interface.sv
-
-../../../../bench/verilog/regression/riscv_dbg_testbench.sv
+../../../../bench/verilog/regression/mpsoc_dbg_testbench.sv

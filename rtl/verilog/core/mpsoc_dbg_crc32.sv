@@ -41,26 +41,81 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-../../../../rtl/vhdl/pkg/mpsoc_dbg_pkg.vhd
+module mpsoc_dbg_crc32 (
+  input         rstn,
+  input         clk,
+  input         data,
+  input         enable,
+  input         shift,
+  input         clr,
+  output [31:0] crc_out,
+  output        serial_out
+);
 
-../../../../rtl/vhdl/core/mpsoc_dbg_bus_module_core.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_module.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_bytefifo.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_crc32.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_jsp_module_core.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_biu.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_status_reg.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_syncflop.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_syncreg.vhd
+  //////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
+  reg    [31:0] crc;
+  wire   [31:0] new_crc;
 
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_ahb3_biu.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_ahb3_module.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_biu.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_module.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_top_ahb3.vhd
+  //////////////////////////////////////////////////////////////////
+  //
+  // Module body
+  //
 
-../../../../rtl/vhdl/wb/mpsoc_dbg_jsp_wb_biu.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_jsp_wb_module.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_wb_biu.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_wb_module.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_top_wb.vhd
+  // You may notice that the 'poly' in this implementation is backwards.
+  // This is because the shift is also 'backwards', so that the data can
+  // be shifted out in the same direction, which saves on logic + routing.
+  assign new_crc[00] = crc[01];
+  assign new_crc[01] = crc[02];
+  assign new_crc[02] = crc[03];
+  assign new_crc[03] = crc[04];
+  assign new_crc[04] = crc[05];
+  assign new_crc[05] = crc[06] ^ data ^ crc[0];
+  assign new_crc[06] = crc[07];
+  assign new_crc[07] = crc[08];
+  assign new_crc[08] = crc[09] ^ data ^ crc[0];
+  assign new_crc[09] = crc[10] ^ data ^ crc[0];
+  assign new_crc[10] = crc[11];
+  assign new_crc[11] = crc[12];
+  assign new_crc[12] = crc[13];
+  assign new_crc[13] = crc[14];
+  assign new_crc[14] = crc[15];
+  assign new_crc[15] = crc[16] ^ data ^ crc[0];
+  assign new_crc[16] = crc[17];
+  assign new_crc[17] = crc[18];
+  assign new_crc[18] = crc[19];
+  assign new_crc[19] = crc[20] ^ data ^ crc[0];
+  assign new_crc[20] = crc[21] ^ data ^ crc[0];
+  assign new_crc[21] = crc[22] ^ data ^ crc[0];
+  assign new_crc[22] = crc[23];
+  assign new_crc[23] = crc[24] ^ data ^ crc[0];
+  assign new_crc[24] = crc[25] ^ data ^ crc[0];
+  assign new_crc[25] = crc[26];
+  assign new_crc[26] = crc[27] ^ data ^ crc[0];
+  assign new_crc[27] = crc[28] ^ data ^ crc[0];
+  assign new_crc[28] = crc[29];
+  assign new_crc[29] = crc[30] ^ data ^ crc[0];
+  assign new_crc[30] = crc[31] ^ data ^ crc[0];
+  assign new_crc[31] =           data ^ crc[0];
+
+  always @ (posedge clk or negedge rstn) begin
+    if(!rstn) begin
+      crc[31:0] <= 32'hffffffff;
+    end
+    else if(clr) begin
+      crc[31:0] <= 32'hffffffff;
+    end
+    else if(enable) begin
+      crc[31:0] <= new_crc;
+    end
+    else if (shift) begin
+      crc[31:0] <= {1'b0, crc[31:1]};
+    end
+  end
+
+  //assign crc_match = (crc == 32'h0);
+  assign crc_out = crc; //[31];
+  assign serial_out = crc[0];
+endmodule
