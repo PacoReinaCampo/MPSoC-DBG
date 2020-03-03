@@ -50,7 +50,7 @@ module mpsoc_dbg_testbench;
   parameter X              = 2;
   parameter Y              = 2;
   parameter Z              = 2;
-  parameter CORES_PER_TILE = 1;
+  parameter CORES_PER_TILE = 4;
   parameter ADDR_WIDTH     = 32;
   parameter DATA_WIDTH     = 32;
   parameter CPU_ADDR_WIDTH = 32;

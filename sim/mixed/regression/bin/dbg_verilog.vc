@@ -41,4 +41,4 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-../../../../bench/verilog/regression/mpsoc_dbg_testbench.sv
+../../../../bench/verilog/riscv/mpsoc_dbg_testbench.sv

@@ -41,28 +41,28 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-../../../../rtl/vhdl/pkg/mpsoc_dbg_pkg.vhd
+../../../../rtl/vhdl/riscv/pkg/mpsoc_dbg_pkg.vhd
 
-../../../../rtl/vhdl/core/mpsoc_dbg_bus_module_core.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_bytefifo.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_crc32.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_jsp_module_core.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_biu.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_module.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_or1k_status_reg.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_syncflop.vhd
-../../../../rtl/vhdl/core/mpsoc_dbg_syncreg.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_bus_module_core.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_bytefifo.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_crc32.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_jsp_module_core.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_or1k_biu.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_or1k_module.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_or1k_status_reg.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_syncflop.vhd
+../../../../rtl/vhdl/riscv/core/mpsoc_dbg_syncreg.vhd
 
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_ahb3_biu.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_ahb3_module.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_biu.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_jsp_apb_module.vhd
-../../../../rtl/vhdl/ahb3/mpsoc_dbg_top_ahb3.vhd
+../../../../rtl/vhdl/riscv/ahb3/mpsoc_dbg_ahb3_biu.vhd
+../../../../rtl/vhdl/riscv/ahb3/mpsoc_dbg_ahb3_module.vhd
+../../../../rtl/vhdl/riscv/ahb3/mpsoc_dbg_jsp_apb_biu.vhd
+../../../../rtl/vhdl/riscv/ahb3/mpsoc_dbg_jsp_apb_module.vhd
+../../../../rtl/vhdl/riscv/ahb3/mpsoc_dbg_top_ahb3.vhd
 
-../../../../rtl/vhdl/wb/mpsoc_dbg_jsp_wb_biu.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_jsp_wb_module.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_top_wb.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_wb_biu.vhd
-../../../../rtl/vhdl/wb/mpsoc_dbg_wb_module.vhd
+../../../../rtl/vhdl/riscv/wb/mpsoc_dbg_jsp_wb_biu.vhd
+../../../../rtl/vhdl/riscv/wb/mpsoc_dbg_jsp_wb_module.vhd
+../../../../rtl/vhdl/riscv/wb/mpsoc_dbg_top_wb.vhd
+../../../../rtl/vhdl/riscv/wb/mpsoc_dbg_wb_biu.vhd
+../../../../rtl/vhdl/riscv/wb/mpsoc_dbg_wb_module.vhd
 
-../../../../bench/vhdl/regression/mpsoc_dbg_testbench.vhd
+../../../../bench/vhdl/riscv/mpsoc_dbg_testbench.vhd

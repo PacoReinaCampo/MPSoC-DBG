@@ -1,2 +1,2 @@
 rm -rf obj_dir
-verilator -Wno-lint -Wno-COMBDLY +incdir+rtl/verilog/pkg --cc -f system.vtor --top-module mpsoc_dbg_testbench
+verilator -Wno-lint -Wno-COMBDLY +incdir+rtl/verilog/riscv/pkg --cc -f system.vtor --top-module mpsoc_dbg_testbench
