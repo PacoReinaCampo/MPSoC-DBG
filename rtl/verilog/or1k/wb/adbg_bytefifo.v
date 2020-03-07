@@ -1,75 +1,46 @@
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-////  bytefifo.v                                                  ////
-////                                                              ////
-////                                                              ////
-////  A simple byte-wide FIFO with byte and free space counts     ////
-////                                                              ////
-////  Author(s):                                                  ////
-////       Nathan Yawn (nathan.yawn@opencores.org)                ////
-////                                                              ////
-////                                                              ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-////                                                              ////
-//// Copyright (C) 2010 Authors                                   ////
-////                                                              ////
-//// This source file may be used and distributed without         ////
-//// restriction provided that this copyright statement is not    ////
-//// removed from the file and that any derivative work contains  ////
-//// the original copyright notice and the associated disclaimer. ////
-////                                                              ////
-//// This source file is free software; you can redistribute it   ////
-//// and/or modify it under the terms of the GNU Lesser General   ////
-//// Public License as published by the Free Software Foundation; ////
-//// either version 2.1 of the License, or (at your option) any   ////
-//// later version.                                               ////
-////                                                              ////
-//// This source is distributed in the hope that it will be       ////
-//// useful, but WITHOUT ANY WARRANTY; without even the implied   ////
-//// warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR      ////
-//// PURPOSE.  See the GNU Lesser General Public License for more ////
-//// details.                                                     ////
-////                                                              ////
-//// You should have received a copy of the GNU Lesser General    ////
-//// Public License along with this source; if not, download it   ////
-//// from http://www.opencores.org/lgpl.shtml                     ////
-////                                                              ////
-//////////////////////////////////////////////////////////////////////
-//
-// This is an 8-entry, byte-wide, single-port FIFO.  It can either
-// push or pop a byte each clock cycle (but not both).  It includes
-// outputs indicating the number of bytes in the FIFO, and the number
-// of bytes free - if you don't connect BYTES_FREE, the synthesis
-// tool should eliminate the hardware to generate it.
-//
-// This attempts to use few resources.  There is only 1 counter,
-// and only 1 decoder.  The FIFO works like a big shift register:
-// bytes are always written to entry '0' of the FIFO, and older
-// bytes are shifted toward entry '7' as newer bytes are added.
-// The counter determines which entry the output reads.
-//
-// One caveat is that the DATA_OUT will glitch during a 'push'
-// operation.  If the output is being sent to another clock
-// domain, you should register it first.
-//
-// Ports:
-// CLK:  Clock for all synchronous elements
-// RST:  Zeros the counter and all registers asynchronously
-// DATA_IN: Data to be pushed into the FIFO
-// DATA_OUT: Always shows the data at the head of the FIFO, 'XX' if empty
-// PUSH_POPn: When high (and EN is high), DATA_IN will be pushed onto the
-//            FIFO and the count will be incremented at the next posedge
-//            of CLK (assuming the FIFO is not full).  When low (and EN
-//            is high), the count will be decremented and the output changed
-//            to the next value in the FIFO (assuming FIFO not empty).
-// EN: When high at posedege CLK, a push or pop operation will be performed,
-//     based on the value of PUSH_POPn, assuming sufficient data or space.
-// BYTES_AVAIL: Number of bytes in the FIFO.  May be in the range 0 to 8.
-// BYTES_FREE: Free space in the FIFO.  May be in the range 0 to 8.          
+////////////////////////////////////////////////////////////////////////////////
+//                                            __ _      _     _               //
+//                                           / _(_)    | |   | |              //
+//                __ _ _   _  ___  ___ _ __ | |_ _  ___| | __| |              //
+//               / _` | | | |/ _ \/ _ \ '_ \|  _| |/ _ \ |/ _` |              //
+//              | (_| | |_| |  __/  __/ | | | | | |  __/ | (_| |              //
+//               \__, |\__,_|\___|\___|_| |_|_| |_|\___|_|\__,_|              //
+//                  | |                                                       //
+//                  |_|                                                       //
+//                                                                            //
+//                                                                            //
+//              MPSoC-RISCV CPU                                               //
+//              Degub Interface                                               //
+//              PU-OR1K                                                       //
+//              WishBone Bus Interface                                        //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
 
+/* Copyright (c) 2018-2019 by the author(s)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ * THE SOFTWARE.
+ *
+ * =============================================================================
+ * Author(s):
+ *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ */
 
-// Top module
 module adbg_bytefifo (
   input        CLK,
   input        RST,
@@ -101,7 +72,7 @@ module adbg_bytefifo (
   //
 
   // Combinatorial assignments
-  assign BYTES_AVAIL = counter;  
+  assign  BYTES_AVAIL = counter;  
   assign  BYTES_FREE = 4'h8 - BYTES_AVAIL;
   assign  push_ok = !(counter == 4'h8);
   assign  pop_ok = !(counter == 4'h0);

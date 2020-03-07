@@ -137,16 +137,16 @@ module adbg_top #(
   wire   tdo_jsp;
 
   // Registers
-  reg [`DBG_TOP_MODULE_DATA_LEN-1:0] input_shift_reg;  // 1 bit sel/cmd, 4 bit opcode, 32 bit address, 16 bit length = 53 bits
-  //reg output_shift_reg;  // Just 1 bit for status (valid module selected)
+  reg [`DBG_TOP_MODULE_DATA_LEN  -1:0] input_shift_reg;  // 1 bit sel/cmd, 4 bit opcode, 32 bit address, 16 bit length = 53 bits
   reg [`DBG_TOP_MODULE_ID_LENGTH -1:0] module_id_reg;  // Module selection register
+  //reg output_shift_reg;  // Just 1 bit for status (valid module selected)
 
   // Control signals
-  wire                                       select_cmd;      // True when the command (registered at Update_DR) is for top level/module selection
-  wire [(`DBG_TOP_MODULE_ID_LENGTH - 1) : 0] module_id_in;    // The part of the input_shift_register to be used as the module select data
-  reg  [(`DBG_TOP_MAX_MODULES - 1)      : 0] module_selects;  // Select signals for the individual modules
-  wire                                       select_inhibit;  // OR of inhibit signals from sub-modules, prevents latching of a new module ID
-  wire [                                3:0] module_inhibit;  // signals to allow submodules to prevent top level from latching new module ID
+  wire                                 select_cmd;      // True when the command (registered at Update_DR) is for top level/module selection
+  wire [`DBG_TOP_MODULE_ID_LENGTH-1:0] module_id_in;    // The part of the input_shift_register to be used as the module select data
+  reg  [`DBG_TOP_MAX_MODULES     -1:0] module_selects;  // Select signals for the individual modules
+  wire                                 select_inhibit;  // OR of inhibit signals from sub-modules, prevents latching of a new module ID
+  wire [                          3:0] module_inhibit;  // signals to allow submodules to prevent top level from latching new module ID
 
   //////////////////////////////////////////////////////////////////
   //

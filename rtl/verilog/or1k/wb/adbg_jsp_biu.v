@@ -43,33 +43,33 @@
 
 module adbg_jsp_biu (
   // Debug interface signals
-  input tck_i,
-  input rst_i,
-  input [7:0] data_i,  // Assume short words are in UPPER order bits!
+  input        tck_i,
+  input        rst_i,
+  input  [7:0] data_i,  // Assume short words are in UPPER order bits!
   output [7:0] data_o,
   output [3:0] bytes_free_o,
   output [3:0] bytes_available_o,
-  input  rd_strobe_i,
-  input  wr_strobe_i,
+  input        rd_strobe_i,
+  input        wr_strobe_i,
 
-  input  debug_select_i,
+  input debug_select_i,
 
   // Wishbone signals
-  input   wb_clk_i,
-  input   wb_rst_i,
+  input         wb_clk_i,
+  input         wb_rst_i,
   input  [31:0] wb_adr_i,
   output [31:0] wb_dat_o,
   input  [31:0] wb_dat_i,
-  input   wb_cyc_i,
-  input   wb_stb_i,
-  input  [3:0]  wb_sel_i,
-  input   wb_we_i,
-  output   wb_ack_o,
-  input   wb_cab_i,
-  output   wb_err_o,
-  input  [2:0]  wb_cti_i,
-  input  [1:0]  wb_bte_i,
-  output   int_o
+  input         wb_cyc_i,
+  input         wb_stb_i,
+  input  [ 3:0] wb_sel_i,
+  input         wb_we_i,
+  output        wb_ack_o,
+  input         wb_cab_i,
+  output        wb_err_o,
+  input  [ 2:0] wb_cti_i,
+  input  [ 1:0] wb_bte_i,
+  output        int_o
 );
 
   //////////////////////////////////////////////////////////////////
@@ -175,7 +175,6 @@ module adbg_jsp_biu (
   wire        fifo_access;
 
   // State machine for the write FIFO
-
   reg [1:0] wr_fsm_state;
   reg [1:0] next_wr_fsm_state;
 
@@ -186,7 +185,6 @@ module adbg_jsp_biu (
 
   // TCK clock domain
   // There is no FSM here, just signal latching and clock domain synchronization
-
   assign data_o = rdata;
 
   // Write enable (WEN) toggle FF

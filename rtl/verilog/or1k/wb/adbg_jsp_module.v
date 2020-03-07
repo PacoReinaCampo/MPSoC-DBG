@@ -71,13 +71,13 @@ module adbg_jsp_module #(
     input  [31:0] wb_dat_i,
     input         wb_cyc_i,
     input         wb_stb_i,
-    input   [3:0] wb_sel_i,
+    input  [ 3:0] wb_sel_i,
     input         wb_we_i,
     output        wb_ack_o,
     input         wb_cab_i,
     output        wb_err_o,
-    input   [2:0] wb_cti_i,
-    input   [1:0] wb_bte_i,
+    input  [ 2:0] wb_cti_i,
+    input  [ 1:0] wb_bte_i,
     output        int_o
   );
 

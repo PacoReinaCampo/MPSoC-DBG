@@ -68,16 +68,16 @@ module adbg_wb_module #(
     input         wb_clk_i,
     output [31:0] wb_adr_o,
     output [31:0] wb_dat_o,
-    input [31:0]  wb_dat_i,
+    input  [31:0] wb_dat_i,
     output        wb_cyc_o,
     output        wb_stb_o,
-    output [3:0]  wb_sel_o,
+    output [ 3:0] wb_sel_o,
     output        wb_we_o,
     input         wb_ack_i,
     output        wb_cab_o,
     input         wb_err_i,
-    output [2:0]  wb_cti_o,
-    output [1:0]  wb_bte_o
+    output [ 2:0] wb_cti_o,
+    output [ 1:0] wb_bte_o
   );
 
   //////////////////////////////////////////////////////////////////

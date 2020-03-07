@@ -42,11 +42,11 @@
  */
 
 module adbg_syncreg (
-  input   CLKA,
-  input   CLKB,
-  input   RST,
-  input   [3:0] DATA_IN,
-  output  [3:0] DATA_OUT
+  input        CLKA,
+  input        CLKB,
+  input        RST,
+  input  [3:0] DATA_IN,
+  output [3:0] DATA_OUT
 );
 
   //////////////////////////////////////////////////////////////////
