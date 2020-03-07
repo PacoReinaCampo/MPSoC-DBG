@@ -41,17 +41,90 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-// Length of the MODULE ID register
-`define DBG_TOP_MODULE_ID_LENGTH 2
+module adbg_syncreg (
+  input   CLKA,
+  input   CLKB,
+  input   RST,
+  input   [3:0] DATA_IN,
+  output  [3:0] DATA_OUT
+);
 
-// How many modules can be supported by the module id length
-`define DBG_TOP_MAX_MODULES 4
+  //////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
 
-// Chains
-`define DBG_TOP_WISHBONE_DEBUG_MODULE  2'h0
-`define DBG_TOP_CPU0_DEBUG_MODULE      2'h1
-`define DBG_TOP_CPU1_DEBUG_MODULE      2'h2
-`define DBG_TOP_JSP_DEBUG_MODULE       2'h3
+  reg     [3:0] regA;
+  reg     [3:0] regB;
+  reg           strobe_toggle;
+  reg           ack_toggle;
 
-// Length of data
-`define DBG_TOP_MODULE_DATA_LEN  53
+  wire          A_not_equal;
+  wire          A_enable;
+  wire          strobe_sff_out;
+  wire          ack_sff_out;
+  wire    [3:0] DATA_OUT;
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Module body
+  //
+
+  // Combinatorial assignments
+  assign  A_enable = A_not_equal & ack_sff_out;
+  assign  A_not_equal = !(DATA_IN == regA);
+  assign DATA_OUT = regB;   
+
+  // register A (latches input any time it changes)
+  always @ (posedge CLKA or posedge RST) begin
+    if(RST)
+      regA <= 4'b0;
+    else if(A_enable)
+      regA <= DATA_IN;
+  end
+
+  // register B (latches data from regA when enabled by the strobe SFF)
+  always @ (posedge CLKB or posedge RST) begin
+    if(RST)
+      regB <= 4'b0;
+    else if(strobe_sff_out)
+      regB <= regA;
+  end
+
+  // 'strobe' toggle FF
+  always @ (posedge CLKA or posedge RST) begin
+    if(RST)
+      strobe_toggle <= 1'b0;
+    else if(A_enable)
+      strobe_toggle <= ~strobe_toggle;
+  end
+
+  // 'ack' toggle FF
+  // This is set to '1' at reset, to initialize the unit.
+  always @ (posedge CLKB or posedge RST) begin
+    if(RST)
+      ack_toggle <= 1'b1;
+    else if (strobe_sff_out)
+      ack_toggle <= ~ack_toggle;
+  end
+
+  // 'strobe' sync element
+  adbg_syncflop strobe_sff (
+    .DEST_CLK (CLKB),
+    .D_SET (1'b0),
+    .D_RST (strobe_sff_out),
+    .RESET (RST),
+    .TOGGLE_IN (strobe_toggle),
+    .D_OUT (strobe_sff_out)
+  );
+
+  // 'ack' sync element
+  adbg_syncflop ack_sff (
+    .DEST_CLK (CLKA),
+    .D_SET (1'b0),
+    .D_RST (A_enable),
+    .RESET (RST),
+    .TOGGLE_IN (ack_toggle),
+    .D_OUT (ack_sff_out)
+  );  
+endmodule

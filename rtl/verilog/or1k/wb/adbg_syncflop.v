@@ -41,17 +41,61 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-// Length of the MODULE ID register
-`define DBG_TOP_MODULE_ID_LENGTH 2
+module adbg_syncflop (
+  input   DEST_CLK,
+  input   D_SET,
+  input   D_RST,
+  input   RESET,
+  input   TOGGLE_IN,
+  output  D_OUT
+);
 
-// How many modules can be supported by the module id length
-`define DBG_TOP_MAX_MODULES 4
+  //////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
 
-// Chains
-`define DBG_TOP_WISHBONE_DEBUG_MODULE  2'h0
-`define DBG_TOP_CPU0_DEBUG_MODULE      2'h1
-`define DBG_TOP_CPU1_DEBUG_MODULE      2'h2
-`define DBG_TOP_JSP_DEBUG_MODULE       2'h3
+  reg     sync1;
+  reg     sync2;
+  reg     syncprev;
+  reg     srflop;
 
-// Length of data
-`define DBG_TOP_MODULE_DATA_LEN  53
+  wire    syncxor;
+  wire    srinput;
+  wire    D_OUT;
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Module body
+  //
+
+  // Combinatorial assignments
+  assign  syncxor = sync2 ^ syncprev;
+  assign  srinput = syncxor | D_SET;  
+  assign  D_OUT = srflop | syncxor;
+
+  // First DFF (always enabled)
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if(RESET) sync1 <= 1'b0;
+    else sync1 <= TOGGLE_IN;
+  end
+
+  // Second DFF (always enabled)
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if(RESET) sync2 <= 1'b0;
+    else sync2 <= sync1;
+  end
+
+  // Third DFF (always enabled, used to detect toggles)
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if(RESET) syncprev <= 1'b0;
+    else syncprev <= sync2;
+  end
+
+  // Set/Reset FF (holds detected toggles)
+  always @ (posedge DEST_CLK or posedge RESET) begin
+    if(RESET)         srflop <= 1'b0;
+    else if(D_RST)    srflop <= 1'b0;
+    else if (srinput) srflop <= 1'b1;
+  end
+endmodule
