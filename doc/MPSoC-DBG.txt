@@ -1,12 +1,12 @@
 # DBG-MPSoC WIKI
 
-A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Hardware Description Languages. The code to be examined is running on a simulator, a technique that allows great power in its ability to halt when specific conditions are encountered. When a hardware description crashes, debuggers show the position of the error in the target description.
+A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and debug Hardware Description Languages. The code to be examined is running on a simulator, a technique that allows great power in its ability to halt when specific conditions are encountered. When a hardware description crashes, debuggers show the position of the error in the target description.
 
 
 ## Instruction INPUTS/OUTPUTS AMBA3 AHB-Lite Bus
 
 | Port         |  Size  | Direction | Description                                           |
-| -------------| ------ | --------- | ----------------------------------------------------- |
+| ------------ | ------ | --------- | ----------------------------------------------------- |
 | `HRESETn`    |    1   |   Input   | Asynchronous active low reset                         |
 | `HCLK`       |    1   |   Input   | System clock input                                    |
 |              |        |           |                                                       |
@@ -27,7 +27,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Ha
 ## Instruction INPUTS/OUTPUTS Wishbone Bus
 
 | Port    |  Size  | Direction | Description                     |
-| --------| ------ | --------- | ------------------------------- |
+| ------- | ------ | --------- | ------------------------------- |
 | `rst`   |    1   |   Input   | Synchronous, active high        |
 | `clk`   |    1   |   Input   | Master clock                    |
 |         |        |           |                                 |
@@ -46,7 +46,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Ha
 ## Data INPUTS/OUTPUTS AMBA3 AHB-Lite Bus
 
 | Port         |  Size  | Direction | Description                                           |
-| -------------| ------ | --------- | ----------------------------------------------------- |
+| ------------ | ------ | --------- | ----------------------------------------------------- |
 | `HRESETn`    |    1   |   Input   | Asynchronous active low reset                         |
 | `HCLK`       |    1   |   Input   | System clock input                                    |
 |              |        |           |                                                       |
@@ -67,7 +67,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Ha
 ## Data INPUTS/OUTPUTS Wishbone Bus
 
 | Port    |  Size  | Direction | Description                     |
-| --------| ------ | --------- | ------------------------------- |
+| ------- | ------ | --------- | ------------------------------- |
 | `rst`   |    1   |   Input   | Synchronous, active high        |
 | `clk`   |    1   |   Input   | Master clock                    |
 |         |        |           |                                 |
@@ -81,115 +81,3 @@ A Debugger on Chip (DBG) is a Hardware-Software System used to test and debug Ha
 | `dack`  |    1   |   Output  | Bus cycle acknowledge output    |
 | `derr`  |    1   |   Output  | Bus cycle error output          |
 | `dint`  |    1   |   Output  | Interrupt signal output         |
-
-
-## Count Lines of Code
-
-|Language              | files | blank | comment | code |
-| ---------------------| ----- | ----- | ------- | ---- |
-|VHDL                  |    21 |   784 |    1859 | 5432 |
-|Verilog-SystemVerilog |    21 |   690 |    1670 | 3669 |
-
-
-## Hardware Description Language
-
-dbg
-├── bench
-│   ├── verilog
-│   │   └── regression
-│   │       └── mpsoc_dbg_testbench.sv
-│   └── vhdl
-│       └── regression
-│           └── mpsoc_dbg_testbench.vhd
-├── doc
-│   └── WIKI-DBG-MPSoC.md
-├── rtl
-│   ├── verilog
-│   │   ├── ahb3
-│   │   │   ├── mpsoc_dbg_ahb3_biu.sv
-│   │   │   ├── mpsoc_dbg_ahb3_module.sv
-│   │   │   ├── mpsoc_dbg_jsp_apb_biu.sv
-│   │   │   ├── mpsoc_dbg_jsp_apb_module.sv
-│   │   │   └── mpsoc_dbg_top_ahb3.sv
-│   │   ├── core
-│   │   │   ├── mpsoc_dbg_bus_module_core.sv
-│   │   │   ├── mpsoc_dbg_bytefifo.sv
-│   │   │   ├── mpsoc_dbg_crc32.sv
-│   │   │   ├── mpsoc_dbg_jsp_module_core.sv
-│   │   │   ├── mpsoc_dbg_or1k_biu.sv
-│   │   │   ├── mpsoc_dbg_or1k_module.sv
-│   │   │   ├── mpsoc_dbg_or1k_status_reg.sv
-│   │   │   ├── mpsoc_dbg_syncflop.sv
-│   │   │   └── mpsoc_dbg_syncreg.sv
-│   │   ├── pkg
-│   │   │   └── mpsoc_dbg_pkg.sv
-│   │   └── wb
-│   │       ├── mpsoc_dbg_jsp_wb_biu.sv
-│   │       ├── mpsoc_dbg_jsp_wb_module.sv
-│   │       ├── mpsoc_dbg_top_wb.sv
-│   │       ├── mpsoc_dbg_wb_biu.sv
-│   │       └── mpsoc_dbg_wb_module.sv
-│   └── vhdl
-│       ├── ahb3
-│       │   ├── mpsoc_dbg_ahb3_biu.vhd
-│       │   ├── mpsoc_dbg_ahb3_module.vhd
-│       │   ├── mpsoc_dbg_jsp_apb_biu.vhd
-│       │   ├── mpsoc_dbg_jsp_apb_module.vhd
-│       │   └── mpsoc_dbg_top_ahb3.vhd
-│       ├── core
-│       │   ├── mpsoc_dbg_bus_module_core.vhd
-│       │   ├── mpsoc_dbg_bytefifo.vhd
-│       │   ├── mpsoc_dbg_crc32.vhd
-│       │   ├── mpsoc_dbg_jsp_module_core.vhd
-│       │   ├── mpsoc_dbg_or1k_biu.vhd
-│       │   ├── mpsoc_dbg_or1k_module.vhd
-│       │   ├── mpsoc_dbg_or1k_status_reg.vhd
-│       │   ├── mpsoc_dbg_syncflop.vhd
-│       │   └── mpsoc_dbg_syncreg.vhd
-│       ├── pkg
-│       │   └── mpsoc_dbg_pkg.vhd
-│       └── wb
-│           ├── mpsoc_dbg_jsp_wb_biu.vhd
-│           ├── mpsoc_dbg_jsp_wb_module.vhd
-│           ├── mpsoc_dbg_top_wb.vhd
-│           ├── mpsoc_dbg_wb_biu.vhd
-│           └── mpsoc_dbg_wb_module.vhd
-├── sim
-│   ├── mixed
-│   │   └── regression
-│   │       └── bin
-│   │           ├── mpsoc_dbg_verilog.vc
-│   │           ├── mpsoc_dbg_vhdl.vc
-│   │           ├── Makefile
-│   │           ├── run.do
-│   │           └── transcript
-│   ├── verilog
-│   │   └── regression
-│   │       └── bin
-│   │           ├── mpsoc_dbg.vc
-│   │           ├── Makefile
-│   │           ├── run.do
-│   │           └── transcript
-│   └── vhdl
-│       └── regression
-│           └── bin
-│               ├── mpsoc_dbg.vc
-│               ├── Makefile
-│               ├── run.do
-│               └── transcript
-├── system.vtor
-├── system.qf
-├── system.ys
-├── README.md
-├── CLEAN-IT
-├── DELETE-IT
-├── EXECUTE-IT
-├── SIMULATE-MIXED-MS-IT
-├── SIMULATE-VHDL-GHDL-IT
-├── SIMULATE-VHDL-MS-IT
-├── SIMULATE-VLOG-IV-IT
-├── SIMULATE-VLOG-MS-IT
-├── SIMULATE-VLOG-VTOR-DBG-IT
-├── SYNTHESIZE-VLOG-YS-IT
-├── TRANSLATE-IT
-└── UPLOAD-IT
