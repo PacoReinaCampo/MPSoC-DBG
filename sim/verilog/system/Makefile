@@ -12,13 +12,13 @@ Q ?=@
 QUIET=-quiet
 endif
 
-IVERILOG_VPI_SRC = $(SOURCE_DIR)/software/jtag_vpi.c
+IVERILOG_VPI_SRC = $(SOURCE_DIR)/software/system/jtag_vpi.c
 
 ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/verilog/or1k/wb/*.v)
 
-IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi.v \
-               $(BENCH_DIR)/jtag_vpi_tb.v \
-               $(BENCH_DIR)/jtag_tap/jtag_tap.v \
+IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/jtag_vpi.v \
+               $(BENCH_DIR)/jtag_vpi/jtag_vpi_tb.v \
+               $(BENCH_DIR)/jtag_tap/tap_top.v \
                $(BENCH_DIR)/ram/ram_wb_b3.v \
                $(ADV_DEBUG_SRC)
 
@@ -26,7 +26,7 @@ all: build
 
 build:
 	@echo '##### Building ######'
-	$(Q)gcc -otest_client $(SOURCE_DIR)/software/test_client.c
+	$(Q)gcc -otest_client $(SOURCE_DIR)/software/system/test_client.c
 	$(Q)iverilog-vpi $(IVERILOG_VPI_SRC) > /dev/null
 	$(Q)iverilog -I$(INCLUDE_DIR) -ojtag_vpi_tb.vvp $(IVERILOG_SRC)
 
