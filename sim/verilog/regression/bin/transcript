@@ -1,5 +1,5 @@
 # vsim -c -do "run.do" work.mpsoc_dbg_testbench 
-# Start time: 18:49:47 on Mar 07,2020
+# Start time: 06:10:34 on Mar 30,2020
 # Loading sv_std.std
 # Loading work.mpsoc_dbg_testbench
 # Loading work.mpsoc_dbg_top_ahb3
@@ -22,5 +22,5 @@
 # Loading work.mpsoc_dbg_jsp_wb_module
 # Loading work.mpsoc_dbg_jsp_wb_biu
 # do run.do
-# End time: 18:49:47 on Mar 07,2020, Elapsed time: 0:00:00
+# End time: 06:10:34 on Mar 30,2020, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
