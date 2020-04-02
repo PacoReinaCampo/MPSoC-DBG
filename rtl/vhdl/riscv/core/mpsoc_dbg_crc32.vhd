@@ -127,6 +127,6 @@ begin
   end process;
 
   --assign crc_match = (crc == 32'h0);
-  crc_out    <= crc;                    --[31];
+  crc_out    <= crc;  --[31];
   serial_out <= crc(0);
 end RTL;

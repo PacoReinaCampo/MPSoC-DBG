@@ -110,14 +110,14 @@ entity mpsoc_dbg_top_wb is
     --CPU/Thread debug ports
     cpu_clk_i   : in  std_logic;
     cpu_rstn_i  : in  std_logic;
-    cpu_addr_o  : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-    cpu_data_i  : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-    cpu_data_o  : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-    cpu_bp_i    : in  M_XYZ_CORES_PER_TILE;
-    cpu_stall_o : out M_XYZ_CORES_PER_TILE;
-    cpu_stb_o   : out M_XYZ_CORES_PER_TILE;
-    cpu_we_o    : out M_XYZ_CORES_PER_TILE;
-    cpu_ack_i   : in  M_XYZ_CORES_PER_TILE
+    cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+    cpu_data_i  : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+    cpu_data_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+    cpu_bp_i    : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
     );
 end mpsoc_dbg_top_wb;
 
@@ -189,14 +189,14 @@ architecture RTL of mpsoc_dbg_top_wb is
       -- Interface to debug unit
       cpu_clk_i   : in  std_logic;
       cpu_rstn_i  : in  std_logic;
-      cpu_addr_o  : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-      cpu_data_i  : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_data_o  : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_bp_i    : in  M_XYZ_CORES_PER_TILE;
-      cpu_stall_o : out M_XYZ_CORES_PER_TILE;
-      cpu_stb_o   : out M_XYZ_CORES_PER_TILE;
-      cpu_we_o    : out M_XYZ_CORES_PER_TILE;
-      cpu_ack_i   : in  M_XYZ_CORES_PER_TILE
+      cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+      cpu_data_i  : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_data_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_bp_i    : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
       );
   end component;
 
@@ -246,21 +246,6 @@ architecture RTL of mpsoc_dbg_top_wb is
   constant TOP_CPU_DEBUG_MODULE    : std_logic_vector(1 downto 0) := "01";
   constant TOP_JSP_DEBUG_MODULE    : std_logic_vector(1 downto 0) := "10";
   constant TOP_RESERVED_DBG_MODULE : std_logic_vector(1 downto 0) := "11";
-
-  --//////////////////////////////////////////////////////////////
-  --
-  -- Functions
-  --
-  function reduce_or (
-    reduce_or_in : std_logic_vector
-  ) return std_logic is
-    variable reduce_or_out : std_logic := '0';
-  begin
-    for i in reduce_or_in'range loop
-      reduce_or_out := reduce_or_out or reduce_or_in(i);
-    end loop;
-    return reduce_or_out;
-  end reduce_or;
 
   --////////////////////////////////////////////////////////////////
   --

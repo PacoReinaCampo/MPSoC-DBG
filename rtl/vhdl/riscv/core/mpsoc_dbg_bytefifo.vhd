@@ -49,6 +49,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.mpsoc_dbg_pkg.all;
+
 entity mpsoc_dbg_bytefifo is
   port (
     CLK         : in  std_logic;
@@ -65,26 +67,18 @@ end mpsoc_dbg_bytefifo;
 architecture RTL of mpsoc_dbg_bytefifo is
   --////////////////////////////////////////////////////////////////
   --
-  -- Functions
-  --
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
-
-  --////////////////////////////////////////////////////////////////
-  --
   -- Variables
   --
+  signal reg0 : std_logic_vector(7 downto 0);
+  signal reg1 : std_logic_vector(7 downto 0);
+  signal reg2 : std_logic_vector(7 downto 0);
+  signal reg3 : std_logic_vector(7 downto 0);
+  signal reg4 : std_logic_vector(7 downto 0);
+  signal reg5 : std_logic_vector(7 downto 0);
+  signal reg6 : std_logic_vector(7 downto 0);
+  signal reg7 : std_logic_vector(7 downto 0);
 
-  signal reg0, reg1, reg2, reg3, reg4, reg5, reg6, reg7 : std_logic_vector(7 downto 0);
-  signal counter                                        : std_logic_vector(3 downto 0);
+  signal counter : std_logic_vector(3 downto 0);
 
   signal push_ok : std_logic;
   signal pop_ok  : std_logic;

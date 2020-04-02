@@ -80,14 +80,14 @@ entity mpsoc_dbg_or1k_module is
     -- Interface to debug unit
     cpu_clk_i   : in  std_logic;
     cpu_rstn_i  : in  std_logic;
-    cpu_addr_o  : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-    cpu_data_i  : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-    cpu_data_o  : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-    cpu_bp_i    : in  M_XYZ_CORES_PER_TILE;
-    cpu_stall_o : out M_XYZ_CORES_PER_TILE;
-    cpu_stb_o   : out M_XYZ_CORES_PER_TILE;
-    cpu_we_o    : out M_XYZ_CORES_PER_TILE;
-    cpu_ack_i   : in  M_XYZ_CORES_PER_TILE
+    cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+    cpu_data_i  : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+    cpu_data_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+    cpu_bp_i    : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
     );
 end mpsoc_dbg_or1k_module;
 
@@ -104,13 +104,13 @@ architecture RTL of mpsoc_dbg_or1k_module is
       tlr_i      : in  std_logic;
       tck_i      : in  std_logic;
       we_i       : in  std_logic;
-      ctrl_reg_o : out M_XYZ_CORES_PER_TILE;
+      ctrl_reg_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
       cpu_rstn_i  : in  std_logic;
       cpu_clk_i   : in  std_logic;
-      data_i      : in  M_XYZ_CORES_PER_TILE;
-      bp_i        : in  M_XYZ_CORES_PER_TILE;
-      cpu_stall_o : out M_XYZ_CORES_PER_TILE
+      data_i      : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      bp_i        : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
       );
   end component;
 
@@ -138,12 +138,12 @@ architecture RTL of mpsoc_dbg_or1k_module is
       -- OR1K SPR bus signals
       cpu_clk_i  : in  std_logic;
       cpu_rstn_i : in  std_logic;
-      cpu_addr_o : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-      cpu_data_i : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_data_o : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_stb_o  : out M_XYZ_CORES_PER_TILE;
-      cpu_we_o   : out M_XYZ_CORES_PER_TILE;
-      cpu_ack_i  : in  M_XYZ_CORES_PER_TILE
+      cpu_addr_o : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+      cpu_data_i : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_data_o : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_stb_o  : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_we_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_ack_i  : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
       );
   end component;
 
@@ -159,32 +159,6 @@ architecture RTL of mpsoc_dbg_or1k_module is
       serial_out : out std_logic
       );
   end component;
-
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Functions
-  --
-  function reduce_nor (
-    reduce_nor_in : std_logic_vector
-  ) return std_logic is
-    variable reduce_nor_out : std_logic := '0';
-  begin
-    for i in reduce_nor_in'range loop
-      reduce_nor_out := reduce_nor_out nor reduce_nor_in(i);
-    end loop;
-    return reduce_nor_out;
-  end reduce_nor;
-
-  function to_stdlogic (
-    input : boolean
-  ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
 
   --////////////////////////////////////////////////////////////////
   --
@@ -223,7 +197,7 @@ architecture RTL of mpsoc_dbg_or1k_module is
   signal data_out_shift_reg       : std_logic_vector(31 downto 0);  -- parallel-load output shift register
   signal internal_register_select : std_logic_vector(1 downto 0);  -- Holds index of currently selected register
 
-  signal internal_reg_status : M_XYZ_CORES_PER_TILE;  -- Holds CPU stall and reset status - signal is output of separate module
+  signal internal_reg_status : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);  -- Holds CPU stall and reset status - signal is output of separate module
 
   -- Control signals for the various counters / registers / state machines
   signal addr_sel         : std_logic;  -- Selects data for address_counter. 0 = data_register_i, 1 = incremented address count
@@ -281,7 +255,7 @@ architecture RTL of mpsoc_dbg_or1k_module is
   signal cpu_select    : std_logic_vector(3 downto 0);
   signal cpu_select_in : std_logic_vector(3 downto 0);
 
-  signal status_reg_data : M_XYZ_CORES_PER_TILE;
+  signal status_reg_data : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
   --FSM states
   signal module_state, module_next_state : std_logic_vector(3 downto 0);

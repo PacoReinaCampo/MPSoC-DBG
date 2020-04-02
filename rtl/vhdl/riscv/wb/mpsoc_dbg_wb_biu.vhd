@@ -48,6 +48,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.mpsoc_dbg_pkg.all;
+
 entity mpsoc_dbg_wb_biu is
   generic (
     LITTLE_ENDIAN : std_logic := '1';
@@ -84,21 +86,6 @@ entity mpsoc_dbg_wb_biu is
 end mpsoc_dbg_wb_biu;
 
 architecture RTL of mpsoc_dbg_wb_biu is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Functions
-  --
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
-
   --////////////////////////////////////////////////////////////////
   --
   -- Constants

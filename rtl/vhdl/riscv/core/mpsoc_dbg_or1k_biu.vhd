@@ -74,31 +74,16 @@ entity mpsoc_dbg_or1k_biu is
     -- OR1K SPR bus signals
     cpu_clk_i  : in  std_logic;
     cpu_rstn_i : in  std_logic;
-    cpu_addr_o : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-    cpu_data_i : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-    cpu_data_o : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-    cpu_stb_o  : out M_XYZ_CORES_PER_TILE;
-    cpu_we_o   : out M_XYZ_CORES_PER_TILE;
-    cpu_ack_i  : in  M_XYZ_CORES_PER_TILE
+    cpu_addr_o : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+    cpu_data_i : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+    cpu_data_o : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+    cpu_stb_o  : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_we_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_ack_i  : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
     );
 end mpsoc_dbg_or1k_biu;
 
 architecture RTL of mpsoc_dbg_or1k_biu is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Functions
-  --
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
-
   --////////////////////////////////////////////////////////////////
   --
   -- Constants

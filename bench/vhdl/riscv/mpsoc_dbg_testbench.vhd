@@ -115,14 +115,14 @@ architecture RTL of mpsoc_dbg_testbench is
       --CPU/Thread debug ports
       cpu_clk_i   : in  std_logic;
       cpu_rstn_i  : in  std_logic;
-      cpu_addr_o  : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-      cpu_data_i  : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_data_o  : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_bp_i    : in  M_XYZ_CORES_PER_TILE;
-      cpu_stall_o : out M_XYZ_CORES_PER_TILE;
-      cpu_stb_o   : out M_XYZ_CORES_PER_TILE;
-      cpu_we_o    : out M_XYZ_CORES_PER_TILE;
-      cpu_ack_i   : in  M_XYZ_CORES_PER_TILE
+      cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+      cpu_data_i  : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_data_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_bp_i    : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
       );
   end component;
 
@@ -185,14 +185,14 @@ architecture RTL of mpsoc_dbg_testbench is
       --CPU/Thread debug ports
       cpu_clk_i   : in  std_logic;
       cpu_rstn_i  : in  std_logic;
-      cpu_addr_o  : out M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-      cpu_data_i  : in  M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_data_o  : out M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-      cpu_bp_i    : in  M_XYZ_CORES_PER_TILE;
-      cpu_stall_o : out M_XYZ_CORES_PER_TILE;
-      cpu_stb_o   : out M_XYZ_CORES_PER_TILE;
-      cpu_we_o    : out M_XYZ_CORES_PER_TILE;
-      cpu_ack_i   : in  M_XYZ_CORES_PER_TILE
+      cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+      cpu_data_i  : in  xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_data_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+      cpu_bp_i    : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+      cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
       );
   end component;
 
@@ -265,14 +265,14 @@ architecture RTL of mpsoc_dbg_testbench is
   -- CPU/Thread debug ports
   signal ahb3_cpu_clk_i   : std_logic;
   signal ahb3_cpu_rstn_i  : std_logic;
-  signal ahb3_cpu_addr_o  : M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-  signal ahb3_cpu_data_i  : M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-  signal ahb3_cpu_data_o  : M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-  signal ahb3_cpu_bp_i    : M_XYZ_CORES_PER_TILE;
-  signal ahb3_cpu_stall_o : M_XYZ_CORES_PER_TILE;
-  signal ahb3_cpu_stb_o   : M_XYZ_CORES_PER_TILE;
-  signal ahb3_cpu_we_o    : M_XYZ_CORES_PER_TILE;
-  signal ahb3_cpu_ack_i   : M_XYZ_CORES_PER_TILE;
+  signal ahb3_cpu_addr_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+  signal ahb3_cpu_data_i  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+  signal ahb3_cpu_data_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+  signal ahb3_cpu_bp_i    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal ahb3_cpu_stall_o : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal ahb3_cpu_stb_o   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal ahb3_cpu_we_o    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal ahb3_cpu_ack_i   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
   -- WB
 
@@ -323,14 +323,14 @@ architecture RTL of mpsoc_dbg_testbench is
   --CPU/Thread debug ports
   signal wb_cpu_clk_i   : std_logic;
   signal wb_cpu_rstn_i  : std_logic;
-  signal wb_cpu_addr_o  : M_XYZ_CORES_PER_TILE_CPU_ADDR_WIDTH;
-  signal wb_cpu_data_i  : M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-  signal wb_cpu_data_o  : M_XYZ_CORES_PER_TILE_CPU_DATA_WIDTH;
-  signal wb_cpu_bp_i    : M_XYZ_CORES_PER_TILE;
-  signal wb_cpu_stall_o : M_XYZ_CORES_PER_TILE;
-  signal wb_cpu_stb_o   : M_XYZ_CORES_PER_TILE;
-  signal wb_cpu_we_o    : M_XYZ_CORES_PER_TILE;
-  signal wb_cpu_ack_i   : M_XYZ_CORES_PER_TILE;
+  signal wb_cpu_addr_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+  signal wb_cpu_data_i  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+  signal wb_cpu_data_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+  signal wb_cpu_bp_i    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal wb_cpu_stall_o : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal wb_cpu_stb_o   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal wb_cpu_we_o    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal wb_cpu_ack_i   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
 begin
   --////////////////////////////////////////////////////////////////

@@ -51,13 +51,13 @@ use ieee.numeric_std.all;
 
 entity mpsoc_dbg_syncflop is
   port (
-    RESET : in std_logic;               -- asynchronous reset
+    RESET : in std_logic;  -- asynchronous reset
 
-    DEST_CLK  : in  std_logic;          -- destination clock domain clock
+    DEST_CLK  : in  std_logic;  -- destination clock domain clock
     D_SET     : in  std_logic;  -- synchronously set output to '1' (synchronous to dest.clock domain)
     D_RST     : in  std_logic;  -- synchronously reset output to '0' (synch. to dest.clock domain)
-    TOGGLE_IN : in  std_logic;          -- toggle data from source clock domain
-    D_OUT     : out std_logic           -- output (synch. to dest.clock domain)
+    TOGGLE_IN : in  std_logic;  -- toggle data from source clock domain
+    D_OUT     : out std_logic   -- output (synch. to dest.clock domain)
     );
 end mpsoc_dbg_syncflop;
 
@@ -66,8 +66,12 @@ architecture RTL of mpsoc_dbg_syncflop is
   --
   -- Variables
   --
-  signal sync1, sync2, syncprev : std_logic;
-  signal srflop                 : std_logic;
+  signal sync1 : std_logic;
+  signal sync2 : std_logic;
+
+  signal syncprev : std_logic;
+
+  signal srflop : std_logic;
 
   -- Combinatorial assignments
   signal toggle  : std_logic;

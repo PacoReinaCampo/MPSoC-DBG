@@ -49,6 +49,8 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+use work.mpsoc_dbg_pkg.all;
+
 entity mpsoc_dbg_syncreg is
   port (
     CLKA     : in  std_logic;
@@ -70,21 +72,6 @@ architecture RTL of mpsoc_dbg_syncreg is
       D_OUT     : out std_logic
       );
   end component;
-
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Functions
-  --
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
 
   --////////////////////////////////////////////////////////////////
   --

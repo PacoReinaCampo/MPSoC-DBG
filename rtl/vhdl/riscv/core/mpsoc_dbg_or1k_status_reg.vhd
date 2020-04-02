@@ -62,13 +62,13 @@ entity mpsoc_dbg_or1k_status_reg is
     tlr_i      : in  std_logic;
     tck_i      : in  std_logic;
     we_i       : in  std_logic;
-    ctrl_reg_o : out M_XYZ_CORES_PER_TILE;
+    ctrl_reg_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
     cpu_rstn_i  : in  std_logic;
     cpu_clk_i   : in  std_logic;
-    data_i      : in  M_XYZ_CORES_PER_TILE;
-    bp_i        : in  M_XYZ_CORES_PER_TILE;
-    cpu_stall_o : out M_XYZ_CORES_PER_TILE
+    data_i      : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    bp_i        : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+    cpu_stall_o : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
     );
 end mpsoc_dbg_or1k_status_reg;
 
@@ -77,8 +77,13 @@ architecture RTL of mpsoc_dbg_or1k_status_reg is
   --
   -- Variables
   --
-  signal stall_bp, stall_bp_csff, stall_bp_tck    : M_XYZ_CORES_PER_TILE;
-  signal stall_reg, stall_reg_csff, stall_reg_cpu : M_XYZ_CORES_PER_TILE;
+  signal stall_bp      : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal stall_bp_csff : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal stall_bp_tck  : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+
+  signal stall_reg      : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal stall_reg_csff : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal stall_reg_cpu  : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
 begin
   --////////////////////////////////////////////////////////////////
