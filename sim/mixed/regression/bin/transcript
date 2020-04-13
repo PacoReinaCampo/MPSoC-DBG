@@ -1,5 +1,5 @@
 # vsim -c -do "run.do" work.mpsoc_dbg_testbench 
-# Start time: 18:24:30 on Mar 30,2020
+# Start time: 21:53:49 on Apr 13,2020
 # Loading sv_std.std
 # Loading work.mpsoc_dbg_testbench
 # Loading std.standard
@@ -7,7 +7,7 @@
 # Loading ieee.std_logic_1164(body)
 # Loading ieee.numeric_std(body)
 # Loading ieee.math_real(body)
-# Loading work.mpsoc_dbg_pkg
+# Loading work.mpsoc_dbg_pkg(body)
 # Loading work.mpsoc_dbg_top_ahb3(rtl)
 # Loading work.mpsoc_dbg_ahb3_module(rtl)
 # Loading work.mpsoc_dbg_bus_module_core(rtl)
@@ -28,5 +28,5 @@
 # Loading work.mpsoc_dbg_jsp_wb_module(rtl)
 # Loading work.mpsoc_dbg_jsp_wb_biu(rtl)
 # do run.do
-# End time: 18:24:30 on Mar 30,2020, Elapsed time: 0:00:00
+# End time: 21:53:49 on Apr 13,2020, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
