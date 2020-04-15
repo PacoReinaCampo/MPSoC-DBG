@@ -1,10 +1,20 @@
-rm -rf sim/mixed/regression/bin/work
-rm -rf sim/verilog/regression/bin/work
-rm -rf sim/vhdl/regression/bin/work
+rm -rf sim/vhdl/soc/msim/transcript
+rm -rf sim/verilog/pu/riscv/ahb3/msim/transcript
+rm -rf sim/verilog/pu/riscv/wb/msim/transcript
+rm -rf sim/vhdl/pu/or1k/ahb3/msim/transcript
+rm -rf sim/vhdl/pu/or1k/wb/msim/transcript
 
-rm -rf synthesis
+rm -rf sim/vhdl/soc/msim/work
+rm -rf sim/verilog/pu/riscv/ahb3/msim/work
+rm -rf sim/verilog/pu/riscv/wb/msim/work
+rm -rf sim/vhdl/pu/or1k/ahb3/msim/work
+rm -rf sim/vhdl/pu/or1k/wb/msim/work
 
-rm -rf work-obj93.cf
-rm -rf system.vvp
-rm -rf obj_dir
-rm -rf mpsoc_dbg_testbench.tree
+rm -rf sim/verilog/pu/riscv/ahb3/iverilog/system.vvp
+rm -rf sim/verilog/pu/riscv/wb/iverilog/system.vvp
+
+rm -rf sim/verilog/pu/riscv/ahb3/iverilog/*.tap
+rm -rf sim/verilog/pu/riscv/wb/iverilog/*.tap
+
+rm -rf sim/verilog/pu/riscv/ahb3/vtor/obj_dir
+rm -rf sim/verilog/pu/riscv/wb/vtor/obj_dir
