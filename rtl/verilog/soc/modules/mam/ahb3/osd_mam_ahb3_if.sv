@@ -43,37 +43,37 @@ module osd_mam_wb_if #(
     output reg [XLEN  -1:0] read_data, // Read data
     input                   read_ready, // Acknowledge this data item
 
-    output            ahb3_hsel_o,
-    output [PLEN-1:0] ahb3_haddr_o,
-    output [XLEN-1:0] ahb3_hwdata_o,
-    input  [XLEN-1:0] ahb3_hrdata_i,
-    output            ahb3_hwrite_o,
-    output [     2:0] ahb3_hsize_o,
-    output [     2:0] ahb3_hburst_o,
-    output [     3:0] ahb3_hprot_o,
-    output [     1:0] ahb3_htrans_o,
-    output            ahb3_hmastlock_o,
-    input             ahb3_hready_i,
-    input             ahb3_hresp_i
+    output reg            ahb3_hsel_o,
+    output reg [PLEN-1:0] ahb3_haddr_o,
+    output reg [XLEN-1:0] ahb3_hwdata_o,
+    input      [XLEN-1:0] ahb3_hrdata_i,
+    output reg            ahb3_hwrite_o,
+    output     [     2:0] ahb3_hsize_o,
+    output reg [     2:0] ahb3_hburst_o,
+    output reg [     3:0] ahb3_hprot_o,
+    output reg [     1:0] ahb3_htrans_o,
+    output                ahb3_hmastlock_o,
+    input                 ahb3_hready_i,
+    input                 ahb3_hresp_i
   );
 
   enum { STATE_IDLE, STATE_WRITE_LAST, STATE_WRITE_LAST_WAIT,
          STATE_WRITE, STATE_WRITE_WAIT, STATE_READ,
          STATE_READ_WAIT } state, nxt_state;
 
-  logic nxt_we_o;
+  logic       nxt_we_o;
   logic [2:0] nxt_cti_o;
   logic [1:0] nxt_bte_o;
 
-  reg   [XLEN-1:0] read_data_reg;
+  reg   [XLEN-1:0]     read_data_reg;
   logic [XLEN-1:0] nxt_read_data_reg;
 
-  reg   [XLEN-1:0] dat_o_reg;
+  reg   [XLEN-1:0]     dat_o_reg;
   logic [XLEN-1:0] nxt_dat_o_reg;
 
   logic [PLEN-1:0] nxt_addr_o;
 
-  reg   [12:0] beats;
+  reg   [12:0]     beats;
   logic [12:0] nxt_beats;
 
   //registers
@@ -89,9 +89,9 @@ module osd_mam_wb_if #(
     ahb3_hburst_o <= nxt_cti_o;
     ahb3_htrans_o <= nxt_bte_o;
     read_data_reg <= nxt_read_data_reg;
-    dat_o_reg <= nxt_dat_o_reg;
-    ahb3_haddr_o <= nxt_addr_o;
-    beats <= nxt_beats;
+    dat_o_reg     <= nxt_dat_o_reg;
+    ahb3_haddr_o  <= nxt_addr_o;
+    beats         <= nxt_beats;
   end
 
   assign ahb3_hmastlock_o = ahb3_hsel_o;
@@ -167,7 +167,6 @@ module osd_mam_wb_if #(
               end
               else begin
                 nxt_cti_o = 3'b010;
-
               end
             end
             else begin
