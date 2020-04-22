@@ -88,13 +88,13 @@ module dii_buffer
 
          assign packet_size = BUF_SIZE - find_first_one(data_last_shifted);
 
-         always_comb begin
+         always @(*) begin
             flit_out = data[rp];
             flit_out.valid = reg_out_valid && |data_last_shifted;
          end
       end else begin // if (FULLPACKET)
          assign packet_size = 0;
-         always_comb begin
+         always @(*) begin
             flit_out = data[rp];
             flit_out.valid = reg_out_valid;
          end

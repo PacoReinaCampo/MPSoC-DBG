@@ -76,9 +76,8 @@ module osd_mam
       int i;
       // should be "static int", but unsupported by Verilator currently, see
       // https://www.veripool.org/issues/546-Verilator-Support-static-inside-task
-      int total = DATA_WIDTH/8;
-      for(i=0; i<total; i++)
-        endian_conv[i*8 +: 8] = din[(total-i-1)*8 +: 8];
+      for(i=0; i<DATA_WIDTH/8; i++)
+        endian_conv[i*8 +: 8] = din[(DATA_WIDTH/8-i-1)*8 +: 8];
    endfunction // endian_conv
 
    logic [DATA_WIDTH-1:0] read_data_m, write_data_m;
