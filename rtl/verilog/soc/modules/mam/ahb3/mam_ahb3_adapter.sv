@@ -47,12 +47,12 @@ module mam_ahb3_adapter (
   wb_mam_we_o, wb_mam_cab_o, wb_mam_cti_o,
 
   // Outputs
-  ahb3_in_hready_o, ahb3_in_hresp_o, ahb3_in_hrdata_o, ahb3_out_haddr_i,
+  ahb3_in_hready_o, ahb3_in_hresp_o, ahb3_in_hwdata_o, ahb3_out_haddr_i,
   ahb3_out_htrans_i, ahb3_out_hburst_i, ahb3_out_hmastlock_i, ahb3_out_hwdata_i,
   ahb3_out_hprot_i, ahb3_out_hsel_i, ahb3_out_hwrite_i, ahb3_out_clk_i,
   ahb3_out_rst_i,
   // Inputs
-  ahb3_in_haddr_i, ahb3_in_htrans_i, ahb3_in_hburst_i, ahb3_in_hmastlock_i, ahb3_in_hwdata_i,
+  ahb3_in_haddr_i, ahb3_in_htrans_i, ahb3_in_hburst_i, ahb3_in_hmastlock_i, ahb3_in_hrdata_i,
   ahb3_in_hprot_i, ahb3_in_hsel_i, ahb3_in_hwrite_i, ahb3_in_clk_i, ahb3_in_rst_i,
   ahb3_out_hready_o, ahb3_out_hresp_o, ahb3_out_hrdata_o
 );
@@ -88,14 +88,14 @@ module mam_ahb3_adapter (
   input  [     1:0] ahb3_in_htrans_i;
   input  [     2:0] ahb3_in_hburst_i;
   input             ahb3_in_hmastlock_i;
-  input  [XLEN-1:0] ahb3_in_hwdata_i;
+  input  [XLEN-1:0] ahb3_in_hrdata_i;
   input  [SW  -1:0] ahb3_in_hprot_i;
   input             ahb3_in_hsel_i;
   input             ahb3_in_hwrite_i;
 
   output            ahb3_in_hready_o;
   output            ahb3_in_hresp_o;
-  output [XLEN-1:0] ahb3_in_hrdata_o;
+  output [XLEN-1:0] ahb3_in_hwdata_o;
 
   input             ahb3_in_clk_i;
   input             ahb3_in_rst_i;
@@ -216,7 +216,7 @@ module mam_ahb3_adapter (
     assign ahb3_out_htrans_i    = access_cpu ? ahb3_in_htrans_i : wb_mam_bte_o;
     assign ahb3_out_hburst_i    = access_cpu ? ahb3_in_hburst_i : wb_mam_cti_o;
     assign ahb3_out_hmastlock_i = access_cpu ? ahb3_in_hmastlock_i : wb_mam_cyc_o;
-    assign ahb3_out_hwdata_i    = access_cpu ? ahb3_in_hwdata_i : wb_mam_dat_o;
+    assign ahb3_out_hwdata_i    = access_cpu ? ahb3_in_hrdata_i : wb_mam_dat_o;
     assign ahb3_out_hprot_i     = access_cpu ? ahb3_in_hprot_i : wb_mam_sel_o;
     assign ahb3_out_hsel_i      = access_cpu ? ahb3_in_hsel_i : wb_mam_stb_o;
     assign ahb3_out_hwrite_i    = access_cpu ? ahb3_in_hwrite_i : wb_mam_we_o;
@@ -225,7 +225,7 @@ module mam_ahb3_adapter (
     // MUX of signals FROM the memory
     assign ahb3_in_hready_o = access_cpu ? ahb3_out_hready_o : 1'b0;
     assign ahb3_in_hresp_o  = access_cpu ? ahb3_out_hresp_o : 1'b0;
-    assign ahb3_in_hrdata_o = access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
+    assign ahb3_in_hwdata_o = access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
 
     assign wb_mam_ack_i = ~access_cpu ? ahb3_out_hready_o : 1'b0;
     assign wb_mam_err_i = ~access_cpu ? ahb3_out_hresp_o : 1'b0;
@@ -236,13 +236,13 @@ module mam_ahb3_adapter (
     assign ahb3_out_htrans_i    = ahb3_in_htrans_i;
     assign ahb3_out_hburst_i    = ahb3_in_hburst_i;
     assign ahb3_out_hmastlock_i = ahb3_in_hmastlock_i;
-    assign ahb3_out_hwdata_i    = ahb3_in_hwdata_i;
+    assign ahb3_out_hwdata_i    = ahb3_in_hrdata_i;
     assign ahb3_out_hprot_i     = ahb3_in_hprot_i;
     assign ahb3_out_hsel_i      = ahb3_in_hsel_i;
     assign ahb3_out_hwrite_i    = ahb3_in_hwrite_i;
 
     assign ahb3_in_hready_o = ahb3_out_hready_o;
     assign ahb3_in_hresp_o  = ahb3_out_hresp_o;
-    assign ahb3_in_hrdata_o = ahb3_out_hrdata_o;
+    assign ahb3_in_hwdata_o = ahb3_out_hrdata_o;
   end
 endmodule

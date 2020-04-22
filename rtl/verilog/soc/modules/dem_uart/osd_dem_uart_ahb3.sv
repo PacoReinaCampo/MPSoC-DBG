@@ -34,8 +34,8 @@ module osd_dem_uart_ahb3 #(
 
     input             ahb3_hsel_i,
     input  [    15:0] ahb3_haddr_i,
-    input  [XLEN-1:0] ahb3_hwdata_i,
-    output [XLEN-1:0] ahb3_hrdata_o,
+    input  [XLEN-1:0] ahb3_hrdata_i,
+    output [XLEN-1:0] ahb3_hwdata_o,
     input             ahb3_hwrite_i,
     input  [     2:0] ahb3_hsize_i,
     input  [     2:0] ahb3_hburst_i,
@@ -101,8 +101,8 @@ module osd_dem_uart_ahb3 #(
   assign bus_req = ahb3_hmastlock_i & ahb3_hsel_i;
   assign bus_addr = { ahb3_haddr_i[2], (ahb3_hprot_i[0] ? 2'b11 : (ahb3_hprot_i[1] ? 2'b10 : (ahb3_hprot_i[2] ? 2'b01 : 2'b00))) };
   assign bus_write = ahb3_hwrite_i;
-  assign bus_wdata = ahb3_hwdata_i[7:0];
+  assign bus_wdata = ahb3_hrdata_i[7:0];
   assign ahb3_hready_o = bus_ack;
   assign ahb3_hresp_o = 1'b0;
-  assign ahb3_hrdata_o = {4{bus_rdata}};
+  assign ahb3_hwdata_o = {4{bus_rdata}};
 endmodule
