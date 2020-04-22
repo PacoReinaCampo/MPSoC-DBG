@@ -89,9 +89,11 @@ module osd_him
      end
    end
 
-   assign glip_out.data = egress_data;
-   assign glip_out.valid = dii_egress.valid;
-   assign dii_egress_ready = egress_active & glip_out.ready;
+   always @(*) begin
+     glip_out.data = egress_data;
+     glip_out.valid = dii_egress.valid;
+     dii_egress_ready = egress_active & glip_out.ready;
+   end
 
    always @(posedge clk) begin
       if (rst) begin
