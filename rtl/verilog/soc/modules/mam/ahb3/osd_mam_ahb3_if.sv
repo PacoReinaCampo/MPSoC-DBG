@@ -14,7 +14,7 @@
 // Authors:
 //    Nico Gutmann <nicolai.gutmann@gmail.com>
 
-module osd_mam_wb_if #(
+module osd_mam_ahb3_if #(
   parameter XLEN  = 16, // in bits, must be multiple of 16
   parameter PLEN  = 32,
 
@@ -27,32 +27,33 @@ module osd_mam_wb_if #(
     input                   clk_i,
     input                   rst_i,
 
-    input                   req_valid, // Start a new memory access request
-    output reg              req_ready, // Acknowledge the new memory access request
-    input                   req_we, // 0: Read, 1: Write
-    input      [PLEN  -1:0] req_addr, // Request base address
-    input                   req_burst, // 0 for single beat access, 1 for incremental burst
-    input      [      12:0] req_beats, // Burst length in number of words
+    input                   req_valid,  // Start a new memory access request
+    output reg              req_ready,  // Acknowledge the new memory access request
+    input                   req_we,     // 0: Read, 1: Write
+    input      [PLEN  -1:0] req_addr,   // Request base address
+    input                   req_burst,  // 0 for single beat access, 1 for incremental burst
+    input      [      12:0] req_beats,  // Burst length in number of words
 
-    input                   write_valid, // Next write data is valid
-    input      [XLEN  -1:0] write_data, // Write data
-    input      [XLEN/8-1:0] write_strb, // Byte strobe if req_burst==0
-    output reg              write_ready, // Acknowledge this data item
+    input                   write_valid,  // Next write data is valid
+    input      [XLEN  -1:0] write_data,   // Write data
+    input      [XLEN/8-1:0] write_strb,   // Byte strobe if req_burst==0
+    output reg              write_ready,  // Acknowledge this data item
 
-    output reg              read_valid, // Next read data is valid
-    output reg [XLEN  -1:0] read_data, // Read data
-    input                   read_ready, // Acknowledge this data item
+    output reg              read_valid,  // Next read data is valid
+    output reg [XLEN  -1:0] read_data,   // Read data
+    input                   read_ready,  // Acknowledge this data item
 
     output reg            ahb3_hsel_o,
     output reg [PLEN-1:0] ahb3_haddr_o,
     output reg [XLEN-1:0] ahb3_hwdata_o,
-    input      [XLEN-1:0] ahb3_hrdata_i,
     output reg            ahb3_hwrite_o,
     output     [     2:0] ahb3_hsize_o,
     output reg [     2:0] ahb3_hburst_o,
     output reg [     3:0] ahb3_hprot_o,
     output reg [     1:0] ahb3_htrans_o,
     output                ahb3_hmastlock_o,
+
+    input      [XLEN-1:0] ahb3_hrdata_i,
     input                 ahb3_hready_i,
     input                 ahb3_hresp_i
   );
@@ -109,12 +110,12 @@ module osd_mam_wb_if #(
     ahb3_hprot_o = '{default:'1};
 
     ahb3_hsel_o = 0;
-    req_ready = 0;
+    req_ready   = 0;
     write_ready = 0;
-    read_valid = 0;
+    read_valid  = 0;
 
     ahb3_hwdata_o = dat_o_reg;
-    read_data = read_data_reg;
+    read_data     = read_data_reg;
 
     case (state)
       STATE_IDLE: begin

@@ -16,7 +16,7 @@
 
 import dii_package::dii_flit;
 
-module osd_mam_wb #(
+module osd_mam_ahb3 #(
   parameter XLEN = 16, // in bits, must be multiple of 16
   parameter PLEN = 32,
 
@@ -58,13 +58,14 @@ module osd_mam_wb #(
     output            ahb3_hsel_o,
     output [    15:0] ahb3_haddr_o,
     output [XLEN-1:0] ahb3_hwdata_o,
-    input  [XLEN-1:0] ahb3_hrdata_i,
     output            ahb3_hwrite_o,
     output [     2:0] ahb3_hsize_o,
     output [     2:0] ahb3_hburst_o,
     output [     3:0] ahb3_hprot_o,
     output [     1:0] ahb3_htrans_o,
     output            ahb3_hmastlock_o,
+
+    input  [XLEN-1:0] ahb3_hrdata_i,
     input             ahb3_hready_i,
     input             ahb3_hresp_i
   );
@@ -88,8 +89,9 @@ module osd_mam_wb #(
   logic              read_ready;
 
   osd_mam #(
-    .XLEN(XLEN),
-    .PLEN(PLEN),
+    .ADDR_WIDTH (PLEN),
+    .DATA_WIDTH (XLEN),
+
     .MAX_PKT_LEN(MAX_PKT_LEN),
     .REGIONS(REGIONS),
     .BASE_ADDR0(BASE_ADDR0),
@@ -121,5 +123,5 @@ module osd_mam_wb #(
     .XLEN(XLEN),
     .PLEN(PLEN)
   )
-  u_mam_wb_if (.*);
+  u_mam_ahb3_if (.*);
 endmodule

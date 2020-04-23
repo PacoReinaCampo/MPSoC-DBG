@@ -25,10 +25,10 @@
  * This adapter is made to be inserted in front of a Wishbone SLAVE memory.
  *
  * ---------------  WB Slave  ------------------  WB Slave  ----------
- * | WB INTERCON | ========== | mam_wb_adapter | ========== | Memory |
+ * | WB INTERCON | ========== | mam_ahb3_adapter | ========== | Memory |
  * ---------------    ahb3_in   ------------------   ahb3_out   ----------
  *                                   ||
- *                            wb_mam || WB Master
+ *                            ahb3_mam || WB Master
  *                                   ||
  *                                 -------
  *                                 | mam |
@@ -41,36 +41,21 @@
  *   Philipp Wagner <philipp.wagner@tum.de>
  */
 
-module mam_ahb3_adapter (
-  wb_mam_ack_i, wb_mam_rty_i, wb_mam_err_i, wb_mam_dat_i, wb_mam_bte_o,
-  wb_mam_adr_o, wb_mam_cyc_o, wb_mam_dat_o, wb_mam_sel_o, wb_mam_stb_o,
-  wb_mam_we_o, wb_mam_cab_o, wb_mam_cti_o,
+import optimsoc_functions::*;
 
-  // Outputs
-  ahb3_in_hready_o, ahb3_in_hresp_o, ahb3_in_hwdata_o, ahb3_out_haddr_i,
-  ahb3_out_htrans_i, ahb3_out_hburst_i, ahb3_out_hmastlock_i, ahb3_out_hwdata_i,
-  ahb3_out_hprot_i, ahb3_out_hsel_i, ahb3_out_hwrite_i, ahb3_out_clk_i,
-  ahb3_out_rst_i,
-  // Inputs
-  ahb3_in_haddr_i, ahb3_in_htrans_i, ahb3_in_hburst_i, ahb3_in_hmastlock_i, ahb3_in_hrdata_i,
-  ahb3_in_hprot_i, ahb3_in_hsel_i, ahb3_in_hwrite_i, ahb3_in_clk_i, ahb3_in_rst_i,
-  ahb3_out_hready_o, ahb3_out_hresp_o, ahb3_out_hrdata_o
-);
-
-  import optimsoc_functions::*;
-
+module mam_ahb3_adapter #(
   // address width
-  parameter PLEN = 32;
+  parameter PLEN = 32,
 
   // data width
-  parameter XLEN = 32;
+  parameter XLEN = 32,
 
-  parameter USE_DEBUG = 1;
+  parameter USE_DEBUG = 1,
 
   // byte select width
   localparam SW = (XLEN == 32) ? 4 :
                   (XLEN == 16) ? 2 :
-                  (XLEN ==  8) ? 1 : 'hx;
+                  (XLEN ==  8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -80,61 +65,65 @@ module mam_ahb3_adapter (
    *        +----- PLEN -----+
    */
 
-  localparam BYTE_AW = SW >> 1;
-  localparam WORD_AW = PLEN - BYTE_AW;
-
+  localparam BYTE_AW = SW >> 1,
+  localparam WORD_AW = PLEN - BYTE_AW
+)
+  (
   // Wishbone SLAVE interface: input side (to the CPU etc.)
-  input  [PLEN-1:0] ahb3_in_haddr_i;
-  input  [     1:0] ahb3_in_htrans_i;
-  input  [     2:0] ahb3_in_hburst_i;
-  input             ahb3_in_hmastlock_i;
-  input  [XLEN-1:0] ahb3_in_hrdata_i;
-  input  [SW  -1:0] ahb3_in_hprot_i;
-  input             ahb3_in_hsel_i;
-  input             ahb3_in_hwrite_i;
+  input             ahb3_in_hsel_i,
+  input  [PLEN-1:0] ahb3_in_haddr_i,
+  input  [XLEN-1:0] ahb3_in_hwdata_i,
+  input             ahb3_in_hwrite_i,
+  input  [     2:0] ahb3_in_hsize_i,
+  input  [     2:0] ahb3_in_hburst_i,
+  input  [SW  -1:0] ahb3_in_hprot_i,
+  input  [     1:0] ahb3_in_htrans_i,
+  input             ahb3_in_hmastlock_i,
 
-  output            ahb3_in_hready_o;
-  output            ahb3_in_hresp_o;
-  output [XLEN-1:0] ahb3_in_hwdata_o;
+  output [XLEN-1:0] ahb3_in_hrdata_o,
+  output            ahb3_in_hready_o,
+  output            ahb3_in_hresp_o,
 
-  input             ahb3_in_clk_i;
-  input             ahb3_in_rst_i;
+  input             ahb3_in_clk_i,
+  input             ahb3_in_rst_i,
 
   // Wishbone SLAVE interface: output side (to the memory)
-  output [PLEN-1:0] ahb3_out_haddr_i;
-  output [     1:0] ahb3_out_htrans_i;
-  output [     2:0] ahb3_out_hburst_i;
-  output            ahb3_out_hmastlock_i;
-  output [XLEN-1:0] ahb3_out_hwdata_i;
-  output [SW  -1:0] ahb3_out_hprot_i;
-  output            ahb3_out_hsel_i;
-  output            ahb3_out_hwrite_i;
+  output            ahb3_out_hsel_i,
+  output [PLEN-1:0] ahb3_out_haddr_i,
+  output [XLEN-1:0] ahb3_out_hwdata_i,
+  output            ahb3_out_hwrite_i,
+  output [     2:0] ahb3_out_hsize_i,
+  output [     2:0] ahb3_out_hburst_i,
+  output [SW  -1:0] ahb3_out_hprot_i,
+  output [     1:0] ahb3_out_htrans_i,
+  output            ahb3_out_hmastlock_i,
 
-  input             ahb3_out_hready_o;
-  input             ahb3_out_hresp_o;
-  input  [XLEN-1:0] ahb3_out_hrdata_o;
+  input  [XLEN-1:0] ahb3_out_hrdata_o,
+  input             ahb3_out_hready_o,
+  input             ahb3_out_hresp_o,
 
-  output            ahb3_out_clk_i;
-  output            ahb3_out_rst_i;
+  output            ahb3_out_clk_i,
+  output            ahb3_out_rst_i,
+
+  // MAM Wishbone MASTER interface (incoming)
+  input             ahb3_mam_hsel_o,
+  input  [PLEN-1:0] ahb3_mam_haddr_o,
+  input  [XLEN-1:0] ahb3_mam_hwdata_o,
+  input             ahb3_mam_hwrite_o,
+  input  [     2:0] ahb3_mam_hsize_o,
+  input  [     2:0] ahb3_mam_hburst_o,
+  input  [SW  -1:0] ahb3_mam_hprot_o,
+  input  [     1:0] ahb3_mam_htrans_o,
+  input             ahb3_mam_hmastlock_o,
+
+  output [XLEN-1:0] ahb3_mam_hrdata_i,
+  output            ahb3_mam_hready_i,
+  output            ahb3_mam_hresp_i
+);
 
   // we use a common clock for all this module!
   assign ahb3_out_clk_i = ahb3_in_clk_i;
   assign ahb3_out_rst_i = ahb3_in_rst_i;
-
-  // MAM Wishbone MASTER interface (incoming)
-  input  [PLEN-1:0] wb_mam_adr_o;
-  input             wb_mam_cyc_o;
-  input  [XLEN-1:0] wb_mam_dat_o;
-  input  [SW  -1:0] wb_mam_sel_o;
-  input             wb_mam_stb_o;
-  input             wb_mam_we_o;
-  input             wb_mam_cab_o;
-  input  [     2:0] wb_mam_cti_o;
-  input  [     1:0] wb_mam_bte_o;
-  output            wb_mam_ack_i;
-  output            wb_mam_rty_i;
-  output            wb_mam_err_i;
-  output [XLEN-1:0] wb_mam_dat_i;
 
   if (USE_DEBUG == 1) begin
 
@@ -174,7 +163,7 @@ module mam_ahb3_adapter (
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
-          if (wb_mam_cyc_o == 1'b1) begin
+          if (ahb3_mam_hmastlock_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end
           else if (ahb3_in_hmastlock_i == 1'b1) begin
@@ -188,7 +177,7 @@ module mam_ahb3_adapter (
         STATE_ARB_ACCESS_MAM: begin
           grant_access_mam = 1'b1;
 
-          if (wb_mam_cyc_o == 1'b1) begin
+          if (ahb3_mam_hmastlock_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end
           else begin
@@ -201,7 +190,7 @@ module mam_ahb3_adapter (
           if (ahb3_in_hmastlock_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
           end
-          else if (wb_mam_cyc_o == 1'b1) begin
+          else if (ahb3_mam_hmastlock_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end
           else begin
@@ -212,37 +201,36 @@ module mam_ahb3_adapter (
     end
 
     // MUX of signals TO the memory
-    assign ahb3_out_haddr_i     = access_cpu ? ahb3_in_haddr_i : wb_mam_adr_o;
-    assign ahb3_out_htrans_i    = access_cpu ? ahb3_in_htrans_i : wb_mam_bte_o;
-    assign ahb3_out_hburst_i    = access_cpu ? ahb3_in_hburst_i : wb_mam_cti_o;
-    assign ahb3_out_hmastlock_i = access_cpu ? ahb3_in_hmastlock_i : wb_mam_cyc_o;
-    assign ahb3_out_hwdata_i    = access_cpu ? ahb3_in_hrdata_i : wb_mam_dat_o;
-    assign ahb3_out_hprot_i     = access_cpu ? ahb3_in_hprot_i : wb_mam_sel_o;
-    assign ahb3_out_hsel_i      = access_cpu ? ahb3_in_hsel_i : wb_mam_stb_o;
-    assign ahb3_out_hwrite_i    = access_cpu ? ahb3_in_hwrite_i : wb_mam_we_o;
-
+    assign ahb3_out_hsel_i      = access_cpu ? ahb3_in_hsel_i      : ahb3_mam_hsel_o;
+    assign ahb3_out_haddr_i     = access_cpu ? ahb3_in_haddr_i     : ahb3_mam_haddr_o;
+    assign ahb3_out_hwdata_i    = access_cpu ? ahb3_in_hwdata_i    : ahb3_mam_hwdata_o;
+    assign ahb3_out_hwrite_i    = access_cpu ? ahb3_in_hwrite_i    : ahb3_mam_hwrite_o;
+    assign ahb3_out_hburst_i    = access_cpu ? ahb3_in_hburst_i    : ahb3_mam_hburst_o;
+    assign ahb3_out_hprot_i     = access_cpu ? ahb3_in_hprot_i     : ahb3_mam_hprot_o;
+    assign ahb3_out_htrans_i    = access_cpu ? ahb3_in_htrans_i    : ahb3_mam_htrans_o;
+    assign ahb3_out_hmastlock_i = access_cpu ? ahb3_in_hmastlock_i : ahb3_mam_hmastlock_o;
 
     // MUX of signals FROM the memory
+    assign ahb3_in_hrdata_o = access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
     assign ahb3_in_hready_o = access_cpu ? ahb3_out_hready_o : 1'b0;
-    assign ahb3_in_hresp_o  = access_cpu ? ahb3_out_hresp_o : 1'b0;
-    assign ahb3_in_hwdata_o = access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
+    assign ahb3_in_hresp_o  = access_cpu ? ahb3_out_hresp_o  : 1'b0;
 
-    assign wb_mam_ack_i = ~access_cpu ? ahb3_out_hready_o : 1'b0;
-    assign wb_mam_err_i = ~access_cpu ? ahb3_out_hresp_o : 1'b0;
-    assign wb_mam_dat_i = ~access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
+    assign ahb3_mam_hrdata_i = ~access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
+    assign ahb3_mam_hready_i = ~access_cpu ? ahb3_out_hready_o : 1'b0;
+    assign ahb3_mam_hresp_i  = ~access_cpu ? ahb3_out_hresp_o  : 1'b0;
   end
   else begin
+    assign ahb3_out_hsel_i      = ahb3_in_hsel_i;
     assign ahb3_out_haddr_i     = ahb3_in_haddr_i;
+    assign ahb3_out_hwdata_i    = ahb3_in_hwdata_i;
     assign ahb3_out_htrans_i    = ahb3_in_htrans_i;
     assign ahb3_out_hburst_i    = ahb3_in_hburst_i;
-    assign ahb3_out_hmastlock_i = ahb3_in_hmastlock_i;
-    assign ahb3_out_hwdata_i    = ahb3_in_hrdata_i;
     assign ahb3_out_hprot_i     = ahb3_in_hprot_i;
-    assign ahb3_out_hsel_i      = ahb3_in_hsel_i;
     assign ahb3_out_hwrite_i    = ahb3_in_hwrite_i;
+    assign ahb3_out_hmastlock_i = ahb3_in_hmastlock_i;
 
+    assign ahb3_in_hrdata_o = ahb3_out_hrdata_o;
     assign ahb3_in_hready_o = ahb3_out_hready_o;
     assign ahb3_in_hresp_o  = ahb3_out_hresp_o;
-    assign ahb3_in_hwdata_o = ahb3_out_hrdata_o;
   end
 endmodule
