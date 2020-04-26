@@ -25,10 +25,10 @@
  * This adapter is made to be inserted in front of a Blackbone SLAVE memory.
  *
  * ---------------  WB Slave  ------------------  WB Slave  ----------
- * | WB INTERCON | ========== | mam_wb_adapter | ========== | Memory |
- * ---------------    wb_in   ------------------   wb_out   ----------
+ * | WB INTERCON | ========== | mam_bb_adapter | ========== | Memory |
+ * ---------------    bb_in   ------------------   bb_out   ----------
  *                                   ||
- *                            wb_mam || WB Master
+ *                            bb_mam || WB Master
  *                                   ||
  *                                 -------
  *                                 | mam |
@@ -43,7 +43,7 @@
 
 import optimsoc_functions::*;
 
-module mam_wb_adapter #(
+module mam_bb_adapter #(
   // address width
   parameter AW = 32,
 
@@ -70,60 +70,39 @@ module mam_wb_adapter #(
 )
   (
     // Blackbone SLAVE interface: input side (to the CPU etc.)
-    input  [AW-1:0] wb_in_adr_i,
-    input  [   1:0] wb_in_bte_i,
-    input  [   2:0] wb_in_cti_i,
-    input           wb_in_cyc_i,
-    input  [DW-1:0] wb_in_dat_i,
-    input  [SW-1:0] wb_in_sel_i,
-    input           wb_in_stb_i,
-    input           wb_in_we_i,
+    input  [AW-1:0] bb_in_addr_i,
+    input  [DW-1:0] bb_in_din_i,
+    input           bb_in_en_i,
+    input           bb_in_we_i,
 
-    output          wb_in_ack_o,
-    output          wb_in_err_o,
-    output          wb_in_rty_o,
-    output [DW-1:0] wb_in_dat_o,
+    output [DW-1:0] bb_in_dout_o,
 
-    input           wb_in_clk_i,
-    input           wb_in_rst_i,
+    input           bb_in_clk_i,
+    input           bb_in_rst_i,
 
     // Blackbone SLAVE interface: output side (to the memory)
-    output [AW-1:0] wb_out_adr_i,
-    output [   1:0] wb_out_bte_i,
-    output [   2:0] wb_out_cti_i,
-    output          wb_out_cyc_i,
-    output [DW-1:0] wb_out_dat_i,
-    output [SW-1:0] wb_out_sel_i,
-    output          wb_out_stb_i,
-    output          wb_out_we_i,
+    output [AW-1:0] bb_out_addr_i,
+    output [DW-1:0] bb_out_din_i,
+    output          bb_out_en_i,
+    output          bb_out_we_i,
 
-    input           wb_out_ack_o,
-    input           wb_out_err_o,
-    input           wb_out_rty_o,
-    input [DW-1:0]  wb_out_dat_o,
+    input [DW-1:0]  bb_out_dout_o,
 
-    output          wb_out_clk_i,
-    output          wb_out_rst_i,
+    output          bb_out_clk_i,
+    output          bb_out_rst_i,
 
     // MAM Blackbone MASTER interface (incoming)
-    input  [AW-1:0] wb_mam_adr_o,
-    input           wb_mam_cyc_o,
-    input  [DW-1:0] wb_mam_dat_o,
-    input  [SW-1:0] wb_mam_sel_o,
-    input           wb_mam_stb_o,
-    input           wb_mam_we_o,
-    input           wb_mam_cab_o,
-    input  [   2:0] wb_mam_cti_o,
-    input  [   1:0] wb_mam_bte_o,
-    output          wb_mam_ack_i,
-    output          wb_mam_rty_i,
-    output          wb_mam_err_i,
-    output [DW-1:0] wb_mam_dat_i
+    input  [AW-1:0] bb_mam_addr_o,
+    input  [DW-1:0] bb_mam_din_o,
+    input           bb_mam_en_o,
+    input           bb_mam_we_o,
+
+    output [DW-1:0] bb_mam_dout_i
   );
 
   // we use a common clock for all this module!
-  assign wb_out_clk_i = wb_in_clk_i;
-  assign wb_out_rst_i = wb_in_rst_i;
+  assign bb_out_clk_i = bb_in_clk_i;
+  assign bb_out_rst_i = bb_in_rst_i;
 
   if (USE_DEBUG == 1) begin
 
@@ -140,8 +119,8 @@ module mam_wb_adapter #(
     reg access_cpu;
 
     // arbiter FSM: MAM has higher priority than CPU
-    always @(posedge wb_in_clk_i) begin
-      if (wb_in_rst_i) begin
+    always @(posedge bb_in_clk_i) begin
+      if (bb_in_rst_i) begin
         fsm_arb_state <= STATE_ARB_IDLE;
       end
       else begin
@@ -163,10 +142,10 @@ module mam_wb_adapter #(
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
-          if (wb_mam_cyc_o == 1'b1) begin
+          if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end
-          else if (wb_in_cyc_i == 1'b1) begin
+          else if (bb_in_en_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
           end
           else begin
@@ -177,7 +156,7 @@ module mam_wb_adapter #(
         STATE_ARB_ACCESS_MAM: begin
           grant_access_mam = 1'b1;
 
-          if (wb_mam_cyc_o == 1'b1) begin
+          if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end
           else begin
@@ -187,10 +166,10 @@ module mam_wb_adapter #(
         //CPU may finish cycle before switching to MAM. May need changes if instant MAM access required
         STATE_ARB_ACCESS_CPU: begin
           grant_access_cpu = 1'b1;
-          if (wb_in_cyc_i == 1'b1) begin
+          if (bb_in_en_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
           end
-          else if (wb_mam_cyc_o == 1'b1) begin
+          else if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end
           else begin
@@ -201,39 +180,21 @@ module mam_wb_adapter #(
     end
 
     // MUX of signals TO the memory
-    assign wb_out_adr_i = access_cpu ? wb_in_adr_i : wb_mam_adr_o;
-    assign wb_out_bte_i = access_cpu ? wb_in_bte_i : wb_mam_bte_o;
-    assign wb_out_cti_i = access_cpu ? wb_in_cti_i : wb_mam_cti_o;
-    assign wb_out_cyc_i = access_cpu ? wb_in_cyc_i : wb_mam_cyc_o;
-    assign wb_out_dat_i = access_cpu ? wb_in_dat_i : wb_mam_dat_o;
-    assign wb_out_sel_i = access_cpu ? wb_in_sel_i : wb_mam_sel_o;
-    assign wb_out_stb_i = access_cpu ? wb_in_stb_i : wb_mam_stb_o;
-    assign wb_out_we_i  = access_cpu ? wb_in_we_i  : wb_mam_we_o;
-
+    assign bb_out_addr_i = access_cpu ? bb_in_addr_i : bb_mam_addr_o;
+    assign bb_out_din_i  = access_cpu ? bb_in_din_i  : bb_mam_din_o;
+    assign bb_out_en_i   = access_cpu ? bb_in_en_i   : bb_mam_en_o;
+    assign bb_out_we_i   = access_cpu ? bb_in_we_i   : bb_mam_we_o;
     // MUX of signals FROM the memory
-    assign wb_in_ack_o = access_cpu ? wb_out_ack_o : 1'b0;
-    assign wb_in_err_o = access_cpu ? wb_out_err_o : 1'b0;
-    assign wb_in_rty_o = access_cpu ? wb_out_rty_o : 1'b0;
-    assign wb_in_dat_o = access_cpu ? wb_out_dat_o : {DW{1'b0}};
+    assign bb_in_dout_o = access_cpu ? bb_out_dout_o : {DW{1'b0}};
 
-    assign wb_mam_ack_i = ~access_cpu ? wb_out_ack_o : 1'b0;
-    assign wb_mam_err_i = ~access_cpu ? wb_out_err_o : 1'b0;
-    assign wb_mam_rty_i = ~access_cpu ? wb_out_rty_o : 1'b0;
-    assign wb_mam_dat_i = ~access_cpu ? wb_out_dat_o : {DW{1'b0}};
+    assign bb_mam_dout_i = ~access_cpu ? bb_out_dout_o : {DW{1'b0}};
   end
   else begin
-    assign wb_out_adr_i = wb_in_adr_i;
-    assign wb_out_bte_i = wb_in_bte_i;
-    assign wb_out_cti_i = wb_in_cti_i;
-    assign wb_out_cyc_i = wb_in_cyc_i;
-    assign wb_out_dat_i = wb_in_dat_i;
-    assign wb_out_sel_i = wb_in_sel_i;
-    assign wb_out_stb_i = wb_in_stb_i;
-    assign wb_out_we_i  = wb_in_we_i;
+    assign bb_out_addr_i = bb_in_addr_i;
+    assign bb_out_din_i  = bb_in_din_i;
+    assign bb_out_en_i   = bb_in_en_i;
+    assign bb_out_we_i   = bb_in_we_i;
 
-    assign wb_in_ack_o = wb_out_ack_o;
-    assign wb_in_err_o = wb_out_err_o;
-    assign wb_in_rty_o = wb_out_rty_o;
-    assign wb_in_dat_o = wb_out_dat_o;
+    assign bb_in_dout_o = bb_out_dout_o;
   end
 endmodule
