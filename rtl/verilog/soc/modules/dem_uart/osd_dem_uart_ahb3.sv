@@ -67,44 +67,55 @@ module osd_dem_uart_ahb3 #(
   osd_dem_uart u_uart_emul (
     .clk (clk),
     .rst (rst),
+
     .id (id),
-    .debug_in (debug_in),
-    .debug_in_ready (debug_in_ready),
-    .debug_out (debug_out),
+
+    .debug_in        (debug_in),
+    .debug_in_ready  (debug_in_ready),
+    .debug_out       (debug_out),
     .debug_out_ready (debug_out_ready),
+
     .out_valid (out_valid),
-    .out_char (out_char),
+    .out_char  (out_char),
     .out_ready (out_ready),
+
     .in_valid (in_valid),
-    .in_char (in_char),
+    .in_char  (in_char),
     .in_ready (in_ready),
+
     .drop (drop)
   );
 
   osd_dem_uart_16550 u_16550 (
-    .clk (clk), .rst (rst),
+    .clk (clk),
+    .rst (rst),
+
     .out_valid (out_valid),
-    .out_char (out_char),
+    .out_char  (out_char),
     .out_ready (out_ready),
+
     .in_valid (in_valid),
-    .in_char (in_char),
+    .in_char  (in_char),
     .in_ready (in_ready),
-    .bus_req (bus_req),
-    .bus_addr (bus_addr),
+
+    .bus_req   (bus_req),
+    .bus_addr  (bus_addr),
     .bus_write (bus_write),
     .bus_wdata (bus_wdata),
-    .bus_ack (bus_ack),
+    .bus_ack   (bus_ack),
     .bus_rdata (bus_rdata),
+
     .drop (drop),
+
     .irq (irq)
   );
 
-  assign bus_req = ahb3_hmastlock_i & ahb3_hsel_i;
-  assign bus_addr = { ahb3_haddr_i[2], (ahb3_hprot_i[0] ? 2'b11 : (ahb3_hprot_i[1] ? 2'b10 : (ahb3_hprot_i[2] ? 2'b01 : 2'b00))) };
+  assign bus_req   = ahb3_hmastlock_i & ahb3_hsel_i;
+  assign bus_addr  = { ahb3_haddr_i[2], (ahb3_hprot_i[0] ? 2'b11 : (ahb3_hprot_i[1] ? 2'b10 : (ahb3_hprot_i[2] ? 2'b01 : 2'b00))) };
   assign bus_write = ahb3_hwrite_i;
   assign bus_wdata = ahb3_hwdata_i[7:0];
 
   assign ahb3_hrdata_o = {4{bus_rdata}};
   assign ahb3_hready_o = bus_ack;
-  assign ahb3_hresp_o = 1'b0;
+  assign ahb3_hresp_o  = 1'b0;
 endmodule

@@ -20,13 +20,13 @@
  *
  * =============================================================================
  *
- * Wishbone SLAVE Adapter for the Memory Access Module (MAM)
+ * AHB3 SLAVE Adapter for the Memory Access Module (MAM)
  *
- * This adapter is made to be inserted in front of a Wishbone SLAVE memory.
+ * This adapter is made to be inserted in front of a AHB3 SLAVE memory.
  *
- * ---------------  WB Slave  ------------------  WB Slave  ----------
+ * ---------------  WB Slave  --------------------  WB Slave  ----------
  * | WB INTERCON | ========== | mam_ahb3_adapter | ========== | Memory |
- * ---------------    ahb3_in   ------------------   ahb3_out   ----------
+ * ---------------  ahb3_in   --------------------  ahb3_out  ----------
  *                                   ||
  *                            ahb3_mam || WB Master
  *                                   ||
@@ -62,14 +62,14 @@ module mam_ahb3_adapter #(
    * | word address | byte in word |
    * +--------------+--------------+
    *     WORD_AW         BYTE_AW
-   *        +----- PLEN -----+
+   *        +---- PLEN ----+
    */
 
   localparam BYTE_AW = SW >> 1,
   localparam WORD_AW = PLEN - BYTE_AW
 )
   (
-  // Wishbone SLAVE interface: input side (to the CPU etc.)
+  // AHB3 SLAVE interface: input side (to the CPU etc.)
   input             ahb3_in_hsel_i,
   input  [PLEN-1:0] ahb3_in_haddr_i,
   input  [XLEN-1:0] ahb3_in_hwdata_i,
@@ -87,7 +87,7 @@ module mam_ahb3_adapter #(
   input             ahb3_in_clk_i,
   input             ahb3_in_rst_i,
 
-  // Wishbone SLAVE interface: output side (to the memory)
+  // AHB3 SLAVE interface: output side (to the memory)
   output            ahb3_out_hsel_i,
   output [PLEN-1:0] ahb3_out_haddr_i,
   output [XLEN-1:0] ahb3_out_hwdata_i,
@@ -105,7 +105,7 @@ module mam_ahb3_adapter #(
   output            ahb3_out_clk_i,
   output            ahb3_out_rst_i,
 
-  // MAM Wishbone MASTER interface (incoming)
+  // MAM AHB3 MASTER interface (incoming)
   input             ahb3_mam_hsel_o,
   input  [PLEN-1:0] ahb3_mam_haddr_o,
   input  [XLEN-1:0] ahb3_mam_hwdata_o,

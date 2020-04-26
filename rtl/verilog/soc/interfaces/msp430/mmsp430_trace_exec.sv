@@ -27,7 +27,6 @@ package opensocdebug;
       logic [31:0] wbdata;
       logic [ 4:0] wbreg;
       logic        wben;
-   } mriscv_trace_exec;
-
+   } mmsp430_trace_exec;
 
 endpackage // opensocdebug
