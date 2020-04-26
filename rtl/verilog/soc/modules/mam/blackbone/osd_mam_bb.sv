@@ -16,7 +16,7 @@
 
 import dii_package::dii_flit;
 
-module osd_mam_wb #(
+module osd_mam_bb #(
   parameter DATA_WIDTH  = 16, // in bits, must be multiple of 16
   parameter ADDR_WIDTH  = 32,
 
@@ -55,16 +55,11 @@ module osd_mam_wb #(
 
     input [15:0] id,
 
-    output                  stb_o,
-    output                  cyc_o,
-    input                   ack_i,
-    output                  we_o,
     output [ADDR_WIDTH-1:0] addr_o,
-    output [DATA_WIDTH-1:0] dat_o,
-    input  [DATA_WIDTH-1:0] dat_i,
-    output [           2:0] cti_o,
-    output [           1:0] bte_o,
-    output [SW        -1:0] sel_o
+    output [DATA_WIDTH-1:0] din_o,
+    output                  en_o,
+    output                  we_o,
+    input  [DATA_WIDTH-1:0] dout_i
   );
 
   logic                        req_valid;
@@ -116,9 +111,9 @@ module osd_mam_wb #(
 
   assign write_complete = 1'b1;
 
-  osd_mam_wb_if #(
+  osd_mam_bb_if #(
     .DATA_WIDTH(DATA_WIDTH),
     .ADDR_WIDTH(ADDR_WIDTH)
   )
-  u_mam_wb_if(.*);
+  u_mam_bb_if(.*);
 endmodule

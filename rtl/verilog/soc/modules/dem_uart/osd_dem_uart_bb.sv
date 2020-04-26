@@ -16,7 +16,7 @@
 
 import dii_package::dii_flit;
 
-module osd_dem_uart_wb #(
+module osd_dem_uart_bb #(
   parameter DW = 32
 )
   (
@@ -32,19 +32,12 @@ module osd_dem_uart_wb #(
 
     output        irq,
 
-    input  [   3:0] wb_adr_i,
-    input           wb_cyc_i,
-    input  [DW-1:0] wb_dat_i,
-    input  [   3:0] wb_sel_i,
-    input           wb_stb_i,
-    input           wb_we_i,
-    input  [   2:0] wb_cti_i,
-    input  [   1:0] wb_bte_i,
+    input  [   3:0] bb_addr_i,
+    input  [DW-1:0] bb_din_i,
+    input           bb_en_i,
+    input           bb_we_i,
 
-    output          wb_ack_o,
-    output          wb_rty_o,
-    output          wb_err_o,
-    output [DW-1:0] wb_dat_o
+    output [DW-1:0] bb_dout_o
   );
 
   logic          bus_req;
@@ -110,13 +103,10 @@ module osd_dem_uart_wb #(
     .irq (irq)
   );
 
-  assign bus_req   = wb_cyc_i & wb_stb_i;
-  assign bus_addr  = { wb_adr_i[2], (wb_sel_i[0] ? 2'b11 : (wb_sel_i[1] ? 2'b10 : (wb_sel_i[2] ? 2'b01 : 2'b00))) };
-  assign bus_write = wb_we_i;
-  assign bus_wdata = wb_dat_i[7:0];
+  assign bus_req   = bb_en_i;
+  assign bus_addr  = bb_addr_i;
+  assign bus_write = bb_we_i;
+  assign bus_wdata = bb_din_i[7:0];
 
-  assign wb_ack_o = bus_ack;
-  assign wb_err_o = 1'b0;
-  assign wb_rty_o = 1'b0;
-  assign wb_dat_o = {4{bus_rdata}};
+  assign bb_dout_o = {4{bus_rdata}};
 endmodule
