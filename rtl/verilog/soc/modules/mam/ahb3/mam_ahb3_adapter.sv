@@ -1,4 +1,20 @@
-/* Copyright (c) 2013 by the author(s)
+////////////////////////////////////////////////////////////////////////////////
+//                                            __ _      _     _               //
+//                                           / _(_)    | |   | |              //
+//                __ _ _   _  ___  ___ _ __ | |_ _  ___| | __| |              //
+//               / _` | | | |/ _ \/ _ \ '_ \|  _| |/ _ \ |/ _` |              //
+//              | (_| | |_| |  __/  __/ | | | | | |  __/ | (_| |              //
+//               \__, |\__,_|\___|\___|_| |_|_| |_|\___|_|\__,_|              //
+//                  | |                                                       //
+//                  |_|                                                       //
+//                                                                            //
+//                                                                            //
+//              MPSoC-RISCV CPU                                               //
+//              Debug on Chip Interface                                       //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+/* Copyright (c) 2018-2019 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -19,26 +35,8 @@
  * THE SOFTWARE.
  *
  * =============================================================================
- *
- * AHB3 SLAVE Adapter for the Memory Access Module (MAM)
- *
- * This adapter is made to be inserted in front of a AHB3 SLAVE memory.
- *
- * ---------------  WB Slave  --------------------  WB Slave  ----------
- * | WB INTERCON | ========== | mam_ahb3_adapter | ========== | Memory |
- * ---------------  ahb3_in   --------------------  ahb3_out  ----------
- *                                   ||
- *                            ahb3_mam || WB Master
- *                                   ||
- *                                 -------
- *                                 | mam |
- *                                 -------
- *
- * If the global define OPTIMSOC_DEBUG_ENABLE_MAM is not set the adapter is
- * transparent (e.g. reduced to wires).
- *
  * Author(s):
- *   Philipp Wagner <philipp.wagner@tum.de>
+ *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
 import optimsoc_functions::*;

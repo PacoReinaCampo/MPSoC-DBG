@@ -1,4 +1,20 @@
-/* Copyright (c) 2016-2017 by the author(s)
+////////////////////////////////////////////////////////////////////////////////
+//                                            __ _      _     _               //
+//                                           / _(_)    | |   | |              //
+//                __ _ _   _  ___  ___ _ __ | |_ _  ___| | __| |              //
+//               / _` | | | |/ _ \/ _ \ '_ \|  _| |/ _ \ |/ _` |              //
+//              | (_| | |_| |  __/  __/ | | | | | |  __/ | (_| |              //
+//               \__, |\__,_|\___|\___|_| |_|_| |_|\___|_|\__,_|              //
+//                  | |                                                       //
+//                  |_|                                                       //
+//                                                                            //
+//                                                                            //
+//              MPSoC-RISCV CPU                                               //
+//              Debug on Chip Interface                                       //
+//                                                                            //
+////////////////////////////////////////////////////////////////////////////////
+
+/* Copyright (c) 2018-2019 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -18,16 +34,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  *
+ * =============================================================================
  * Author(s):
- *   Philipp Wagner <philipp.wagner@tum.de>
- *   Stefan Wallentowitz <stefan.wallentowitz@tum.de>
- */
-
-/**
- * Debug interface between the host and the target system
- *
- * This module encapsulates the basic Open SoC Debug components, the Host
- * Interface Module (HIM) and the Subnet Controller Module (SCM).
+ *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
 import dii_package::dii_flit;
@@ -51,7 +60,7 @@ module debug_interface #(
 
     // ring connection
     output dii_flit [1:0] ring_out,
-    input dii_flit  [1:0] ring_in,
+    input  dii_flit [1:0] ring_in,
     input  [1:0] ring_out_ready,
     output [1:0] ring_in_ready,
 
