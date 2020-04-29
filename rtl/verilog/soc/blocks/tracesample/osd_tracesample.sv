@@ -15,49 +15,54 @@
 //    Stefan Wallentowitz <stefan@wallentowitz.de>
 //    Anuj Rao <anujnr@gmail.com>
 
-module osd_tracesample
-  #(parameter WIDTH = 16)
-   (
+module osd_tracesample #(
+  parameter WIDTH = 16
+)
+  (
     input              clk,
     input              rst,
-    input [WIDTH-1:0]  sample_data,
+
+    input  [WIDTH-1:0] sample_data,
     input              sample_valid,
 
     output [WIDTH-1:0] fifo_data,
     output             fifo_overflow,
     output             fifo_valid,
     input              fifo_ready
-    );
+  );
 
-   reg [15:0]          ov_counter;
+  reg [15:0]          ov_counter;
 
-   logic               passthrough;
-   assign passthrough = (ov_counter == 0);
+  logic               passthrough;
 
-   assign fifo_data[15:0] = passthrough ? sample_data[15:0] : ov_counter;
-   generate
-      if (WIDTH > 16)
-        assign fifo_data[WIDTH-1:16] = sample_data[WIDTH-1:16];
-   endgenerate
+  logic               ov_increment;
+  logic               ov_saturate;
+  logic               ov_complete;
+  logic               ov_again;
 
-   assign fifo_overflow = ~passthrough;
-   assign fifo_valid = passthrough ? sample_valid : 1'b1;
+  assign passthrough = (ov_counter == 0);
 
-   logic               ov_increment, ov_saturate, ov_complete, ov_again;
+  assign fifo_data[15:0] = passthrough ? sample_data[15:0] : ov_counter;
 
-   assign ov_increment = (sample_valid & !fifo_ready);
-   assign ov_saturate  = &ov_counter;
-   assign ov_complete  = fifo_overflow & fifo_ready & !sample_valid;
-   assign ov_again     = fifo_overflow & fifo_ready & sample_valid;
+  generate
+    if (WIDTH > 16)
+      assign fifo_data[WIDTH-1:16] = sample_data[WIDTH-1:16];
+  endgenerate
 
-   always_ff @(posedge clk) begin
-     if (rst | ov_complete)
-       ov_counter <= 0;
-     else if (ov_again)
-       ov_counter <= 1;
-     else if (ov_increment & !ov_saturate)
-       ov_counter <= ov_counter + 1;
-   end
+  assign fifo_overflow = ~passthrough;
+  assign fifo_valid    = passthrough ? sample_valid : 1'b1;
 
-endmodule // osd_tracesample
+  assign ov_increment = (sample_valid & !fifo_ready);
+  assign ov_saturate  = &ov_counter;
+  assign ov_complete  = fifo_overflow & fifo_ready & !sample_valid;
+  assign ov_again     = fifo_overflow & fifo_ready & sample_valid;
 
+  always_ff @(posedge clk) begin
+    if (rst | ov_complete)
+      ov_counter <= 0;
+    else if (ov_again)
+      ov_counter <= 1;
+    else if (ov_increment & !ov_saturate)
+      ov_counter <= ov_counter + 1;
+  end
+endmodule

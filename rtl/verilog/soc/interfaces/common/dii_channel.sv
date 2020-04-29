@@ -32,4 +32,4 @@ function dii_flit
   return dii_flit'{m_valid, m_last, m_data};
 endfunction
 
-endpackage // dii_package
+endpackage
