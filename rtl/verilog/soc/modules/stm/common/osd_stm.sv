@@ -37,21 +37,37 @@ module osd_stm #(
     input [VALWIDTH-1:0]        trace_value
   );
 
-  logic        reg_request;
-  logic        reg_write;
-  logic [15:0] reg_addr;
-  logic [ 1:0] reg_size;
-  logic [15:0] reg_wdata;
-  logic        reg_ack;
-  logic        reg_err;
-  logic [15:0] reg_rdata;
+  // Event width
+  localparam EW = 32 + 16 + VALWIDTH;
 
-  logic [15:0] event_dest;
+  logic [EW-1:0] sample_data;
+  logic          sample_valid;
+  logic [  31:0] timestamp;
+  logic [EW-1:0] fifo_data;
+  logic          fifo_overflow;
+  logic          fifo_valid;
+  logic          fifo_ready;
+  logic [EW-1:0] packet_data;
+  logic          packet_overflow;
+  logic          packet_valid;
+  logic          packet_ready;
 
-  logic        stall;
+  logic          reg_request;
+  logic          reg_write;
+  logic [  15:0] reg_addr;
+  logic [   1:0] reg_size;
+  logic [  15:0] reg_wdata;
+  logic          reg_ack;
+  logic          reg_err;
+  logic [  15:0] reg_rdata;
 
-  dii_flit     dp_out, dp_in;
-  logic        dp_out_ready, dp_in_ready;
+  logic [  15:0] event_dest;
+
+  logic          stall;
+
+  dii_flit       dp_out, dp_in;
+
+  logic          dp_out_ready, dp_in_ready;
 
   // This module cannot receive packets other than register access packets
   assign dp_in_ready = 1'b0;
@@ -83,21 +99,6 @@ module osd_stm #(
       default: reg_err   = reg_request;
     endcase
   end
-
-  // Event width
-  localparam EW = 32 + 16 + VALWIDTH;
-
-  logic [EW-1:0] sample_data;
-  logic          sample_valid;
-  logic [  31:0] timestamp;
-  logic [EW-1:0] fifo_data;
-  logic          fifo_overflow;
-  logic          fifo_valid;
-  logic          fifo_ready;
-  logic [EW-1:0] packet_data;
-  logic          packet_overflow;
-  logic          packet_valid;
-  logic          packet_ready;
 
   assign sample_valid = trace_valid;
   assign sample_data  = {trace_value, trace_id, timestamp};

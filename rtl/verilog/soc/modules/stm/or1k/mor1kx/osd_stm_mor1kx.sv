@@ -31,7 +31,7 @@ module osd_stm_mor1kx #(
     output dii_flit              debug_out,
     input                        debug_out_ready,
 
-    input mor1kx_trace_exec      trace_port
+    input  mor1kx_trace_exec     trace_port
   );
 
   localparam VALWIDTH       = 32;
@@ -63,6 +63,6 @@ module osd_stm_mor1kx #(
                       (trace_port.insn[31:16] == 16'h1500) &&
                       (trace_port.insn[15:0] != 16'h0);
 
-  assign trace_id = trace_port.insn[15:0];
+  assign trace_id    = trace_port.insn[15:0];
   assign trace_value = r3_copy;
 endmodule

@@ -17,52 +17,52 @@
 import dii_package::dii_flit;
 import opensocdebug::mmsp430_trace_exec;
 
-module osd_stm_mmsp430
-#(
-   parameter MAX_PKT_LEN = 'hx
-)(
-   input                        clk, rst,
+module osd_stm_mmsp430 #(
+  parameter MAX_PKT_LEN = 'hx
+)
+  (
+    input                        clk,
+    input                        rst,
 
-   input [15:0]                 id,
+    input                 [15:0] id,
 
-   input  dii_flit              debug_in,
-   output                       debug_in_ready,
-   output dii_flit              debug_out,
-   input                        debug_out_ready,
+    input  dii_flit              debug_in,
+    output                       debug_in_ready,
+    output dii_flit              debug_out,
+    input                        debug_out_ready,
 
-   input mmsp430_trace_exec      trace_port
-);
+    input  mmsp430_trace_exec    trace_port
+  );
 
-   localparam VALWIDTH = 32;
-   localparam REG_ADDR_WIDTH = 5;
+  localparam VALWIDTH       = 32;
+  localparam REG_ADDR_WIDTH = 5;
 
-   logic                         trace_valid;
-   logic [15:0]                  trace_id;
-   logic [VALWIDTH-1:0]          trace_value;
+  logic                         trace_valid;
+  logic [15:0]                  trace_id;
+  logic [VALWIDTH-1:0]          trace_value;
 
-   logic                         trace_reg_enable;
-   logic [REG_ADDR_WIDTH-1:0]    trace_reg_addr;
+  logic                         trace_reg_enable;
+  logic [REG_ADDR_WIDTH-1:0]    trace_reg_addr;
 
-   osd_stm
-     #(.REG_ADDR_WIDTH(REG_ADDR_WIDTH),
-       .VALWIDTH(VALWIDTH),
-       .MAX_PKT_LEN(MAX_PKT_LEN))
-   u_stm
-     (.*);
+  reg   [              31:0]    r3_copy;
 
-   reg [31:0]                    r3_copy;
+  osd_stm #(
+    .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
+    .VALWIDTH(VALWIDTH),
+    .MAX_PKT_LEN(MAX_PKT_LEN)
+  )
+  u_stm (.*);
 
-   always @(posedge clk) begin
-      if (trace_port.wben && (trace_port.wbreg == 3)) begin
-         r3_copy <= trace_port.wbdata;
-      end
-   end
+  always @(posedge clk) begin
+    if (trace_port.wben && (trace_port.wbreg == 3)) begin
+      r3_copy <= trace_port.wbdata;
+    end
+  end
 
-   assign trace_valid = trace_port.valid &&
-                         (trace_port.insn[31:16] == 16'h1500) &&
-                         (trace_port.insn[15:0] != 16'h0);
+  assign trace_valid = trace_port.valid &&
+                      (trace_port.insn[31:16] == 16'h1500) &&
+                      (trace_port.insn[15:0] != 16'h0);
 
-   assign trace_id = trace_port.insn[15:0];
-   assign trace_value = r3_copy;
-
-endmodule // osd_stm_mmsp430
+  assign trace_id    = trace_port.insn[15:0];
+  assign trace_value = r3_copy;
+endmodule
