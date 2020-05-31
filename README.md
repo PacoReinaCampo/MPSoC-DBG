@@ -1,4 +1,4 @@
-# DBG-MPSoC WIKI
+# MPSoC-DBG WIKI
 
 ## Definition
 
