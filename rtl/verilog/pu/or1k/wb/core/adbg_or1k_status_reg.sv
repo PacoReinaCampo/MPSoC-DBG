@@ -41,7 +41,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-`include "adbg_or1k_defines.v"
+`include "adbg_or1k_defines.sv"
 
 module adbg_or1k_status_reg (
   input [`DBG_OR1K_STATUS_LEN - 1:0] data_i,

@@ -41,7 +41,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-`include "adbg_wb_defines.v"
+`include "adbg_wb_defines.sv"
 
 module adbg_wb_biu (
   // Debug interface signals

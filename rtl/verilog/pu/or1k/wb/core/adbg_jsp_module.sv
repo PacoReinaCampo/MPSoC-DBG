@@ -41,7 +41,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-`include "adbg_defines.v"
+`include "adbg_defines.sv"
 
 module adbg_jsp_module #(
   parameter ADBG_JSP_SUPPORT_MULTI = "ENABLED"

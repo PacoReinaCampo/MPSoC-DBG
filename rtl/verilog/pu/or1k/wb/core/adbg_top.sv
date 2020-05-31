@@ -41,7 +41,7 @@
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
 
-`include "adbg_defines.v"
+`include "adbg_defines.sv"
 
 // Top module
 module adbg_top #(

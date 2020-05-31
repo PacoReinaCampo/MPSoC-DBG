@@ -14,12 +14,12 @@ endif
 
 IVERILOG_VPI_SRC = $(SOURCE_DIR)/software/or1k/sample/jtag_vpi.c
 
-ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/verilog/pu/or1k/wb/core/*.v)
+ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/verilog/pu/or1k/wb/core/*.sv)
 
-IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/jtag_vpi.v \
-               $(BENCH_DIR)/jtag_vpi/jtag_vpi_tb.v \
-               $(BENCH_DIR)/jtag_tap/tap_top.v \
-               $(BENCH_DIR)/ram/ram_wb_b3.v \
+IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/jtag_vpi.sv \
+               $(BENCH_DIR)/jtag_vpi/jtag_vpi_tb.sv \
+               $(BENCH_DIR)/jtag_tap/tap_top.sv \
+               $(BENCH_DIR)/ram/ram_wb_b3.sv \
                $(ADV_DEBUG_SRC)
 
 all: build

@@ -40,8 +40,8 @@
  * Author(s):
  *   Francisco Javier Reina Campo <frareicam@gmail.com>
  */
-`include "adbg_defines.v"
-`include "adbg_or1k_defines.v"
+`include "adbg_defines.sv"
+`include "adbg_or1k_defines.sv"
 
 // Module interface
 module adbg_or1k_module #(
