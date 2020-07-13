@@ -37,7 +37,8 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Nathan Yawn <nathan.yawn@opencores.org>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 // Module interface

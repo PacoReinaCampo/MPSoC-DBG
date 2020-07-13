@@ -38,12 +38,12 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Nathan Yawn <nathan.yawn@opencores.org>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 `include "adbg_defines.sv"
 
-// Top module
 module adbg_top #(
   parameter DBG_WISHBONE_SUPPORTED  = "ENABLED",
   parameter DBG_CPU0_SUPPORTED      = "ENABLED",

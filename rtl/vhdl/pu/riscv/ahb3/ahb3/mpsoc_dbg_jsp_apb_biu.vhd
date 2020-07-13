@@ -40,15 +40,15 @@
 -- *
 -- * =============================================================================
 -- * Author(s):
--- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+-- *   Nathan Yawn <nathan.yawn@opencores.org>
+-- *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 -- */
 
-use work.mpsoc_dbg_pkg.all;
-
--- Top module
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+
+use work.mpsoc_dbg_pkg.all;
 
 entity mpsoc_dbg_jsp_apb_biu is
   port (

@@ -38,7 +38,8 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Nathan Yawn <nathan.yawn@opencores.org>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 // These relate to the number of internal registers, and how

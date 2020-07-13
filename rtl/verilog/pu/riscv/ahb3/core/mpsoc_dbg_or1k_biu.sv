@@ -38,7 +38,8 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Nathan Yawn <nathan.yawn@opencores.org>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 module mpsoc_dbg_or1k_biu #(
