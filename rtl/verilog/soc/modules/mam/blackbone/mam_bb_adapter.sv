@@ -36,7 +36,8 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Philipp Wagner <philipp.wagner@tum.de>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 import optimsoc_functions::*;

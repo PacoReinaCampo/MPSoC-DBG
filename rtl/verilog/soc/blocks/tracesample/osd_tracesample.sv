@@ -36,7 +36,9 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Stefan Wallentowitz <stefan@wallentowitz.de>
+ *   Anuj Rao <anujnr@gmail.com>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 module osd_tracesample #(

@@ -36,7 +36,8 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Nico Gutmann <nicolai.gutmann@gmail.com>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 module osd_mam_wb_if #(

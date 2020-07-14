@@ -36,7 +36,9 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Philipp Wagner <philipp.wagner@tum.de>
+ *   Stefan Wallentowitz <stefan@wallentowitz.de>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 import dii_package::dii_flit;

@@ -36,7 +36,9 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *   Wei Song <ws327@cam.ac.uk>
+ *   Stefan Wallentowitz <stefan@wallentowitz.de>
+ *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 package dii_package;
