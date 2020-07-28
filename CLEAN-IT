@@ -7,6 +7,7 @@ rm -rf sim/vhdl/soc/msim/transcript
 rm -rf sim/verilog/uvm/ahb3/msim/transcript
 rm -rf sim/verilog/uvm/apb4/msim/transcript
 rm -rf sim/verilog/uvm/axi4/msim/transcript
+rm -rf sim/verilog/uvm/bb/msim/transcript
 rm -rf sim/verilog/uvm/wb/msim/transcript
 
 rm -rf sim/verilog/pu/riscv/ahb3/msim/work
@@ -18,6 +19,7 @@ rm -rf sim/vhdl/soc/msim/work
 rm -rf sim/verilog/uvm/ahb3/msim/work
 rm -rf sim/verilog/uvm/apb4/msim/work
 rm -rf sim/verilog/uvm/axi4/msim/work
+rm -rf sim/verilog/uvm/bb/msim/work
 rm -rf sim/verilog/uvm/wb/msim/work
 
 rm -rf sim/verilog/pu/riscv/ahb3/iverilog/system.vvp
