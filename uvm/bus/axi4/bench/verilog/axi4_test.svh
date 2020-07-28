@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              AMBA4 AXI-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ class axi4_test extends uvm_test;
     uvm_config_db#(virtual dut_if)::set( this, "env", "vif", vif);
   endfunction
 
-  //Run phase - Create an abp_sequence and start it on the axi4_sequencer
+  //Run phase - Create an axi4_sequence and start it on the axi4_sequencer
   task run_phase( uvm_phase phase );
     axi4_sequence axi4_seq;
     axi4_seq = axi4_sequence::type_id::create("axi4_seq");

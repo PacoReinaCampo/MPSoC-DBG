@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              AMBA4 AXI-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -96,32 +96,158 @@ interface dut_if;
   
   //Master Clocking block - used for Drivers
   clocking master_cb @(posedge pclk);
-    output paddr;
-    output psel;
-    output penable;
-    output pwrite;
-    output pwdata;
-    input  prdata;
+    input  [10:0] aw_id;
+    input  [31:0] aw_addr;
+    input  [ 7:0] aw_len;
+    input  [ 2:0] aw_size;
+    input  [ 1:0] aw_burst;
+    input         aw_lock;
+    input  [ 3:0] aw_cache;
+    input  [ 2:0] aw_prot;
+    input  [ 3:0] aw_qos;
+    input  [ 3:0] aw_region;
+    input  [10:0] aw_user;
+    input         aw_valid;
+    output        aw_ready;
+
+    input  [10:0] ar_id;
+    input  [31:0] ar_addr;
+    input  [ 7:0] ar_len;
+    input  [ 2:0] ar_size;
+    input  [ 1:0] ar_burst;
+    input         ar_lock;
+    input  [ 3:0] ar_cache;
+    input  [ 2:0] ar_prot;
+    input  [ 3:0] ar_qos;
+    input  [ 3:0] ar_region;
+    input  [10:0] ar_user;
+    input         ar_valid;
+    output        ar_ready;
+
+    input  [31:0] dw_data;
+    input  [10:0] dw_strb;
+    input         dw_last;
+    input  [10:0] dw_user;
+    input         dw_valid;
+    output        dw_ready;
+
+    output [10:0] dr_id;
+    output [31:0] dr_data;
+    output [ 1:0] dr_resp;
+    output        dr_last;
+    output [10:0] dr_user;
+    output        dr_valid;
+    input         dr_ready;
+
+    output [10:0] b_id;
+    output [ 1:0] b_resp;
+    output [10:0] b_user;
+    output        b_valid;
+    input         b_ready;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
   clocking slave_cb @(posedge pclk);
-     input  paddr;
-     input  psel;
-     input  penable;
-     input  pwrite;
-     input  pwdata;
-     output prdata;
+    output [10:0] aw_id;
+    output [31:0] aw_addr;
+    output [ 7:0] aw_len;
+    output [ 2:0] aw_size;
+    output [ 1:0] aw_burst;
+    output        aw_lock;
+    output [ 3:0] aw_cache;
+    output [ 2:0] aw_prot;
+    output [ 3:0] aw_qos;
+    output [ 3:0] aw_region;
+    output [10:0] aw_user;
+    output        aw_valid;
+    input         aw_ready;
+
+    output [10:0] ar_id;
+    output [31:0] ar_addr;
+    output [ 7:0] ar_len;
+    output [ 2:0] ar_size;
+    output [ 1:0] ar_burst;
+    output        ar_lock;
+    output [ 3:0] ar_cache;
+    output [ 2:0] ar_prot;
+    output [ 3:0] ar_qos;
+    output [ 3:0] ar_region;
+    output [10:0] ar_user;
+    output        ar_valid;
+    input         ar_ready;
+
+    output [31:0] dw_data;
+    output [10:0] dw_strb;
+    output        dw_last;
+    output [10:0] dw_user;
+    output        dw_valid;
+    input         dw_ready;
+
+    input  [10:0] dr_id;
+    input  [31:0] dr_data;
+    input  [ 1:0] dr_resp;
+    input         dr_last;
+    input  [10:0] dr_user;
+    input         dr_valid;
+    output        dr_ready;
+
+    input  [10:0] b_id;
+    input  [ 1:0] b_resp;
+    input  [10:0] b_user;
+    input         b_valid;
+    output        b_ready;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
   clocking monitor_cb @(posedge pclk);
-    input paddr;
-    input psel;
-    input penable;
-    input pwrite;
-    input prdata;
-    input pwdata;
+    input  [10:0] aw_id;
+    input  [31:0] aw_addr;
+    input  [ 7:0] aw_len;
+    input  [ 2:0] aw_size;
+    input  [ 1:0] aw_burst;
+    input         aw_lock;
+    input  [ 3:0] aw_cache;
+    input  [ 2:0] aw_prot;
+    input  [ 3:0] aw_qos;
+    input  [ 3:0] aw_region;
+    input  [10:0] aw_user;
+    input         aw_valid;
+    input         aw_ready;
+
+    input  [10:0] ar_id;
+    input  [31:0] ar_addr;
+    input  [ 7:0] ar_len;
+    input  [ 2:0] ar_size;
+    input  [ 1:0] ar_burst;
+    input         ar_lock;
+    input  [ 3:0] ar_cache;
+    input  [ 2:0] ar_prot;
+    input  [ 3:0] ar_qos;
+    input  [ 3:0] ar_region;
+    input  [10:0] ar_user;
+    input         ar_valid;
+    input         ar_ready;
+
+    input  [31:0] dw_data;
+    input  [10:0] dw_strb;
+    input         dw_last;
+    input  [10:0] dw_user;
+    input         dw_valid;
+    input         dw_ready;
+
+    input  [10:0] dr_id;
+    input  [31:0] dr_data;
+    input  [ 1:0] dr_resp;
+    input         dr_last;
+    input  [10:0] dr_user;
+    input         dr_valid;
+    input         dr_ready;
+
+    input  [10:0] b_id;
+    input  [ 1:0] b_resp;
+    input  [10:0] b_user;
+    input         b_valid;
+    input         b_ready;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);

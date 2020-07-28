@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              Wishbone Bus Interface                                        //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ class wb_test extends uvm_test;
     uvm_config_db#(virtual dut_if)::set( this, "env", "vif", vif);
   endfunction
 
-  //Run phase - Create an abp_sequence and start it on the wb_sequencer
+  //Run phase - Create an wb_sequence and start it on the wb_sequencer
   task run_phase( uvm_phase phase );
     wb_sequence wb_seq;
     wb_seq = wb_sequence::type_id::create("wb_seq");

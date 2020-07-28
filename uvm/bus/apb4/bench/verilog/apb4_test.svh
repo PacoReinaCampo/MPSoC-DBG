@@ -63,7 +63,7 @@ class apb4_test extends uvm_test;
     uvm_config_db#(virtual dut_if)::set( this, "env", "vif", vif);
   endfunction
 
-  //Run phase - Create an abp_sequence and start it on the apb4_sequencer
+  //Run phase - Create an apb4_sequence and start it on the apb4_sequencer
   task run_phase( uvm_phase phase );
     apb4_sequence apb4_seq;
     apb4_seq = apb4_sequence::type_id::create("apb4_seq");

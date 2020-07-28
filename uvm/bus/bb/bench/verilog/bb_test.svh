@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              Blackbone Bus Interface                                       //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ class bb_test extends uvm_test;
     uvm_config_db#(virtual dut_if)::set( this, "env", "vif", vif);
   endfunction
 
-  //Run phase - Create an abp_sequence and start it on the bb_sequencer
+  //Run phase - Create an bb_sequence and start it on the bb_sequencer
   task run_phase( uvm_phase phase );
     bb_sequence bb_seq;
     bb_seq = bb_sequence::type_id::create("bb_seq");

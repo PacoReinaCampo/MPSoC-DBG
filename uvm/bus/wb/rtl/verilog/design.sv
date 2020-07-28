@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              Wishbone Bus Interface                                        //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -59,32 +59,50 @@ interface dut_if;
   
   //Master Clocking block - used for Drivers
   clocking master_cb @(posedge pclk);
-    output paddr;
-    output psel;
-    output penable;
-    output pwrite;
-    output pwdata;
-    input  prdata;
+    input  [31:0] adr_i;
+    input         stb_i;
+    input         cyc_i;
+    input  [ 3:0] sel_i;
+    input         we_i;
+    input  [ 2:0] cti_i;
+    input  [ 1:0] bte_i;
+    input  [31:0] dat_i;
+    output        err_o;
+    output        ack_o;
+    output [31:0] dat_o;
+    output        rty_o;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
   clocking slave_cb @(posedge pclk);
-     input  paddr;
-     input  psel;
-     input  penable;
-     input  pwrite;
-     input  pwdata;
-     output prdata;
+    output [31:0] adr_i;
+    output        stb_i;
+    output        cyc_i;
+    output [ 3:0] sel_i;
+    output        we_i;
+    output [ 2:0] cti_i;
+    output [ 1:0] bte_i;
+    output [31:0] dat_i;
+    input         err_o;
+    input         ack_o;
+    input  [31:0] dat_o;
+    input         rty_o;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
   clocking monitor_cb @(posedge pclk);
-    input paddr;
-    input psel;
-    input penable;
-    input pwrite;
-    input prdata;
-    input pwdata;
+    input  [31:0] adr_i;
+    input         stb_i;
+    input         cyc_i;
+    input  [ 3:0] sel_i;
+    input         we_i;
+    input  [ 2:0] cti_i;
+    input  [ 1:0] bte_i;
+    input  [31:0] dat_i;
+    input         err_o;
+    input         ack_o;
+    input  [31:0] dat_o;
+    input         rty_o;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);

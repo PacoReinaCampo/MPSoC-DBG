@@ -64,12 +64,12 @@ interface dut_if;
 
   //Slave Clocking Block - used for any Slave BFMs
   clocking slave_cb @(posedge pclk);
-     input  paddr;
-     input  psel;
-     input  penable;
-     input  pwrite;
-     input  pwdata;
-     output prdata;
+    input  paddr;
+    input  psel;
+    input  penable;
+    input  pwrite;
+    input  pwdata;
+    output prdata;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components

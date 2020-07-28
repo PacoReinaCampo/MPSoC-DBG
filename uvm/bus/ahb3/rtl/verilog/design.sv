@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              AMBA3 AHB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -54,37 +54,59 @@ interface dut_if;
   logic [ 3:0] hprot;
   logic [ 1:0] htrans;
   logic        hmastlock;
+  logic        hreadyout;
   logic        hready;
   logic        hresp;
   
   //Master Clocking block - used for Drivers
   clocking master_cb @(posedge pclk);
-    output paddr;
-    output psel;
-    output penable;
-    output pwrite;
-    output pwdata;
-    input  prdata;
+    input         hsel;
+    input  [31:0] haddr;
+    input  [31:0] hwdata;
+    output [31:0] hrdata;
+    input         hwrite;
+    input  [ 2:0] hsize;
+    input  [ 2:0] hburst;
+    input  [ 3:0] hprot;
+    input  [ 1:0] htrans;
+    input         hmastlock;
+    output        hreadyout;
+    input         hready;
+    output        hresp;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
   clocking slave_cb @(posedge pclk);
-     input  paddr;
-     input  psel;
-     input  penable;
-     input  pwrite;
-     input  pwdata;
-     output prdata;
+    output        hsel;
+    output [31:0] haddr;
+    output [31:0] hwdata;
+    input  [31:0] hrdata;
+    output        hwrite;
+    output [ 2:0] hsize;
+    output [ 2:0] hburst;
+    output [ 3:0] hprot;
+    output [ 1:0] htrans;
+    output        hmastlock;
+    input         hreadyout;
+    output        hready;
+    input         hresp;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
   clocking monitor_cb @(posedge pclk);
-    input paddr;
-    input psel;
-    input penable;
-    input pwrite;
-    input prdata;
-    input pwdata;
+    input        hsel;
+    input [31:0] haddr;
+    input [31:0] hwdata;
+    input [31:0] hrdata;
+    input        hwrite;
+    input [ 2:0] hsize;
+    input [ 2:0] hburst;
+    input [ 3:0] hprot;
+    input [ 1:0] htrans;
+    input        hmastlock;
+    input        hreadyout;
+    input        hready;
+    input        hresp;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);

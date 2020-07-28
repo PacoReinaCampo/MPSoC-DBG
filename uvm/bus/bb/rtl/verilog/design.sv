@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              Blackbone Bus Interface                                       //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -52,32 +52,29 @@ interface dut_if;
   
   //Master Clocking block - used for Drivers
   clocking master_cb @(posedge pclk);
-    output paddr;
-    output psel;
-    output penable;
-    output pwrite;
-    output pwdata;
-    input  prdata;
+    output [ 7:0] per_addr;
+    output        per_we;
+    output        per_en;
+    output [31:0] per_dout;
+    input  [31:0] per_din;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
   clocking slave_cb @(posedge pclk);
-     input  paddr;
-     input  psel;
-     input  penable;
-     input  pwrite;
-     input  pwdata;
-     output prdata;
+    input  [ 7:0] per_addr;
+    input         per_we;
+    input         per_en;
+    input  [31:0] per_dout;
+    output [31:0] per_din;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
   clocking monitor_cb @(posedge pclk);
-    input paddr;
-    input psel;
-    input penable;
-    input pwrite;
-    input prdata;
-    input pwdata;
+    input  [ 7:0] per_addr;
+    input         per_we;
+    input         per_en;
+    input  [31:0] per_dout;
+    input  [31:0] per_din;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);

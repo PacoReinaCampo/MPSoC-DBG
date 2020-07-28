@@ -11,7 +11,7 @@
 //                                                                            //
 //              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 APB-Lite Bus Interface                                  //
+//              AMBA3 AHB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ class ahb3_test extends uvm_test;
     uvm_config_db#(virtual dut_if)::set( this, "env", "vif", vif);
   endfunction
 
-  //Run phase - Create an abp_sequence and start it on the ahb3_sequencer
+  //Run phase - Create an ahb3_sequence and start it on the ahb3_sequencer
   task run_phase( uvm_phase phase );
     ahb3_sequence ahb3_seq;
     ahb3_seq = ahb3_sequence::type_id::create("ahb3_seq");
