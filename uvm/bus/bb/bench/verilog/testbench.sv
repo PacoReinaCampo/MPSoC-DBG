@@ -59,32 +59,31 @@ import uvm_pkg::*;
 `include "bb_test.svh"
 
 module test;
-  logic        pclk;
-  logic        prst;
-  logic [31:0] paddr;
-  logic        psel;
-  logic        penable;
-  logic        pwrite;
-  logic [31:0] prdata;
-  logic [31:0] pwdata;
+  logic        mclk;
+  logic        mrst;
+  logic [31:0] per_addr;
+  logic        per_en;
+  logic        per_we;
+  logic [31:0] per_dout;
+  logic [31:0] per_din;
 
   dut_if bb_if();
 
   bb_slave dut(.dif(bb_if));
 
   initial begin
-    bb_if.pclk=0;
+    bb_if.mclk=0;
   end
 
   //Generate a clock
   always begin
-    #10 bb_if.pclk = ~bb_if.pclk;
+    #10 bb_if.mclk = ~bb_if.mclk;
   end
 
   initial begin
-    bb_if.prst=0;
-    repeat (1) @(posedge bb_if.pclk);
-    bb_if.prst=1;
+    bb_if.mrst=0;
+    repeat (1) @(posedge bb_if.mclk);
+    bb_if.mrst=1;
   end
 
   initial begin

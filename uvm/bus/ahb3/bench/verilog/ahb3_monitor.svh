@@ -71,24 +71,24 @@ class ahb3_monitor extends uvm_monitor;
       do begin
         @ (this.vif.monitor_cb);
       end
-      while (this.vif.monitor_cb.psel !== 1'b1 || this.vif.monitor_cb.penable !== 1'b0);
+      while (this.vif.monitor_cb.hsel !== 1'b1 || this.vif.monitor_cb.penable !== 1'b0);
       //create a transaction object
       tr = ahb3_transaction::type_id::create("tr", this);
 
       //populate fields based on values seen on interface
-      tr.pwrite = (this.vif.monitor_cb.pwrite) ? ahb3_transaction::WRITE : ahb3_transaction::READ;
-      tr.addr = this.vif.monitor_cb.paddr;
+      tr.hwrite = (this.vif.monitor_cb.hwrite) ? ahb3_transaction::WRITE : ahb3_transaction::READ;
+      tr.addr = this.vif.monitor_cb.haddr;
 
       @ (this.vif.monitor_cb);
       if (this.vif.monitor_cb.penable !== 1'b1) begin
         `uvm_error("AHB3", "AHB3 protocol violation: SETUP cycle not followed by ENABLE cycle");
       end
 
-      if (tr.pwrite == ahb3_transaction::READ) begin
-        tr.data = this.vif.monitor_cb.prdata;
+      if (tr.hwrite == ahb3_transaction::READ) begin
+        tr.data = this.vif.monitor_cb.hrdata;
       end
-      else if (tr.pwrite == ahb3_transaction::WRITE) begin
-        tr.data = this.vif.monitor_cb.pwdata;
+      else if (tr.hwrite == ahb3_transaction::WRITE) begin
+        tr.data = this.vif.monitor_cb.hwdata;
       end
 
       uvm_report_info("AHB3_MONITOR", $psprintf("Got Transaction %s",tr.convert2string()));

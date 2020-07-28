@@ -74,13 +74,13 @@ class bb_scoreboard extends uvm_scoreboard;
       wait(exp_queue.size() > 0);
       expdata = exp_queue.pop_front();
       
-      if(expdata.pwrite == bb_transaction::WRITE) begin
+      if(expdata.per_we == bb_transaction::WRITE) begin
         sc_mem[expdata.addr] = expdata.data;
         `uvm_info("BB_SCOREBOARD",$sformatf("------ :: WRITE DATA       :: ------"),UVM_LOW)
         `uvm_info("",$sformatf("Addr: %0h",expdata.addr),UVM_LOW)
         `uvm_info("",$sformatf("Data: %0h",expdata.data),UVM_LOW)        
       end
-      else if(expdata.pwrite == bb_transaction::READ) begin
+      else if(expdata.per_we == bb_transaction::READ) begin
         if(sc_mem[expdata.addr] == expdata.data) begin
           `uvm_info("BB_SCOREBOARD",$sformatf("------ :: READ DATA Match :: ------"),UVM_LOW)
           `uvm_info("",$sformatf("Addr: %0h",expdata.addr),UVM_LOW)

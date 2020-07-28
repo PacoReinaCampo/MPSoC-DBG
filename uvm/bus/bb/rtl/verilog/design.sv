@@ -93,27 +93,26 @@ module bb_slave(dut_if dif);
   always @(posedge dif.mclk or negedge dif.mrst) begin
     if (dif.mrst==0) begin
       bb_st <=0;
-      dif.prdata <=0;
-      dif.pready <=1;
+      dif.per_din <=0;
       for(int i=0;i<256;i++) mem[i]=i;
     end
     else begin
       case (bb_st)
         SETUP: begin
-          dif.prdata <= 0;
-          if (dif.psel && !dif.penable) begin
-            if (dif.pwrite) begin
+          dif.per_din <= 0;
+          if (!dif.per_en) begin
+            if (dif.per_we) begin
               bb_st <= W_ENABLE;
             end
             else begin
               bb_st <= R_ENABLE;
-              dif.prdata <= mem[dif.paddr];
+              dif.per_din <= mem[dif.per_addr];
             end
           end
         end
         W_ENABLE: begin
-          if (dif.psel && dif.penable && dif.pwrite) begin
-            mem[dif.paddr] <= dif.pwdata;
+          if (dif.per_en && dif.per_we) begin
+            mem[dif.per_addr] <= dif.per_dout;
           end
           bb_st <= SETUP;
         end

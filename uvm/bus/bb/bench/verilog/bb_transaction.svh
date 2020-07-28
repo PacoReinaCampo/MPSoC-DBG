@@ -50,7 +50,7 @@ class bb_transaction extends uvm_sequence_item;
   rand bit [31:0] addr;  //Address
   rand bit [31:0] data;  //Data - For write or read response
 
-  rand kind_e pwrite;  //command type
+  rand kind_e per_we;  //command type
 
   constraint c1{addr[31:0]>=32'd0; addr[31:0] <32'd256;};
   constraint c2{data[31:0]>=32'd0; data[31:0] <32'd256;};
@@ -60,6 +60,6 @@ class bb_transaction extends uvm_sequence_item;
   endfunction
 
   function string convert2string();
-    return $psprintf("pwrite=%s paddr=%0h data=%0h",pwrite,addr,data);
+    return $psprintf("per_we=%s paddr=%0h data=%0h",per_we,addr,data);
   endfunction
 endclass

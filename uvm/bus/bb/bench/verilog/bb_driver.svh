@@ -43,7 +43,7 @@
 
 class bb_driver extends uvm_driver#(bb_transaction);
   `uvm_component_utils(bb_driver)
-  
+
   virtual dut_if vif;
   
   function new(string name, uvm_component parent);
@@ -59,9 +59,8 @@ class bb_driver extends uvm_driver#(bb_transaction);
   
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
-    
-    this.vif.master_cb.psel    <= 0;
-    this.vif.master_cb.penable <= 0;
+
+    this.vif.master_cb.per_en <= 0;
 
     forever begin
       bb_transaction tr;
@@ -71,7 +70,7 @@ class bb_driver extends uvm_driver#(bb_transaction);
       @ (this.vif.master_cb);
       uvm_report_info("BB_DRIVER ", $psprintf("Got Transaction %s",tr.convert2string()));
       //Decode the BB Command and call either the read/write function
-      case (tr.pwrite)
+      case (tr.per_we)
         bb_transaction::READ:  drive_read(tr.addr, tr.data);  
         bb_transaction::WRITE: drive_write(tr.addr, tr.data);
       endcase
@@ -81,26 +80,22 @@ class bb_driver extends uvm_driver#(bb_transaction);
   endtask
 
   virtual protected task drive_read(input bit [31:0] addr, output logic [31:0] data);
-    this.vif.master_cb.paddr   <= addr;
-    this.vif.master_cb.pwrite  <= 0;
-    this.vif.master_cb.psel    <= 1;
+    this.vif.master_cb.per_addr <= addr;
+    this.vif.master_cb.per_we <= 0;
     @ (this.vif.master_cb);
-    this.vif.master_cb.penable <= 1;
+    this.vif.master_cb.per_en <= 1;
     @ (this.vif.master_cb);
-    data = this.vif.master_cb.prdata;
-    this.vif.master_cb.psel    <= 0;
-    this.vif.master_cb.penable <= 0;
+    data = this.vif.master_cb.per_din;
+    this.vif.master_cb.per_en <= 0;
   endtask
 
   virtual protected task drive_write(input bit [31:0] addr, input bit [31:0] data);
-    this.vif.master_cb.paddr   <= addr;
-    this.vif.master_cb.pwdata  <= data;
-    this.vif.master_cb.pwrite  <= 1;
-    this.vif.master_cb.psel    <= 1;
+    this.vif.master_cb.per_addr <= addr;
+    this.vif.master_cb.per_dout <= data;
+    this.vif.master_cb.per_we   <= 1;
     @ (this.vif.master_cb);
-    this.vif.master_cb.penable <= 1;
+    this.vif.master_cb.per_en   <= 1;
     @ (this.vif.master_cb);
-    this.vif.master_cb.psel    <= 0;
-    this.vif.master_cb.penable <= 0;
+    this.vif.master_cb.per_en   <= 0;
   endtask
 endclass

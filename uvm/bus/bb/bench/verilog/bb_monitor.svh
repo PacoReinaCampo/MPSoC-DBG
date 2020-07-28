@@ -71,24 +71,24 @@ class bb_monitor extends uvm_monitor;
       do begin
         @ (this.vif.monitor_cb);
       end
-      while (this.vif.monitor_cb.psel !== 1'b1 || this.vif.monitor_cb.penable !== 1'b0);
+      while (this.vif.monitor_cb.per_en !== 1'b0);
       //create a transaction object
       tr = bb_transaction::type_id::create("tr", this);
 
       //populate fields based on values seen on interface
-      tr.pwrite = (this.vif.monitor_cb.pwrite) ? bb_transaction::WRITE : bb_transaction::READ;
-      tr.addr = this.vif.monitor_cb.paddr;
+      tr.per_we = (this.vif.monitor_cb.per_we) ? bb_transaction::WRITE : bb_transaction::READ;
+      tr.addr = this.vif.monitor_cb.per_addr;
 
       @ (this.vif.monitor_cb);
-      if (this.vif.monitor_cb.penable !== 1'b1) begin
+      if (this.vif.monitor_cb.per_en !== 1'b1) begin
         `uvm_error("BB", "BB protocol violation: SETUP cycle not followed by ENABLE cycle");
       end
 
-      if (tr.pwrite == bb_transaction::READ) begin
-        tr.data = this.vif.monitor_cb.prdata;
+      if (tr.per_we == bb_transaction::READ) begin
+        tr.data = this.vif.monitor_cb.per_din;
       end
-      else if (tr.pwrite == bb_transaction::WRITE) begin
-        tr.data = this.vif.monitor_cb.pwdata;
+      else if (tr.per_we == bb_transaction::WRITE) begin
+        tr.data = this.vif.monitor_cb.per_dout;
       end
 
       uvm_report_info("BB_MONITOR", $psprintf("Got Transaction %s",tr.convert2string()));
