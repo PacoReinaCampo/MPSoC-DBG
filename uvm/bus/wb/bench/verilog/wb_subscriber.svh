@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,21 +41,32 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-class ahb3_read_sequence extends uvm_sequence#(ahb3_transaction);
-  `uvm_object_utils(ahb3_read_sequence)
-
-  function new(string name = "");
-    super.new(name);
+class wb_subscriber extends uvm_subscriber#(wb_transaction);
+  `uvm_component_utils(wb_subscriber)
+  
+  bit [31:0] addr;
+  bit [31:0] data;
+  
+  covergroup cover_bus;
+    coverpoint addr {
+      bins a[16] = {[0:255]};
+    }
+    coverpoint data {
+      bins d[16] = {[0:255]};
+    }
+  endgroup
+  
+  function new(string name, uvm_component parent);
+    super.new(name,parent);
+    cover_bus=new;
   endfunction
+  
+  function void write(wb_transaction t);
+    `uvm_info("WB_SUBSCRIBER", $psprintf("Subscriber received tx %s", t.convert2string()), UVM_NONE);
+   
+    addr = t.addr;
+    data = t.data;
 
-  task body();
-    begin
-      `uvm_do_with(req,{req.hwrite == 1'b0; req.hready == 1'b0;})
-      `uvm_do_with(req,{req.hwrite == 1'b0; req.hready == 1'b1; req.haddr == 8'h00;})
-      `uvm_do_with(req,{req.hwrite == 1'b0; req.hready == 1'b0;})
-      `uvm_do_with(req,{req.hwrite == 1'b0; req.hready == 1'b1; req.haddr == 8'h04;})
-      `uvm_do_with(req,{req.hwrite == 1'b0; req.hready == 1'b0;})
-      `uvm_do_with(req,{req.hwrite == 1'b0; req.hready == 1'b1; req.haddr == 8'h08;})
-    end
-  endtask
+    cover_bus.sample();
+  endfunction
 endclass

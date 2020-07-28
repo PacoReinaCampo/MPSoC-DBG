@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA4 AXI-Lite Bus Interface                                  //
+//              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,21 +41,59 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-class axi4_read_sequence extends uvm_sequence#(axi4_transaction);
-  `uvm_object_utils(axi4_read_sequence)
+class bb_monitor extends uvm_monitor;
+  virtual dut_if vif;
 
-  function new(string name = "");
-    super.new(name);
+  //Analysis port -parameterized to bb_rw transaction
+  ///Monitor writes transaction objects to this port once detected on interface
+  uvm_analysis_port#(bb_transaction) ap;
+
+  `uvm_component_utils(bb_monitor)
+
+  function new(string name, uvm_component parent);
+    super.new(name, parent);
+    ap = new("ap", this);
   endfunction
 
-  task body();
-    begin
-      `uvm_do_with(req,{req.pwrite == 1'b0; req.penable == 1'b0;})
-      `uvm_do_with(req,{req.pwrite == 1'b0; req.penable == 1'b1; req.paddr == 8'h00;})
-      `uvm_do_with(req,{req.pwrite == 1'b0; req.penable == 1'b0;})
-      `uvm_do_with(req,{req.pwrite == 1'b0; req.penable == 1'b1; req.paddr == 8'h04;})
-      `uvm_do_with(req,{req.pwrite == 1'b0; req.penable == 1'b0;})
-      `uvm_do_with(req,{req.pwrite == 1'b0; req.penable == 1'b1; req.paddr == 8'h08;})
+  //Build Phase - Get handle to virtual if from agent/config_db
+  function void build_phase(uvm_phase phase);
+    super.build_phase(phase);
+    if (!uvm_config_db#(virtual dut_if)::get(this, "", "vif", vif)) begin
+      `uvm_error("build_phase", "No virtual interface specified for this monitor instance")
+    end
+  endfunction
+
+  virtual task run_phase(uvm_phase phase);
+    super.run_phase(phase);
+    forever begin
+      bb_transaction tr;
+      // Wait for a SETUP cycle
+      do begin
+        @ (this.vif.monitor_cb);
+      end
+      while (this.vif.monitor_cb.psel !== 1'b1 || this.vif.monitor_cb.penable !== 1'b0);
+      //create a transaction object
+      tr = bb_transaction::type_id::create("tr", this);
+
+      //populate fields based on values seen on interface
+      tr.pwrite = (this.vif.monitor_cb.pwrite) ? bb_transaction::WRITE : bb_transaction::READ;
+      tr.addr = this.vif.monitor_cb.paddr;
+
+      @ (this.vif.monitor_cb);
+      if (this.vif.monitor_cb.penable !== 1'b1) begin
+        `uvm_error("BB", "BB protocol violation: SETUP cycle not followed by ENABLE cycle");
+      end
+
+      if (tr.pwrite == bb_transaction::READ) begin
+        tr.data = this.vif.monitor_cb.prdata;
+      end
+      else if (tr.pwrite == bb_transaction::WRITE) begin
+        tr.data = this.vif.monitor_cb.pwdata;
+      end
+
+      uvm_report_info("BB_MONITOR", $psprintf("Got Transaction %s",tr.convert2string()));
+      //Write to analysis port
+      ap.write(tr);
     end
   endtask
 endclass

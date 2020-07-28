@@ -47,16 +47,16 @@
 import uvm_pkg::*;
 
 //Include common files
-`include "axi4_transaction.svh"
-`include "axi4_sequence.svh"
-`include "axi4_sequencer.svh"
-`include "axi4_driver.svh"
-`include "axi4_monitor.svh"
-`include "axi4_agent.svh"
-`include "axi4_scoreboard.svh"
-`include "axi4_subscriber.svh"
-`include "axi4_env.svh"
-`include "axi4_test.svh"
+`include "bb_transaction.svh"
+`include "bb_sequence.svh"
+`include "bb_sequencer.svh"
+`include "bb_driver.svh"
+`include "bb_monitor.svh"
+`include "bb_agent.svh"
+`include "bb_scoreboard.svh"
+`include "bb_subscriber.svh"
+`include "bb_env.svh"
+`include "bb_test.svh"
 
 module test;
   logic        pclk;
@@ -68,28 +68,28 @@ module test;
   logic [31:0] prdata;
   logic [31:0] pwdata;
 
-  dut_if axi4_if();
+  dut_if bb_if();
 
-  axi4_slave dut(.dif(axi4_if));
+  bb_slave dut(.dif(bb_if));
 
   initial begin
-    axi4_if.pclk=0;
+    bb_if.pclk=0;
   end
 
   //Generate a clock
   always begin
-    #10 axi4_if.pclk = ~axi4_if.pclk;
+    #10 bb_if.pclk = ~bb_if.pclk;
   end
 
   initial begin
-    axi4_if.prst=0;
-    repeat (1) @(posedge axi4_if.pclk);
-    axi4_if.prst=1;
+    bb_if.prst=0;
+    repeat (1) @(posedge bb_if.pclk);
+    bb_if.prst=1;
   end
 
   initial begin
-    uvm_config_db#(virtual dut_if)::set( null, "uvm_test_top", "vif", axi4_if);
-    run_test("axi4_test");
+    uvm_config_db#(virtual dut_if)::set( null, "uvm_test_top", "vif", bb_if);
+    run_test("bb_test");
   end
 
   initial begin

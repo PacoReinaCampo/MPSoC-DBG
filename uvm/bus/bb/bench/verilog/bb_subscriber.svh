@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
 //              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,37 +41,32 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-class apb4_bus_monitor extends uvm_monitor;
-  `uvm_component_utils(apb4_bus_monitor)
-
-   virtual dutintf vintf;
-
-   apb4_transaction apb4_trans;
-
-  uvm_analysis_port#(apb4_transaction) bus_mon_port;
-
+class bb_subscriber extends uvm_subscriber#(bb_transaction);
+  `uvm_component_utils(bb_subscriber)
+  
+  bit [31:0] addr;
+  bit [31:0] data;
+  
+  covergroup cover_bus;
+    coverpoint addr {
+      bins a[16] = {[0:255]};
+    }
+    coverpoint data {
+      bins d[16] = {[0:255]};
+    }
+  endgroup
+  
   function new(string name, uvm_component parent);
     super.new(name,parent);
-    apb4_trans = new();
-    bus_mon_port=new("bus_mon_port",this);
+    cover_bus=new;
   endfunction
+  
+  function void write(bb_transaction t);
+    `uvm_info("BB_SUBSCRIBER", $psprintf("Subscriber received tx %s", t.convert2string()), UVM_NONE);
+   
+    addr = t.addr;
+    data = t.data;
 
-  function void build_phase(uvm_phase phase);
-    super.build_phase(phase);
-    if(!uvm_config_db#(virtual dutintf)::get(this, "*", "vintf", vintf))begin
-      `uvm_error("","bus monitor interface failed")
-    end
+    cover_bus.sample();
   endfunction
-
-  virtual task run_phase(uvm_phase phase);
-    super.run_phase(phase);
-    forever begin
-    @(posedge vintf.clk);
-    apb4_trans.paddr = vintf.paddr;
-    apb4_trans.pwdata = vintf.pwdata;
-    apb4_trans.prdata = vintf.prdata;
-    bus_mon_port.write(apb4_trans);
-    `uvm_info("",$sformatf("Bus MOnitor Paddr %x, pwdata %x, prdata %x", vintf.paddr, vintf.pwdata, vintf.prdata), UVM_LOW)
-    end
-  endtask
 endclass

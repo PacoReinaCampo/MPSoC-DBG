@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              Wishbone Bus Interface                                        //
+//              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,39 +41,59 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
+//Include UVM files
 `include "uvm_macros.svh"
 `include "uvm_pkg.sv"
-
 import uvm_pkg::*;
 
+//Include common files
 `include "wb_transaction.svh"
 `include "wb_sequence.svh"
-`include "wb_monitor.svh"
+`include "wb_sequencer.svh"
 `include "wb_driver.svh"
+`include "wb_monitor.svh"
 `include "wb_agent.svh"
-`include "wb_bus_monitor.svh"  
 `include "wb_scoreboard.svh"
+`include "wb_subscriber.svh"
 `include "wb_env.svh"
 `include "wb_test.svh"
 
-module testbench;
+module test;
+  logic        pclk;
+  logic        prst;
+  logic [31:0] paddr;
+  logic        psel;
+  logic        penable;
+  logic        pwrite;
+  logic [31:0] prdata;
+  logic [31:0] pwdata;
 
-  dutintf intf();
+  dut_if wb_if();
 
-  wb_slave dut(.dif(intf));
+  wb_slave dut(.dif(wb_if));
 
   initial begin
-    intf.clk = 0;
-    forever 
-      #5 intf.clk = ~intf.clk;
+    wb_if.pclk=0;
+  end
+
+  //Generate a clock
+  always begin
+    #10 wb_if.pclk = ~wb_if.pclk;
   end
 
   initial begin
-    uvm_config_db#(virtual dutintf)::set(null,"*","vintf", intf);
+    wb_if.prst=0;
+    repeat (1) @(posedge wb_if.pclk);
+    wb_if.prst=1;
+  end
+
+  initial begin
+    uvm_config_db#(virtual dut_if)::set( null, "uvm_test_top", "vif", wb_if);
     run_test("wb_test");
   end
 
   initial begin
-     $dumpvars(0, top);
+    $dumpfile("dump.vcd");
+    $dumpvars;
   end
 endmodule

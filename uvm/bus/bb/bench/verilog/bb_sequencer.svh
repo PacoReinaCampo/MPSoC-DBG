@@ -41,21 +41,14 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-class ahb3_sequence extends uvm_sequence#(ahb3_transaction);
-  `uvm_object_utils(ahb3_sequence)
+class bb_sequencer extends uvm_sequencer#(bb_transaction);
+  `uvm_component_utils(bb_sequencer)
 
-  function new (string name = "");
-    super.new(name);
+  function new ( string name, uvm_component parent);
+    super.new(name,parent);
   endfunction
 
-  task body();
-    ahb3_transaction rw_trans;
-    //create 10 random AHB3 read/write transaction and send to driver
-    repeat (80) begin
-      rw_trans=new();
-      start_item(rw_trans);
-      assert(rw_trans.randomize());
-      finish_item(rw_trans);
-    end
-  endtask
+  function void build_phase (uvm_phase phase);
+    super.build_phase(phase);
+  endfunction
 endclass

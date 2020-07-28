@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              Wishbone Bus Interface                                        //
+//              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,37 +41,66 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-class wb_bus_monitor extends uvm_monitor;
-  `uvm_component_utils(wb_bus_monitor)
-
-   virtual dutintf vintf;
-
-   wb_transaction wb_trans;
-
-  uvm_analysis_port#(wb_transaction) bus_mon_port;
-
+class bb_driver extends uvm_driver#(bb_transaction);
+  `uvm_component_utils(bb_driver)
+  
+  virtual dut_if vif;
+  
   function new(string name, uvm_component parent);
     super.new(name,parent);
-    wb_trans = new();
-    bus_mon_port=new("bus_mon_port",this);
   endfunction
-
+  
   function void build_phase(uvm_phase phase);
     super.build_phase(phase);
-    if(!uvm_config_db#(virtual dutintf)::get(this, "*", "vintf", vintf))begin
-      `uvm_error("","bus monitor interface failed")
+    if(!uvm_config_db#(virtual dut_if)::get(this,"","vif",vif)) begin
+      `uvm_error("build_phase","driver virtual interface failed")
     end
   endfunction
-
+  
   virtual task run_phase(uvm_phase phase);
     super.run_phase(phase);
+    
+    this.vif.master_cb.psel    <= 0;
+    this.vif.master_cb.penable <= 0;
+
     forever begin
-    @(posedge vintf.clk);
-    wb_trans.adr_i = vintf.adr_i;
-    wb_trans.dat_i = vintf.dat_i;
-    wb_trans.dat_o = vintf.dat_o;
-    bus_mon_port.write(wb_trans);
-    `uvm_info("",$sformatf("Bus MOnitor Paddr %x, dat_i %x, dat_o %x", vintf.adr_i, vintf.dat_i, vintf.dat_o), UVM_LOW)
+      bb_transaction tr;
+      @ (this.vif.master_cb);
+      //First get an item from sequencer
+      seq_item_port.get_next_item(tr);
+      @ (this.vif.master_cb);
+      uvm_report_info("BB_DRIVER ", $psprintf("Got Transaction %s",tr.convert2string()));
+      //Decode the BB Command and call either the read/write function
+      case (tr.pwrite)
+        bb_transaction::READ:  drive_read(tr.addr, tr.data);  
+        bb_transaction::WRITE: drive_write(tr.addr, tr.data);
+      endcase
+      //Handshake DONE back to sequencer
+      seq_item_port.item_done();
     end
+  endtask
+
+  virtual protected task drive_read(input bit [31:0] addr, output logic [31:0] data);
+    this.vif.master_cb.paddr   <= addr;
+    this.vif.master_cb.pwrite  <= 0;
+    this.vif.master_cb.psel    <= 1;
+    @ (this.vif.master_cb);
+    this.vif.master_cb.penable <= 1;
+    @ (this.vif.master_cb);
+    data = this.vif.master_cb.prdata;
+    this.vif.master_cb.psel    <= 0;
+    this.vif.master_cb.penable <= 0;
+  endtask
+
+  virtual protected task drive_write(input bit [31:0] addr, input bit [31:0] data);
+    this.vif.master_cb.paddr   <= addr;
+    this.vif.master_cb.pwdata  <= data;
+    this.vif.master_cb.pwrite  <= 1;
+    this.vif.master_cb.psel    <= 1;
+    @ (this.vif.master_cb);
+    this.vif.master_cb.penable <= 1;
+    @ (this.vif.master_cb);
+    this.vif.master_cb.psel    <= 0;
+    this.vif.master_cb.penable <= 0;
   endtask
 endclass

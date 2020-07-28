@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              Wishbone Bus Interface                                        //
+//              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-interface dutintf;
+interface dut_if;
   logic        clk;
   logic        rst;
   logic [31:0] adr_i;
@@ -56,51 +56,78 @@ interface dutintf;
   logic        ack_o;
   logic [31:0] dat_o;
   logic        rty_o;
+  
+  //Master Clocking block - used for Drivers
+  clocking master_cb @(posedge pclk);
+    output paddr;
+    output psel;
+    output penable;
+    output pwrite;
+    output pwdata;
+    input  prdata;
+  endclocking: master_cb
+
+  //Slave Clocking Block - used for any Slave BFMs
+  clocking slave_cb @(posedge pclk);
+     input  paddr;
+     input  psel;
+     input  penable;
+     input  pwrite;
+     input  pwdata;
+     output prdata;
+  endclocking: slave_cb
+
+  //Monitor Clocking block - For sampling by monitor components
+  clocking monitor_cb @(posedge pclk);
+    input paddr;
+    input psel;
+    input penable;
+    input pwrite;
+    input prdata;
+    input pwdata;
+  endclocking: monitor_cb
+
+  modport master(clocking master_cb);
+  modport slave(clocking slave_cb);
+  modport passive(clocking monitor_cb);
 endinterface
 
-module wb_slave(dutintf dif);
-  logic [31:0] mem [256];
+module wb_slave(dut_if dif);
+  logic [31:0] mem [0:256];
   logic [ 1:0] wb_st;
 
-  const logic [1:0] SETUP = 0;
-  const logic [1:0] W_ENABLE = 1;
-  const logic [1:0] R_ENABLE = 2;
-
-  // SETUP -> ENABLE
-  always @(negedge dif.rst or posedge dif.clk) begin
-    if (dif.rst == 0) begin
-      wb_st <= 0;
-      dif.dat_o <= 0;
+  const logic [1:0] SETUP=0;
+  const logic [1:0] W_ENABLE=1;
+  const logic [1:0] R_ENABLE=2;
+  
+  always @(posedge dif.pclk or negedge dif.prst) begin
+    if (dif.prst==0) begin
+      wb_st <=0;
+      dif.prdata <=0;
+      dif.pready <=1;
+      for(int i=0;i<256;i++) mem[i]=i;
     end
     else begin
       case (wb_st)
-        SETUP : begin
-          // clear the dat_o
-          dif.dat_o <= 0;
-          // Move to ENABLE when the sel_i is asserted
-          if (dif.sel_i &&) begin
-            if (dif.we_i) begin
+        SETUP: begin
+          dif.prdata <= 0;
+          if (dif.psel && !dif.penable) begin
+            if (dif.pwrite) begin
               wb_st <= W_ENABLE;
             end
             else begin
               wb_st <= R_ENABLE;
+              dif.prdata <= mem[dif.paddr];
             end
           end
         end
-        W_ENABLE : begin
-          // write dat_i to memory
-          if (dif.sel_i && dif.we_i) begin
-            mem[dif.adr_i] <= dif.dat_i;
+        W_ENABLE: begin
+          if (dif.psel && dif.penable && dif.pwrite) begin
+            mem[dif.paddr] <= dif.pwdata;
           end
-          // return to SETUP
           wb_st <= SETUP;
         end
-        R_ENABLE : begin
-          // read dat_o from memory
-          if (dif.sel_i && !dif.we_i) begin
-            dif.dat_o <= mem[dif.adr_i];
-          end
-          // return to SETUP
+        R_ENABLE: begin
           wb_st <= SETUP;
         end
       endcase

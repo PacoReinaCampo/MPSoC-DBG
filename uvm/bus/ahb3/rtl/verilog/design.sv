@@ -9,14 +9,14 @@
 //                  |_|                                                       //
 //                                                                            //
 //                                                                            //
-//              MPSoC-RISCV CPU                                               //
+//              MPSoC-RISCV / OR1K / MSP430 CPU                               //
 //              General Purpose Input Output Bridge                           //
-//              AMBA3 AHB-Lite Bus Interface                                  //
+//              AMBA4 APB-Lite Bus Interface                                  //
 //              Universal Verification Methodology                            //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
 
-/* Copyright (c) 2018-2019 by the author(s)
+/* Copyright (c) 2020-2021 by the author(s)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -41,8 +41,8 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-interface dutintf;
-  logic        rst_n;
+interface dut_if;
+  logic        hrst;
   logic        hclk;
   logic        hsel;
   logic [31:0] haddr;
@@ -56,51 +56,78 @@ interface dutintf;
   logic        hmastlock;
   logic        hready;
   logic        hresp;
+  
+  //Master Clocking block - used for Drivers
+  clocking master_cb @(posedge pclk);
+    output paddr;
+    output psel;
+    output penable;
+    output pwrite;
+    output pwdata;
+    input  prdata;
+  endclocking: master_cb
+
+  //Slave Clocking Block - used for any Slave BFMs
+  clocking slave_cb @(posedge pclk);
+     input  paddr;
+     input  psel;
+     input  penable;
+     input  pwrite;
+     input  pwdata;
+     output prdata;
+  endclocking: slave_cb
+
+  //Monitor Clocking block - For sampling by monitor components
+  clocking monitor_cb @(posedge pclk);
+    input paddr;
+    input psel;
+    input penable;
+    input pwrite;
+    input prdata;
+    input pwdata;
+  endclocking: monitor_cb
+
+  modport master(clocking master_cb);
+  modport slave(clocking slave_cb);
+  modport passive(clocking monitor_cb);
 endinterface
 
-module ahb3_slave(dutintf dif);
-  logic [31:0] mem [256];
+module ahb3_slave(dut_if dif);
+  logic [31:0] mem [0:256];
   logic [ 1:0] ahb3_st;
 
-  const logic [1:0] SETUP = 0;
-  const logic [1:0] W_ENABLE = 1;
-  const logic [1:0] R_ENABLE = 2;
-
-  // SETUP -> ENABLE
-  always @(negedge dif.rst_n or posedge dif.hclk) begin
-    if (dif.rst_n == 0) begin
-      ahb3_st <= 0;
-      dif.hrdata <= 0;
+  const logic [1:0] SETUP=0;
+  const logic [1:0] W_ENABLE=1;
+  const logic [1:0] R_ENABLE=2;
+  
+  always @(posedge dif.pclk or negedge dif.prst) begin
+    if (dif.prst==0) begin
+      ahb3_st <=0;
+      dif.prdata <=0;
+      dif.pready <=1;
+      for(int i=0;i<256;i++) mem[i]=i;
     end
     else begin
       case (ahb3_st)
-        SETUP : begin
-          // clear the hrdata
-          dif.hrdata <= 0;
-          // Move to ENABLE when the hsel is asserted
-          if (dif.hsel && !dif.hready) begin
-            if (dif.hwrite) begin
+        SETUP: begin
+          dif.prdata <= 0;
+          if (dif.psel && !dif.penable) begin
+            if (dif.pwrite) begin
               ahb3_st <= W_ENABLE;
             end
             else begin
               ahb3_st <= R_ENABLE;
+              dif.prdata <= mem[dif.paddr];
             end
           end
         end
-        W_ENABLE : begin
-          // write hwdata to memory
-          if (dif.hsel && dif.hready && dif.hwrite) begin
-            mem[dif.haddr] <= dif.hwdata;
+        W_ENABLE: begin
+          if (dif.psel && dif.penable && dif.pwrite) begin
+            mem[dif.paddr] <= dif.pwdata;
           end
-          // return to SETUP
           ahb3_st <= SETUP;
         end
-        R_ENABLE : begin
-          // read hrdata from memory
-          if (dif.hsel && dif.hready && !dif.hwrite) begin
-            dif.hrdata <= mem[dif.haddr];
-          end
-          // return to SETUP
+        R_ENABLE: begin
           ahb3_st <= SETUP;
         end
       endcase

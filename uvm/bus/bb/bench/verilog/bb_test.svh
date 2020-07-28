@@ -41,21 +41,36 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-class ahb3_sequence extends uvm_sequence#(ahb3_transaction);
-  `uvm_object_utils(ahb3_sequence)
+class bb_test extends uvm_test;
+  //Register with factory
+  `uvm_component_utils(bb_test);
 
-  function new (string name = "");
-    super.new(name);
+  bb_env env;
+  virtual dut_if vif;
+
+  function new(string name = "bb_test", uvm_component parent = null);
+    super.new(name, parent);
   endfunction
 
-  task body();
-    ahb3_transaction rw_trans;
-    //create 10 random AHB3 read/write transaction and send to driver
-    repeat (80) begin
-      rw_trans=new();
-      start_item(rw_trans);
-      assert(rw_trans.randomize());
-      finish_item(rw_trans);
-    end
+  //Build phase - Construct the env class using factory
+  //Get the virtual interface handle from Test and then set it config db for the env component
+  function void build_phase(uvm_phase phase);
+    env = bb_env::type_id::create("env", this);
+
+    if (!uvm_config_db#(virtual dut_if)::get(this, "", "vif", vif)) begin
+      `uvm_fatal("build_phase", "No virtual interface specified for this test instance")
+    end 
+    uvm_config_db#(virtual dut_if)::set( this, "env", "vif", vif);
+  endfunction
+
+  //Run phase - Create an abp_sequence and start it on the bb_sequencer
+  task run_phase( uvm_phase phase );
+    bb_sequence bb_seq;
+    bb_seq = bb_sequence::type_id::create("bb_seq");
+    phase.raise_objection( this, "Starting bb_base_seqin main phase" );
+    $display("%t Starting sequence bb_seq run_phase",$time);
+    bb_seq.start(env.agt.sqr);
+    #100ns;
+    phase.drop_objection( this , "Finished bb_seq in main phase" );
   endtask
 endclass

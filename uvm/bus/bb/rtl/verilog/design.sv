@@ -42,57 +42,13 @@
  */
 
 interface dut_if;
-  logic        clk;
-  logic        rst;
-
-  logic [10:0] aw_id;
-  logic [31:0] aw_addr;
-  logic [ 7:0] aw_len;
-  logic [ 2:0] aw_size;
-  logic [ 1:0] aw_burst;
-  logic        aw_lock;
-  logic [ 3:0] aw_cache;
-  logic [ 2:0] aw_prot;
-  logic [ 3:0] aw_qos;
-  logic [ 3:0] aw_region;
-  logic [10:0] aw_user;
-  logic        aw_valid;
-  logic        aw_ready;
-
-  logic [10:0] ar_id;
-  logic [31:0] ar_addr;
-  logic [ 7:0] ar_len;
-  logic [ 2:0] ar_size;
-  logic [ 1:0] ar_burst;
-  logic        ar_lock;
-  logic [ 3:0] ar_cache;
-  logic [ 2:0] ar_prot;
-  logic [ 3:0] ar_qos;
-  logic [ 3:0] ar_region;
-  logic [10:0] ar_user;
-  logic        ar_valid;
-  logic        ar_ready;
-
-  logic [31:0] dw_data;
-  logic [10:0] dw_strb;
-  logic        dw_last;
-  logic [10:0] dw_user;
-  logic        dw_valid;
-  logic        dw_ready;
-
-  logic [10:0] dr_id;
-  logic [31:0] dr_data;
-  logic [ 1:0] dr_resp;
-  logic        dr_last;
-  logic [10:0] dr_user;
-  logic        dr_valid;
-  logic        dr_ready;
-
-  logic [10:0] b_id;
-  logic [ 1:0] b_resp;
-  logic [10:0] b_user;
-  logic        b_valid;
-  logic        b_ready;
+  logic        mrst;
+  logic        mclk;
+  logic [ 7:0] per_addr;
+  logic        per_we;
+  logic        per_en;
+  logic [31:0] per_dout;
+  logic [31:0] per_din;
   
   //Master Clocking block - used for Drivers
   clocking master_cb @(posedge pclk);
@@ -129,9 +85,9 @@ interface dut_if;
   modport passive(clocking monitor_cb);
 endinterface
 
-module axi4_slave(dut_if dif);
+module bb_slave(dut_if dif);
   logic [31:0] mem [0:256];
-  logic [ 1:0] axi4_st;
+  logic [ 1:0] bb_st;
 
   const logic [1:0] SETUP=0;
   const logic [1:0] W_ENABLE=1;
@@ -139,21 +95,21 @@ module axi4_slave(dut_if dif);
   
   always @(posedge dif.pclk or negedge dif.prst) begin
     if (dif.prst==0) begin
-      axi4_st <=0;
+      bb_st <=0;
       dif.prdata <=0;
       dif.pready <=1;
       for(int i=0;i<256;i++) mem[i]=i;
     end
     else begin
-      case (axi4_st)
+      case (bb_st)
         SETUP: begin
           dif.prdata <= 0;
           if (dif.psel && !dif.penable) begin
             if (dif.pwrite) begin
-              axi4_st <= W_ENABLE;
+              bb_st <= W_ENABLE;
             end
             else begin
-              axi4_st <= R_ENABLE;
+              bb_st <= R_ENABLE;
               dif.prdata <= mem[dif.paddr];
             end
           end
@@ -162,10 +118,10 @@ module axi4_slave(dut_if dif);
           if (dif.psel && dif.penable && dif.pwrite) begin
             mem[dif.paddr] <= dif.pwdata;
           end
-          axi4_st <= SETUP;
+          bb_st <= SETUP;
         end
         R_ENABLE: begin
-          axi4_st <= SETUP;
+          bb_st <= SETUP;
         end
       endcase
     end
