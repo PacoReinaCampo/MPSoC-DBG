@@ -59,31 +59,37 @@ import uvm_pkg::*;
 `include "wb_test.svh"
 
 module test;
-  logic        pclk;
-  logic        prst;
-  logic [31:0] paddr;
-  logic        psel;
-  logic        penable;
-  logic        pwrite;
-  logic [31:0] prdata;
-  logic [31:0] pwdata;
+  logic        clk;
+  logic        rst;
+  logic [31:0] adr_i;
+  logic        stb_i;
+  logic        cyc_i;
+  logic [ 3:0] sel_i;
+  logic        we_i;
+  logic [ 2:0] cti_i;
+  logic [ 1:0] bte_i;
+  logic [31:0] dat_i;
+  logic        err_o;
+  logic        ack_o;
+  logic [31:0] dat_o;
+  logic        rty_o;
 
   dut_if wb_if();
 
   wb_slave dut(.dif(wb_if));
 
   initial begin
-    wb_if.pclk=0;
+    wb_if.clk=0;
   end
 
   //Generate a clock
   always begin
-    #10 wb_if.pclk = ~wb_if.pclk;
+    #10 wb_if.clk = ~wb_if.clk;
   end
 
   initial begin
     wb_if.prst=0;
-    repeat (1) @(posedge wb_if.pclk);
+    repeat (1) @(posedge wb_if.clk);
     wb_if.prst=1;
   end
 

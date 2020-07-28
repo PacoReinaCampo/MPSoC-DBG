@@ -59,13 +59,21 @@ import uvm_pkg::*;
 `include "ahb3_test.svh"
 
 module test;
+  logic        hrst;
   logic        hclk;
-  logic        prst;
-  logic [31:0] haddr;
   logic        hsel;
-  logic        hwrite;
-  logic [31:0] hrdata;
+  logic [31:0] haddr;
   logic [31:0] hwdata;
+  logic [31:0] hrdata;
+  logic        hwrite;
+  logic [ 2:0] hsize;
+  logic [ 2:0] hburst;
+  logic [ 3:0] hprot;
+  logic [ 1:0] htrans;
+  logic        hmastlock;
+  logic        hreadyout;
+  logic        hready;
+  logic        hresp;
 
   dut_if ahb3_if();
 
@@ -81,9 +89,9 @@ module test;
   end
 
   initial begin
-    ahb3_if.prst=0;
+    ahb3_if.hrst=0;
     repeat (1) @(posedge ahb3_if.hclk);
-    ahb3_if.prst=1;
+    ahb3_if.hrst=1;
   end
 
   initial begin

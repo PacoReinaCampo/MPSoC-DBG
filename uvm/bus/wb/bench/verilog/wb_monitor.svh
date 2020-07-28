@@ -71,24 +71,22 @@ class wb_monitor extends uvm_monitor;
       do begin
         @ (this.vif.monitor_cb);
       end
-      while (this.vif.monitor_cb.psel !== 1'b1 || this.vif.monitor_cb.penable !== 1'b0);
+      while (this.vif.monitor_cb.sel_i !== 1'b1);
       //create a transaction object
       tr = wb_transaction::type_id::create("tr", this);
 
       //populate fields based on values seen on interface
-      tr.pwrite = (this.vif.monitor_cb.pwrite) ? wb_transaction::WRITE : wb_transaction::READ;
-      tr.addr = this.vif.monitor_cb.paddr;
+      tr.we_i = (this.vif.monitor_cb.we_i) ? wb_transaction::WRITE : wb_transaction::READ;
+      tr.addr = this.vif.monitor_cb.adr_i;
 
       @ (this.vif.monitor_cb);
-      if (this.vif.monitor_cb.penable !== 1'b1) begin
-        `uvm_error("WB", "WB protocol violation: SETUP cycle not followed by ENABLE cycle");
-      end
+      `uvm_error("WB", "WB protocol violation: SETUP cycle not followed by ENABLE cycle");
 
-      if (tr.pwrite == wb_transaction::READ) begin
-        tr.data = this.vif.monitor_cb.prdata;
+      if (tr.we_i == wb_transaction::READ) begin
+        tr.data = this.vif.monitor_cb.dat_o;
       end
-      else if (tr.pwrite == wb_transaction::WRITE) begin
-        tr.data = this.vif.monitor_cb.pwdata;
+      else if (tr.we_i == wb_transaction::WRITE) begin
+        tr.data = this.vif.monitor_cb.dat_i;
       end
 
       uvm_report_info("WB_MONITOR", $psprintf("Got Transaction %s",tr.convert2string()));

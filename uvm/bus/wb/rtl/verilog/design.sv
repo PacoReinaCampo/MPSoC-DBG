@@ -121,27 +121,27 @@ module wb_slave(dut_if dif);
   always @(posedge dif.clk or negedge dif.rst) begin
     if (dif.rst==0) begin
       wb_st <=0;
-      dif.prdata <=0;
+      dif.dat_o <=0;
       dif.pready <=1;
       for(int i=0;i<256;i++) mem[i]=i;
     end
     else begin
       case (wb_st)
         SETUP: begin
-          dif.prdata <= 0;
-          if (dif.psel && !dif.penable) begin
-            if (dif.pwrite) begin
+          dif.dat_o <= 0;
+          if (dif.sel_i) begin
+            if (dif.we_i) begin
               wb_st <= W_ENABLE;
             end
             else begin
               wb_st <= R_ENABLE;
-              dif.prdata <= mem[dif.paddr];
+              dif.dat_o <= mem[dif.adr_i];
             end
           end
         end
         W_ENABLE: begin
-          if (dif.psel && dif.penable && dif.pwrite) begin
-            mem[dif.paddr] <= dif.pwdata;
+          if (dif.sel_i && dif.we_i) begin
+            mem[dif.adr_i] <= dif.dat_i;
           end
           wb_st <= SETUP;
         end
