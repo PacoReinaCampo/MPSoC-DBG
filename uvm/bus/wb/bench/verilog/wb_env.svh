@@ -45,12 +45,12 @@ class wb_env extends uvm_env;
   `uvm_component_utils(wb_env);
 
   //ENV class will have agent as its sub component
-  wb_agent  agt;
+  wb_agent agt;
   wb_scoreboard scb;
   wb_subscriber wb_subscriber_h;
 
   //virtual interface for WB interface
-  virtual dut_if  vif;
+  virtual dut_if vif;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);

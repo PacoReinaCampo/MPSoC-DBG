@@ -45,12 +45,12 @@ class apb4_env extends uvm_env;
   `uvm_component_utils(apb4_env);
 
   //ENV class will have agent as its sub component
-  apb4_agent  agt;
+  apb4_agent agt;
   apb4_scoreboard scb;
   apb4_subscriber apb4_subscriber_h;
 
   //virtual interface for APB4 interface
-  virtual dut_if  vif;
+  virtual dut_if vif;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);

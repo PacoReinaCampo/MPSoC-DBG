@@ -45,12 +45,12 @@ class axi4_env extends uvm_env;
   `uvm_component_utils(axi4_env);
 
   //ENV class will have agent as its sub component
-  axi4_agent  agt;
+  axi4_agent agt;
   axi4_scoreboard scb;
   axi4_subscriber axi4_subscriber_h;
 
   //virtual interface for AXI4 interface
-  virtual dut_if  vif;
+  virtual dut_if vif;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);

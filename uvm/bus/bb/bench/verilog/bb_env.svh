@@ -45,12 +45,12 @@ class bb_env extends uvm_env;
   `uvm_component_utils(bb_env);
 
   //ENV class will have agent as its sub component
-  bb_agent  agt;
+  bb_agent agt;
   bb_scoreboard scb;
   bb_subscriber bb_subscriber_h;
 
   //virtual interface for BB interface
-  virtual dut_if  vif;
+  virtual dut_if vif;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);

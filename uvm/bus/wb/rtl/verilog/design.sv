@@ -58,51 +58,51 @@ interface dut_if;
   logic        rty_o;
   
   //Master Clocking block - used for Drivers
-  clocking master_cb @(posedge pclk);
-    input  [31:0] adr_i;
-    input         stb_i;
-    input         cyc_i;
-    input  [ 3:0] sel_i;
-    input         we_i;
-    input  [ 2:0] cti_i;
-    input  [ 1:0] bte_i;
-    input  [31:0] dat_i;
-    output        err_o;
-    output        ack_o;
-    output [31:0] dat_o;
-    output        rty_o;
+  clocking master_cb @(posedge clk);
+    output adr_i;
+    output stb_i;
+    output cyc_i;
+    output sel_i;
+    output we_i;
+    output cti_i;
+    output bte_i;
+    output dat_i;
+    input  err_o;
+    input  ack_o;
+    input  dat_o;
+    input  rty_o;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
-  clocking slave_cb @(posedge pclk);
-    output [31:0] adr_i;
-    output        stb_i;
-    output        cyc_i;
-    output [ 3:0] sel_i;
-    output        we_i;
-    output [ 2:0] cti_i;
-    output [ 1:0] bte_i;
-    output [31:0] dat_i;
-    input         err_o;
-    input         ack_o;
-    input  [31:0] dat_o;
-    input         rty_o;
+  clocking slave_cb @(posedge clk);
+    input  adr_i;
+    input  stb_i;
+    input  cyc_i;
+    input  sel_i;
+    input  we_i;
+    input  cti_i;
+    input  bte_i;
+    input  dat_i;
+    output err_o;
+    output ack_o;
+    output dat_o;
+    output rty_o;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
-  clocking monitor_cb @(posedge pclk);
-    input  [31:0] adr_i;
-    input         stb_i;
-    input         cyc_i;
-    input  [ 3:0] sel_i;
-    input         we_i;
-    input  [ 2:0] cti_i;
-    input  [ 1:0] bte_i;
-    input  [31:0] dat_i;
-    input         err_o;
-    input         ack_o;
-    input  [31:0] dat_o;
-    input         rty_o;
+  clocking monitor_cb @(posedge clk);
+    input adr_i;
+    input stb_i;
+    input cyc_i;
+    input sel_i;
+    input we_i;
+    input cti_i;
+    input bte_i;
+    input dat_i;
+    input err_o;
+    input ack_o;
+    input dat_o;
+    input rty_o;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);
@@ -118,8 +118,8 @@ module wb_slave(dut_if dif);
   const logic [1:0] W_ENABLE=1;
   const logic [1:0] R_ENABLE=2;
   
-  always @(posedge dif.pclk or negedge dif.prst) begin
-    if (dif.prst==0) begin
+  always @(posedge dif.clk or negedge dif.rst) begin
+    if (dif.rst==0) begin
       wb_st <=0;
       dif.prdata <=0;
       dif.pready <=1;

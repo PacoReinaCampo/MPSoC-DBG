@@ -59,31 +59,30 @@ import uvm_pkg::*;
 `include "ahb3_test.svh"
 
 module test;
-  logic        pclk;
+  logic        hclk;
   logic        prst;
-  logic [31:0] paddr;
-  logic        psel;
-  logic        penable;
-  logic        pwrite;
-  logic [31:0] prdata;
-  logic [31:0] pwdata;
+  logic [31:0] haddr;
+  logic        hsel;
+  logic        hwrite;
+  logic [31:0] hrdata;
+  logic [31:0] hwdata;
 
   dut_if ahb3_if();
 
   ahb3_slave dut(.dif(ahb3_if));
 
   initial begin
-    ahb3_if.pclk=0;
+    ahb3_if.hclk=0;
   end
 
   //Generate a clock
   always begin
-    #10 ahb3_if.pclk = ~ahb3_if.pclk;
+    #10 ahb3_if.hclk = ~ahb3_if.hclk;
   end
 
   initial begin
     ahb3_if.prst=0;
-    repeat (1) @(posedge ahb3_if.pclk);
+    repeat (1) @(posedge ahb3_if.hclk);
     ahb3_if.prst=1;
   end
 

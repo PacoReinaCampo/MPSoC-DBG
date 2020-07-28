@@ -51,30 +51,30 @@ interface dut_if;
   logic [31:0] per_din;
   
   //Master Clocking block - used for Drivers
-  clocking master_cb @(posedge pclk);
-    output [ 7:0] per_addr;
-    output        per_we;
-    output        per_en;
-    output [31:0] per_dout;
-    input  [31:0] per_din;
+  clocking master_cb @(posedge mclk);
+    output per_addr;
+    output per_we;
+    output per_en;
+    output per_dout;
+    input  per_din;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
-  clocking slave_cb @(posedge pclk);
-    input  [ 7:0] per_addr;
-    input         per_we;
-    input         per_en;
-    input  [31:0] per_dout;
-    output [31:0] per_din;
+  clocking slave_cb @(posedge mclk);
+    input  per_addr;
+    input  per_we;
+    input  per_en;
+    input  per_dout;
+    output per_din;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
-  clocking monitor_cb @(posedge pclk);
-    input  [ 7:0] per_addr;
-    input         per_we;
-    input         per_en;
-    input  [31:0] per_dout;
-    input  [31:0] per_din;
+  clocking monitor_cb @(posedge mclk);
+    input per_addr;
+    input per_we;
+    input per_en;
+    input per_dout;
+    input per_din;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);
@@ -90,8 +90,8 @@ module bb_slave(dut_if dif);
   const logic [1:0] W_ENABLE=1;
   const logic [1:0] R_ENABLE=2;
   
-  always @(posedge dif.pclk or negedge dif.prst) begin
-    if (dif.prst==0) begin
+  always @(posedge dif.mclk or negedge dif.mrst) begin
+    if (dif.mrst==0) begin
       bb_st <=0;
       dif.prdata <=0;
       dif.pready <=1;

@@ -45,12 +45,12 @@ class ahb3_env extends uvm_env;
   `uvm_component_utils(ahb3_env);
 
   //ENV class will have agent as its sub component
-  ahb3_agent  agt;
+  ahb3_agent agt;
   ahb3_scoreboard scb;
   ahb3_subscriber ahb3_subscriber_h;
 
   //virtual interface for AHB3 interface
-  virtual dut_if  vif;
+  virtual dut_if vif;
 
   function new(string name, uvm_component parent);
     super.new(name, parent);

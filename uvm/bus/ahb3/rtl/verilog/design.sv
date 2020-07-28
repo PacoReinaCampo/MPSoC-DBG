@@ -59,54 +59,54 @@ interface dut_if;
   logic        hresp;
   
   //Master Clocking block - used for Drivers
-  clocking master_cb @(posedge pclk);
-    input         hsel;
-    input  [31:0] haddr;
-    input  [31:0] hwdata;
-    output [31:0] hrdata;
-    input         hwrite;
-    input  [ 2:0] hsize;
-    input  [ 2:0] hburst;
-    input  [ 3:0] hprot;
-    input  [ 1:0] htrans;
-    input         hmastlock;
-    output        hreadyout;
-    input         hready;
-    output        hresp;
+  clocking master_cb @(posedge hclk);
+    output hsel;
+    output haddr;
+    output hwdata;
+    input  hrdata;
+    output hwrite;
+    output hsize;
+    output hburst;
+    output hprot;
+    output htrans;
+    output hmastlock;
+    input  hreadyout;
+    output hready;
+    input  hresp;
   endclocking: master_cb
 
   //Slave Clocking Block - used for any Slave BFMs
-  clocking slave_cb @(posedge pclk);
-    output        hsel;
-    output [31:0] haddr;
-    output [31:0] hwdata;
-    input  [31:0] hrdata;
-    output        hwrite;
-    output [ 2:0] hsize;
-    output [ 2:0] hburst;
-    output [ 3:0] hprot;
-    output [ 1:0] htrans;
-    output        hmastlock;
-    input         hreadyout;
-    output        hready;
-    input         hresp;
+  clocking slave_cb @(posedge hclk);
+    input  hsel;
+    input  haddr;
+    input  hwdata;
+    output hrdata;
+    input  hwrite;
+    input  hsize;
+    input  hburst;
+    input  hprot;
+    input  htrans;
+    input  hmastlock;
+    output hreadyout;
+    input  hready;
+    output hresp;
   endclocking: slave_cb
 
   //Monitor Clocking block - For sampling by monitor components
-  clocking monitor_cb @(posedge pclk);
-    input        hsel;
-    input [31:0] haddr;
-    input [31:0] hwdata;
-    input [31:0] hrdata;
-    input        hwrite;
-    input [ 2:0] hsize;
-    input [ 2:0] hburst;
-    input [ 3:0] hprot;
-    input [ 1:0] htrans;
-    input        hmastlock;
-    input        hreadyout;
-    input        hready;
-    input        hresp;
+  clocking monitor_cb @(posedge hclk);
+    input hsel;
+    input haddr;
+    input hwdata;
+    input hrdata;
+    input hwrite;
+    input hsize;
+    input hburst;
+    input hprot;
+    input htrans;
+    input hmastlock;
+    input hreadyout;
+    input hready;
+    input hresp;
   endclocking: monitor_cb
 
   modport master(clocking master_cb);
@@ -122,30 +122,30 @@ module ahb3_slave(dut_if dif);
   const logic [1:0] W_ENABLE=1;
   const logic [1:0] R_ENABLE=2;
   
-  always @(posedge dif.pclk or negedge dif.prst) begin
-    if (dif.prst==0) begin
+  always @(posedge dif.hclk or negedge dif.hrst) begin
+    if (dif.hrst==0) begin
       ahb3_st <=0;
-      dif.prdata <=0;
-      dif.pready <=1;
+      dif.hrdata <=0;
+      dif.hready <=1;
       for(int i=0;i<256;i++) mem[i]=i;
     end
     else begin
       case (ahb3_st)
         SETUP: begin
-          dif.prdata <= 0;
-          if (dif.psel && !dif.penable) begin
-            if (dif.pwrite) begin
+          dif.hrdata <= 0;
+          if (dif.hsel) begin
+            if (dif.hwrite) begin
               ahb3_st <= W_ENABLE;
             end
             else begin
               ahb3_st <= R_ENABLE;
-              dif.prdata <= mem[dif.paddr];
+              dif.hrdata <= mem[dif.haddr];
             end
           end
         end
         W_ENABLE: begin
-          if (dif.psel && dif.penable && dif.pwrite) begin
-            mem[dif.paddr] <= dif.pwdata;
+          if (dif.hsel && dif.hwrite) begin
+            mem[dif.haddr] <= dif.hwdata;
           end
           ahb3_st <= SETUP;
         end
