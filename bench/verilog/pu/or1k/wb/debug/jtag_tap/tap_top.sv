@@ -52,32 +52,32 @@ module tap_top #(
 )
   (
     // JTAG pins
-    input   tms_pad_i,      // JTAG test mode select pad
-    input   tck_pad_i,      // JTAG test clock pad
-    input   trst_pad_i,     // JTAG test reset pad
-    input   tdi_pad_i,      // JTAG test data input pad
-    output  tdo_pad_o,      // JTAG test data output pad
-    output  tdo_padoe_o,    // Output enable for JTAG test data output pad 
+    input      tms_pad_i,      // JTAG test mode select pad
+    input      tck_pad_i,      // JTAG test clock pad
+    input      trst_pad_i,     // JTAG test reset pad
+    input      tdi_pad_i,      // JTAG test data input pad
+    output reg tdo_pad_o,      // JTAG test data output pad
+    output reg tdo_padoe_o,    // Output enable for JTAG test data output pad 
 
     // TAP states
-    output  shift_dr_o,
-    output  pause_dr_o,
-    output  update_dr_o,
-    output  capture_dr_o,
+    output     shift_dr_o,
+    output     pause_dr_o,
+    output     update_dr_o,
+    output     capture_dr_o,
 
     // Select signals for boundary scan or mbist
-    output  extest_select_o,
-    output  sample_preload_select_o,
-    output  mbist_select_o,
-    output  debug_select_o,
+    output     extest_select_o,
+    output     sample_preload_select_o,
+    output     mbist_select_o,
+    output     debug_select_o,
 
     // TDO signal that is connected to TDI of sub-modules.
-    output  tdo_o,
+    output     tdo_o,
 
     // TDI signals from sub-modules
-    input   debug_tdi_i,    // from debug module
-    input   bs_chain_tdi_i, // from Boundary Scan Chain
-    input   mbist_tdi_i     // from Mbist Chain
+    input      debug_tdi_i,    // from debug module
+    input      bs_chain_tdi_i, // from Boundary Scan Chain
+    input      mbist_tdi_i     // from Mbist Chain
   );
 
   //////////////////////////////////////////////////////////////////
@@ -121,8 +121,6 @@ module tap_top #(
   reg     mbist_select;
   reg     debug_select;
   reg     bypass_select;
-  reg     tdo_pad_o;
-  reg     tdo_padoe_o;
   reg     tms_q1, tms_q2, tms_q3, tms_q4;
   wire    tms_reset;
 

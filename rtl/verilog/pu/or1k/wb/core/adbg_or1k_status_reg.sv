@@ -54,7 +54,7 @@ module adbg_or1k_status_reg (
   input           cpu_clk_i,
 
   output          cpu_stall_o,
-  output          cpu_rst_o ,
+  output reg      cpu_rst_o ,
 
   output [`DBG_OR1K_STATUS_LEN - 1:0] ctrl_reg_o
 );
@@ -70,7 +70,6 @@ module adbg_or1k_status_reg (
   reg            stall_bp, stall_bp_csff, stall_bp_tck;
   reg            stall_reg, stall_reg_csff, stall_reg_cpu;
   reg            cpu_reset_csff;
-  reg            cpu_rst_o;
 
   //////////////////////////////////////////////////////////////////
   //

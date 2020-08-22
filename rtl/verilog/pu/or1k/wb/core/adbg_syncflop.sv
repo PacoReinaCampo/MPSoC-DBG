@@ -63,7 +63,6 @@ module adbg_syncflop (
 
   wire    syncxor;
   wire    srinput;
-  wire    D_OUT;
 
   //////////////////////////////////////////////////////////////////
   //

@@ -50,7 +50,7 @@ module adbg_jsp_module #(
   (
     // JTAG signals
     input         tck_i,
-    output        module_tdo_o,
+    output reg    module_tdo_o,
     input         tdi_i,  // This is only used by the CRC module - data_register_i[MSB] is delayed a cycle
 
     // TAP states
@@ -61,7 +61,7 @@ module adbg_jsp_module #(
     input [52:0]  data_register_i,
     input         debug_select_i,
     input         module_select_i,
-    output        top_inhibit_o,
+    output reg    top_inhibit_o,
     input         rst_i,
 
     // WISHBONE slave interface
@@ -101,10 +101,6 @@ module adbg_jsp_module #(
   //
   // Variables
   //
-
-  // Declare inputs / outputs as wires / registers
-  wire   module_tdo_o;
-  wire   top_inhibit_o;
 
   // NOTE:  For the rest of this file, "input" and the "in" direction refer to bytes being transferred
   // from the PC, through the JTAG, and into the BIU FIFO.  The "output" direction refers to data being

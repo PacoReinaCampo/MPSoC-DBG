@@ -44,23 +44,23 @@
 
 module adbg_or1k_biu (
   // Debug interface signals
-  input         tck_i,
-  input         rst_i,
-  input  [31:0] data_i,  // Assume short words are in UPPER order bits!
-  output [31:0] data_o,
-  input  [31:0] addr_i,
-  input         strobe_i,
-  input         rd_wrn_i,
-  output        rdy_o,
+  input              tck_i,
+  input              rst_i,
+  input       [31:0] data_i,  // Assume short words are in UPPER order bits!
+  output      [31:0] data_o,
+  input       [31:0] addr_i,
+  input              strobe_i,
+  input              rd_wrn_i,
+  output reg         rdy_o,
 
   // OR1K SPR bus signals
-  input         cpu_clk_i,
-  output [31:0] cpu_addr_o,
-  input  [31:0] cpu_data_i,
-  output [31:0] cpu_data_o,
-  output        cpu_stb_o,
-  output        cpu_we_o,
-  input         cpu_ack_i
+  input              cpu_clk_i,
+  output      [31:0] cpu_addr_o,
+  input       [31:0] cpu_data_i,
+  output      [31:0] cpu_data_o,
+  output  reg        cpu_stb_o,
+  output             cpu_we_o,
+  input              cpu_ack_i
 );
 
   //////////////////////////////////////////////////////////////////
@@ -75,9 +75,6 @@ module adbg_or1k_biu (
   //
   // Variables
   //
-
-  reg    rdy_o;
-  reg    cpu_stb_o;
 
   // Registers
   reg [31:0] addr_reg;

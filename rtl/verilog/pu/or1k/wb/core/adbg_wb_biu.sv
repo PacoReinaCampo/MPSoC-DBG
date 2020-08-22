@@ -46,31 +46,31 @@
 
 module adbg_wb_biu (
   // Debug interface signals
-  input         tck_i,
-  input         rst_i,
-  input  [31:0] data_i,  // Assume short words are in UPPER order bits!
-  output [31:0] data_o,
-  input  [31:0] addr_i,
-  input         strobe_i,
-  input         rd_wrn_i,
-  output        rdy_o,
-  output        err_o,
-  input  [ 2:0] word_size_i,
+  input             tck_i,
+  input             rst_i,
+  input      [31:0] data_i,  // Assume short words are in UPPER order bits!
+  output     [31:0] data_o,
+  input      [31:0] addr_i,
+  input             strobe_i,
+  input             rd_wrn_i,
+  output reg        rdy_o,
+  output            err_o,
+  input      [ 2:0] word_size_i,
 
   // Wishbone signals
-  input         wb_clk_i,
-  output [31:0] wb_adr_o,
-  output [31:0] wb_dat_o,
-  input  [31:0] wb_dat_i,
-  output        wb_cyc_o,
-  output        wb_stb_o,
-  output [ 3:0] wb_sel_o,
-  output        wb_we_o,
-  input         wb_ack_i,
-  output        wb_cab_o,
-  input         wb_err_i,
-  output [ 2:0] wb_cti_o,
-  output [ 1:0] wb_bte_o
+  input             wb_clk_i,
+  output     [31:0] wb_adr_o,
+  output     [31:0] wb_dat_o,
+  input      [31:0] wb_dat_i,
+  output reg        wb_cyc_o,
+  output reg        wb_stb_o,
+  output     [ 3:0] wb_sel_o,
+  output            wb_we_o,
+  input             wb_ack_i,
+  output            wb_cab_o,
+  input             wb_err_i,
+  output     [ 2:0] wb_cti_o,
+  output     [ 1:0] wb_bte_o
 );
 
   //////////////////////////////////////////////////////////////////
@@ -85,20 +85,6 @@ module adbg_wb_biu (
   //
   // Variables
   //
-
-  wire [31:0]  data_o;
-  reg          rdy_o;
-  wire         err_o;
-
-  wire [31:0]  wb_adr_o;
-  reg          wb_cyc_o;
-  reg          wb_stb_o;
-  wire [31:0]  wb_dat_o;
-  wire [ 3:0]  wb_sel_o;
-  wire         wb_we_o;
-  wire         wb_cab_o;
-  wire [ 2:0]  wb_cti_o;
-  wire [ 1:0]  wb_bte_o;
 
   // Registers
   reg [ 3:0]   sel_reg;

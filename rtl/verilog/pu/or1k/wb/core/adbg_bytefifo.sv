@@ -43,14 +43,14 @@
  */
 
 module adbg_bytefifo (
-  input        CLK,
-  input        RST,
-  input  [7:0] DATA_IN,
-  output [7:0] DATA_OUT,
-  input        PUSH_POPn,
-  input        EN,
-  output [3:0] BYTES_AVAIL,
-  output [3:0] BYTES_FREE
+  input            CLK,
+  input            RST,
+  input      [7:0] DATA_IN,
+  output reg [7:0] DATA_OUT,
+  input            PUSH_POPn,
+  input            EN,
+  output     [3:0] BYTES_AVAIL,
+  output     [3:0] BYTES_FREE
 );
 
   //////////////////////////////////////////////////////////////////
@@ -61,9 +61,6 @@ module adbg_bytefifo (
   reg [7:0]  reg0, reg1, reg2, reg3, reg4, reg5, reg6, reg7;
   reg [3:0]  counter;
 
-  reg  [7:0]  DATA_OUT;
-  wire [3:0]  BYTES_AVAIL;
-  wire [3:0]  BYTES_FREE;
   wire        push_ok;
   wire        pop_ok;
 

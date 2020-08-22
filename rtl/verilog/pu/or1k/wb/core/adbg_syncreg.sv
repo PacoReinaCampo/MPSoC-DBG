@@ -64,7 +64,6 @@ module adbg_syncreg (
   wire          A_enable;
   wire          strobe_sff_out;
   wire          ack_sff_out;
-  wire    [3:0] DATA_OUT;
 
   //////////////////////////////////////////////////////////////////
   //

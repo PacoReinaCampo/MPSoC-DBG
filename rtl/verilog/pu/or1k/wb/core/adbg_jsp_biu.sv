@@ -92,15 +92,6 @@ module adbg_jsp_biu (
   // Variables
   //
 
-  wire          wb_ack_o;
-  wire [31:0]   wb_dat_o;
-  wire          wb_err_o;
-  wire          int_o;
-
-  wire [7:0]   data_o;
-  wire [3:0]   bytes_free_o;
-  wire [3:0]   bytes_available_o;
-
   // Registers
   reg [7:0]   data_in;
   reg [7:0]   rdata;
