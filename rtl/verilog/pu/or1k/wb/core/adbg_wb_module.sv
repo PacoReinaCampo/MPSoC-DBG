@@ -62,7 +62,7 @@ module adbg_wb_module #(
 
     input [52:0]  data_register_i,
     input         module_select_i,
-    output        top_inhibit_o,
+    output reg    top_inhibit_o,
     input         rst_i,
 
     // WISHBONE master interface

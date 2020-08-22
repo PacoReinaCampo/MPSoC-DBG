@@ -50,7 +50,7 @@ module adbg_jsp_module #(
   (
     // JTAG signals
     input         tck_i,
-    output reg    module_tdo_o,
+    output        module_tdo_o,
     input         tdi_i,  // This is only used by the CRC module - data_register_i[MSB] is delayed a cycle
 
     // TAP states
@@ -61,7 +61,7 @@ module adbg_jsp_module #(
     input [52:0]  data_register_i,
     input         debug_select_i,
     input         module_select_i,
-    output reg    top_inhibit_o,
+    output        top_inhibit_o,
     input         rst_i,
 
     // WISHBONE slave interface
