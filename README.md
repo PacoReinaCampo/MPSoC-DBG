@@ -335,6 +335,61 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 #### 2.2.1.1. Organization
 
+| Core                        | Module description                              |
+| --------------------------- | ----------------------------------------------- |
+| `adbg_top`                  | Debugger on Chip                                |
+| `...adbg_wb_module`         | Debugger on Chip                                |
+| `.....adbg_wb_biu`          | Debugger on Chip                                |
+| `.....adbg_crc32`           | Debugger on Chip                                |
+| `...adbg_or1k_module`       | Debugger on Chip                                |
+| `.....adbg_or1k_status_reg` | Debugger on Chip                                |
+| `.....adbg_or1k_biu`        | Debugger on Chip                                |
+| `.....adbg_crc32`           | Debugger on Chip                                |
+| `...adbg_jsp_module`        | Debugger on Chip                                |
+| `.....adbg_jsp_biu`         | Debugger on Chip                                |
+| `.......adbg_syncflop`      | Debugger on Chip                                |
+| `.......adbg_syncreg`       | Debugger on Chip                                |
+| `.........adbg_syncflop`    | Debugger on Chip                                |
+| `.......adbg_bytefifo`      | Debugger on Chip                                |
+
+| Core                             | Module description                              |
+| -------------------------------- | ----------------------------------------------- |
+| `mpsoc_dbg_top_ahb3`             | Debugger on Chip                                |
+| `...mpsoc_dbg_ahb3_module`       | Debugger on Chip                                |
+| `.....mpsoc_dbg_bus_module_core` | Debugger on Chip                                |
+| `.......mpsoc_dbg_crc32`         | Debugger on Chip                                |
+| `.....mpsoc_dbg_ahb3_biu`        | Debugger on Chip                                |
+| `...mpsoc_dbg_or1k_module`       | Debugger on Chip                                |
+| `.....mpsoc_dbg_or1k_status_reg` | Debugger on Chip                                |
+| `.....mpsoc_dbg_or1k_biu`        | Debugger on Chip                                |
+| `.....mpsoc_dbg_crc32`           | Debugger on Chip                                |
+| `...mpsoc_dbg_jsp_apb_module`    | Debugger on Chip                                |
+| `.....mpsoc_dbg_jsp_module_core` | Debugger on Chip                                |
+| `.....mpsoc_dbg_jsp_apb_biu`     | Debugger on Chip                                |
+| `.......mpsoc_dbg_syncflop`      | Debugger on Chip                                |
+| `.......mpsoc_dbg_syncreg`       | Debugger on Chip                                |
+| `.........mpsoc_dbg_syncflop`    | Debugger on Chip                                |
+| `.......mpsoc_dbg_bytefifo`      | Debugger on Chip                                |
+
+| Core                             | Module description                              |
+| -------------------------------- | ----------------------------------------------- |
+| `mpsoc_dbg_top_wb`               | Debugger on Chip                                |
+| `...mpsoc_dbg_wb_module`         | Debugger on Chip                                |
+| `.....mpsoc_dbg_bus_module_core` | Debugger on Chip                                |
+| `.......mpsoc_dbg_crc32`         | Debugger on Chip                                |
+| `.....mpsoc_dbg_wb_biu`          | Debugger on Chip                                |
+| `...mpsoc_dbg_or1k_module`       | Debugger on Chip                                |
+| `.....mpsoc_dbg_or1k_status_reg` | Debugger on Chip                                |
+| `.....mpsoc_dbg_or1k_biu`        | Debugger on Chip                                |
+| `.....mpsoc_dbg_crc32`           | Debugger on Chip                                |
+| `...mpsoc_dbg_jsp_apb_module`    | Debugger on Chip                                |
+| `.....mpsoc_dbg_jsp_module_core` | Debugger on Chip                                |
+| `.....mpsoc_dbg_jsp_apb_biu`     | Debugger on Chip                                |
+| `.......mpsoc_dbg_syncflop`      | Debugger on Chip                                |
+| `.......mpsoc_dbg_syncreg`       | Debugger on Chip                                |
+| `.........mpsoc_dbg_syncflop`    | Debugger on Chip                                |
+| `.......mpsoc_dbg_bytefifo`      | Debugger on Chip                                |
+
 #### 2.2.1.2. Parameters
 
 ### 2.2.2. Interface
