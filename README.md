@@ -352,6 +352,20 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........adbg_syncflop`    | Debugger on Chip                                |
 | `.......adbg_bytefifo`      | Debugger on Chip                                |
 
+#### 2.2.1.2. Parameters
+
+### 2.2.2. Interface
+
+### 2.2.3. Registers
+
+### 2.2.4. Interruptions
+
+## 2.3. Debugger on Chip for a RISC-V Processing Unit
+
+### 2.3.1. Functionality
+
+#### 2.3.1.1. Organization
+
 | Core                             | Module description                              |
 | -------------------------------- | ----------------------------------------------- |
 | `mpsoc_dbg_top_ahb3`             | Debugger on Chip                                |
@@ -389,20 +403,6 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.......mpsoc_dbg_syncreg`       | Debugger on Chip                                |
 | `.........mpsoc_dbg_syncflop`    | Debugger on Chip                                |
 | `.......mpsoc_dbg_bytefifo`      | Debugger on Chip                                |
-
-#### 2.2.1.2. Parameters
-
-### 2.2.2. Interface
-
-### 2.2.3. Registers
-
-### 2.2.4. Interruptions
-
-## 2.3. Debugger on Chip for a RISC-V Processing Unit
-
-### 2.3.1. Functionality
-
-#### 2.3.1.1. Organization
 
 #### 2.3.1.2. Parameters
 
