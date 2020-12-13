@@ -321,9 +321,13 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 #### 2.1.1.1. Organization
 
-#### 2.1.1.2. Parameters
+#### 2.1.1.2. Pipeline
 
 ### 2.1.2. Interface
+
+#### 2.1.2.1. Constants
+
+#### 2.1.2.2. Signals
 
 ### 2.1.3. Registers
 
@@ -352,9 +356,13 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........adbg_syncflop`    | Debugger on Chip                                |
 | `.......adbg_bytefifo`      | Debugger on Chip                                |
 
-#### 2.2.1.2. Parameters
+#### 2.2.1.2. Pipeline
 
 ### 2.2.2. Interface
+
+#### 2.2.2.1. Constants
+
+#### 2.2.2.2. Signals
 
 ### 2.2.3. Registers
 
@@ -404,9 +412,13 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........mpsoc_dbg_syncflop`    | Debugger on Chip                                |
 | `.......mpsoc_dbg_bytefifo`      | Debugger on Chip                                |
 
-#### 2.3.1.2. Parameters
+#### 2.3.1.2. Pipeline
 
 ### 2.3.2. Interface
+
+#### 2.3.2.1. Constants
+
+#### 2.3.2.2. Signals
 
 ### 2.3.3. Registers
 
@@ -418,9 +430,13 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 #### 2.4.1.1. Organization
 
-#### 2.4.1.2. Parameters
+#### 2.4.1.2. Pipeline
 
 ### 2.4.2. Interface
+
+#### 2.4.2.1. Constants
+
+#### 2.4.2.2. Signals
 
 ### 2.4.3. Registers
 
@@ -432,9 +448,13 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 #### 2.5.1.1. Organization
 
-#### 2.5.1.2. Parameters
+#### 2.5.1.2. Pipeline
 
 ### 2.5.2. Interface
+
+#### 2.5.2.1. Constants
+
+#### 2.5.2.2. Signals
 
 ### 2.5.3. Registers
 
