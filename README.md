@@ -319,9 +319,9 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 ### 2.1.1. Functionality
 
-#### 2.1.1.1. Organization
+#### 2.1.1.1. Structure
 
-#### 2.1.1.2. Pipeline
+#### 2.1.1.2. Behavior
 
 ### 2.1.2. Interface
 
@@ -337,7 +337,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 ### 2.2.1. Functionality
 
-#### 2.2.1.1. Organization
+#### 2.2.1.1. Structure
 
 | Core                        | Module description                              |
 | --------------------------- | ----------------------------------------------- |
@@ -356,7 +356,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........adbg_syncflop`    | Debugger on Chip                                |
 | `.......adbg_bytefifo`      | Debugger on Chip                                |
 
-#### 2.2.1.2. Pipeline
+#### 2.2.1.2. Behavior
 
 ### 2.2.2. Interface
 
@@ -372,7 +372,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 ### 2.3.1. Functionality
 
-#### 2.3.1.1. Organization
+#### 2.3.1.1. Structure
 
 | Core                             | Module description                              |
 | -------------------------------- | ----------------------------------------------- |
@@ -412,7 +412,7 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........mpsoc_dbg_syncflop`    | Debugger on Chip                                |
 | `.......mpsoc_dbg_bytefifo`      | Debugger on Chip                                |
 
-#### 2.3.1.2. Pipeline
+#### 2.3.1.2. Behavior
 
 ### 2.3.2. Interface
 
@@ -428,9 +428,9 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 ### 2.4.1. Functionality
 
-#### 2.4.1.1. Organization
+#### 2.4.1.1. Structure
 
-#### 2.4.1.2. Pipeline
+#### 2.4.1.2. Behavior
 
 ### 2.4.2. Interface
 
@@ -446,9 +446,9 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 
 ### 2.5.1. Functionality
 
-#### 2.5.1.1. Organization
+#### 2.5.1.1. Structure
 
-#### 2.5.1.2. Pipeline
+#### 2.5.1.2. Behavior
 
 ### 2.5.2. Interface
 
