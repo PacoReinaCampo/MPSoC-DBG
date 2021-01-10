@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization_fixedwidth.sv
+-- Converted from rtl/verilog/modules/template/mpsoc_osd_stm_template.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -46,79 +46,75 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use ieee.math_real.all;
 
-use work.riscv_dbg_pkg.all;
+use work.mpsoc_pkg.all;
+use work.mpsoc_dbg_pkg.all;
 
-entity riscv_osd_event_packetization_fixedwidth is
+entity mpsoc_osd_stm_template is
   generic (
-    XLEN       : integer := 64;
-    DATA_WIDTH : integer := 64
+    XLEN     : integer := 64;
+    VALWIDTH : integer := 2
   );
   port (
+    -- the address width of the core register file
     clk : in std_logic;
     rst : in std_logic;
+
+    id : in std_logic_vector(XLEN-1 downto 0);
+
+    debug_in_data  : in  std_logic_vector(XLEN-1 downto 0);
+    debug_in_last  : in  std_logic;
+    debug_in_valid : in  std_logic;
+    debug_in_ready : out std_logic;
 
     debug_out_data  : out std_logic_vector(XLEN-1 downto 0);
     debug_out_last  : out std_logic;
     debug_out_valid : out std_logic;
     debug_out_ready : in  std_logic;
 
-    -- DI address of this module (SRC)
-    id : in std_logic_vector(XLEN-1 downto 0);
-
-    -- DI address of the event destination (DEST)
-    dest     : in std_logic_vector(XLEN-1 downto 0);
-    -- Generate an overflow packet
-    overflow : in std_logic;
-
-    -- a new event is available
-    event_available : in  std_logic;
-    -- the packet has been sent
-    event_consumed  : out std_logic;
-
-    data : in std_logic_vector(DATA_WIDTH-1 downto 0)
+    trace_port_insn     : in std_logic_vector(XLEN-1 downto 0);
+    trace_port_pc       : in std_logic_vector(XLEN-1 downto 0);
+    trace_port_jb       : in std_logic;
+    trace_port_jal      : in std_logic;
+    trace_port_jr       : in std_logic;
+    trace_port_jbtarget : in std_logic_vector(XLEN-1 downto 0);
+    trace_port_valid    : in std_logic;
+    trace_port_data     : in std_logic_vector(VALWIDTH-1 downto 0);
+    trace_port_addr     : in std_logic_vector(4 downto 0);
+    trace_port_we       : in std_logic
   );
-end riscv_osd_event_packetization_fixedwidth;
+end mpsoc_osd_stm_template;
 
-architecture RTL of riscv_osd_event_packetization_fixedwidth is
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Constants
-  --
-  constant LOG2_NUM_WORDS : integer := integer(log2(real(MAX_DATA_NUM_WORDS)));
-
-  constant VECTOR_DATA_NUM_WORDS : std_logic_vector(LOG2_NUM_WORDS-1 downto 0) := std_logic_vector(to_unsigned(MAX_DATA_NUM_WORDS, LOG2_NUM_WORDS));
-
-  component riscv_osd_event_packetization
+architecture RTL of mpsoc_osd_stm_template is
+  component mpsoc_osd_stm
     generic (
-      XLEN       : integer := 64;
-      DATA_WIDTH : integer := 64
+      XLEN : integer := 64;
+      PLEN : integer := 64;
+
+      MAX_REG_SIZE : integer := 64;
+
+      VALWIDTH : integer := 2
     );
     port (
+      -- the address width of the core register file
       clk : in std_logic;
       rst : in std_logic;
+
+      id : in std_logic_vector(XLEN-1 downto 0);
+
+      debug_in_data  : in  std_logic_vector(XLEN-1 downto 0);
+      debug_in_last  : in  std_logic;
+      debug_in_valid : in  std_logic;
+      debug_in_ready : out std_logic;
 
       debug_out_data  : out std_logic_vector(XLEN-1 downto 0);
       debug_out_last  : out std_logic;
       debug_out_valid : out std_logic;
       debug_out_ready : in  std_logic;
 
-      id : in std_logic_vector(XLEN-1 downto 0);
-
-      dest     : in std_logic_vector(XLEN-1 downto 0);
-      overflow : in std_logic;
-
-      event_available : in  std_logic;
-      event_consumed  : out std_logic;
-
-      data_num_words : in std_logic_vector(LOG2_NUM_WORDS-1 downto 0);
-
-      data_req_idx : out std_logic_vector(LOG2_NUM_WORDS-1 downto 0);
-
-      data_req_valid : out std_logic;
-
-      data : in std_logic_vector(XLEN-1 downto 0)
+      trace_valid : in std_logic;
+      trace_id    : in std_logic_vector(XLEN-1 downto 0);
+      trace_value : in std_logic_vector(VALWIDTH-1 downto 0)
     );
   end component;
 
@@ -126,61 +122,61 @@ architecture RTL of riscv_osd_event_packetization_fixedwidth is
   --
   -- Variables
   --
-  signal data_req_idx : std_logic_vector(LOG2_NUM_WORDS-1 downto 0);
-  signal data_word    : std_logic_vector(XLEN-1 downto 0);
+  signal trace_valid : std_logic;
+  signal trace_id    : std_logic_vector(XLEN-1 downto 0);
+  signal trace_value : std_logic_vector(VALWIDTH-1 downto 0);
 
-  -- number of bits to fill in the last word
-  signal fill_last : std_logic_vector(3 downto 0);
+  signal trace_reg_enable : std_logic;
+  signal trace_reg_addr   : std_logic_vector(REG_ADDR_WIDTH-1 downto 0);
+
+  signal r3_copy : std_logic_vector(VALWIDTH-1 downto 0);
 
 begin
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
-  fill_last <= std_logic_vector(to_unsigned(XLEN-DATA_WIDTH mod XLEN, 4));
-
-  processing_0 : process (data, data_req_idx, fill_last)
-  begin
-    if (data_req_idx < std_logic_vector(to_unsigned(MAX_DATA_NUM_WORDS-1, LOG2_NUM_WORDS))) then
-      --data_word <= data(XLEN downto (to_integer(unsigned(data_req_idx))+1)*XLEN-1);
-    elsif (unsigned(data_req_idx) = to_unsigned(MAX_DATA_NUM_WORDS-1, LOG2_NUM_WORDS)) then
-      -- last word must be padded with 0s if the data doesn't fill a word
-      for i in 0 to XLEN-1 loop
-        if (i < to_integer(unsigned(fill_last))) then
-          data_word(XLEN-i-1) <= '0';
-        else
-          data_word(XLEN-i-1) <= data(DATA_WIDTH-1-(i-to_integer(unsigned(fill_last))));
-        end if;
-      end loop;
-    else
-      data_word <= (others => '0');
-    end if;
-  end process;
-
-  osd_event_packetization : riscv_osd_event_packetization
+  osd_stm : mpsoc_osd_stm
     generic map (
-      XLEN       => XLEN,
-      DATA_WIDTH => DATA_WIDTH
+      XLEN => XLEN,
+      PLEN => PLEN,
+
+      MAX_REG_SIZE => MAX_REG_SIZE,
+
+      VALWIDTH => VALWIDTH
     )
     port map (
       clk => clk,
       rst => rst,
+
+      id => id,
+
+      debug_in_data  => debug_in_data,
+      debug_in_last  => debug_in_last,
+      debug_in_valid => debug_in_valid,
+      debug_in_ready => debug_in_ready,
 
       debug_out_data  => debug_out_data,
       debug_out_last  => debug_out_last,
       debug_out_valid => debug_out_valid,
       debug_out_ready => debug_out_ready,
 
-      id              => id,
-      dest            => dest,
-      overflow        => overflow,
-      event_available => event_available,
-      event_consumed  => event_consumed,
-
-      data_num_words => VECTOR_DATA_NUM_WORDS(LOG2_NUM_WORDS-1 downto 0),
-      data_req_valid => open,
-      data_req_idx   => data_req_idx,
-
-      data => data_word
+      trace_valid => trace_valid,
+      trace_id    => trace_id,
+      trace_value => trace_value
     );
+
+  processing_0 : process (clk)
+  begin
+    if (rising_edge(clk)) then
+      if (trace_port_we = '1' and (trace_port_addr = "00011")) then
+        r3_copy <= trace_port_data;
+      end if;
+    end if;
+  end process;
+
+  trace_valid <= trace_port_valid and to_stdlogic(trace_port_insn(31 downto 16) = X"1500") and to_stdlogic(trace_port_insn(15 downto 0) /= X"0000");
+
+  trace_id    <= trace_port_insn;
+  trace_value <= r3_copy;
 end RTL;

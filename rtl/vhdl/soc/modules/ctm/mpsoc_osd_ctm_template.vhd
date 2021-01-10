@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/modules/common/riscv_osd_scm.sv
+-- Converted from rtl/verilog/modules/template/mpsoc_osd_ctm_template.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,15 +47,17 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
-use work.riscv_dbg_pkg.all;
-
-entity riscv_osd_scm is
+entity mpsoc_osd_ctm_template is
   generic (
     XLEN : integer := 64;
     PLEN : integer := 64;
 
-    MAX_REG_SIZE : integer := 64
+    MAX_REG_SIZE : integer := 64;
+
+    ADDR_WIDTH : integer := 64;
+    DATA_WIDTH : integer := 64;
+
+    VALWIDTH : integer := 2
   );
   port (
     clk : in std_logic;
@@ -73,18 +75,29 @@ entity riscv_osd_scm is
     debug_out_valid : out std_logic;
     debug_out_ready : in  std_logic;
 
-    sys_rst : out std_logic;
-    cpu_rst : out std_logic
+    trace_port_insn     : in std_logic_vector(XLEN-1 downto 0);
+    trace_port_pc       : in std_logic_vector(XLEN-1 downto 0);
+    trace_port_jb       : in std_logic;
+    trace_port_jal      : in std_logic;
+    trace_port_jr       : in std_logic;
+    trace_port_jbtarget : in std_logic_vector(XLEN-1 downto 0);
+    trace_port_valid    : in std_logic;
+    trace_port_data     : in std_logic_vector(VALWIDTH-1 downto 0);
+    trace_port_addr     : in std_logic_vector(4 downto 0);
+    trace_port_we       : in std_logic
   );
-end riscv_osd_scm;
+end mpsoc_osd_ctm_template;
 
-architecture RTL of riscv_osd_scm is
-  component riscv_osd_regaccess
+architecture RTL of mpsoc_osd_ctm_template is
+  component mpsoc_osd_ctm
     generic (
       XLEN : integer := 64;
       PLEN : integer := 64;
 
-      MAX_REG_SIZE : integer := 64
+      MAX_REG_SIZE : integer := 64;
+
+      ADDR_WIDTH : integer := 64;
+      DATA_WIDTH : integer := 64
     );
     port (
       clk : in std_logic;
@@ -92,27 +105,34 @@ architecture RTL of riscv_osd_scm is
 
       id : in std_logic_vector(XLEN-1 downto 0);
 
-      debug_in_data  : in  std_logic_vector(XLEN-1 downto 0);
+      debug_in_data  : in  std_logic_vector(DATA_WIDTH-1 downto 0);
       debug_in_last  : in  std_logic;
       debug_in_valid : in  std_logic;
       debug_in_ready : out std_logic;
 
-      debug_out_data  : out std_logic_vector(XLEN-1 downto 0);
+      debug_out_data  : out std_logic_vector(DATA_WIDTH-1 downto 0);
       debug_out_last  : out std_logic;
       debug_out_valid : out std_logic;
       debug_out_ready : in  std_logic;
 
-      reg_request : out std_logic;
-      reg_write   : out std_logic;
-      reg_addr    : out std_logic_vector(PLEN-1 downto 0);
-      reg_size    : out std_logic_vector(1 downto 0);
-      reg_wdata   : out std_logic_vector(MAX_REG_SIZE-1 downto 0);
-      reg_ack     : in  std_logic;
-      reg_err     : in  std_logic;
-      reg_rdata   : in  std_logic_vector(MAX_REG_SIZE-1 downto 0);
-
-      event_dest : out std_logic_vector(XLEN-1 downto 0);
-      stall      : out std_logic
+      trace_valid    : in std_logic;
+      trace_pc       : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+      trace_npc      : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+      trace_jal      : in std_logic;
+      trace_jalr     : in std_logic;
+      trace_branch   : in std_logic;
+      trace_load     : in std_logic;
+      trace_store    : in std_logic;
+      trace_trap     : in std_logic;
+      trace_xcpt     : in std_logic;
+      trace_mem      : in std_logic;
+      trace_csr      : in std_logic;
+      trace_br_taken : in std_logic;
+      trace_prv      : in std_logic_vector(1 downto 0);
+      trace_addr     : in std_logic_vector(ADDR_WIDTH-1 downto 0);
+      trace_rdata    : in std_logic_vector(DATA_WIDTH-1 downto 0);
+      trace_wdata    : in std_logic_vector(DATA_WIDTH-1 downto 0);
+      trace_time     : in std_logic_vector(DATA_WIDTH-1 downto 0)
     );
   end component;
 
@@ -120,31 +140,39 @@ architecture RTL of riscv_osd_scm is
   --
   -- Variables
   --
-  signal reg_request : std_logic;
-  signal reg_write   : std_logic;
-  signal reg_addr    : std_logic_vector(63 downto 0);
-  signal reg_size    : std_logic_vector(1 downto 0);
-  signal reg_wdata   : std_logic_vector(MAX_REG_SIZE-1 downto 0);
-  signal reg_ack     : std_logic;
-  signal reg_err     : std_logic;
-  signal reg_rdata   : std_logic_vector(MAX_REG_SIZE-1 downto 0);
-
-  signal rst_vector : std_logic_vector(1 downto 0);
+  signal trace_valid    : std_logic;
+  signal trace_pc       : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal trace_npc      : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal trace_jal      : std_logic;
+  signal trace_jalr     : std_logic;
+  signal trace_branch   : std_logic;
+  signal trace_load     : std_logic;
+  signal trace_store    : std_logic;
+  signal trace_trap     : std_logic;
+  signal trace_xcpt     : std_logic;
+  signal trace_mem      : std_logic;
+  signal trace_csr      : std_logic;
+  signal trace_br_taken : std_logic;
+  signal trace_prv      : std_logic_vector(1 downto 0);
+  signal trace_addr     : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal trace_rdata    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal trace_wdata    : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal trace_time     : std_logic_vector(DATA_WIDTH-1 downto 0);
 
 begin
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
-  sys_rst <= rst_vector(0) or rst;
-  cpu_rst <= rst_vector(1) or rst;
-
-  osd_regaccess : riscv_osd_regaccess
+  osd_ctm : mpsoc_osd_ctm
     generic map (
       XLEN => XLEN,
       PLEN => PLEN,
 
-      MAX_REG_SIZE => MAX_REG_SIZE
+      MAX_REG_SIZE => MAX_REG_SIZE,
+
+      ADDR_WIDTH => ADDR_WIDTH,
+      DATA_WIDTH => DATA_WIDTH
     )
     port map (
       clk => clk,
@@ -162,49 +190,43 @@ begin
       debug_out_valid => debug_out_valid,
       debug_out_ready => debug_out_ready,
 
-      reg_request => reg_request,
-      reg_write   => reg_write,
-      reg_addr    => reg_addr,
-      reg_size    => reg_size,
-      reg_wdata   => reg_wdata,
-      reg_ack     => reg_ack,
-      reg_err     => reg_err,
-      reg_rdata   => reg_rdata,
-
-      event_dest => open,
-      stall      => open
+      trace_valid    => trace_valid,
+      trace_pc       => trace_pc,
+      trace_npc      => trace_npc,
+      trace_jal      => trace_jal,
+      trace_jalr     => trace_jalr,
+      trace_branch   => trace_branch,
+      trace_load     => trace_load,
+      trace_store    => trace_store,
+      trace_trap     => trace_trap,
+      trace_xcpt     => trace_xcpt,
+      trace_mem      => trace_mem,
+      trace_csr      => trace_csr,
+      trace_br_taken => trace_br_taken,
+      trace_prv      => trace_prv,
+      trace_addr     => trace_addr,
+      trace_rdata    => trace_rdata,
+      trace_wdata    => trace_wdata,
+      trace_time     => trace_time
     );
 
-  processing_0 : process (reg_addr)
-  begin
-    reg_ack   <= '1';
-    reg_rdata <= (others => 'X');
-    reg_err   <= '0';
+  trace_valid <= trace_port_valid;
+  trace_pc    <= trace_port_pc;
+  trace_npc   <= trace_port_jbtarget;
+  trace_jal   <= trace_port_jal;
+  trace_jalr  <= trace_port_jr;
 
-    case (reg_addr) is
-      when X"0000000000000200" =>
-        reg_rdata <= std_logic_vector(to_unsigned(SYSTEM_VENDOR_ID, MAX_REG_SIZE));
-      when X"0000000000000201" =>
-        reg_rdata <= std_logic_vector(to_unsigned(SYSTEM_DEVICE_ID, MAX_REG_SIZE));
-      when X"0000000000000202" =>
-        reg_rdata <= std_logic_vector(to_unsigned(NUM_MODULES, MAX_REG_SIZE));
-      when X"0000000000000203" =>
-        reg_rdata <= std_logic_vector(to_unsigned(MAX_PKT_LEN, MAX_REG_SIZE));
-      when X"0000000000000204" =>
-        reg_rdata <= (MAX_REG_SIZE-1 downto 2 => '0') & rst_vector;
-      when others =>
-        reg_err <= reg_request;
-    end case;
-  end process;
-
-  processing_1 : process (clk)
-  begin
-    if (rising_edge(clk)) then
-      if (rst = '1') then
-        rst_vector <= "00";
-      elsif (reg_request = '1' and reg_write = '1' and (reg_addr = X"0000000000000204")) then
-        rst_vector <= reg_wdata(1 downto 0);
-      end if;
-    end if;
-  end process;
+  trace_branch   <= '0';
+  trace_load     <= '0';
+  trace_store    <= '0';
+  trace_trap     <= '0';
+  trace_xcpt     <= '0';
+  trace_mem      <= '0';
+  trace_csr      <= '0';
+  trace_br_taken <= '0';
+  trace_prv      <= (others => '0');
+  trace_addr     <= (others => '0');
+  trace_rdata    <= (others => '0');
+  trace_wdata    <= (others => '0');
+  trace_time     <= (others => '0');
 end RTL;

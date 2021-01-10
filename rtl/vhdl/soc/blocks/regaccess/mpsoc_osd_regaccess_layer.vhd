@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/regaccess/riscv_osd_regaccess_layer.sv
+-- Converted from rtl/verilog/blocks/regaccess/mpsoc_osd_regaccess_layer.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity riscv_osd_regaccess_layer is
+entity mpsoc_osd_regaccess_layer is
   generic (
     XLEN : integer := 64;
     PLEN : integer := 64;
@@ -92,10 +92,10 @@ entity riscv_osd_regaccess_layer is
     event_dest : out std_logic_vector(XLEN-1 downto 0);  -- DI address of the event destination
     stall      : out std_logic
   );
-end riscv_osd_regaccess_layer;
+end mpsoc_osd_regaccess_layer;
 
-architecture RTL of riscv_osd_regaccess_layer is
-  component riscv_osd_regaccess
+architecture RTL of mpsoc_osd_regaccess_layer is
+  component mpsoc_osd_regaccess
   generic (
     XLEN : integer := 64;
     PLEN : integer := 64;
@@ -132,7 +132,7 @@ architecture RTL of riscv_osd_regaccess_layer is
   );
 end component;
 
-component riscv_osd_regaccess_demux
+component mpsoc_osd_regaccess_demux
   generic (
     XLEN : integer := 64
   );
@@ -157,7 +157,7 @@ component riscv_osd_regaccess_demux
   );
 end component;
 
-component riscv_ring_router_mux
+component mpsoc_ring_router_mux
   generic (
     XLEN : integer := 64
   );
@@ -201,7 +201,7 @@ begin
   --
   -- Module Body
   --
-  osd_regaccess : riscv_osd_regaccess
+  osd_regaccess : mpsoc_osd_regaccess
     generic map (
       XLEN => XLEN,
       PLEN => PLEN,
@@ -238,7 +238,7 @@ begin
     );
 
   -- Ingress path demux
-  osd_regaccess_demux : riscv_osd_regaccess_demux
+  osd_regaccess_demux : mpsoc_osd_regaccess_demux
     generic map (
       XLEN => XLEN
     )
@@ -263,7 +263,7 @@ begin
     );
 
   -- Egress path mux
-  ring_router_mux : riscv_ring_router_mux
+  ring_router_mux : mpsoc_ring_router_mux
     generic map (
       XLEN => XLEN
     )

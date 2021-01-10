@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/riscv_dbg_testbench.sv
+-- Converted from bench/verilog/regression/mpsoc_dbg_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,14 +47,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
-use work.riscv_dbg_pkg.all;
+use work.mpsoc_pkg.all;
+use work.mpsoc_dbg_pkg.all;
 
-entity riscv_dbg_testbench is
-end riscv_dbg_testbench;
+entity mpsoc_dbg_testbench is
+end mpsoc_dbg_testbench;
 
-architecture RTL of riscv_dbg_testbench is
-  component riscv_debug_interface
+architecture RTL of mpsoc_dbg_testbench is
+  component mpsoc_debug_interface
     generic (
       XLEN : integer := 64;
       PLEN : integer := 64;
@@ -97,7 +97,7 @@ architecture RTL of riscv_dbg_testbench is
     );
   end component;
 
-  component riscv_debug_ring
+  component mpsoc_debug_ring
     generic (
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
@@ -121,7 +121,7 @@ architecture RTL of riscv_dbg_testbench is
     );
   end component;
 
-  component riscv_debug_ring_expand
+  component mpsoc_debug_ring_expand
     generic (
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
@@ -224,7 +224,7 @@ begin
   --
 
   --DUT
-  debug_interface : riscv_debug_interface
+  debug_interface : mpsoc_debug_interface
     generic map (
       XLEN     => XLEN,
       PLEN     => PLEN,
@@ -261,7 +261,7 @@ begin
       ring_in_ready => debug_ring_out_ready
     );
 
-  debug_ring : riscv_debug_ring
+  debug_ring : mpsoc_debug_ring
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,
@@ -284,7 +284,7 @@ begin
       dii_out_ready => dii_out_ready
     );
 
-  debug_ring_expand : riscv_debug_ring_expand
+  debug_ring_expand : mpsoc_debug_ring_expand
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,

@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/buffer/riscv_osd_fifo.sv
+-- Converted from rtl/verilog/blocks/tracesample/mpsoc_osd_tracesample.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -13,7 +13,7 @@
 --                                                                            //
 --                                                                            //
 --              MPSoC-RISCV CPU                                               //
---              Degub Interface                                               //
+--              Debug Interface                                               //
 --              AMBA3 AHB-Lite Bus Interface                                  //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,94 +47,73 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
+use work.mpsoc_pkg.all;
 
-entity riscv_osd_fifo is
+entity mpsoc_osd_tracesample is
   generic (
-    WIDTH : integer := 64;
-    DEPTH : integer := 8
+    WIDTH : integer := 64
   );
   port (
-    clk : in std_ulogic;
-    rst : in std_ulogic;
+    clk          : in std_logic;
+    rst          : in std_logic;
+    sample_data  : in std_logic_vector(WIDTH-1 downto 0);
+    sample_valid : in std_logic;
 
-    in_data  : in  std_ulogic_vector(WIDTH-1 downto 0);
-    in_valid : in  std_ulogic;
-    in_ready : out std_ulogic;
-
-    out_data  : out std_ulogic_vector(WIDTH-1 downto 0);
-    out_valid : out std_ulogic;
-    out_ready : in  std_ulogic
+    fifo_data     : out std_logic_vector(WIDTH-1 downto 0);
+    fifo_overflow : out std_logic;
+    fifo_valid    : out std_logic;
+    fifo_ready    : in  std_logic
     );
-end riscv_osd_fifo;
+end mpsoc_osd_tracesample;
 
-architecture RTL of riscv_osd_fifo is
-
+architecture RTL of mpsoc_osd_tracesample is
   --////////////////////////////////////////////////////////////////
   --
   -- Variables
   --
+  signal ov_counter : std_logic_vector(15 downto 0);
 
-  -- Signals for fifo
-  signal fifo_data     : std_logic_matrix(DEPTH-1 downto 0)(WIDTH-1 downto 0);  --actual fifo
-  signal nxt_fifo_data : std_logic_matrix(DEPTH-1 downto 0)(WIDTH-1 downto 0);
+  signal passthrough : std_logic;
 
-  signal fifo_write_ptr : std_ulogic_vector(DEPTH downto 0);
-
-  signal pop  : std_ulogic;
-  signal push : std_ulogic;
+  signal ov_increment : std_logic;
+  signal ov_saturate  : std_logic;
+  signal ov_complete  : std_logic;
+  signal ov_again     : std_logic;
 
 begin
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
-  pop  <= not fifo_write_ptr(0) and out_ready;
-  push <= in_valid and not fifo_write_ptr(DEPTH);
+  passthrough <= to_stdlogic(ov_counter = std_logic_vector(to_unsigned(0, 16)));
 
-  out_data  <= fifo_data(0);
-  out_valid <= not fifo_write_ptr(0);
+  fifo_data(15 downto 0) <= sample_data(15 downto 0)
+                            when passthrough = '1' else ov_counter;
 
-  in_ready <= not fifo_write_ptr(DEPTH);
+  generating_0 : if (WIDTH > 16) generate
+    fifo_data(WIDTH-1 downto 16) <= sample_data(WIDTH-1 downto 16);
+  end generate;
+
+
+  fifo_overflow <= not passthrough;
+  fifo_valid    <= sample_valid
+                when passthrough = '1' else '1';
+
+  ov_increment <= (sample_valid and not fifo_ready);
+  ov_saturate  <= reduce_and(ov_counter);
+  ov_complete  <= not passthrough and fifo_ready and not sample_valid;
+  ov_again     <= not passthrough and fifo_ready and sample_valid;
 
   processing_0 : process (clk)
   begin
     if (rising_edge(clk)) then
-      if (rst = '1') then
-        fifo_write_ptr <= std_ulogic_vector(to_unsigned(1, DEPTH+1));
-      elsif (push = '1' and pop = '0') then
-        fifo_write_ptr <= std_ulogic_vector(unsigned(fifo_write_ptr) sll 1);
-      elsif (push = '0' and pop = '1') then
-        fifo_write_ptr <= std_ulogic_vector(unsigned(fifo_write_ptr) srl 1);
+      if (rst = '1' or ov_complete = '1') then
+        ov_counter <= std_logic_vector(to_unsigned(0, 16));
+      elsif (ov_again = '1') then
+        ov_counter <= std_logic_vector(to_unsigned(1, 16));
+      elsif (ov_increment = '1' and ov_saturate = '0') then
+        ov_counter <= std_logic_vector(unsigned(ov_counter)-to_unsigned(1, 16));
       end if;
-    end if;
-  end process;
-
-  processing_1 : process(pop, push, fifo_write_ptr, fifo_data, in_data)
-  begin
-    for i in 0 to DEPTH - 1 loop
-      if (pop = '1') then
-        if (push = '1' and fifo_write_ptr(i+1) = '1') then
-          nxt_fifo_data(i) <= in_data;
-        elsif (i < DEPTH-1) then
-          nxt_fifo_data(i) <= fifo_data(i+1);
-        else
-          nxt_fifo_data(i) <= fifo_data(i);
-        end if;
-      elsif (push = '1' and fifo_write_ptr(i) = '1') then
-        nxt_fifo_data(i) <= in_data;
-      else
-        nxt_fifo_data(i) <= fifo_data(i);
-      end if;
-    end loop;
-  end process;
-
-  processing_2 : process (clk)
-  begin
-    if (rising_edge(clk)) then
-      for i in 0 to DEPTH - 1 loop
-        fifo_data(i) <= nxt_fifo_data(i);
-      end loop;
     end if;
   end process;
 end RTL;

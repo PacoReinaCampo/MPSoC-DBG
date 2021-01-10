@@ -1,4 +1,4 @@
--- Converted from pkg/riscv_mpsoc_pkg.sv
+-- Converted from pkg/mpsoc_pkg.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-package riscv_mpsoc_pkg is
+package mpsoc_pkg is
 
   --core parameters
   constant XLEN                   : integer := 64;
@@ -772,9 +772,9 @@ package riscv_mpsoc_pkg is
   function reduce_or (reduce_or_in : std_logic_vector) return std_logic;
   function reduce_xor (reduce_xor_in : std_logic_vector) return std_logic;
 
-end riscv_mpsoc_pkg;
+end mpsoc_pkg;
 
-package body riscv_mpsoc_pkg is
+package body mpsoc_pkg is
   --////////////////////////////////////////////////////////////////
   --
   -- Functions
@@ -845,4 +845,4 @@ package body riscv_mpsoc_pkg is
     return reduce_xor_out;
   end reduce_xor;
 
-end riscv_mpsoc_pkg;
+end mpsoc_pkg;

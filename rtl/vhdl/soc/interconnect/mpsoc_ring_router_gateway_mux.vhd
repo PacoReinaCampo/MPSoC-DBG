@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/interconnect/riscv_ring_router_gateway_mux.sv
+-- Converted from rtl/verilog/interconnect/mpsoc_ring_router_gateway_mux.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity riscv_ring_router_gateway_mux is
+entity mpsoc_ring_router_gateway_mux is
   generic (
     XLEN : integer := 64
   );
@@ -75,9 +75,9 @@ entity riscv_ring_router_gateway_mux is
     out_mux_valid : out std_logic;
     out_mux_ready : in  std_logic
     );
-end riscv_ring_router_gateway_mux;
+end mpsoc_ring_router_gateway_mux;
 
-architecture RTL of riscv_ring_router_gateway_mux is
+architecture RTL of mpsoc_ring_router_gateway_mux is
   --////////////////////////////////////////////////////////////////
   --
   -- Constants

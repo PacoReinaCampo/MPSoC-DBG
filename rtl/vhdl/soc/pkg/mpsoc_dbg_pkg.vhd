@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/tracesample/riscv_osd_tracesample.sv
+-- Converted from rtl/verilog/arbiter/mpsoc_arb_rr.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -13,12 +13,12 @@
 --                                                                            //
 --                                                                            //
 --              MPSoC-RISCV CPU                                               //
---              Debug Interface                                               //
+--              Package                                                       //
 --              AMBA3 AHB-Lite Bus Interface                                  //
 --                                                                            //
 --//////////////////////////////////////////////////////////////////////////////
 
--- Copyright (c) 2018-2019 by the author(s)
+-- Copyright (c) 2019-2020 by the author(s)
 -- *
 -- * Permission is hereby granted, free of charge, to any person obtaining a copy
 -- * of this software and associated documentation files (the "Software"), to deal
@@ -46,74 +46,48 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
+use ieee.math_real.all;
 
-use work.riscv_mpsoc_pkg.all;
+package mpsoc_dbg_pkg is
 
-entity riscv_osd_tracesample is
-  generic (
-    WIDTH : integer := 64
-  );
-  port (
-    clk          : in std_logic;
-    rst          : in std_logic;
-    sample_data  : in std_logic_vector(WIDTH-1 downto 0);
-    sample_valid : in std_logic;
-
-    fifo_data     : out std_logic_vector(WIDTH-1 downto 0);
-    fifo_overflow : out std_logic;
-    fifo_valid    : out std_logic;
-    fifo_ready    : in  std_logic
-    );
-end riscv_osd_tracesample;
-
-architecture RTL of riscv_osd_tracesample is
   --////////////////////////////////////////////////////////////////
   --
-  -- Variables
+  -- Constants
   --
-  signal ov_counter : std_logic_vector(15 downto 0);
+  constant WIDTH : integer := 64;
 
-  signal passthrough : std_logic;
+  constant DEPTH : integer := 8;
 
-  signal ov_increment : std_logic;
-  signal ov_saturate  : std_logic;
-  signal ov_complete  : std_logic;
-  signal ov_again     : std_logic;
+  constant SYSTEM_VENDOR_ID         : integer := 2;
+  constant SYSTEM_DEVICE_ID         : integer := 2;
+  constant NUM_MODULES              : integer := 0;
 
-begin
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Module Body
-  --
-  passthrough <= to_stdlogic(ov_counter = std_logic_vector(to_unsigned(0, 16)));
+  constant SUBNET_BITS              : integer := 6;
+  constant LOCAL_SUBNET             : integer := 0;
+  constant DEBUG_ROUTER_BUFFER_SIZE : integer := 4;
 
-  fifo_data(15 downto 0) <= sample_data(15 downto 0)
-                            when passthrough = '1' else ov_counter;
+  constant BUFFER_SIZE : integer := 4;
 
-  generating_0 : if (WIDTH > 16) generate
-    fifo_data(WIDTH-1 downto 16) <= sample_data(WIDTH-1 downto 16);
-  end generate;
+  constant FULLPACKET : std_logic := '0';
 
+  --Width of memory addresses
+  constant ADDR_WIDTH : integer :=  64;
 
-  fifo_overflow <= not passthrough;
-  fifo_valid    <= sample_valid
-                when passthrough = '1' else '1';
+  --System word length
+  constant DATA_WIDTH : integer :=  64;
 
-  ov_increment <= (sample_valid and not fifo_ready);
-  ov_saturate  <= reduce_and(ov_counter);
-  ov_complete  <= not passthrough and fifo_ready and not sample_valid;
-  ov_again     <= not passthrough and fifo_ready and sample_valid;
+  constant LOG2_BUFFER_SIZE : integer := integer(log2(real(BUFFER_SIZE)));
 
-  processing_0 : process (clk)
-  begin
-    if (rising_edge(clk)) then
-      if (rst = '1' or ov_complete = '1') then
-        ov_counter <= std_logic_vector(to_unsigned(0, 16));
-      elsif (ov_again = '1') then
-        ov_counter <= std_logic_vector(to_unsigned(1, 16));
-      elsif (ov_increment = '1' and ov_saturate = '0') then
-        ov_counter <= std_logic_vector(unsigned(ov_counter)-to_unsigned(1, 16));
-      end if;
-    end if;
-  end process;
-end RTL;
+  --Regaccess
+  constant  MOD_VENDOR             : integer := 4;  -- module vendor
+  constant  MOD_TYPE               : integer := 4;  -- module type
+  constant  MOD_VERSION            : integer := 4;  -- module version
+  constant  MOD_EVENT_DEST_DEFAULT : integer := 4;  -- default event destination
+  constant  MAX_REG_SIZE           : integer := 64;
+
+  constant  CAN_STALL : std_logic := '0';
+
+  -- The maximum number of payload words the packet could consist of.
+  -- The actual number of payload words is given by data_num_words.
+  constant MAX_DATA_NUM_WORDS : integer := DATA_WIDTH;
+end mpsoc_dbg_pkg;

@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/interconnect/riscv_ring_router_demux.sv
+-- Converted from rtl/verilog/interconnect/mpsoc_ring_router_demux.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,9 +47,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
+use work.mpsoc_pkg.all;
 
-entity riscv_ring_router_demux is
+entity mpsoc_ring_router_demux is
   generic (
     XLEN : integer := 64
   );
@@ -74,9 +74,9 @@ entity riscv_ring_router_demux is
     out_ring_valid : out std_logic;
     out_ring_ready : in  std_logic
     );
-end riscv_ring_router_demux;
+end mpsoc_ring_router_demux;
 
-architecture RTL of riscv_ring_router_demux is
+architecture RTL of mpsoc_ring_router_demux is
   --////////////////////////////////////////////////////////////////
   --
   -- Variables

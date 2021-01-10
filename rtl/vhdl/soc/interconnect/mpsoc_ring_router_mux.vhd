@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/interconnect/riscv_ring_router_gateway_demux.sv
+-- Converted from rtl/verilog/interconnect/mpsoc_ring_router_mux.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,10 +47,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
-use work.riscv_dbg_pkg.all;
-
-entity riscv_ring_router_gateway_demux is
+entity mpsoc_ring_router_mux is
   generic (
     XLEN : integer := 64
   );
@@ -58,103 +55,112 @@ entity riscv_ring_router_gateway_demux is
     clk : in std_logic;
     rst : in std_logic;
 
-    id : in std_logic_vector(XLEN-1 downto 0);
-
-    in_ring_data  : in  std_logic_vector(XLEN-1 downto 0);
-    in_ring_last  : in  std_logic;
-    in_ring_valid : in  std_logic;
+    in_ring_data : in std_logic_vector(XLEN-1 downto 0);
+    in_ring_last : in std_logic;
+    in_ring_valid : in std_logic;
     in_ring_ready : out std_logic;
 
-    out_local_data  : out std_logic_vector(XLEN-1 downto 0);
-    out_local_last  : out std_logic;
-    out_local_valid : out std_logic;
-    out_local_ready : in  std_logic;
+    in_local_data : in std_logic_vector(XLEN-1 downto 0);
+    in_local_last : in std_logic;
+    in_local_valid : in std_logic;
+    in_local_ready : out std_logic;
 
-    out_ext_data  : out std_logic_vector(XLEN-1 downto 0);
-    out_ext_last  : out std_logic;
-    out_ext_valid : out std_logic;
-    out_ext_ready : in  std_logic;
+    out_mux_data : out std_logic_vector(XLEN-1 downto 0);
+    out_mux_last : out std_logic;
+    out_mux_valid : out std_logic;
+    out_mux_ready : in std_logic
+  );
+end mpsoc_ring_router_mux;
 
-    out_ring_data  : out std_logic_vector(XLEN-1 downto 0);
-    out_ring_last  : out std_logic;
-    out_ring_valid : out std_logic;
-    out_ring_ready : in  std_logic
-    );
-end riscv_ring_router_gateway_demux;
+architecture RTL of mpsoc_ring_router_mux is
+  --////////////////////////////////////////////////////////////////
+  --
+  -- Constants
+  --
+  constant NOWORM : std_logic_vector(1 downto 0) := "00";
+  constant WORM_LOCAL : std_logic_vector(1 downto 0) := "01";
+  constant WORM_RING : std_logic_vector(1 downto 0) := "10";
 
-architecture RTL of riscv_ring_router_gateway_demux is
   --////////////////////////////////////////////////////////////////
   --
   -- Variables
   --
-  signal worm       : std_logic;
-  signal worm_local : std_logic;
-  signal worm_ext   : std_logic;
+  signal state : std_logic_vector(1 downto 0);
+  signal nxt_state : std_logic_vector(1 downto 0);
 
-  signal is_local : std_logic;
-  signal is_ext   : std_logic;
-
-  signal switch_local : std_logic;
-  signal switch_ext   : std_logic;
-
-  signal ring_ready : std_logic;
+  signal mux_last : std_logic;
+  signal mux_valid : std_logic;
 
 begin
   --////////////////////////////////////////////////////////////////
   --
   -- Module Body
   --
-  out_local_data <= in_ring_data;
-  out_local_last <= in_ring_last;
-  out_ext_data   <= in_ring_data;
-  out_ext_last   <= in_ring_last;
-  out_ring_data  <= in_ring_data;
-  out_ring_last  <= in_ring_last;
-
-  is_local <= to_stdlogic(in_ring_data = id);
-  is_ext   <= to_stdlogic(in_ring_data /= std_logic_vector(to_unsigned(LOCAL_SUBNET, XLEN)));
-
   processing_0 : process (clk)
   begin
     if (rising_edge(clk)) then
       if (rst = '1') then
-        worm       <= '0';
-        worm_local <= 'X';
-        worm_ext   <= 'X';
-      elsif (worm = '0') then
-        worm_local <= is_local;
-        worm_ext   <= is_ext;
-        if (ring_ready = '1' and in_ring_valid = '1' and in_ring_last = '0') then
-          worm <= '1';
-        end if;
-      elsif (ring_ready = '1' and in_ring_valid = '1' and in_ring_last = '1') then
-        worm <= '0';
+        state <= NOWORM;
+      else
+        state <= nxt_state;
       end if;
     end if;
   end process;
-  switch_local <= worm_local
-                  when worm = '1' else is_local;
-  switch_ext <= worm_ext
-                when worm = '1' else is_ext;
 
-  processing_1 : process (switch_local, switch_ext)
+  processing_1 : process (state)
+    variable mux_last : std_logic;
+    variable mux_valid : std_logic;
   begin
-    out_local_valid <= '0';
-    out_ext_valid   <= '0';
-    out_ring_valid  <= '0';
-    ring_ready      <= '0';
+    nxt_state <= state;
+    mux_valid := '0';
+    out_mux_data <= (others => 'X');
+    mux_last := 'X';
+    in_ring_ready <= '0';
+    in_local_ready <= '0';
+    case (state) is
+    when NOWORM =>
+      if (in_ring_valid = '1') then
+        out_mux_data <= in_ring_data;
+        mux_last := in_ring_last;
+        mux_valid := '1';
+        in_ring_ready <= out_mux_ready;
+        if (in_ring_last = '0') then
+          nxt_state <= WORM_RING;
+        end if;
+      elsif (in_local_valid = '1') then
+        out_mux_data <= in_local_data;
+        mux_last := in_local_last;
+        mux_valid := '1';
+        in_local_ready <= out_mux_ready;
 
-    if (switch_local = '1') then
-      out_local_valid <= in_ring_valid;
-      ring_ready      <= out_local_ready;
-    elsif (switch_ext = '1') then
-      out_ext_valid <= in_ring_valid;
-      ring_ready    <= out_ext_ready;
-    else
-      out_ring_valid <= in_ring_valid;
-      ring_ready     <= out_ring_ready;
-    end if;
+        if (in_local_last = '0') then
+          nxt_state <= WORM_LOCAL;
+        end if;
+      end if;
+    -- if (in_local_valid)
+    -- case: NOWORM
+    when WORM_RING =>
+      in_ring_ready <= out_mux_ready;
+      mux_valid := in_ring_valid;
+      mux_last := in_ring_last;
+      out_mux_data <= in_ring_data;
+
+      if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
+        nxt_state <= NOWORM;
+      end if;
+    when WORM_LOCAL =>
+      in_local_ready <= out_mux_ready;
+      mux_valid := in_local_valid;
+      mux_last := in_local_last;
+      out_mux_data <= in_local_data;
+      if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
+        nxt_state <= NOWORM;
+      end if;
+    when others =>
+      null;
+    end case;
+
+    out_mux_last <= mux_last;
+   out_mux_valid <= mux_valid;
   end process;
-
-  in_ring_ready <= ring_ready;
 end RTL;

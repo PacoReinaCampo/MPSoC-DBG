@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/riscv_debug_interface.sv
+-- Converted from rtl/verilog/mpsoc_debug_interface.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,9 +47,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
+use work.mpsoc_pkg.all;
 
-entity riscv_debug_interface is
+entity mpsoc_debug_interface is
   generic (
     XLEN : integer := 64;
     PLEN : integer := 64;
@@ -90,10 +90,10 @@ entity riscv_debug_interface is
     -- CPU reset request
     cpu_rst : out std_logic
   );
-end riscv_debug_interface;
+end mpsoc_debug_interface;
 
-architecture RTL of riscv_debug_interface is
-  component riscv_ring_router_gateway
+architecture RTL of mpsoc_debug_interface is
+  component mpsoc_ring_router_gateway
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4
@@ -146,7 +146,7 @@ architecture RTL of riscv_debug_interface is
     );
   end component;
 
-  component riscv_osd_him
+  component mpsoc_osd_him
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4
@@ -176,7 +176,7 @@ architecture RTL of riscv_debug_interface is
     );
   end component;
 
-  component riscv_osd_scm
+  component mpsoc_osd_scm
     generic (
       XLEN : integer := 64;
       PLEN : integer := 64;
@@ -250,7 +250,7 @@ begin
   --
   ring_tie_valid <= '0';
 
-  ring_router_gateway : riscv_ring_router_gateway
+  ring_router_gateway : mpsoc_ring_router_gateway
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
@@ -306,7 +306,7 @@ begin
     );
 
   -- Host Interface: all traffic to foreign subnets goes through this interface
-  osd_him : riscv_osd_him
+  osd_him : mpsoc_osd_him
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
@@ -336,7 +336,7 @@ begin
 
   -- Subnet Control Module
   -- Manages this subnet, i.e. the on-chip OSD part
-  osd_scm : riscv_osd_scm
+  osd_scm : mpsoc_osd_scm
     generic map (
       XLEN => XLEN,
       PLEN => PLEN,

@@ -5,4 +5,7 @@ build:
 	vcom -2008 -f system.vc
 
 simulate:
-	vsim -c -do run.do work.riscv_dbg_testbench
+	vsim -c -do run.do work.mpsoc_dbg_testbench
+
+clean:
+	rm -rf work transcript

@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/regaccess/riscv_osd_regaccess.sv
+-- Converted from rtl/verilog/blocks/regaccess/mpsoc_osd_regaccess.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,10 +47,10 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
-use work.riscv_dbg_pkg.all;
+use work.mpsoc_pkg.all;
+use work.mpsoc_dbg_pkg.all;
 
-entity riscv_osd_regaccess is
+entity mpsoc_osd_regaccess is
   generic (
     XLEN : integer := 64;
     PLEN : integer := 64;
@@ -85,9 +85,9 @@ entity riscv_osd_regaccess is
     event_dest : out std_logic_vector(XLEN-1 downto 0);
     stall      : out std_logic
   );
-end riscv_osd_regaccess;
+end mpsoc_osd_regaccess;
 
-architecture RTL of riscv_osd_regaccess is
+architecture RTL of mpsoc_osd_regaccess is
 
   --////////////////////////////////////////////////////////////////
   --

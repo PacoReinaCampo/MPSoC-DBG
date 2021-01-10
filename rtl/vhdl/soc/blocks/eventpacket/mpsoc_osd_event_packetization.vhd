@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/eventpacket/riscv_osd_event_packetization.sv
+-- Converted from rtl/verilog/blocks/eventpacket/mpsoc_osd_event_packetization.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,9 +48,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.riscv_mpsoc_pkg.all;
+use work.mpsoc_pkg.all;
 
-entity riscv_osd_event_packetization is
+entity mpsoc_osd_event_packetization is
   generic (
     XLEN       : integer := 64;
     DATA_WIDTH : integer := 64;
@@ -90,9 +90,9 @@ entity riscv_osd_event_packetization is
     -- a data word
     data : in std_logic_vector(XLEN-1 downto 0)
   );
-end riscv_osd_event_packetization;
+end mpsoc_osd_event_packetization;
 
-architecture RTL of riscv_osd_event_packetization is
+architecture RTL of mpsoc_osd_event_packetization is
   --////////////////////////////////////////////////////////////////
   --
   -- Constants

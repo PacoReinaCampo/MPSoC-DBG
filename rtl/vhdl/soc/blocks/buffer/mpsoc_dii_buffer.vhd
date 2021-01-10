@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/blocks/buffer/riscv_dii_buffer.sv
+-- Converted from rtl/verilog/blocks/buffer/mpsoc_dii_buffer.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,10 +48,10 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.riscv_mpsoc_pkg.all;
-use work.riscv_dbg_pkg.all;
+use work.mpsoc_pkg.all;
+use work.mpsoc_dbg_pkg.all;
 
-entity riscv_dii_buffer is
+entity mpsoc_dii_buffer is
   generic (
     XLEN        : integer := 64;
     BUFFER_SIZE : integer := 4;
@@ -73,9 +73,9 @@ entity riscv_dii_buffer is
     flit_out_valid : out std_logic;
     flit_out_ready : in  std_logic
   );
-end riscv_dii_buffer;
+end mpsoc_dii_buffer;
 
-architecture RTL of riscv_dii_buffer is
+architecture RTL of mpsoc_dii_buffer is
   --////////////////////////////////////////////////////////////////
   --
   -- Functions

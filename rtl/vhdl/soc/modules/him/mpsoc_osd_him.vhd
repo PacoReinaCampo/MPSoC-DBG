@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/modules/common/riscv_osd_him.sv
+-- Converted from rtl/verilog/modules/common/mpsoc_osd_him.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,9 +48,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.riscv_mpsoc_pkg.all;
+use work.mpsoc_pkg.all;
 
-entity riscv_osd_him is
+entity mpsoc_osd_him is
   generic (
     XLEN : integer := 64;
 
@@ -79,10 +79,10 @@ entity riscv_osd_him is
     dii_in_valid : in  std_logic;
     dii_in_ready : out std_logic
     );
-end riscv_osd_him;
+end mpsoc_osd_him;
 
-architecture RTL of riscv_osd_him is
-  component riscv_dii_buffer
+architecture RTL of mpsoc_osd_him is
+  component mpsoc_dii_buffer
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4;
@@ -166,7 +166,7 @@ begin
     end if;
   end process;
 
-  ingress_buffer : riscv_dii_buffer
+  ingress_buffer : mpsoc_dii_buffer
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE,
@@ -218,7 +218,7 @@ begin
     end if;
   end process;
 
-  egress_buffer : riscv_dii_buffer
+  egress_buffer : mpsoc_dii_buffer
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE,

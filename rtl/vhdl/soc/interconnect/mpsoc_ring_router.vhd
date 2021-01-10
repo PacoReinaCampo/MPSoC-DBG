@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/interconnect/riscv_ring_router.sv
+-- Converted from rtl/verilog/interconnect/mpsoc_ring_router.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -48,9 +48,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.riscv_dbg_pkg.all;
+use work.mpsoc_dbg_pkg.all;
 
-entity riscv_ring_router is
+entity mpsoc_ring_router is
   generic (
     XLEN : integer := 64
   );
@@ -90,10 +90,10 @@ entity riscv_ring_router is
     local_out_valid : out std_logic;
     local_out_ready : in  std_logic
     );
-end riscv_ring_router;
+end mpsoc_ring_router;
 
-architecture RTL of riscv_ring_router is
-  component riscv_ring_router_demux
+architecture RTL of mpsoc_ring_router is
+  component mpsoc_ring_router_demux
     generic (
       XLEN : integer := 64
     );
@@ -120,7 +120,7 @@ architecture RTL of riscv_ring_router is
       );
   end component;
 
-  component riscv_ring_router_mux_rr
+  component mpsoc_ring_router_mux_rr
     generic (
       XLEN : integer := 64
     );
@@ -145,7 +145,7 @@ architecture RTL of riscv_ring_router is
       );
   end component;
 
-  component riscv_ring_router_mux
+  component mpsoc_ring_router_mux
     generic (
       XLEN : integer := 64
     );
@@ -170,7 +170,7 @@ architecture RTL of riscv_ring_router is
       );
   end component;
 
-  component riscv_dii_buffer
+  component mpsoc_dii_buffer
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4
@@ -227,7 +227,7 @@ begin
   --
   -- Module Body
   --
-  u_demux0 : riscv_ring_router_demux
+  u_demux0 : mpsoc_ring_router_demux
     generic map (
       XLEN => XLEN
     )
@@ -253,7 +253,7 @@ begin
       out_ring_ready => ring_fwd0_ready
       );
 
-  u_demux1 : riscv_ring_router_demux
+  u_demux1 : mpsoc_ring_router_demux
     generic map (
       XLEN => XLEN
     )
@@ -279,7 +279,7 @@ begin
       out_ring_ready => ring_fwd1_ready
       );
 
-  u_mux_local : riscv_ring_router_mux_rr
+  u_mux_local : mpsoc_ring_router_mux_rr
     generic map (
       XLEN => XLEN
     )
@@ -303,7 +303,7 @@ begin
       out_mux_ready => local_out_ready
       );
 
-  u_mux_ring0 : riscv_ring_router_mux
+  u_mux_ring0 : mpsoc_ring_router_mux
     generic map (
       XLEN => XLEN
     )
@@ -327,7 +327,7 @@ begin
       out_mux_ready => ring_muxed_ready
       );
 
-  u_buffer0 : riscv_dii_buffer
+  u_buffer0 : mpsoc_dii_buffer
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
@@ -349,7 +349,7 @@ begin
       flit_out_ready => ring_out0_ready
       );
 
-  u_buffer1 : riscv_dii_buffer
+  u_buffer1 : mpsoc_dii_buffer
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE

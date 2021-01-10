@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/interconnect/riscv_debug_ring_expand.sv
+-- Converted from rtl/verilog/interconnect/mpsoc_debug_ring_expand.sv
 -- by verilog2vhdl - QueenField
 
 --//////////////////////////////////////////////////////////////////////////////
@@ -47,9 +47,9 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.riscv_mpsoc_pkg.all;
+use work.mpsoc_pkg.all;
 
-entity riscv_debug_ring_expand is
+entity mpsoc_debug_ring_expand is
   generic (
     XLEN     : integer := 64;
     CHANNELS : integer := 2;
@@ -81,10 +81,10 @@ entity riscv_debug_ring_expand is
     ext_out_valid : out std_logic_vector(CHANNELS-1 downto 0);
     ext_out_ready : in  std_logic_vector(CHANNELS-1 downto 0)  -- extension output ports
   );
-end riscv_debug_ring_expand;
+end mpsoc_debug_ring_expand;
 
-architecture RTL of riscv_debug_ring_expand is
-  component riscv_ring_router
+architecture RTL of mpsoc_debug_ring_expand is
+  component mpsoc_ring_router
     generic (
       XLEN : integer := 64
     );
@@ -141,7 +141,7 @@ architecture RTL of riscv_debug_ring_expand is
 --
 begin
   generating_0 : for i in 0 to NODES - 1 generate
-    ring_router : riscv_ring_router
+    ring_router : mpsoc_ring_router
       generic map (
         XLEN => XLEN
       )
