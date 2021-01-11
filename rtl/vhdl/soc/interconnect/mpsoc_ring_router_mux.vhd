@@ -108,29 +108,27 @@ begin
   end process;
 
   processing_1 : process (state)
-    variable mux_last : std_logic;
-    variable mux_valid : std_logic;
   begin
     nxt_state <= state;
-    mux_valid := '0';
+    mux_valid <= '0';
     out_mux_data <= (others => 'X');
-    mux_last := 'X';
+    mux_last <= 'X';
     in_ring_ready <= '0';
     in_local_ready <= '0';
     case (state) is
     when NOWORM =>
       if (in_ring_valid = '1') then
         out_mux_data <= in_ring_data;
-        mux_last := in_ring_last;
-        mux_valid := '1';
+        mux_last <= in_ring_last;
+        mux_valid <= '1';
         in_ring_ready <= out_mux_ready;
         if (in_ring_last = '0') then
           nxt_state <= WORM_RING;
         end if;
       elsif (in_local_valid = '1') then
         out_mux_data <= in_local_data;
-        mux_last := in_local_last;
-        mux_valid := '1';
+        mux_last <= in_local_last;
+        mux_valid <= '1';
         in_local_ready <= out_mux_ready;
 
         if (in_local_last = '0') then
@@ -141,8 +139,8 @@ begin
     -- case: NOWORM
     when WORM_RING =>
       in_ring_ready <= out_mux_ready;
-      mux_valid := in_ring_valid;
-      mux_last := in_ring_last;
+      mux_valid <= in_ring_valid;
+      mux_last <= in_ring_last;
       out_mux_data <= in_ring_data;
 
       if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
@@ -150,8 +148,8 @@ begin
       end if;
     when WORM_LOCAL =>
       in_local_ready <= out_mux_ready;
-      mux_valid := in_local_valid;
-      mux_last := in_local_last;
+      mux_valid <= in_local_valid;
+      mux_last <= in_local_last;
       out_mux_data <= in_local_data;
       if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
         nxt_state <= NOWORM;

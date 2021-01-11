@@ -155,10 +155,10 @@ begin
   -- Writing data to the control registers (stall)
   -- This can be set either by the debug host, or by
   -- a CPU breakpoint.  It can only be cleared by the host.
-  generating_6 : for i in 0 to X - 1 generate
-    generating_7 : for j in 0 to Y - 1 generate
-      generating_8 : for k in 0 to Z - 1 generate
-        generating_9 : for t in 0 to CORES_PER_TILE - 1 generate
+  generating_7 : for i in 0 to X - 1 generate
+    generating_8 : for j in 0 to Y - 1 generate
+      generating_9 : for k in 0 to Z - 1 generate
+        generating_10 : for t in 0 to CORES_PER_TILE - 1 generate
           processing_3 : process (tck_i, tlr_i)
           begin
             if (tlr_i = '1') then
