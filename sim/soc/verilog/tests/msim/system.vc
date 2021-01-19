@@ -1,3 +1,5 @@
+../../../../../rtl/soc/verilog/interfaces/common/dii_channel.sv
+
 ../../../../../rtl/soc/verilog/blocks/buffer/dii_buffer.sv
 ../../../../../rtl/soc/verilog/blocks/buffer/osd_fifo.sv
 ../../../../../rtl/soc/verilog/blocks/eventpacket/osd_event_packetization_fixedwidth.sv
@@ -15,12 +17,8 @@
 ../../../../../rtl/soc/verilog/interconnect/ring_router_mux_rr.sv
 ../../../../../rtl/soc/verilog/interconnect/ring_router_mux.sv
 ../../../../../rtl/soc/verilog/interconnect/ring_router.sv
-../../../../../rtl/soc/verilog/modules/ctm/osd_ctm_template.sv
-../../../../../rtl/soc/verilog/modules/ctm/osd_ctm.sv
 ../../../../../rtl/soc/verilog/modules/him/osd_him.sv
 ../../../../../rtl/soc/verilog/modules/scm/osd_scm.sv
-../../../../../rtl/soc/verilog/modules/stm/osd_stm_template.sv
-../../../../../rtl/soc/verilog/modules/stm/osd_stm.sv
 ../../../../../rtl/soc/verilog/debug_interface.sv
 
 ../../../../../bench/soc/verilog/tests/mpsoc_dbg_testbench.sv

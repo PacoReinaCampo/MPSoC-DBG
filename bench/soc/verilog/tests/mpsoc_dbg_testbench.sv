@@ -44,7 +44,16 @@ module mpsoc_dbg_testbench;
 
 `include "mpsoc_pkg.sv"
 `include "mpsoc_dbg_pkg.sv"
+  
+  //////////////////////////////////////////////////////////////////
+  //
+  // Constants
+  //
 
+  localparam XLEN     = 64;
+  localparam CHANNELS = 2;
+  localparam NODES    = 8;
+  
   //////////////////////////////////////////////////////////////////
   //
   // Variables
@@ -107,7 +116,7 @@ module mpsoc_dbg_testbench;
   //
 
   //DUT
-  mpsoc_debug_interface debug_interface (
+  debug_interface debug_interface (
     .clk            ( HCLK    ),
     .rst            ( HRESETn ),
 
@@ -133,8 +142,8 @@ module mpsoc_dbg_testbench;
     .ring_in_ready  ( debug_ring_out_ready )
   );
 
-  mpsoc_debug_ring #(
-    .NODES       ( NODES )
+  debug_ring #(
+    .PORTS ( CHANNELS )
   )
   debug_ring (
     .clk (HCLK),
@@ -153,8 +162,8 @@ module mpsoc_dbg_testbench;
     .dii_out_ready (dii_out_ready)
   );
 
-  mpsoc_debug_ring_expand #(
-    .NODES       ( NODES )
+  debug_ring_expand #(
+    .PORTS ( CHANNELS )
   )
   debug_ring_expand (
     .clk (HCLK),
