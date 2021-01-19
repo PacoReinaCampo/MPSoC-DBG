@@ -1,19 +1,19 @@
-../../../../../../rtl/vhdl/pu/riscv/wb/pkg/mpsoc_dbg_pkg.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/pkg/mpsoc_dbg_pkg.vhd
 
-../../../../../../rtl/vhdl/pu/riscv/wb/wb/mpsoc_dbg_jsp_wb_biu.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/wb/mpsoc_dbg_jsp_wb_module.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/wb/mpsoc_dbg_top_wb.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/wb/mpsoc_dbg_wb_biu.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/wb/mpsoc_dbg_wb_module.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/wb/mpsoc_dbg_jsp_wb_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/wb/mpsoc_dbg_jsp_wb_module.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/wb/mpsoc_dbg_top_wb.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/wb/mpsoc_dbg_wb_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/wb/mpsoc_dbg_wb_module.vhd
 
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_bus_module_core.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_bytefifo.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_crc32.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_jsp_module_core.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_or1k_biu.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_or1k_module.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_or1k_status_reg.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_syncflop.vhd
-../../../../../../rtl/vhdl/pu/riscv/wb/core/mpsoc_dbg_syncreg.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_bus_module_core.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_bytefifo.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_crc32.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_jsp_module_core.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_or1k_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_or1k_module.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_or1k_status_reg.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_syncflop.vhd
+../../../../../../../rtl/pu/riscv/vhdl/wb/core/mpsoc_dbg_syncreg.vhd
 
-../../../../../../bench/vhdl/pu/riscv/wb/mpsoc_dbg_testbench.vhd
+../../../../../../../bench/pu/riscv/vhdl/tests/wb/mpsoc_dbg_testbench.vhd

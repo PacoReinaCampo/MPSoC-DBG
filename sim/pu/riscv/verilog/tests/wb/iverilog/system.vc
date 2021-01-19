@@ -1,17 +1,17 @@
-../../../../../../rtl/verilog/pu/riscv/wb/wb/mpsoc_dbg_jsp_wb_biu.sv
-../../../../../../rtl/verilog/pu/riscv/wb/wb/mpsoc_dbg_jsp_wb_module.sv
-../../../../../../rtl/verilog/pu/riscv/wb/wb/mpsoc_dbg_top_wb.sv
-../../../../../../rtl/verilog/pu/riscv/wb/wb/mpsoc_dbg_wb_biu.sv
-../../../../../../rtl/verilog/pu/riscv/wb/wb/mpsoc_dbg_wb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_jsp_wb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_jsp_wb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_top_wb.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_wb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_wb_module.sv
 
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_bus_module_core.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_bytefifo.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_crc32.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_jsp_module_core.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_or1k_biu.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_or1k_module.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_or1k_status_reg.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_syncflop.sv
-../../../../../../rtl/verilog/pu/riscv/wb/core/mpsoc_dbg_syncreg.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_bus_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_bytefifo.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_crc32.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_jsp_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_or1k_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_or1k_module.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_or1k_status_reg.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_syncflop.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_syncreg.sv
 
-../../../../../../bench/verilog/pu/riscv/wb/mpsoc_dbg_testbench.sv
+../../../../../../../bench/pu/riscv/verilog/tests/wb/mpsoc_dbg_testbench.sv
