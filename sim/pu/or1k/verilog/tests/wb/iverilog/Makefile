@@ -1,6 +1,6 @@
-SOURCE_DIR=../../../../../..
-BENCH_DIR=$(SOURCE_DIR)/bench/verilog/pu/or1k/wb/sample
-INCLUDE_DIR=$(SOURCE_DIR)/rtl/verilog/pu/or1k/wb/pkg
+SOURCE_DIR=../../../../../../..
+BENCH_DIR=$(SOURCE_DIR)/bench/pu/or1k/verilog/tests/wb/sample
+INCLUDE_DIR=$(SOURCE_DIR)/rtl/pu/or1k/verilog/wb/pkg
 
 # Set V=1 when calling make to enable verbose output
 # mainly for debugging purposes.
@@ -14,7 +14,7 @@ endif
 
 IVERILOG_VPI_SRC = $(SOURCE_DIR)/software/or1k/sample/jtag_vpi.c
 
-ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/verilog/pu/or1k/wb/core/*.sv)
+ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/pu/or1k/verilog/wb/core/*.sv)
 
 IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/jtag_vpi.sv \
                $(BENCH_DIR)/jtag_vpi/jtag_vpi_tb.sv \
