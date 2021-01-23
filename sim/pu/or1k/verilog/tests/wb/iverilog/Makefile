@@ -22,7 +22,7 @@ IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/jtag_vpi.sv \
                $(BENCH_DIR)/ram/ram_wb_b3.sv \
                $(ADV_DEBUG_SRC)
 
-all: build
+all: sim
 
 build:
 	@echo '##### Building ######'
