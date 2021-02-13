@@ -1,0 +1,9 @@
+../../../../../../../rtl/pu/msp430/vhdl/bb/pkg/msp430_pkg.vhd
+
+../../../../../../../rtl/pu/msp430/vhdl/bb/core/main/msp430_dbg.vhd
+../../../../../../../rtl/pu/msp430/vhdl/bb/core/omsp/msp430_dbg_i2c.vhd
+../../../../../../../rtl/pu/msp430/vhdl/bb/core/omsp/msp430_dbg_uart.vhd
+../../../../../../../rtl/pu/msp430/vhdl/bb/core/fuse/msp430_sync_cell.vhd
+../../../../../../../rtl/pu/msp430/vhdl/bb/core/omsp/msp430_dbg_hwbrk.vhd
+
+../../../../../../../bench/pu/msp430/vhdl/tests/bb/mpsoc_dbg_testbench.vhd
