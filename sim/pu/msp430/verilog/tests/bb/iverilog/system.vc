@@ -1,3 +1,5 @@
++incdir+../../../../../../../rtl/pu/msp430/verilog/bb/pkg
+
 ../../../../../../../rtl/pu/msp430/verilog/bb/core/main/msp430_dbg.sv
 ../../../../../../../rtl/pu/msp430/verilog/bb/core/omsp/msp430_dbg_i2c.sv
 ../../../../../../../rtl/pu/msp430/verilog/bb/core/omsp/msp430_dbg_uart.sv

@@ -1,3 +1,5 @@
++incdir+../../../../../rtl/soc/verilog/pkg
+
 ../../../../../rtl/soc/verilog/interfaces/common/dii_channel.sv
 
 ../../../../../rtl/soc/verilog/blocks/buffer/dii_buffer.sv

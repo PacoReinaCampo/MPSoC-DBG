@@ -1,7 +1,7 @@
 all: build simulate
 
 build:
-	verilator -Wno-lint -Wno-COMBDLY +incdir+../../../../../../../rtl/pu/riscv/verilog/wb/pkg --cc -f system.vc --top-module mpsoc_dbg_testbench
+	verilator -Wno-lint -Wno-COMBDLY --cc -f system.vc --top-module mpsoc_dbg_testbench
 
 simulate:
 

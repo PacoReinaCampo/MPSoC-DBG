@@ -1,3 +1,5 @@
++incdir+../../../../../../../rtl/pu/riscv/verilog/ahb3/pkg
+
 ../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_ahb3_biu.sv
 ../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_ahb3_module.sv
 ../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_jsp_apb_biu.sv
