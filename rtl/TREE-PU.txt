@@ -1,0 +1,130 @@
+├── msp430
+│   ├── verilog
+│   │   └── bb
+│   │       ├── core
+│   │       │   ├── fuse
+│   │       │   │   └── msp430_sync_cell.sv
+│   │       │   ├── main
+│   │       │   │   └── msp430_dbg.sv
+│   │       │   └── omsp
+│   │       │       ├── msp430_dbg_hwbrk.sv
+│   │       │       ├── msp430_dbg_i2c.sv
+│   │       │       └── msp430_dbg_uart.sv
+│   │       └── pkg
+│   │           ├── msp430_defines.sv
+│   │           ├── msp430_undefines.sv
+│   │           └── timescale.sv
+│   └── vhdl
+│       └── bb
+│           ├── core
+│           │   ├── fuse
+│           │   │   └── msp430_sync_cell.vhd
+│           │   ├── main
+│           │   │   └── msp430_dbg.vhd
+│           │   └── omsp
+│           │       ├── msp430_dbg_hwbrk.vhd
+│           │       ├── msp430_dbg_i2c.vhd
+│           │       └── msp430_dbg_uart.vhd
+│           └── pkg
+│               └── msp430_pkg.vhd
+├── or1k
+│   └── verilog
+│       └── wb
+│           ├── core
+│           │   ├── adbg_bytefifo.sv
+│           │   ├── adbg_crc32.sv
+│           │   ├── adbg_jsp_biu.sv
+│           │   ├── adbg_jsp_module.sv
+│           │   ├── adbg_or1k_biu.sv
+│           │   ├── adbg_or1k_module.sv
+│           │   ├── adbg_or1k_status_reg.sv
+│           │   ├── adbg_syncflop.sv
+│           │   ├── adbg_syncreg.sv
+│           │   ├── adbg_top.sv
+│           │   ├── adbg_wb_biu.sv
+│           │   └── adbg_wb_module.sv
+│           └── pkg
+│               ├── adbg_defines.sv
+│               ├── adbg_or1k_defines.sv
+│               ├── adbg_wb_defines.sv
+│               ├── tap_defines.sv
+│               └── timescale.sv
+└── riscv
+    ├── verilog
+    │   ├── ahb3
+    │   │   ├── ahb3
+    │   │   │   ├── mpsoc_dbg_ahb3_biu.sv
+    │   │   │   ├── mpsoc_dbg_ahb3_module.sv
+    │   │   │   ├── mpsoc_dbg_jsp_apb_biu.sv
+    │   │   │   ├── mpsoc_dbg_jsp_apb_module.sv
+    │   │   │   └── mpsoc_dbg_top_ahb3.sv
+    │   │   ├── core
+    │   │   │   ├── mpsoc_dbg_bus_module_core.sv
+    │   │   │   ├── mpsoc_dbg_bytefifo.sv
+    │   │   │   ├── mpsoc_dbg_crc32.sv
+    │   │   │   ├── mpsoc_dbg_jsp_module_core.sv
+    │   │   │   ├── mpsoc_dbg_or1k_biu.sv
+    │   │   │   ├── mpsoc_dbg_or1k_module.sv
+    │   │   │   ├── mpsoc_dbg_or1k_status_reg.sv
+    │   │   │   ├── mpsoc_dbg_syncflop.sv
+    │   │   │   └── mpsoc_dbg_syncreg.sv
+    │   │   └── pkg
+    │   │       └── mpsoc_dbg_pkg.sv
+    │   └── wb
+    │       ├── core
+    │       │   ├── mpsoc_dbg_bus_module_core.sv
+    │       │   ├── mpsoc_dbg_bytefifo.sv
+    │       │   ├── mpsoc_dbg_crc32.sv
+    │       │   ├── mpsoc_dbg_jsp_module_core.sv
+    │       │   ├── mpsoc_dbg_or1k_biu.sv
+    │       │   ├── mpsoc_dbg_or1k_module.sv
+    │       │   ├── mpsoc_dbg_or1k_status_reg.sv
+    │       │   ├── mpsoc_dbg_syncflop.sv
+    │       │   └── mpsoc_dbg_syncreg.sv
+    │       ├── pkg
+    │       │   └── mpsoc_dbg_pkg.sv
+    │       └── wb
+    │           ├── mpsoc_dbg_jsp_wb_biu.sv
+    │           ├── mpsoc_dbg_jsp_wb_module.sv
+    │           ├── mpsoc_dbg_top_wb.sv
+    │           ├── mpsoc_dbg_wb_biu.sv
+    │           └── mpsoc_dbg_wb_module.sv
+    └── vhdl
+        ├── ahb3
+        │   ├── ahb3
+        │   │   ├── mpsoc_dbg_ahb3_biu.vhd
+        │   │   ├── mpsoc_dbg_ahb3_module.vhd
+        │   │   ├── mpsoc_dbg_jsp_apb_biu.vhd
+        │   │   ├── mpsoc_dbg_jsp_apb_module.vhd
+        │   │   └── mpsoc_dbg_top_ahb3.vhd
+        │   ├── core
+        │   │   ├── mpsoc_dbg_bus_module_core.vhd
+        │   │   ├── mpsoc_dbg_bytefifo.vhd
+        │   │   ├── mpsoc_dbg_crc32.vhd
+        │   │   ├── mpsoc_dbg_jsp_module_core.vhd
+        │   │   ├── mpsoc_dbg_or1k_biu.vhd
+        │   │   ├── mpsoc_dbg_or1k_module.vhd
+        │   │   ├── mpsoc_dbg_or1k_status_reg.vhd
+        │   │   ├── mpsoc_dbg_syncflop.vhd
+        │   │   └── mpsoc_dbg_syncreg.vhd
+        │   └── pkg
+        │       └── mpsoc_dbg_pkg.vhd
+        └── wb
+            ├── core
+            │   ├── mpsoc_dbg_bus_module_core.vhd
+            │   ├── mpsoc_dbg_bytefifo.vhd
+            │   ├── mpsoc_dbg_crc32.vhd
+            │   ├── mpsoc_dbg_jsp_module_core.vhd
+            │   ├── mpsoc_dbg_or1k_biu.vhd
+            │   ├── mpsoc_dbg_or1k_module.vhd
+            │   ├── mpsoc_dbg_or1k_status_reg.vhd
+            │   ├── mpsoc_dbg_syncflop.vhd
+            │   └── mpsoc_dbg_syncreg.vhd
+            ├── pkg
+            │   └── mpsoc_dbg_pkg.vhd
+            └── wb
+                ├── mpsoc_dbg_jsp_wb_biu.vhd
+                ├── mpsoc_dbg_jsp_wb_module.vhd
+                ├── mpsoc_dbg_top_wb.vhd
+                ├── mpsoc_dbg_wb_biu.vhd
+                └── mpsoc_dbg_wb_module.vhd
