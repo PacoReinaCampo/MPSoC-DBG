@@ -1,129 +1,126 @@
 ├── verilog
 │   ├── blocks
 │   │   ├── buffer
-│   │   │   ├── dii_buffer.sv
-│   │   │   └── osd_fifo.sv
+│   │   │   ├── peripheral_dbg_soc_dii_buffer.sv
+│   │   │   └── peripheral_dbg_soc_osd_fifo.sv
 │   │   ├── eventpacket
-│   │   │   ├── osd_event_packetization_fixedwidth.sv
-│   │   │   └── osd_event_packetization.sv
+│   │   │   ├── peripheral_dbg_soc_osd_event_packetization_fixedwidth.sv
+│   │   │   └── peripheral_dbg_soc_osd_event_packetization.sv
 │   │   ├── regaccess
-│   │   │   ├── osd_regaccess_demux.sv
-│   │   │   ├── osd_regaccess_layer.sv
-│   │   │   └── osd_regaccess.sv
+│   │   │   ├── peripheral_dbg_soc_osd_regaccess_demux.sv
+│   │   │   ├── peripheral_dbg_soc_osd_regaccess_layer.sv
+│   │   │   └── peripheral_dbg_soc_osd_regaccess.sv
 │   │   ├── timestamp
-│   │   │   └── osd_timestamp.sv
+│   │   │   └── peripheral_dbg_soc_osd_timestamp.sv
 │   │   └── tracesample
-│   │       └── osd_tracesample.sv
-│   ├── debug_interface.sv
+│   │       └── peripheral_dbg_soc_osd_tracesample.sv
 │   ├── interconnect
-│   │   ├── debug_ring_expand.sv
-│   │   ├── debug_ring.sv
-│   │   ├── ring_router_demux.sv
-│   │   ├── ring_router_gateway_demux.sv
-│   │   ├── ring_router_gateway_mux.sv
-│   │   ├── ring_router_gateway.sv
-│   │   ├── ring_router_mux_rr.sv
-│   │   ├── ring_router_mux.sv
-│   │   └── ring_router.sv
+│   │   ├── peripheral_dbg_soc_debug_ring_expand.sv
+│   │   ├── peripheral_dbg_soc_debug_ring.sv
+│   │   ├── peripheral_dbg_soc_ring_router_demux.sv
+│   │   ├── peripheral_dbg_soc_ring_router_gateway_demux.sv
+│   │   ├── peripheral_dbg_soc_ring_router_gateway_mux.sv
+│   │   ├── peripheral_dbg_soc_ring_router_gateway.sv
+│   │   ├── peripheral_dbg_soc_ring_router_mux_rr.sv
+│   │   ├── peripheral_dbg_soc_ring_router_mux.sv
+│   │   └── peripheral_dbg_soc_ring_router.sv
 │   ├── interfaces
 │   │   ├── common
-│   │   │   ├── dii_channel_flat.sv
-│   │   │   └── dii_channel.sv
+│   │   │   ├── peripheral_dbg_soc_dii_channel_flat.sv
+│   │   │   └── peripheral_dbg_soc_dii_channel.sv
 │   │   ├── msp430
-│   │   │   └── mmsp430_trace_exec.sv
+│   │   │   └── peripheral_dbg_soc_mmsp430_trace_exec.sv
 │   │   ├── or1k
-│   │   │   └── mor1kx_trace_exec.sv
+│   │   │   └── peripheral_dbg_soc_mor1kx_trace_exec.sv
 │   │   └── riscv
-│   │       └── mriscv_trace_exec.sv
+│   │       └── peripheral_dbg_soc_mriscv_trace_exec.sv
 │   ├── modules
 │   │   ├── ctm
 │   │   │   ├── common
-│   │   │   │   └── osd_ctm.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_ctm.sv
 │   │   │   ├── msp430
-│   │   │   │   └── mmsp430
-│   │   │   │       └── osd_ctm_mmsp430.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_ctm_mmsp430.sv
 │   │   │   ├── or1k
-│   │   │   │   └── mor1kx
-│   │   │   │       └── osd_ctm_mor1kx.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_ctm_mor1kx.sv
 │   │   │   └── riscv
-│   │   │       └── mriscv
-│   │   │           └── osd_ctm_mriscv.sv
+│   │   │       └── peripheral_dbg_soc_osd_ctm_mriscv.sv
 │   │   ├── dem_uart
-│   │   │   ├── osd_dem_uart_16550.sv
-│   │   │   ├── osd_dem_uart_ahb3.sv
-│   │   │   ├── osd_dem_uart_bb.sv
-│   │   │   ├── osd_dem_uart.sv
-│   │   │   └── osd_dem_uart_wb.sv
+│   │   │   ├── peripheral_dbg_soc_osd_dem_uart_16550.sv
+│   │   │   ├── peripheral_dbg_soc_osd_dem_uart_ahb3.sv
+│   │   │   ├── peripheral_dbg_soc_osd_dem_uart_bb.sv
+│   │   │   ├── peripheral_dbg_soc_osd_dem_uart.sv
+│   │   │   └── peripheral_dbg_soc_osd_dem_uart_wb.sv
 │   │   ├── him
-│   │   │   └── osd_him.sv
+│   │   │   └── peripheral_dbg_soc_osd_him.sv
 │   │   ├── mam
 │   │   │   ├── ahb3
-│   │   │   │   ├── mam_ahb3_adapter.sv
-│   │   │   │   ├── osd_mam_ahb3_if.sv
-│   │   │   │   └── osd_mam_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
 │   │   │   ├── blackbone
-│   │   │   │   ├── mam_bb_adapter.sv
-│   │   │   │   ├── osd_mam_bb_if.sv
-│   │   │   │   └── osd_mam_bb.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_bb.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_bb.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_bb.sv
 │   │   │   ├── common
-│   │   │   │   └── osd_mam.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam.sv
 │   │   │   └── wishbone
-│   │   │       ├── mam_wb_adapter.sv
-│   │   │       ├── osd_mam_wb_if.sv
-│   │   │       └── osd_mam_wb.sv
+│   │   │       ├── peripheral_dbg_soc_mam_adapter_wb.sv
+│   │   │       ├── peripheral_dbg_soc_osd_mam_if_wb.sv
+│   │   │       └── peripheral_dbg_soc_osd_mam_wb.sv
 │   │   ├── scm
-│   │   │   └── osd_scm.sv
+│   │   │   └── peripheral_dbg_soc_osd_scm.sv
 │   │   └── stm
 │   │       ├── common
-│   │       │   └── osd_stm.sv
+│   │       │   └── peripheral_dbg_soc_osd_stm.sv
 │   │       ├── msp430
 │   │       │   └── mmsp430
-│   │       │       └── osd_stm_mmsp430.sv
+│   │       │       └── peripheral_dbg_soc_osd_stm_mmsp430.sv
 │   │       ├── or1k
 │   │       │   └── mor1kx
-│   │       │       └── osd_stm_mor1kx.sv
+│   │       │       └── peripheral_dbg_soc_osd_stm_mor1kx.sv
 │   │       └── riscv
 │   │           └── mriscv
-│   │               └── osd_stm_mriscv.sv
+│   │               └── peripheral_dbg_soc_osd_stm_mriscv.sv
+│   ├── peripheral_dbg_soc_debug_interface.sv
 │   └── pkg
-│       ├── mpsoc_dbg_pkg.sv
-│       └── mpsoc_pkg.sv
+│       ├── peripheral_dbg_pu_pkg.sv
+│       └── peripheral_dbg_soc_pkg.sv
 └── vhdl
     ├── blocks
     │   ├── buffer
-    │   │   ├── mpsoc_dii_buffer.vhd
-    │   │   └── mpsoc_osd_fifo.vhd
+    │   │   ├── peripheral_dbg_soc_dii_buffer.vhd
+    │   │   └── peripheral_dbg_soc_osd_fifo.vhd
     │   ├── eventpacket
-    │   │   ├── mpsoc_osd_event_packetization_fixedwidth.vhd
-    │   │   └── mpsoc_osd_event_packetization.vhd
+    │   │   ├── peripheral_dbg_soc_osd_event_packetization_fixedwidth.vhd
+    │   │   └── peripheral_dbg_soc_osd_event_packetization.vhd
     │   ├── regaccess
-    │   │   ├── mpsoc_osd_regaccess_demux.vhd
-    │   │   ├── mpsoc_osd_regaccess_layer.vhd
-    │   │   └── mpsoc_osd_regaccess.vhd
+    │   │   ├── peripheral_dbg_soc_osd_regaccess_demux.vhd
+    │   │   ├── peripheral_dbg_soc_osd_regaccess_layer.vhd
+    │   │   └── peripheral_dbg_soc_osd_regaccess.vhd
     │   └── tracesample
-    │       └── mpsoc_osd_tracesample.vhd
+    │       └── peripheral_dbg_soc_osd_tracesample.vhd
     ├── interconnect
-    │   ├── mpsoc_debug_ring_expand.vhd
-    │   ├── mpsoc_debug_ring.vhd
-    │   ├── mpsoc_ring_router_demux.vhd
-    │   ├── mpsoc_ring_router_gateway_demux.vhd
-    │   ├── mpsoc_ring_router_gateway_mux.vhd
-    │   ├── mpsoc_ring_router_gateway.vhd
-    │   ├── mpsoc_ring_router_mux_rr.vhd
-    │   ├── mpsoc_ring_router_mux.vhd
-    │   └── mpsoc_ring_router.vhd
+    │   ├── peripheral_dbg_soc_debug_ring_expand.vhd
+    │   ├── peripheral_dbg_soc_debug_ring.vhd
+    │   ├── peripheral_dbg_soc_ring_router_demux.vhd
+    │   ├── peripheral_dbg_soc_ring_router_gateway_demux.vhd
+    │   ├── peripheral_dbg_soc_ring_router_gateway_mux.vhd
+    │   ├── peripheral_dbg_soc_ring_router_gateway.vhd
+    │   ├── peripheral_dbg_soc_ring_router_mux_rr.vhd
+    │   ├── peripheral_dbg_soc_ring_router_mux.vhd
+    │   └── peripheral_dbg_soc_ring_router.vhd
     ├── modules
     │   ├── ctm
-    │   │   ├── mpsoc_osd_ctm_template.vhd
-    │   │   └── mpsoc_osd_ctm.vhd
+    │   │   ├── peripheral_dbg_soc_osd_ctm_template.vhd
+    │   │   └── peripheral_dbg_soc_osd_ctm.vhd
     │   ├── him
-    │   │   └── mpsoc_osd_him.vhd
+    │   │   └── peripheral_dbg_soc_osd_him.vhd
     │   ├── scm
-    │   │   └── mpsoc_osd_scm.vhd
+    │   │   └── peripheral_dbg_soc_osd_scm.vhd
     │   └── stm
-    │       ├── mpsoc_osd_stm_template.vhd
-    │       └── mpsoc_osd_stm.vhd
-    ├── mpsoc_debug_interface.vhd
+    │       ├── peripheral_dbg_soc_osd_stm_template.vhd
+    │       └── peripheral_dbg_soc_osd_stm.vhd
+    ├── peripheral_dbg_soc_interface.vhd
     └── pkg
-        ├── mpsoc_dbg_pkg.vhd
-        └── mpsoc_pkg.vhd
+        ├── peripheral_dbg_pu_pkg.vhd
+        └── peripheral_dbg_soc_pkg.vhd

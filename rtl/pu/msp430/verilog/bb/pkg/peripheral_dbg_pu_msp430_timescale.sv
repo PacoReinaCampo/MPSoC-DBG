@@ -46,4 +46,4 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-`peripheral_dbg_pu_msp430_peripheral_dbg_pu_or1k_timescale 1ns / 100ps
+`timescale 1ns / 100ps

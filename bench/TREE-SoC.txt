@@ -1,6 +1,6 @@
 ├── verilog
 │   └── tests
-│       └── mpsoc_dbg_testbench.sv
+│       └── peripheral_dbg_testbench.sv
 └── vhdl
     └── tests
-        └── mpsoc_dbg_testbench.vhd
+        └── peripheral_dbg_testbench.vhd
