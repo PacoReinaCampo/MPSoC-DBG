@@ -1188,7 +1188,7 @@ qemu-system-riscv64 -nographic -machine virt \
 
 # 5. ORGANIZATION
 
-## 5.1. Requeriments
+## 5.1. Requirements
 
 ### 5.1.1. Structural UML diagrams
 
