@@ -611,6 +611,8 @@ sudo apt upgrade
 
 ### 1.6.2. UVM-Verilog
 
+![UVM Diagram Overview](../bench/uvm-testbench.png)
+
 #### 1.6.2.1. UVM Agent
 #### 1.6.2.2. UVM Driver
 #### 1.6.2.3. UVM Enviroment
@@ -627,29 +629,31 @@ sudo apt upgrade
 
 A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and debug Hardware Description Languages. The code to be examined is running on a simulator, a technique that allows great power in its ability to halt when specific conditions are encountered. When a hardware description crashes, debuggers show the position of the error in the target description.
 
-## 2.1. Debugger on Chip for a MSP430 Processing Unit
+## 2.1. Debugger on Chip for a Processing Unit
 
-### 2.1.1. Functionality
+### 2.1.1. Debugger on Chip for a MSP430 Processing Unit
 
-#### 2.1.1.1. Structure
+#### 2.1.1.1. Functionality
 
-#### 2.1.1.2. Behavior
+##### 2.1.1.1.1. Structure
 
-### 2.1.2. Interface
+##### 2.1.1.1.2. Behavior
 
-#### 2.1.2.1. Constants
+#### 2.1.1.2. Interface
 
-#### 2.1.2.2. Signals
+##### 2.1.1.2.1. Constants
 
-### 2.1.3. Registers
+##### 2.1.1.2.2. Signals
 
-### 2.1.4. Interruptions
+#### 2.1.1.3. Registers
 
-## 2.2. Debugger on Chip for a OpenRISC Processing Unit
+#### 2.1.1.4. Interruptions
 
-### 2.2.1. Functionality
+### 2.1.2. Debugger on Chip for a OpenRISC Processing Unit
 
-#### 2.2.1.1. Structure
+#### 2.1.2.1. Functionality
+
+##### 2.1.2.1.1. Structure
 
 | Core                        | Module description                              |
 | --------------------------- | ----------------------------------------------- |
@@ -668,23 +672,23 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........adbg_syncflop`    | Debugger on Chip                                |
 | `.......adbg_bytefifo`      | Debugger on Chip                                |
 
-#### 2.2.1.2. Behavior
+##### 2.1.2.1.2. Behavior
 
-### 2.2.2. Interface
+#### 2.1.2.2. Interface
 
-#### 2.2.2.1. Constants
+##### 2.1.2.2.1. Constants
 
-#### 2.2.2.2. Signals
+##### 2.1.2.2.2. Signals
 
-### 2.2.3. Registers
+#### 2.1.2.3. Registers
 
-### 2.2.4. Interruptions
+#### 2.1.2.4. Interruptions
 
-## 2.3. Debugger on Chip for a RISC-V Processing Unit
+### 2.1.3. Debugger on Chip for a RISC-V Processing Unit
 
-### 2.3.1. Functionality
+#### 2.1.3.1. Functionality
 
-#### 2.3.1.1. Structure
+##### 2.1.3.1.1. Structure
 
 | Core                             | Module description                              |
 | -------------------------------- | ----------------------------------------------- |
@@ -724,6 +728,42 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 | `.........mpsoc_dbg_syncflop`    | Debugger on Chip                                |
 | `.......mpsoc_dbg_bytefifo`      | Debugger on Chip                                |
 
+##### 2.1.3.1.2. Behavior
+
+#### 2.1.3.2. Interface
+
+##### 2.1.3.2.1. Constants
+
+##### 2.1.3.2.2. Signals
+
+#### 2.1.3.3. Registers
+
+#### 2.1.3.4. Interruptions
+
+## 2.2. Debugger on Chip for a System on Chip
+
+### 2.2.1. Functionality
+
+#### 2.2.1.1. Structure
+
+#### 2.2.1.2. Behavior
+
+### 2.2.2. Interface
+
+#### 2.2.2.1. Constants
+
+#### 2.2.2.2. Signals
+
+### 2.2.3. Registers
+
+### 2.2.4. Interruptions
+
+## 2.3. Debugger on Chip for a Multi-Processor System on Chip
+
+### 2.3.1. Functionality
+
+#### 2.3.1.1. Structure
+
 #### 2.3.1.2. Behavior
 
 ### 2.3.2. Interface
@@ -735,42 +775,6 @@ A Debugger on Chip (DBG) is a Hardware-Software System that is used to test and 
 ### 2.3.3. Registers
 
 ### 2.3.4. Interruptions
-
-## 2.4. Debugger on Chip for a System on Chip
-
-### 2.4.1. Functionality
-
-#### 2.4.1.1. Structure
-
-#### 2.4.1.2. Behavior
-
-### 2.4.2. Interface
-
-#### 2.4.2.1. Constants
-
-#### 2.4.2.2. Signals
-
-### 2.4.3. Registers
-
-### 2.4.4. Interruptions
-
-## 2.5. Debugger on Chip for a Multi-Processor System on Chip
-
-### 2.5.1. Functionality
-
-#### 2.5.1.1. Structure
-
-#### 2.5.1.2. Behavior
-
-### 2.5.2. Interface
-
-#### 2.5.2.1. Constants
-
-#### 2.5.2.2. Signals
-
-### 2.5.3. Registers
-
-### 2.5.4. Interruptions
 
 # 3. ORGANIZATION
 
