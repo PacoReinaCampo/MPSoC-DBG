@@ -1,6 +1,6 @@
 ---
 title: 'MPSoC-DBG'
-subtitle: 'QueenField ![](../../icon.jpg)'
+subtitle: 'QueenField ![](../../mpsoc-dbg.svg){width=17cm}'
 
 author: Paco Reina Campo
 
