@@ -37,7 +37,7 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *    Javier Reina Campo <frareicam@gmail.com>
  */
 
 module peripheral_dbg_testbench;
@@ -45,7 +45,7 @@ module peripheral_dbg_testbench;
 `include "mpsoc_pkg.sv"
 `include "mpsoc_dbg_pkg.sv"
   
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Constants
   //
@@ -54,7 +54,7 @@ module peripheral_dbg_testbench;
   localparam CHANNELS = 2;
   localparam NODES    = 8;
   
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
@@ -110,7 +110,7 @@ module peripheral_dbg_testbench;
   logic [CHANNELS-1:0]            ext_out_valid;
   logic [CHANNELS-1:0]            ext_out_ready; // extension output ports
 
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Module Body
   //

@@ -1,132 +1,115 @@
 pu
 ├── msp430
 │   ├── verilog
-│   │   └── bb
-│   │       ├── core
-│   │       │   ├── fuse
-│   │       │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
-│   │       │   ├── main
-│   │       │   │   └── peripheral_dbg_pu_msp430.sv
-│   │       │   └── omsp
-│   │       │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
-│   │       │       ├── peripheral_dbg_pu_msp430_i2c.sv
-│   │       │       └── peripheral_dbg_pu_msp430_uart.sv
-│   │       └── pkg
+│   │   ├── peripheral
+│   │   │   └── bb
+│   │   │       ├── fuse
+│   │   │       │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│   │   │       ├── main
+│   │   │       │   └── peripheral_dbg_pu_msp430.sv
+│   │   │       └── omsp
+│   │   │           ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │   │           ├── peripheral_dbg_pu_msp430_i2c.sv
+│   │   │           └── peripheral_dbg_pu_msp430_uart.sv
+│   │   └── pkg
+│   │       └── bb
 │   │           ├── peripheral_dbg_pu_msp430_defines.sv
 │   │           ├── peripheral_dbg_pu_msp430_timescale.sv
 │   │           └── peripheral_dbg_pu_msp430_undefines.sv
 │   └── vhdl
-│       └── bb
-│           ├── core
-│           │   ├── fuse
-│           │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
-│           │   ├── main
-│           │   │   └── peripheral_dbg_pu_msp430.vhd
-│           │   └── omsp
-│           │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
-│           │       ├── peripheral_dbg_pu_msp430_i2c.vhd
-│           │       └── peripheral_dbg_pu_msp430_uart.vhd
-│           └── pkg
+│       ├── peripheral
+│       │   └── bb
+│       │       ├── fuse
+│       │       │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│       │       ├── main
+│       │       │   └── peripheral_dbg_pu_msp430.vhd
+│       │       └── omsp
+│       │           ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│       │           ├── peripheral_dbg_pu_msp430_i2c.vhd
+│       │           └── peripheral_dbg_pu_msp430_uart.vhd
+│       └── pkg
+│           └── bb
 │               └── peripheral_dbg_pu_msp430_pkg.vhd
 ├── or1k
 │   └── verilog
-│       └── wb
-│           ├── core
-│           │   ├── peripheral_dbg_pu_or1k_biu.sv
-│           │   ├── peripheral_dbg_pu_or1k_biu_wb.sv
-│           │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
-│           │   ├── peripheral_dbg_pu_or1k_crc32.sv
-│           │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
-│           │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
-│           │   ├── peripheral_dbg_pu_or1k_module.sv
-│           │   ├── peripheral_dbg_pu_or1k_module_wb.sv
-│           │   ├── peripheral_dbg_pu_or1k_status_reg.sv
-│           │   ├── peripheral_dbg_pu_or1k_syncflop.sv
-│           │   ├── peripheral_dbg_pu_or1k_syncreg.sv
-│           │   └── peripheral_dbg_pu_or1k_top.sv
-│           └── pkg
+│       ├── peripheral
+│       │   └── wb
+│       │       ├── peripheral_dbg_pu_or1k_biu.sv
+│       │       ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│       │       ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│       │       ├── peripheral_dbg_pu_or1k_crc32.sv
+│       │       ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│       │       ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│       │       ├── peripheral_dbg_pu_or1k_module.sv
+│       │       ├── peripheral_dbg_pu_or1k_module_wb.sv
+│       │       ├── peripheral_dbg_pu_or1k_status_reg.sv
+│       │       ├── peripheral_dbg_pu_or1k_syncflop.sv
+│       │       ├── peripheral_dbg_pu_or1k_syncreg.sv
+│       │       └── peripheral_dbg_pu_or1k_top.sv
+│       └── pkg
+│           └── wb
 │               ├── peripheral_dbg_pu_or1k_defines.sv
 │               ├── peripheral_dbg_pu_or1k_defines_wb.sv
 │               ├── peripheral_dbg_pu_or1k_tap_defines.sv
 │               └── peripheral_dbg_pu_or1k_timescale.sv
 └── riscv
     ├── verilog
-    │   ├── ahb3
+    │   ├── core
+    │   │   ├── peripheral_dbg_pu_riscv_biu.sv
+    │   │   ├── peripheral_dbg_pu_riscv_bus_module_core.sv
+    │   │   ├── peripheral_dbg_pu_riscv_bytefifo.sv
+    │   │   ├── peripheral_dbg_pu_riscv_crc32.sv
+    │   │   ├── peripheral_dbg_pu_riscv_jsp_module_core.sv
+    │   │   ├── peripheral_dbg_pu_riscv_module.sv
+    │   │   ├── peripheral_dbg_pu_riscv_status_reg.sv
+    │   │   ├── peripheral_dbg_pu_riscv_syncflop.sv
+    │   │   └── peripheral_dbg_pu_riscv_syncreg.sv
+    │   ├── peripheral
     │   │   ├── ahb3
     │   │   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.sv
     │   │   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.sv
     │   │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
     │   │   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
     │   │   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
-    │   │   ├── core
-    │   │   │   ├── peripheral_dbg_pu_riscv_biu.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_bus_module_core.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_bytefifo.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_crc32.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_jsp_module_core.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_module.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_status_reg.sv
-    │   │   │   ├── peripheral_dbg_pu_riscv_syncflop.sv
-    │   │   │   └── peripheral_dbg_pu_riscv_syncreg.sv
-    │   │   └── pkg
-    │   │       └── peripheral_dbg_pu_riscv_pkg.sv
-    │   └── wb
-    │       ├── core
-    │       │   ├── peripheral_dbg_pu_riscv_biu.sv
-    │       │   ├── peripheral_dbg_pu_riscv_bus_module_core.sv
-    │       │   ├── peripheral_dbg_pu_riscv_bytefifo.sv
-    │       │   ├── peripheral_dbg_pu_riscv_crc32.sv
-    │       │   ├── peripheral_dbg_pu_riscv_jsp_module_core.sv
-    │       │   ├── peripheral_dbg_pu_riscv_module.sv
-    │       │   ├── peripheral_dbg_pu_riscv_status_reg.sv
-    │       │   ├── peripheral_dbg_pu_riscv_syncflop.sv
-    │       │   └── peripheral_dbg_pu_riscv_syncreg.sv
-    │       ├── pkg
+    │   │   └── wb
+    │   │       ├── peripheral_dbg_pu_riscv_biu_wb.sv
+    │   │       ├── peripheral_dbg_pu_riscv_jsp_biu_wb.sv
+    │   │       ├── peripheral_dbg_pu_riscv_jsp_module_wb.sv
+    │   │       ├── peripheral_dbg_pu_riscv_module_wb.sv
+    │   │       └── peripheral_dbg_pu_riscv_top_wb.sv
+    │   └── pkg
+    │       ├── ahb3
     │       │   └── peripheral_dbg_pu_riscv_pkg.sv
     │       └── wb
-    │           ├── peripheral_dbg_pu_riscv_biu_wb.sv
-    │           ├── peripheral_dbg_pu_riscv_jsp_biu_wb.sv
-    │           ├── peripheral_dbg_pu_riscv_jsp_module_wb.sv
-    │           ├── peripheral_dbg_pu_riscv_module_wb.sv
-    │           └── peripheral_dbg_pu_riscv_top_wb.sv
+    │           └── peripheral_dbg_pu_riscv_pkg.sv
     └── vhdl
-        ├── ahb3
+        ├── core
+        │   ├── peripheral_dbg_pu_riscv_biu.vhd
+        │   ├── peripheral_dbg_pu_riscv_bus_module_core.vhd
+        │   ├── peripheral_dbg_pu_riscv_bytefifo.vhd
+        │   ├── peripheral_dbg_pu_riscv_crc32.vhd
+        │   ├── peripheral_dbg_pu_riscv_jsp_module_core.vhd
+        │   ├── peripheral_dbg_pu_riscv_module.vhd
+        │   ├── peripheral_dbg_pu_riscv_status_reg.vhd
+        │   ├── peripheral_dbg_pu_riscv_syncflop.vhd
+        │   └── peripheral_dbg_pu_riscv_syncreg.vhd
+        ├── peripheral
         │   ├── ahb3
         │   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.vhd
         │   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
         │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
         │   │   ├── peripheral_dbg_pu_riscv_module_ahb3.vhd
         │   │   └── peripheral_dbg_pu_riscv_top_ahb3.vhd
-        │   ├── core
-        │   │   ├── peripheral_dbg_pu_riscv_biu.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_bus_module_core.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_bytefifo.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_crc32.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_jsp_module_core.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_module.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_status_reg.vhd
-        │   │   ├── peripheral_dbg_pu_riscv_syncflop.vhd
-        │   │   └── peripheral_dbg_pu_riscv_syncreg.vhd
-        │   └── pkg
-        │       └── peripheral_dbg_pu_riscv_pkg.vhd
-        └── wb
-            ├── core
-            │   ├── peripheral_dbg_pu_riscv_biu.vhd
-            │   ├── peripheral_dbg_pu_riscv_bus_module_core.vhd
-            │   ├── peripheral_dbg_pu_riscv_bytefifo.vhd
-            │   ├── peripheral_dbg_pu_riscv_crc32.vhd
-            │   ├── peripheral_dbg_pu_riscv_jsp_module_core.vhd
-            │   ├── peripheral_dbg_pu_riscv_module.vhd
-            │   ├── peripheral_dbg_pu_riscv_status_reg.vhd
-            │   ├── peripheral_dbg_pu_riscv_syncflop.vhd
-            │   └── peripheral_dbg_pu_riscv_syncreg.vhd
-            ├── pkg
+        │   └── wb
+        │       ├── peripheral_dbg_pu_riscv_biu_wb.vhd
+        │       ├── peripheral_dbg_pu_riscv_jsp_biu_wb.vhd
+        │       ├── peripheral_dbg_pu_riscv_jsp_module_wb.vhd
+        │       ├── peripheral_dbg_pu_riscv_module_wb.vhd
+        │       └── peripheral_dbg_pu_riscv_top_wb.vhd
+        └── pkg
+            ├── ahb3
             │   └── peripheral_dbg_pu_riscv_pkg.vhd
             └── wb
-                ├── peripheral_dbg_pu_riscv_biu_wb.vhd
-                ├── peripheral_dbg_pu_riscv_jsp_biu_wb.vhd
-                ├── peripheral_dbg_pu_riscv_jsp_module_wb.vhd
-                ├── peripheral_dbg_pu_riscv_module_wb.vhd
-                └── peripheral_dbg_pu_riscv_top_wb.vhd
+                └── peripheral_dbg_pu_riscv_pkg.vhd
 
-39 directories, 90 files
+40 directories, 72 files

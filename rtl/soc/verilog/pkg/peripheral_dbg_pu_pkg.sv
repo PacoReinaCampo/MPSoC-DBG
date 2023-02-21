@@ -37,7 +37,7 @@
  *
  * =============================================================================
  * Author(s):
- *   Francisco Javier Reina Campo <frareicam@gmail.com>
+ *    Javier Reina Campo <frareicam@gmail.com>
  */
 
   //core parameters
