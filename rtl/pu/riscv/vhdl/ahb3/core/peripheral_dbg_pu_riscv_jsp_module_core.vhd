@@ -1,49 +1,48 @@
 -- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_jsp_module_core.sv
 -- by verilog2vhdl - QueenField
 
---//////////////////////////////////////////////////////////////////////////////
---                                            __ _      _     _               //
---                                           / _(_)    | |   | |              //
---                __ _ _   _  ___  ___ _ __ | |_ _  ___| | __| |              //
---               / _` | | | |/ _ \/ _ \ '_ \|  _| |/ _ \ |/ _` |              //
---              | (_| | |_| |  __/  __/ | | | | | |  __/ | (_| |              //
---               \__, |\__,_|\___|\___|_| |_|_| |_|\___|_|\__,_|              //
---                  | |                                                       //
---                  |_|                                                       //
---                                                                            //
---                                                                            //
---              MPSoC-RISCV CPU                                               //
---              Degub Interface                                               //
---              AMBA3 AHB-Lite Bus Interface                                  //
---              WishBone Bus Interface                                        //
---                                                                            //
---//////////////////////////////////////////////////////////////////////////////
+--------------------------------------------------------------------------------
+--                                            __ _      _     _               --
+--                                           / _(_)    | |   | |              --
+--                __ _ _   _  ___  ___ _ __ | |_ _  ___| | __| |              --
+--               / _` | | | |/ _ \/ _ \ '_ \|  _| |/ _ \ |/ _` |              --
+--              | (_| | |_| |  __/  __/ | | | | | |  __/ | (_| |              --
+--               \__, |\__,_|\___|\___|_| |_|_| |_|\___|_|\__,_|              --
+--                  | |                                                       --
+--                  |_|                                                       --
+--                                                                            --
+--                                                                            --
+--              MPSoC-RISCV CPU                                               --
+--              Degub Interface                                               --
+--              AMBA3 AHB-Lite Bus Interface                                  --
+--              WishBone Bus Interface                                        --
+--                                                                            --
+--------------------------------------------------------------------------------
 
 -- Copyright (c) 2018-2019 by the author(s)
--- *
--- * Permission is hereby granted, free of charge, to any person obtaining a copy
--- * of this software and associated documentation files (the "Software"), to deal
--- * in the Software without restriction, including without limitation the rights
--- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
--- * copies of the Software, and to permit persons to whom the Software is
--- * furnished to do so, subject to the following conditions:
--- *
--- * The above copyright notice and this permission notice shall be included in
--- * all copies or substantial portions of the Software.
--- *
--- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
--- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
--- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
--- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
--- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
--- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
--- * THE SOFTWARE.
--- *
--- * =============================================================================
--- * Author(s):
--- *   Nathan Yawn <nathan.yawn@opencores.org>
--- *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
--- */
+--
+-- Permission is hereby granted, free of charge, to any person obtaining a copy
+-- of this software and associated documentation files (the "Software"), to deal
+-- in the Software without restriction, including without limitation the rights
+-- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+-- copies of the Software, and to permit persons to whom the Software is
+-- furnished to do so, subject to the following conditions:
+--
+-- The above copyright notice and this permission notice shall be included in
+-- all copies or substantial portions of the Software.
+--
+-- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+-- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+-- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+-- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+-- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+-- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+-- THE SOFTWARE.
+--
+--------------------------------------------------------------------------------
+-- Author(s):
+--   Nathan Yawn <nathan.yawn@opencores.org>
+--   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -84,7 +83,7 @@ entity peripheral_dbg_pu_riscv_jsp_module_core is
     );
 end peripheral_dbg_pu_riscv_jsp_module_core;
 
-architecture RTL of peripheral_dbg_pu_riscv_jsp_module_core is
+architecture rtl of peripheral_dbg_pu_riscv_jsp_module_core is
   -- NOTE:  For the rest of this file, "input" and the "in" direction refer to bytes being transferred
   -- from the PC, through the JTAG, and into the BIU FIFO.  The "output" direction refers to data being
   -- transferred from the BIU FIFO, through the JTAG to the PC.
@@ -93,10 +92,9 @@ architecture RTL of peripheral_dbg_pu_riscv_jsp_module_core is
   -- The read bit count starts right away (after a single throwaway bit), but the write count
   -- waits to receive a '1' start bit.
 
-  --////////////////////////////////////////////////////////////////
-  --
+  ------------------------------------------------------------------------------
   -- Constants
-  --
+  ------------------------------------------------------------------------------
 
   --FSM states
   constant STATE_WR_IDLE   : std_logic_vector(1 downto 0) := "11";
@@ -109,10 +107,9 @@ architecture RTL of peripheral_dbg_pu_riscv_jsp_module_core is
   constant STATE_RD_RDACK  : std_logic_vector(1 downto 0) := "01";
   constant STATE_RD_XFER   : std_logic_vector(1 downto 0) := "00";
 
-  --////////////////////////////////////////////////////////////////
-  --
+  ------------------------------------------------------------------------------
   -- Variables
-  --
+  ------------------------------------------------------------------------------
 
   -- Registers to hold state etc.
   signal read_bit_count     : std_logic_vector(3 downto 0);  -- How many bits have been shifted out
@@ -159,10 +156,9 @@ architecture RTL of peripheral_dbg_pu_riscv_jsp_module_core is
   signal rd_module_state, rd_module_next_state : std_logic_vector(1 downto 0);
 
 begin
-  --////////////////////////////////////////////////////////////////
-  --
-  -- Module body
-  --
+  ------------------------------------------------------------------------------
+  -- Module Body
+  ------------------------------------------------------------------------------
 
   -- Combinatorial assignments
   count_data_from_biu <= (biu_bytes_available & biu_space_available);
@@ -543,4 +539,4 @@ begin
         null;
     end case;
   end process;
-end RTL;
+end rtl;
