@@ -196,7 +196,6 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_biu_apb4 is
   signal rd_fsm_state, next_rd_fsm_state : std_logic_vector(1 downto 0);
   signal wr_fsm_state, next_wr_fsm_state : std_logic_vector(1 downto 0);
 
-  --//////////////////////////////////////////////////////////
   -- Interface hardware & 16550 registers
   -- Interface signals to read and write fifos:
   -- fifo_rd : read strobe

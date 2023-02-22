@@ -287,7 +287,7 @@ begin
     end generate;
   end generate;
 
-  --//////////////////////////////////////////////
+  ////////////////////////////////////////////
   -- Operation decoder
 
   -- These are only used before the operation is latched, so decode them from operation_in
@@ -316,9 +316,7 @@ begin
     end if;
   end process;
 
-  --//////////////////////////////////////////////
   -- CPU select register
-  --
   processing_1 : process (tck_i, tlr_i)
   begin
     if (tlr_i = '1') then
@@ -780,7 +778,7 @@ begin
         crc_in_sel     <= '1';          -- read data from tdi_i
         top_inhibit_o  <= '1';          -- in case of early termination
         -- It would be better to do this in STATE_WSTATUS, but we don't use that state
-        -- if mpsoc_dbg_USE_HISPEED is defined.
+        -- if peripheral_dbg_USE_HISPEED is defined.
         if (bit_count_max = '1') then
           bit_ct_rst  <= '1';           -- Zero the bit count
           -- start transaction. Can't do this here if not hispeed, biu_ready

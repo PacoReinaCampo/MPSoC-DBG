@@ -95,105 +95,105 @@ end peripheral_dbg_soc_osd_regaccess_layer;
 
 architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
   component peripheral_dbg_soc_osd_regaccess
-  generic (
-    XLEN : integer := 64;
-    PLEN : integer := 64;
+    generic (
+      XLEN : integer := 64;
+      PLEN : integer := 64;
 
-    MAX_REG_SIZE : integer := 64
-  );
-  port (
-    clk : in std_logic;
-    rst : in std_logic;
+      MAX_REG_SIZE : integer := 64
+    );
+    port (
+      clk : in std_logic;
+      rst : in std_logic;
 
-    id : in std_logic_vector(XLEN-1 downto 0);
+      id : in std_logic_vector(XLEN-1 downto 0);
 
-    debug_in_data  : in  std_logic_vector(XLEN-1 downto 0);
-    debug_in_last  : in  std_logic;
-    debug_in_valid : in  std_logic;
-    debug_in_ready : out std_logic;
+      debug_in_data  : in  std_logic_vector(XLEN-1 downto 0);
+      debug_in_last  : in  std_logic;
+      debug_in_valid : in  std_logic;
+      debug_in_ready : out std_logic;
 
-    debug_out_data  : out std_logic_vector(XLEN-1 downto 0);
-    debug_out_last  : out std_logic;
-    debug_out_valid : out std_logic;
-    debug_out_ready : in  std_logic;
+      debug_out_data  : out std_logic_vector(XLEN-1 downto 0);
+      debug_out_last  : out std_logic;
+      debug_out_valid : out std_logic;
+      debug_out_ready : in  std_logic;
 
-    reg_request : out std_logic;
-    reg_write   : out std_logic;
-    reg_addr    : out std_logic_vector(PLEN-1 downto 0);
-    reg_size    : out std_logic_vector(1 downto 0);
-    reg_wdata   : out std_logic_vector(MAX_REG_SIZE-1 downto 0);
-    reg_ack     : in  std_logic;
-    reg_err     : in  std_logic;
-    reg_rdata   : in  std_logic_vector(MAX_REG_SIZE-1 downto 0);
+      reg_request : out std_logic;
+      reg_write   : out std_logic;
+      reg_addr    : out std_logic_vector(PLEN-1 downto 0);
+      reg_size    : out std_logic_vector(1 downto 0);
+      reg_wdata   : out std_logic_vector(MAX_REG_SIZE-1 downto 0);
+      reg_ack     : in  std_logic;
+      reg_err     : in  std_logic;
+      reg_rdata   : in  std_logic_vector(MAX_REG_SIZE-1 downto 0);
 
-    event_dest : out std_logic_vector(XLEN-1 downto 0);
-    stall      : out std_logic
-  );
-end component;
+      event_dest : out std_logic_vector(XLEN-1 downto 0);
+      stall      : out std_logic
+    );
+  end component;
 
-component peripheral_dbg_soc_osd_regaccess_demux
-  generic (
-    XLEN : integer := 64
-  );
-  port (
-    clk : in std_logic;
-    rst : in std_logic;
+  component peripheral_dbg_soc_osd_regaccess_demux
+    generic (
+      XLEN : integer := 64
+    );
+    port (
+      clk : in std_logic;
+      rst : in std_logic;
 
-    in_data  : in  std_logic_vector(XLEN-1 downto 0);
-    in_last  : in  std_logic;
-    in_valid : in  std_logic;
-    in_ready : out std_logic;
+      in_data  : in  std_logic_vector(XLEN-1 downto 0);
+      in_last  : in  std_logic;
+      in_valid : in  std_logic;
+      in_ready : out std_logic;
 
-    out_reg_data  : out std_logic_vector(XLEN-1 downto 0);
-    out_reg_last  : out std_logic;
-    out_reg_valid : out std_logic;
-    out_reg_ready : in  std_logic;
+      out_reg_data  : out std_logic_vector(XLEN-1 downto 0);
+      out_reg_last  : out std_logic;
+      out_reg_valid : out std_logic;
+      out_reg_ready : in  std_logic;
 
-    out_bypass_data  : out std_logic_vector(XLEN-1 downto 0);
-    out_bypass_last  : out std_logic;
-    out_bypass_valid : out std_logic;
-    out_bypass_ready : in  std_logic
-  );
-end component;
+      out_bypass_data  : out std_logic_vector(XLEN-1 downto 0);
+      out_bypass_last  : out std_logic;
+      out_bypass_valid : out std_logic;
+      out_bypass_ready : in  std_logic
+    );
+  end component;
 
-component peripheral_dbg_soc_ring_router_mux
-  generic (
-    XLEN : integer := 64
-  );
-  port (
-    clk : in std_logic;
-    rst : in std_logic;
+  component peripheral_dbg_soc_ring_router_mux
+    generic (
+      XLEN : integer := 64
+    );
+    port (
+      clk : in std_logic;
+      rst : in std_logic;
 
-    in_ring_data  : in  std_logic_vector(XLEN-1 downto 0);
-    in_ring_last  : in  std_logic;
-    in_ring_valid : in  std_logic;
-    in_ring_ready : out std_logic;
+      in_ring_data  : in  std_logic_vector(XLEN-1 downto 0);
+      in_ring_last  : in  std_logic;
+      in_ring_valid : in  std_logic;
+      in_ring_ready : out std_logic;
 
-    in_local_data  : in  std_logic_vector(XLEN-1 downto 0);
-    in_local_last  : in  std_logic;
-    in_local_valid : in  std_logic;
-    in_local_ready : out std_logic;
+      in_local_data  : in  std_logic_vector(XLEN-1 downto 0);
+      in_local_last  : in  std_logic;
+      in_local_valid : in  std_logic;
+      in_local_ready : out std_logic;
 
-    out_mux_data  : out std_logic_vector(XLEN-1 downto 0);
-    out_mux_last  : out std_logic;
-    out_mux_valid : out std_logic;
-    out_mux_ready : in  std_logic
-  );
-end component;
+      out_mux_data  : out std_logic_vector(XLEN-1 downto 0);
+      out_mux_last  : out std_logic;
+      out_mux_valid : out std_logic;
+      out_mux_ready : in  std_logic
+    );
+  end component;
 
---////////////////////////////////////////////////////////////////
---
--- Variables
---
-signal regaccess_in_data  : std_logic_vector(XLEN-1 downto 0);
-signal regaccess_in_last  : std_logic;
-signal regaccess_in_valid : std_logic;
-signal regaccess_in_ready : std_logic;
+  ------------------------------------------------------------------------------
+  -- Variables
+  ------------------------------------------------------------------------------
 
-signal regaccess_out_data  : std_logic_vector(XLEN-1 downto 0);
-signal regaccess_out_last  : std_logic;
-signal regaccess_out_valid : std_logic;
-signal regaccess_out_ready : std_logic;
+  signal regaccess_in_data  : std_logic_vector(XLEN-1 downto 0);
+  signal regaccess_in_last  : std_logic;
+  signal regaccess_in_valid : std_logic;
+  signal regaccess_in_ready : std_logic;
+
+  signal regaccess_out_data  : std_logic_vector(XLEN-1 downto 0);
+  signal regaccess_out_last  : std_logic;
+  signal regaccess_out_valid : std_logic;
+  signal regaccess_out_ready : std_logic;
 
 begin
   ------------------------------------------------------------------------------

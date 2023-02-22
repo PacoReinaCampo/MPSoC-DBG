@@ -131,7 +131,7 @@ module peripheral_dbg_testbench;
   //
 
   //DUT AHB3
-  mpsoc_dbg_top_ahb3 #(
+  peripheral_dbg_top_ahb3 #(
     .X ( X ),
     .Y ( Y ),
     .Z ( Z ),

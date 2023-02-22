@@ -42,8 +42,8 @@
 
 module peripheral_dbg_testbench;
 
-`include "mpsoc_pkg.sv"
-`include "mpsoc_dbg_pkg.sv"
+`include "peripheral_pkg.sv"
+`include "peripheral_dbg_pkg.sv"
   
   //////////////////////////////////////////////////////////////////////////////
   //

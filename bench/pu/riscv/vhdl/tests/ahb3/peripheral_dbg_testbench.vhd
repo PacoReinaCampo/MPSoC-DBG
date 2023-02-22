@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_dbg_testbench.sv
+-- Converted from bench/verilog/regression/peripheral_dbg_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --------------------------------------------------------------------------------
@@ -47,13 +47,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.mpsoc_dbg_pkg.all;
+use work.peripheral_dbg_pkg.all;
 
-entity mpsoc_dbg_testbench is
-end mpsoc_dbg_testbench;
+entity peripheral_dbg_testbench is
+end peripheral_dbg_testbench;
 
-architecture rtl of mpsoc_dbg_testbench is
-  component mpsoc_dbg_top_ahb3
+architecture rtl of peripheral_dbg_testbench is
+  component peripheral_dbg_top_ahb3
     generic (
       X              : integer := 2;
       Y              : integer := 2;
@@ -211,7 +211,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT AHB3
-  top_ahb3 : mpsoc_dbg_top_ahb3
+  top_ahb3 : peripheral_dbg_top_ahb3
     generic map (
       X => X,
       Y => Y,

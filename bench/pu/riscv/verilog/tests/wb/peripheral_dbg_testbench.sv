@@ -130,7 +130,7 @@ module peripheral_dbg_testbench;
   //
 
   //DUT WB
-  mpsoc_dbg_top_wb #(
+  peripheral_dbg_top_wb #(
     .X ( X ),
     .Y ( Y ),
     .Z ( Z ),

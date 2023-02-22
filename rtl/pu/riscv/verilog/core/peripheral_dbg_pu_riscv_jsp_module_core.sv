@@ -229,7 +229,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign data_from_biu = biu_do;
 
   /*
-   mpsoc_dbg_jsp_biu jsp_biu_i (
+   peripheral_dbg_jsp_biu jsp_biu_i (
     // Debug interface signals
     .tck_i           (tck_i),
     .rst_i           (rst_i),

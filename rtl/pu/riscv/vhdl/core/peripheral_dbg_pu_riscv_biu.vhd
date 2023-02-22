@@ -132,10 +132,8 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  valid_selection <= '1'
-                     when (unsigned(cpu_select_i) < to_unsigned(X*Y*Z*CORES_PER_TILE, 4)) else '0';
+  valid_selection <= '1' when (unsigned(cpu_select_i) < to_unsigned(X*Y*Z*CORES_PER_TILE, 4)) else '0';
 
-  --////////////////////////////////////////////////////
   -- TCK clock domain
   -- There is no FSM here, just signal latching and clock
   -- domain synchronization

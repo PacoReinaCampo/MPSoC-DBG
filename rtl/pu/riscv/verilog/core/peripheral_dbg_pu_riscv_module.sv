@@ -588,7 +588,7 @@ module peripheral_dbg_pu_riscv_module #(
         top_inhibit_o  = 1'b1;    // in case of early termination
 
         // It would be better to do this in STATE_WSTATUS, but we don't use that state
-        // if mpsoc_dbg_USE_HISPEED is defined.
+        // if peripheral_dbg_USE_HISPEED is defined.
         if(bit_count_max) begin
           bit_ct_rst = 1'b1;  // Zero the bit count
 

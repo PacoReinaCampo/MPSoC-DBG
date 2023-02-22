@@ -133,9 +133,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --////////////////////////////////////////////////////
   -- TCK clock domain
-  --
 
   -- There is no FSM here, just signal latching and clock domain synchronization
 
@@ -294,7 +292,7 @@ begin
   wb_cti_o <= (others => '0');
   wb_bte_o <= (others => '0');
 
-  --/////////////////////////////////////////////////////
+  ///////////////////////////////////////////////////
   -- Wishbone clock domain
   --
 

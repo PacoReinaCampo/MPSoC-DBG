@@ -43,7 +43,7 @@
 
 `timescale 1ns/10ps
 
-module peripheral_peripheral_jtag_vpi_testbench;
+module peripheral_jtag_vpi_testbench;
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables

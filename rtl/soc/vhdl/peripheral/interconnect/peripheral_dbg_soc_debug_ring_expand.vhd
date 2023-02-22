@@ -133,10 +133,9 @@ architecture rtl of peripheral_dbg_soc_debug_ring_expand is
   signal chain_valid : std_logic_matrix(CHANNELS-1 downto 0)(NODES-1 downto 0);
   signal chain_ready : std_logic_matrix(CHANNELS-1 downto 0)(NODES-1 downto 0);
 
---////////////////////////////////////////////////////////////////
---
--- Module Body
---
+  ------------------------------------------------------------------------------
+  -- Module Body
+  ------------------------------------------------------------------------------
 begin
   generating_0 : for i in 0 to NODES - 1 generate
     ring_router : peripheral_dbg_soc_ring_router

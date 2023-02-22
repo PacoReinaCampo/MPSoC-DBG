@@ -128,9 +128,8 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --////////////////////////////////////////////////////
   -- TCK clock domain
-  --
+
   -- There is no FSM here, just signal latching and clock domain synchronization
 
   -- Create byte enable signals from word_size and address

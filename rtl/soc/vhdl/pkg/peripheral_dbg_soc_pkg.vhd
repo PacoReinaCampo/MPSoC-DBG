@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/arbiter/mpsoc_arb_rr.sv
+-- Converted from rtl/verilog/arbiter/peripheral_arb_rr.sv
 -- by verilog2vhdl - QueenField
 
 --------------------------------------------------------------------------------

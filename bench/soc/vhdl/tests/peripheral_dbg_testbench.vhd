@@ -1,4 +1,4 @@
--- Converted from bench/verilog/regression/mpsoc_dbg_testbench.sv
+-- Converted from bench/verilog/regression/peripheral_dbg_testbench.sv
 -- by verilog2vhdl - QueenField
 
 --------------------------------------------------------------------------------
@@ -46,14 +46,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.mpsoc_pkg.all;
-use work.mpsoc_dbg_pkg.all;
+use work.peripheral_pkg.all;
+use work.peripheral_dbg_pkg.all;
 
-entity mpsoc_dbg_testbench is
-end mpsoc_dbg_testbench;
+entity peripheral_dbg_testbench is
+end peripheral_dbg_testbench;
 
-architecture rtl of mpsoc_dbg_testbench is
-  component mpsoc_debug_interface
+architecture rtl of peripheral_dbg_testbench is
+  component peripheral_debug_interface
     generic (
       XLEN : integer := 64;
       PLEN : integer := 64;
@@ -96,7 +96,7 @@ architecture rtl of mpsoc_dbg_testbench is
     );
   end component;
 
-  component mpsoc_debug_ring
+  component peripheral_debug_ring
     generic (
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
@@ -120,7 +120,7 @@ architecture rtl of mpsoc_dbg_testbench is
     );
   end component;
 
-  component mpsoc_debug_ring_expand
+  component peripheral_debug_ring_expand
     generic (
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
@@ -221,7 +221,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT
-  debug_interface : mpsoc_debug_interface
+  debug_interface : peripheral_debug_interface
     generic map (
       XLEN     => XLEN,
       PLEN     => PLEN,
@@ -258,7 +258,7 @@ begin
       ring_in_ready => debug_ring_out_ready
     );
 
-  debug_ring : mpsoc_debug_ring
+  debug_ring : peripheral_debug_ring
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,
@@ -281,7 +281,7 @@ begin
       dii_out_ready => dii_out_ready
     );
 
-  debug_ring_expand : mpsoc_debug_ring_expand
+  debug_ring_expand : peripheral_debug_ring_expand
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,

@@ -277,7 +277,7 @@ begin
   biu_di        <= data_to_biu;
   data_from_biu <= biu_do;
 
---   mpsoc_dbg_jsp_biu jsp_biu_i (
+--   peripheral_dbg_jsp_biu jsp_biu_i (
 --    // Debug interface signals
 --    .tck_i           (tck_i),
 --    .rst_i           (rst_i),
