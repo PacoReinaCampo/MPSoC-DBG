@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_ram_b3_wb #(
+module peripheral_dbg_ram_b3_wb #(
   //Wishbone parameters
   parameter DW = 32,
   parameter AW = 32,

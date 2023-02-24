@@ -14,17 +14,17 @@ pu
 │           └── wb
 │               ├── debug
 │               │   ├── jtag_tap
-│               │   │   └── peripheral_tap_top.sv
+│               │   │   └── peripheral_dbg_tap_top.sv
 │               │   └── jtag_vpi
-│               │       └── peripheral_jtag_vpi.sv
+│               │       └── peripheral_dbg_jtag_vpi.sv
 │               └── sample
 │                   ├── jtag_tap
-│                   │   └── peripheral_tap_top.sv
+│                   │   └── peripheral_dbg_tap_top.sv
 │                   ├── jtag_vpi
-│                   │   ├── peripheral_jtag_vpi.sv
-│                   │   └── peripheral_jtag_vpi_testbench.sv
+│                   │   ├── peripheral_dbg_jtag_vpi.sv
+│                   │   └── peripheral_dbg_jtag_vpi_testbench.sv
 │                   └── ram
-│                       └── peripheral_ram_b3_wb.sv
+│                       └── peripheral_dbg_ram_b3_wb.sv
 └── riscv
     ├── verilog
     │   └── tests

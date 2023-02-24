@@ -16,10 +16,10 @@ IVERILOG_VPI_SRC = $(SOURCE_DIR)/software/or1k/sample/jtag_vpi.c
 
 ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/pu/or1k/verilog/peripheral/wb/*.sv)
 
-IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/peripheral_jtag_vpi.sv \
-               $(BENCH_DIR)/jtag_vpi/peripheral_jtag_vpi_testbench.sv \
-               $(BENCH_DIR)/jtag_tap/peripheral_tap_top.sv \
-               $(BENCH_DIR)/ram/peripheral_ram_b3_wb.sv \
+IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/peripheral_dbg_jtag_vpi.sv \
+               $(BENCH_DIR)/jtag_vpi/peripheral_dbg_jtag_vpi_testbench.sv \
+               $(BENCH_DIR)/jtag_tap/peripheral_dbg_tap_top.sv \
+               $(BENCH_DIR)/ram/peripheral_dbg_ram_b3_wb.sv \
                $(ADV_DEBUG_SRC)
 
 all: sim
@@ -28,11 +28,11 @@ build:
 	@echo '##### Building ######'
 	$(Q)gcc -otest_client $(SOURCE_DIR)/software/or1k/sample/test_client.c
 	$(Q)iverilog-vpi $(IVERILOG_VPI_SRC) > /dev/null
-	$(Q)iverilog -I$(INCLUDE_DIR) -operipheral_jtag_vpi_testbench.vvp $(IVERILOG_SRC)
+	$(Q)iverilog -I$(INCLUDE_DIR) -operipheral_dbg_jtag_vpi_testbench.vvp $(IVERILOG_SRC)
 
 sim: build
 	@echo '##### Start the simulation ######'
-	$(Q)vvp -n -M. -mjtag_vpi peripheral_jtag_vpi_testbench.vvp +jtag_vpi_enable=1 &
+	$(Q)vvp -n -M. -mjtag_vpi peripheral_dbg_jtag_vpi_testbench.vvp +jtag_vpi_enable=1 &
 	@sleep 1
 	@echo '##### Running the test client ######'
 	$(Q)./test_client

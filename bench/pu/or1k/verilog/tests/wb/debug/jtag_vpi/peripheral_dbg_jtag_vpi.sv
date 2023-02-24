@@ -48,7 +48,7 @@
 `define CMD_SCAN_CHAIN_FLIP_TMS 3
 `define CMD_STOP_SIMU           4
 
-module peripheral_jtag_vpi #(
+module peripheral_dbg_jtag_vpi #(
   parameter DEBUG_INFO      = 0,
   parameter TP              = 1,
   parameter TCK_HALF_PERIOD = 50, // Clock half period (Clock period = 100 ns => 10 MHz)
@@ -270,6 +270,6 @@ module peripheral_jtag_vpi #(
     // (this is around 20k ns if the flash_crash boot code
     // is being booted from, else much bigger, around 10mil ns)
     wait(init_done)
-    if($test$plusargs("peripheral_jtag_vpi_enable")) main;
+    if($test$plusargs("peripheral_dbg_jtag_vpi_enable")) main;
   end
 endmodule
