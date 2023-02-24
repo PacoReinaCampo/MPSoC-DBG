@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_debug_interface #(
   parameter SYSTEM_VENDOR_ID = 'x,
@@ -96,12 +96,12 @@ module peripheral_dbg_soc_debug_interface #(
 
   assign ring_tie.valid = 0;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
+  peripheral_dbg_soc_ring_router_gateway #(
     .BUFFER_SIZE  (DEBUG_ROUTER_BUFFER_SIZE),
     .SUBNET_BITS  (SUBNET_BITS),
     .LOCAL_SUBNET (LOCAL_SUBNET)
   )
-  u_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway (
+  u_peripheral_dbg_soc_ring_router_gateway (
     .clk(clk),
     .rst(rst),
 

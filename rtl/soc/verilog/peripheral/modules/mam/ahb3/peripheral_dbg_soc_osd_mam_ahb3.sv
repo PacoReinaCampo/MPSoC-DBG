@@ -40,9 +40,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_ahb3 #(
+module peripheral_dbg_soc_osd_mam_ahb3 #(
   parameter XLEN = 16, // in bits, must be multiple of 16
   parameter PLEN = 32,
 
@@ -145,7 +145,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_ahb3 #(
 
   assign write_complete = 1'b1;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_if_ahb3 #(
+  peripheral_dbg_soc_osd_mam_if_ahb3 #(
     .XLEN(XLEN),
     .PLEN(PLEN)
   )

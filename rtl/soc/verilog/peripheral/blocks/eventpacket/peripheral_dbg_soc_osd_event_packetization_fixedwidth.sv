@@ -42,7 +42,7 @@
  */
 
 /*
- * Module: peripheral_dbg_soc_peripheral_dbg_soc_osd_event_packetization_fixedwidth
+ * Module: peripheral_dbg_soc_osd_event_packetization_fixedwidth
  *
  * Package data into one or multiple DI event packet (TYPE == EVENT). If the
  * maximum number of flits (MAX_PKT_LEN) is exceeded two or more packets are
@@ -55,9 +55,9 @@
  * event_data[15:0].
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
+module peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
   //The maximum length of a DI packet in flits, including the header flits
   parameter MAX_PKT_LEN = 12,
 

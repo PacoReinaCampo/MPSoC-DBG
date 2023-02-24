@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_mam #(
   parameter DATA_WIDTH  = 16, // data width in bits, must be multiple of 16
@@ -171,7 +171,7 @@ module peripheral_dbg_soc_osd_mam #(
   assign read_data_m = ENDIAN ? read_data    : endian_conv(read_data);
   assign write_data  = ENDIAN ? write_data_m : endian_conv(write_data_m);
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_layer #(
+  peripheral_dbg_soc_osd_regaccess_layer #(
     .MOD_VENDOR(16'h1),
     .MOD_TYPE(16'h3),
     .MOD_VERSION(16'h0),

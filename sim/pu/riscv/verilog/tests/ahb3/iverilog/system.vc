@@ -1,19 +1,19 @@
 +incdir+../../../../../../../rtl/pu/riscv/verilog/ahb3/pkg
 
-../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_ahb3_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_ahb3_module.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_jsp_apb_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_jsp_apb_module.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/mpsoc_dbg_top_ahb3.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/peripheral_dbg_pu_ahb3_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/peripheral_dbg_pu_ahb3_module.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/peripheral_dbg_pu_jsp_apb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/peripheral_dbg_pu_jsp_apb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/ahb3/peripheral_dbg_pu_top_ahb3.sv
 
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_bus_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_bytefifo.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_crc32.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_jsp_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_or1k_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_or1k_module.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_or1k_status_reg.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_syncflop.sv
-../../../../../../../rtl/pu/riscv/verilog/ahb3/core/mpsoc_dbg_syncreg.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_bus_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_bytefifo.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_crc32.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_jsp_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_or1k_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_or1k_module.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_or1k_status_reg.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_syncflop.sv
+../../../../../../../rtl/pu/riscv/verilog/ahb3/core/peripheral_dbg_pu_syncreg.sv
 
-../../../../../../../bench/pu/riscv/verilog/tests/ahb3/mpsoc_dbg_testbench.sv
+../../../../../../../bench/pu/riscv/verilog/tests/ahb3/peripheral_dbg_pu_testbench.sv

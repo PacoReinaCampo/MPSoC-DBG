@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-interface peripheral_dbg_soc_peripheral_dbg_soc_dii_channel_flat #(
+interface peripheral_dbg_soc_dii_channel_flat #(
   parameter N = 'x
 );
 

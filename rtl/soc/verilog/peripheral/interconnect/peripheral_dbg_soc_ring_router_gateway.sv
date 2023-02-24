@@ -41,9 +41,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
+module peripheral_dbg_soc_ring_router_gateway #(
   parameter BUFFER_SIZE = 4,
   parameter SUBNET_BITS = 6,
   parameter LOCAL_SUBNET = 0
@@ -95,7 +95,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
   logic ring_ext1_ready;
   logic ring_muxed_ready;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux u_demux0 (
+  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux u_demux0 (
     .*,
     .in_ring         ( ring_in0          ),
     .in_ring_ready   ( ring_in0_ready    ),
@@ -107,7 +107,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
     .out_ext_ready   ( ring_ext0_ready   )
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux u_demux1 (
+  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux u_demux1 (
     .*,
     .in_ring         ( ring_in1          ),
     .in_ring_ready   ( ring_in1_ready    ),
@@ -119,7 +119,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
     .out_ext_ready   ( ring_ext1_ready   )
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr u_mux_local (
+  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr u_mux_local (
     .*,
     .in0           ( ring_local0       ),
     .in0_ready     ( ring_local0_ready ),
@@ -129,7 +129,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
     .out_mux_ready ( local_out_ready   )
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr u_mux_ext (
+  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr u_mux_ext (
     .*,
     .in0           ( ring_ext0         ),
     .in0_ready     ( ring_ext0_ready   ),
@@ -139,7 +139,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway #(
     .out_mux_ready ( ext_out_ready     )
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_mux u_mux_ring0 (
+  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_mux u_mux_ring0 (
     .*,
     .in_ring        ( ring_fwd0        ),
     .in_ring_ready  ( ring_fwd0_ready  ),

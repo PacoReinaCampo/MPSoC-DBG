@@ -7,4 +7,4 @@
 ../../../../../../../rtl/pu/msp430/verilog/bb/core/omsp/msp430_dbg_hwbrk.sv
 
 
-../../../../../../../bench/pu/msp430/verilog/tests/bb/mpsoc_dbg_testbench.sv
+../../../../../../../bench/pu/msp430/verilog/tests/bb/peripheral_dbg_pu_testbench.sv

@@ -41,9 +41,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_debug_ring_expand #(
+module peripheral_dbg_soc_debug_ring_expand #(
   parameter PORTS = 1,
   parameter BUFFER_SIZE = 4
 )

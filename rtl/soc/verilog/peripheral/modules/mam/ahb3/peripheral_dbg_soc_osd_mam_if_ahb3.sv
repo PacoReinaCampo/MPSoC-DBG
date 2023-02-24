@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_if_ahb3 #(
+module peripheral_dbg_soc_osd_mam_if_ahb3 #(
   parameter XLEN  = 16, // in bits, must be multiple of 16
   parameter PLEN  = 32,
 

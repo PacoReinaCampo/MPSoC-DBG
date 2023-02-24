@@ -41,9 +41,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
+module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
   parameter SUBNET_BITS  = 6,
   parameter LOCAL_SUBNET = 0
 )

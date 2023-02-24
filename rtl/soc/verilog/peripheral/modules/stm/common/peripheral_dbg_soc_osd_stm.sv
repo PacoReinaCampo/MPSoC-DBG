@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_stm #(
   parameter REG_ADDR_WIDTH = 5, // the address width of the core register file
@@ -98,7 +98,7 @@ module peripheral_dbg_soc_osd_stm #(
   // This module cannot receive packets other than register access packets
   assign dp_in_ready = 1'b0;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_layer #(
+  peripheral_dbg_soc_osd_regaccess_layer #(
     .MOD_VENDOR(16'h1),
     .MOD_TYPE(16'h4),
     .MOD_VERSION(16'h0),
@@ -170,7 +170,7 @@ module peripheral_dbg_soc_osd_stm #(
     .out_ready (packet_ready)
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
+  peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
     .DATA_WIDTH(EW),
     .MAX_PKT_LEN(MAX_PKT_LEN)
   )

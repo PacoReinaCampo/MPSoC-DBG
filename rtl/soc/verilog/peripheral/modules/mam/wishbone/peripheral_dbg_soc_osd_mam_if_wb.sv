@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_if_wb #(
+module peripheral_dbg_soc_osd_mam_if_wb #(
   parameter DATA_WIDTH  = 16, // in bits, must be multiple of 16
   parameter ADDR_WIDTH  = 32,
 

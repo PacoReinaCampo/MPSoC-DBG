@@ -42,8 +42,8 @@
 
 module peripheral_dbg_testbench;
 
-`include "peripheral_pkg.sv"
-`include "peripheral_dbg_pkg.sv"
+`include "peripheral_dbg_pu_pkg.sv"
+`include "peripheral_dbg_soc_pkg.sv"
   
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -116,7 +116,7 @@ module peripheral_dbg_testbench;
   //
 
   //DUT
-  debug_interface debug_interface (
+  peripheral_dbg_soc_debug_interface dbg_soc_debug_interface (
     .clk            ( HCLK    ),
     .rst            ( HRESETn ),
 
@@ -142,10 +142,10 @@ module peripheral_dbg_testbench;
     .ring_in_ready  ( debug_ring_out_ready )
   );
 
-  debug_ring #(
+  peripheral_dbg_soc_debug_ring #(
     .PORTS ( CHANNELS )
   )
-  debug_ring (
+  dbg_soc_debug_ring (
     .clk (HCLK),
     .rst (HRESETn),
 
@@ -162,10 +162,10 @@ module peripheral_dbg_testbench;
     .dii_out_ready (dii_out_ready)
   );
 
-  debug_ring_expand #(
+  peripheral_dbg_soc_debug_ring_expand #(
     .PORTS ( CHANNELS )
   )
-  debug_ring_expand (
+  dbg_soc_debug_ring_expand (
     .clk (HCLK),
     .rst (HRESETn),
 

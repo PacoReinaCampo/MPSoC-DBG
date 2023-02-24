@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 import opensocdebug::mmsp430_trace_exec;
 
 module peripheral_dbg_soc_osd_ctm_mmsp430 #(

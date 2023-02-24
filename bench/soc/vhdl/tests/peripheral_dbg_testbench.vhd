@@ -46,14 +46,14 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.peripheral_pkg.all;
-use work.peripheral_dbg_pkg.all;
+use work.peripheral_dbg_pu_pkg.all;
+use work.peripheral_dbg_soc_pkg.all;
 
 entity peripheral_dbg_testbench is
 end peripheral_dbg_testbench;
 
 architecture rtl of peripheral_dbg_testbench is
-  component peripheral_debug_interface
+  component peripheral_dbg_soc_debug_interface
     generic (
       XLEN : integer := 64;
       PLEN : integer := 64;
@@ -96,7 +96,7 @@ architecture rtl of peripheral_dbg_testbench is
     );
   end component;
 
-  component peripheral_debug_ring
+  component peripheral_dbg_soc_debug_ring
     generic (
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
@@ -120,7 +120,7 @@ architecture rtl of peripheral_dbg_testbench is
     );
   end component;
 
-  component peripheral_debug_ring_expand
+  component peripheral_dbg_soc_debug_ring_expand
     generic (
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
@@ -221,7 +221,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT
-  debug_interface : peripheral_debug_interface
+  dbg_soc_debug_interface : peripheral_dbg_soc_debug_interface
     generic map (
       XLEN     => XLEN,
       PLEN     => PLEN,
@@ -258,7 +258,7 @@ begin
       ring_in_ready => debug_ring_out_ready
     );
 
-  debug_ring : peripheral_debug_ring
+  dbg_soc_debug_ring : peripheral_dbg_soc_debug_ring
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,
@@ -281,7 +281,7 @@ begin
       dii_out_ready => dii_out_ready
     );
 
-  debug_ring_expand : peripheral_debug_ring_expand
+  dbg_soc_debug_ring_expand : peripheral_dbg_soc_debug_ring_expand
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,

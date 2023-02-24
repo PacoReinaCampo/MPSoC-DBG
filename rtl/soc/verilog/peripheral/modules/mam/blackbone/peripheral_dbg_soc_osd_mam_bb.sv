@@ -40,9 +40,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_bb #(
+module peripheral_dbg_soc_osd_mam_bb #(
   parameter DATA_WIDTH  = 16, // in bits, must be multiple of 16
   parameter ADDR_WIDTH  = 32,
 
@@ -137,7 +137,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_bb #(
 
   assign write_complete = 1'b1;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_mam_if_bb #(
+  peripheral_dbg_soc_osd_mam_if_bb #(
     .DATA_WIDTH(DATA_WIDTH),
     .ADDR_WIDTH(ADDR_WIDTH)
   )

@@ -40,10 +40,10 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 import opensocdebug::mmsp430_trace_exec;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_stm_mmsp430 #(
+module peripheral_dbg_soc_osd_stm_mmsp430 #(
   parameter MAX_PKT_LEN = 'hx
 )
   (

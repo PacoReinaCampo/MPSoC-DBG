@@ -40,9 +40,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_dem_uart_wb #(
+module peripheral_dbg_soc_osd_dem_uart_wb #(
   parameter DW = 32
 )
   (
@@ -112,7 +112,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_osd_dem_uart_wb #(
     .drop (drop)
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_dem_uart_16550 u_16550 (
+  peripheral_dbg_soc_osd_dem_uart_16550 u_16550 (
     .clk (clk),
     .rst (rst),
 

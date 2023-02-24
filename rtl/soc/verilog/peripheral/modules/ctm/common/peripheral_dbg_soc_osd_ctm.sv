@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_ctm #(
   parameter ADDR_WIDTH  = 64,  // width of memory addresses
@@ -112,7 +112,7 @@ module peripheral_dbg_soc_osd_ctm #(
 
   logic                   sample_prvchange;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_layer #(
+  peripheral_dbg_soc_osd_regaccess_layer #(
     .MOD_VENDOR(16'h1),
     .MOD_TYPE(16'h5),
     .MOD_VERSION(16'h0),
@@ -195,7 +195,7 @@ module peripheral_dbg_soc_osd_ctm #(
     .out_ready (packet_ready)
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
+  peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
     .DATA_WIDTH(EW),
     .MAX_PKT_LEN(MAX_PKT_LEN)
   )

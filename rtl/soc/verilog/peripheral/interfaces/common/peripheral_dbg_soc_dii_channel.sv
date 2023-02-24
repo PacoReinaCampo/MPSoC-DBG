@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-package dii_package;
+package peripheral_dbg_soc_dii_channel;
 
 typedef struct packed unsigned {
   logic        valid;

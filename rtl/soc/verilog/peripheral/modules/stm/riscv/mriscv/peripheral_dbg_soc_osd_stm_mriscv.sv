@@ -40,10 +40,10 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 import opensocdebug::peripheral_dbg_soc_mriscv_trace_exec;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_stm_mriscv #(
+module peripheral_dbg_soc_osd_stm_mriscv #(
   parameter MAX_PKT_LEN = 'hx
 )
   (

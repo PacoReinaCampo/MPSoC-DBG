@@ -41,7 +41,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_debug_ring #(
   parameter PORTS        = 1,
@@ -66,7 +66,7 @@ module peripheral_dbg_soc_debug_ring #(
 
   logic [1:0][1:0] ext_port_ready;
 
-  peripheral_dbg_soc_peripheral_dbg_soc_debug_ring_expand #(
+  peripheral_dbg_soc_debug_ring_expand #(
     .PORTS       (PORTS),
     .BUFFER_SIZE (BUFFER_SIZE)
   )

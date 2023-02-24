@@ -40,9 +40,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_layer #(
+module peripheral_dbg_soc_osd_regaccess_layer #(
   parameter MOD_VENDOR = 'x,
   parameter MOD_TYPE = 'x,
   parameter MOD_VERSION = 'x,
@@ -106,7 +106,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_layer #(
   );
 
   // Ingress path demux
-  peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_demux u_demux (
+  peripheral_dbg_soc_osd_regaccess_demux u_demux (
     .*,
     .in (debug_in),
     .in_ready         (debug_in_ready),
@@ -117,7 +117,7 @@ module peripheral_dbg_soc_peripheral_dbg_soc_osd_regaccess_layer #(
   );
 
   // Egress path mux
-  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux u_mux (
+  peripheral_dbg_soc_ring_router_mux u_mux (
     .*,
     .in_local       (module_in),
     .in_local_ready (module_in_ready),

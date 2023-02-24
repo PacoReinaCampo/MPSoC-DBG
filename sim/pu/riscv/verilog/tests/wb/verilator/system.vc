@@ -1,19 +1,19 @@
 +incdir+../../../../../../../rtl/pu/riscv/verilog/wb/pkg
 
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_jsp_wb_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_jsp_wb_module.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_top_wb.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_wb_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/mpsoc_dbg_wb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_jsp_wb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_jsp_wb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_top_wb.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_wb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_wb_module.sv
 
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_bus_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_bytefifo.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_crc32.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_jsp_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_or1k_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_or1k_module.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_or1k_status_reg.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_syncflop.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/mpsoc_dbg_syncreg.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_bus_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_bytefifo.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_crc32.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_jsp_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_or1k_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_or1k_module.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_or1k_status_reg.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_syncflop.sv
+../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_syncreg.sv
 
-../../../../../../../bench/pu/riscv/verilog/tests/wb/mpsoc_dbg_testbench.sv
+../../../../../../../bench/pu/riscv/verilog/tests/wb/peripheral_dbg_pu_testbench.sv

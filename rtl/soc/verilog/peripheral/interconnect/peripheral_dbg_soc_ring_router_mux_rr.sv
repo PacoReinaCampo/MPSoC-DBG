@@ -40,9 +40,9 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import dii_package::dii_flit;
+import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr (
+module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr (
   input clk,
   input rst,
 
