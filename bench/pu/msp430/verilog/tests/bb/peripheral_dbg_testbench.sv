@@ -48,7 +48,7 @@
 
 `ifdef OMSP_NO_INCLUDE
 `else
-`include "msp430_defines.sv"
+`include "peripheral_dbg_pu_msp430_defines.sv"
 `endif
 
 module  peripheral_dbg_testbench (
@@ -89,7 +89,7 @@ module  peripheral_dbg_testbench (
   input               puc_pnd_set        // PUC pending set for the serial debug interface
 );
 
-  msp430_dbg dbg (
+  peripheral_dbg_pu_msp430 dbg_pu_msp430 (
     // OUTPUTs
     .dbg_cpu_reset     (dbg_cpu_reset),     // Reset CPU from debug interface
     .dbg_freeze        (dbg_freeze),        // Freeze peripherals
@@ -130,5 +130,5 @@ endmodule // msp430_dbg
 
 `ifdef OMSP_NO_INCLUDE
 `else
-`include "msp430_undefines.sv"
+`include "peripheral_dbg_pu_msp430_undefines.sv"
 `endif

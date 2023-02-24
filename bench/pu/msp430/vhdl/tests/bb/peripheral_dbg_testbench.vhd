@@ -43,7 +43,8 @@
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
-use work.msp430_pkg.all;
+
+use work.peripheral_dbg_pu_msp430_pkg.all;
 
 entity peripheral_dbg_testbench is
   port (
@@ -84,7 +85,7 @@ end peripheral_dbg_testbench;
 
 architecture rtl of peripheral_dbg_testbench is
 
-  component msp430_dbg
+  component peripheral_dbg_pu_msp430
     port (
       dbg_cpu_reset   : out std_logic;
       dbg_freeze      : out std_logic;
@@ -119,11 +120,11 @@ architecture rtl of peripheral_dbg_testbench is
       fe_mdb_in         : in std_logic_vector (15 downto 0);
       pc                : in std_logic_vector (15 downto 0);
       cpu_id            : in std_logic_vector (31 downto 0));
-  end component msp430_dbg;
+  end component peripheral_dbg_pu_msp430;
 
 begin
 
-  dbg : msp430_dbg
+  dbg_pu_msp430 : peripheral_dbg_pu_msp430
     port map (
       dbg_cpu_reset   => dbg_cpu_reset,
       dbg_freeze      => dbg_freeze,

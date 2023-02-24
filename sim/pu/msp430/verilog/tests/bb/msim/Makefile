@@ -5,7 +5,7 @@ build:
 	vlog -sv -f system.vc
 
 simulate:
-	vsim -c -do run.do work.peripheral_dbg_pu_testbench
+	vsim -c -do run.do work.peripheral_dbg_testbench
 
 clean:
 	rm -rf work transcript

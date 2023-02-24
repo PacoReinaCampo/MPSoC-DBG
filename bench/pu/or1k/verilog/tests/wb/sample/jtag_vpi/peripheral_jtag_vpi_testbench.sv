@@ -96,7 +96,7 @@ module peripheral_jtag_vpi_testbench;
   peripheral_jtag_vpi #(
     .DEBUG_INFO(0)
   )
-  peripheral_jtag_vpi (
+  jtag_vpi (
     .tms (tms_pad_i),
     .tck (tck_pad_i),
     .tdi (tdi_pad_i),
@@ -132,7 +132,7 @@ module peripheral_jtag_vpi_testbench;
     .debug_tdi_i    (dbg_if_tdo)
   );
 
-  adbg_top dbg_if (
+  peripheral_dbg_pu_or1k_top dbg_pu_or1k_top (
     // OR1200 interface
     .cpu0_clk_i   (sys_clock),
     .cpu0_rst_o   (),

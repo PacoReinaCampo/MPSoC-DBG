@@ -42,6 +42,21 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
+// Length of the MODULE ID register
+`define DBG_TOP_MODULE_ID_LENGTH 2
+
+// How many modules can be supported by the module id length
+`define DBG_TOP_MAX_MODULES 4
+
+// Chains
+`define DBG_TOP_WISHBONE_DEBUG_MODULE  2'h0
+`define DBG_TOP_CPU0_DEBUG_MODULE      2'h1
+`define DBG_TOP_CPU1_DEBUG_MODULE      2'h2
+`define DBG_TOP_JSP_DEBUG_MODULE       2'h3
+
+// Length of data
+`define DBG_TOP_MODULE_DATA_LEN 53
+
 // These relate to the number of internal registers, and how
 // many bits are required in the Reg. Select register
 `define DBG_OR1K_REGSELECT_SIZE 1

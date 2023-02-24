@@ -51,7 +51,7 @@
 `include "peripheral_dbg_pu_msp430_defines.sv"
 `endif
 
-module  peripheral_dbg_pu_msp430 (
+module peripheral_dbg_pu_msp430 (
   // OUTPUTs
   output              dbg_cpu_reset,     // Reset CPU from debug interface
   output              dbg_freeze,        // Freeze peripherals
