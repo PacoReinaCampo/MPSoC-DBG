@@ -1,7 +1,7 @@
 all: build simulate
 
 build:
-	iverilog -g2012 -o system.vvp -c system.vc -s peripheral_dbg_pu_testbench
+	iverilog -g2012 -o system.vvp -c system.vc -s peripheral_dbg_pu_riscv_testbench
 
 simulate:
 	vvp system.vvp

@@ -26,7 +26,7 @@ ghdl -a --std=08 ../../../../../rtl/soc/vhdl/peripheral/modules/him/peripheral_d
 ghdl -a --std=08 ../../../../../rtl/soc/vhdl/peripheral/modules/scm/peripheral_dbg_soc_osd_scm.vhd
 ghdl -a --std=08 ../../../../../rtl/soc/vhdl/peripheral/modules/stm/peripheral_dbg_soc_osd_stm_template.vhd
 ghdl -a --std=08 ../../../../../rtl/soc/vhdl/peripheral/modules/stm/peripheral_dbg_soc_osd_stm.vhd
-ghdl -a --std=08 ../../../../../rtl/soc/vhdl/peripheral/top/peripheral_dbg_soc_debug_interface.vhd
+ghdl -a --std=08 ../../../../../rtl/soc/vhdl/peripheral/top/peripheral_dbg_soc_interface.vhd
 ghdl -a --std=08 ../../../../../bench/soc/vhdl/tests/peripheral_dbg_testbench.vhd
 ghdl -m --std=08 peripheral_dbg_testbench
 ghdl -r --std=08 peripheral_dbg_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > peripheral_dbg_testbench.tree

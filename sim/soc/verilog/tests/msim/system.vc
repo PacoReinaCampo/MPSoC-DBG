@@ -21,6 +21,6 @@
 ../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router.sv
 ../../../../../rtl/soc/verilog/peripheral/modules/him/peripheral_dbg_soc_osd_him.sv
 ../../../../../rtl/soc/verilog/peripheral/modules/scm/peripheral_dbg_soc_osd_scm.sv
-../../../../../rtl/soc/verilog/peripheral/top/peripheral_dbg_soc_debug_interface.sv
+../../../../../rtl/soc/verilog/peripheral/top/peripheral_dbg_soc_interface.sv
 
 ../../../../../bench/soc/verilog/tests/peripheral_dbg_testbench.sv

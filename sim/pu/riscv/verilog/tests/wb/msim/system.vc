@@ -1,19 +1,19 @@
 +incdir+../../../../../../../rtl/pu/riscv/verilog/wb/pkg
 
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_jsp_wb_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_jsp_wb_module.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_top_wb.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_wb_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/wb/peripheral_dbg_pu_wb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_jsp_biu_wb.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_jsp_module_wb.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_top_wb.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_biu_wb.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_module_wb.sv
 
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_bus_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_bytefifo.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_crc32.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_jsp_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_or1k_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_or1k_module.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_or1k_status_reg.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_syncflop.sv
-../../../../../../../rtl/pu/riscv/verilog/wb/core/peripheral_dbg_pu_syncreg.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_bus_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_bytefifo.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_crc32.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_jsp_module_core.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_module.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_status_reg.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_syncflop.sv
+../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_syncreg.sv
 
-../../../../../../../bench/pu/riscv/verilog/tests/wb/peripheral_dbg_pu_testbench.sv
+../../../../../../../bench/pu/riscv/verilog/tests/wb/peripheral_dbg_pu_riscv_testbench.sv

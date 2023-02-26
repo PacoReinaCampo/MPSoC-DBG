@@ -78,9 +78,7 @@ pu
     │   │       ├── peripheral_dbg_pu_riscv_module_wb.sv
     │   │       └── peripheral_dbg_pu_riscv_top_wb.sv
     │   └── pkg
-    │       ├── ahb3
-    │       │   └── peripheral_dbg_pu_riscv_pkg.sv
-    │       └── wb
+    │       └── core
     │           └── peripheral_dbg_pu_riscv_pkg.sv
     └── vhdl
         ├── core
@@ -107,9 +105,7 @@ pu
         │       ├── peripheral_dbg_pu_riscv_module_wb.vhd
         │       └── peripheral_dbg_pu_riscv_top_wb.vhd
         └── pkg
-            ├── ahb3
-            │   └── peripheral_dbg_pu_riscv_pkg.vhd
-            └── wb
+            └── core
                 └── peripheral_dbg_pu_riscv_pkg.vhd
 
-40 directories, 72 files
+38 directories, 70 files
