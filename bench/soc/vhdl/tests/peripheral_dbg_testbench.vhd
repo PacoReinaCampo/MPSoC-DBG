@@ -53,7 +53,7 @@ entity peripheral_dbg_testbench is
 end peripheral_dbg_testbench;
 
 architecture rtl of peripheral_dbg_testbench is
-  component peripheral_dbg_soc_debug_interface
+  component peripheral_dbg_soc_interface
     generic (
       XLEN : integer := 64;
       PLEN : integer := 64;
@@ -221,7 +221,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT
-  dbg_soc_debug_interface : peripheral_dbg_soc_debug_interface
+  dbg_soc_interface : peripheral_dbg_soc_interface
     generic map (
       XLEN     => XLEN,
       PLEN     => PLEN,

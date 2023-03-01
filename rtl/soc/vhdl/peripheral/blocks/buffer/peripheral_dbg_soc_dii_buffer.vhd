@@ -48,7 +48,7 @@ use ieee.numeric_std.all;
 use ieee.math_real.all;
 
 use work.peripheral_dbg_pu_pkg.all;
-use work.peripheral_dbg_pu_riscv_pkg.all;
+use work.peripheral_dbg_soc_pkg.all;
 
 entity peripheral_dbg_soc_dii_buffer is
   generic (

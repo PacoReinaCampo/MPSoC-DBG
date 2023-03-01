@@ -1,4 +1,4 @@
--- Converted from rtl/verilog/arbiter/peripheral_arb_rr.sv
+-- Converted from rtl/verilog/arbiter/peripheral_dbg_soc_pkg.sv
 -- by verilog2vhdl - QueenField
 
 --------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-package peripheral_dbg_pu_riscv_pkg is
+package peripheral_dbg_soc_pkg is
 
   ------------------------------------------------------------------------------
   -- Constants
@@ -88,4 +88,4 @@ package peripheral_dbg_pu_riscv_pkg is
   -- The maximum number of payload words the packet could consist of.
   -- The actual number of payload words is given by data_num_words.
   constant MAX_DATA_NUM_WORDS : integer := DATA_WIDTH;
-end peripheral_dbg_pu_riscv_pkg;
+end peripheral_dbg_soc_pkg;

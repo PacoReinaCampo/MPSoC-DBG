@@ -43,7 +43,7 @@
 
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_debug_interface #(
+module peripheral_dbg_soc_interface #(
   parameter SYSTEM_VENDOR_ID = 'x,
   parameter SYSTEM_DEVICE_ID = 'x,
   parameter NUM_MODULES = 0,

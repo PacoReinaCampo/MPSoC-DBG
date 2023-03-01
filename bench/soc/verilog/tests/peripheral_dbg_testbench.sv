@@ -116,7 +116,7 @@ module peripheral_dbg_testbench;
   //
 
   //DUT
-  peripheral_dbg_soc_debug_interface dbg_soc_debug_interface (
+  peripheral_dbg_soc_interface dbg_soc_interface (
     .clk            ( HCLK    ),
     .rst            ( HRESETn ),
 
