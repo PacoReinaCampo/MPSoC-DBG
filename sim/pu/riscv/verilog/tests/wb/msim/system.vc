@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-+incdir+../../../../../../../rtl/pu/riscv/verilog/wb/pkg
++incdir+../../../../../../../rtl/pu/riscv/verilog/pkg/core
 
 ../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_jsp_biu_wb.sv
 ../../../../../../../rtl/pu/riscv/verilog/peripheral/wb/peripheral_dbg_pu_riscv_jsp_module_wb.sv
@@ -60,4 +60,4 @@
 ../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_syncflop.sv
 ../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_syncreg.sv
 
-../../../../../../../bench/pu/riscv/verilog/tests/wb/peripheral_dbg_pu_riscv_testbench.sv
+../../../../../../../bench/pu/riscv/verilog/tests/wb/peripheral_dbg_testbench.sv

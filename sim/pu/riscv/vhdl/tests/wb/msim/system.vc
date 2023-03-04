@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-../../../../../../../rtl/soc/vhdl/pkg/peripheral_dbg_pu_riscv_pkg.vhd
+../../../../../../../rtl/pu/riscv/vhdl/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/wb/peripheral_dbg_pu_riscv_jsp_biu_wb.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/wb/peripheral_dbg_pu_riscv_jsp_module_wb.vhd
@@ -60,4 +60,4 @@
 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncflop.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncreg.vhd
 
-../../../../../../../bench/pu/riscv/vhdl/tests/wb/peripheral_dbg_pu_riscv_testbench.vhd
+../../../../../../../bench/pu/riscv/vhdl/tests/wb/peripheral_dbg_testbench.vhd

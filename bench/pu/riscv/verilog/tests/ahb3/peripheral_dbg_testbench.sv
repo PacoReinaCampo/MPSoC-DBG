@@ -131,7 +131,7 @@ module peripheral_dbg_testbench;
   //
 
   //DUT AHB3
-  peripheral_dbg_top_ahb3 #(
+  peripheral_dbg_pu_riscv_top_ahb3 #(
     .X ( X ),
     .Y ( Y ),
     .Z ( Z ),
@@ -146,7 +146,7 @@ module peripheral_dbg_testbench;
 
     .DATAREG_LEN ( DATAREG_LEN )
   )
-  top_ahb3 (
+  dbg_pu_riscv_top_ahb3 (
     // JTAG signals
     .tck_i ( ahb3_tck_i ),
     .tdi_i ( ahb3_tdi_i ),

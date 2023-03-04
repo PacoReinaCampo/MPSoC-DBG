@@ -47,13 +47,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-use work.peripheral_dbg_pkg.all;
+use work.peripheral_dbg_pu_riscv_pkg.all;
 
 entity peripheral_dbg_testbench is
 end peripheral_dbg_testbench;
 
 architecture rtl of peripheral_dbg_testbench is
-  component peripheral_dbg_top_ahb3
+  component peripheral_dbg_pu_riscv_top_ahb3
     generic (
       X              : integer := 2;
       Y              : integer := 2;
@@ -211,7 +211,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT AHB3
-  top_ahb3 : peripheral_dbg_top_ahb3
+  dbg_pu_riscv_top_ahb3 : peripheral_dbg_pu_riscv_top_ahb3
     generic map (
       X => X,
       Y => Y,

@@ -42,12 +42,12 @@
 ##                                                                               ##
 ###################################################################################
 
-+incdir+../../../../../../../rtl/pu/riscv/verilog/ahb3/pkg
++incdir+../../../../../../../rtl/pu/riscv/verilog/pkg/core
 
 ../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_biu_ahb3.sv
 ../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_module_ahb3.sv
-../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_apb_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_apb_module.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_biu_apb4.sv
+../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 ../../../../../../../rtl/pu/riscv/verilog/peripheral/ahb3/peripheral_dbg_pu_riscv_top_ahb3.sv
 
 ../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_bus_module_core.sv
@@ -60,4 +60,4 @@
 ../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_syncflop.sv
 ../../../../../../../rtl/pu/riscv/verilog/core/peripheral_dbg_pu_riscv_syncreg.sv
 
-../../../../../../../bench/pu/riscv/verilog/tests/ahb3/peripheral_dbg_pu_riscv_testbench.sv
+../../../../../../../bench/pu/riscv/verilog/tests/ahb3/peripheral_dbg_testbench.sv

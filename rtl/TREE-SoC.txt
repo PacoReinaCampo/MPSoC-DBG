@@ -84,7 +84,7 @@ soc
 │   │   │           └── mriscv
 │   │   │               └── peripheral_dbg_soc_osd_stm_mriscv.sv
 │   │   └── top
-│   │       └── peripheral_dbg_soc_debug_interface.sv
+│   │       └── peripheral_dbg_soc_interface.sv
 │   └── pkg
 │       ├── peripheral_dbg_pu_pkg.sv
 │       └── peripheral_dbg_soc_pkg.sv

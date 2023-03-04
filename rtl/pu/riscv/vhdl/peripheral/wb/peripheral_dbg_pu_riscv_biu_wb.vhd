@@ -292,9 +292,7 @@ begin
   wb_cti_o <= (others => '0');
   wb_bte_o <= (others => '0');
 
-  ///////////////////////////////////////////////////
   -- Wishbone clock domain
-  --
 
   -- synchronize asynchronous active high reset
   processing_5 : process (wb_clk_i, biu_rst)

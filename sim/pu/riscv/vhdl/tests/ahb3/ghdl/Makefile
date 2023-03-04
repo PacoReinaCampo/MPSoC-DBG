@@ -60,11 +60,11 @@ build:
 	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_status_reg.vhd
 	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncflop.vhd
 	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncreg.vhd
-	ghdl -a --std=08 ../../../../../../../bench/pu/riscv/vhdl/tests/ahb3/peripheral_dbg_pu_riscv_testbench.vhd
+	ghdl -a --std=08 ../../../../../../../bench/pu/riscv/vhdl/tests/ahb3/peripheral_dbg_testbench.vhd
 
 simulate:
-	ghdl -m --std=08 peripheral_dbg_pu_riscv_testbench
-	ghdl -r --std=08 peripheral_dbg_pu_riscv_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > peripheral_dbg_pu_riscv_testbench.tree
+	ghdl -m --std=08 peripheral_dbg_testbench
+	ghdl -r --std=08 peripheral_dbg_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > peripheral_dbg_testbench.tree
 
 clean:
 	rm -f *.cf *.tree

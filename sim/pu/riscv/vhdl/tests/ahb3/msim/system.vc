@@ -60,6 +60,6 @@
 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncflop.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncreg.vhd
 
-../../../../../../../bench/pu/riscv/vhdl/tests/ahb3/peripheral_dbg_pu_riscv_testbench.vhd
+../../../../../../../bench/pu/riscv/vhdl/tests/ahb3/peripheral_dbg_testbench.vhd
 
 

@@ -287,7 +287,6 @@ begin
     end generate;
   end generate;
 
-  ////////////////////////////////////////////
   -- Operation decoder
 
   -- These are only used before the operation is latched, so decode them from operation_in

@@ -130,7 +130,7 @@ module peripheral_dbg_testbench;
   //
 
   //DUT WB
-  peripheral_dbg_top_wb #(
+  peripheral_dbg_pu_riscv_top_wb #(
     .X ( X ),
     .Y ( Y ),
     .Z ( Z ),
@@ -145,7 +145,7 @@ module peripheral_dbg_testbench;
 
     .DATAREG_LEN ( DATAREG_LEN )
   )
-  top_wb (
+  dbg_pu_riscv_top_wb (
     // JTAG signals
     .tck_i ( wb_tck_i ),
     .tdi_i ( wb_tdi_i ),
