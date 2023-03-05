@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_spram_synthesis #(
+module peripheral_dbg_synthesis #(
   parameter MEM_SIZE          = 256,  //Memory in Bytes
   parameter MEM_DEPTH         = 256,  //Memory depth
   parameter PLEN              = 8,
@@ -73,7 +73,7 @@ module peripheral_spram_synthesis #(
   //
 
   //DUT AHB3
-  peripheral_ahb3_spram #(
+  peripheral_ahb3_dbg #(
     .MEM_SIZE          ( MEM_SIZE ),
     .MEM_DEPTH         ( MEM_DEPTH ),
     .PLEN              ( PLEN ),
@@ -81,7 +81,7 @@ module peripheral_spram_synthesis #(
     .TECHNOLOGY        ( TECHNOLOGY ),
     .REGISTERED_OUTPUT ( REGISTERED_OUTPUT )
   )
-  ahb3_spram (
+  ahb3_dbg (
     .HRESETn   ( HRESETn ),
     .HCLK      ( HCLK    ),
 

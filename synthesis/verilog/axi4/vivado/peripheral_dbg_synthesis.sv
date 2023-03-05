@@ -40,62 +40,77 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_spram_synthesis #(
+module peripheral_dbg_testbench;
+
+  //////////////////////////////////////////////////////////////////
+  //
+  // Constants
+  //
+
+  localparam XLEN = 64;
+  localparam PLEN = 64;
+
+  localparam SYNC_DEPTH = 3;
+  localparam TECHNOLOGY = "GENERIC";
+
   //Memory parameters
-  parameter DEPTH   = 256,
-  parameter MEMFILE = "",
+  parameter DEPTH   = 256;
+  parameter MEMFILE = "";
 
-  //Wishbone parameters
-  parameter DW = 32,
-  parameter AW = $clog2(DEPTH)
-)
-  (
-    input           wb_clk_i,
-    input           wb_rst_i,
+  //////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
 
-    input  [AW-1:0] wb_adr_i,
-    input  [DW-1:0] wb_dat_i,
-    input  [   3:0] wb_sel_i,
-    input           wb_we_i,
-    input  [   1:0] wb_bte_i,
-    input  [   2:0] wb_cti_i,
-    input           wb_cyc_i,
-    input           wb_stb_i,
+  //Common signals
+  wire                                     HRESETn;
+  wire                                     HCLK;
 
-    output reg      wb_ack_o,
-    output          wb_err_o,
-    output [DW-1:0] wb_dat_o
-  );
+  //AHB3 signals
+  wire                                     mst_dbg_HSEL;
+  wire               [PLEN           -1:0] mst_dbg_HADDR;
+  wire               [XLEN           -1:0] mst_dbg_HWDATA;
+  wire               [XLEN           -1:0] mst_dbg_HRDATA;
+  wire                                     mst_dbg_HWRITE;
+  wire               [                2:0] mst_dbg_HSIZE;
+  wire               [                2:0] mst_dbg_HBURST;
+  wire               [                3:0] mst_dbg_HPROT;
+  wire               [                1:0] mst_dbg_HTRANS;
+  wire                                     mst_dbg_HMASTLOCK;
+  wire                                     mst_dbg_HREADY;
+  wire                                     mst_dbg_HREADYOUT;
+  wire                                     mst_dbg_HRESP;
 
   //////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
 
-  //DUT WB
-  peripheral_wb_spram #(
-    //Memory parameters
-    .DEPTH   ( DEPTH   ),
-    .MEMFILE ( MEMFILE ),
-
-    //Wishbone parameters
-    .AW ( AW ),
-    .DW ( DW )
+  //DUT AHB3
+  peripheral_ahb3_dbg #(
+    .MEM_SIZE          ( 256 ),
+    .MEM_DEPTH         ( 256 ),
+    .PLEN              ( PLEN ),
+    .XLEN              ( XLEN ),
+    .TECHNOLOGY        ( TECHNOLOGY ),
+    .REGISTERED_OUTPUT ( "NO" )
   )
-  wb_spram (
-    .wb_clk_i ( wb_clk_i ),
-    .wb_rst_i ( wb_rst_i ),
+  ahb3_dbg (
+    .HRESETn   ( HRESETn ),
+    .HCLK      ( HCLK    ),
 
-    .wb_adr_i ( wb_adr_i ),
-    .wb_dat_i ( wb_dat_i ),
-    .wb_sel_i ( wb_sel_i ),
-    .wb_we_i  ( wb_we_i  ),
-    .wb_bte_i ( wb_bte_i ),
-    .wb_cti_i ( wb_cti_i ),
-    .wb_cyc_i ( wb_cyc_i ),
-    .wb_stb_i ( wb_stb_i ),
-    .wb_ack_o ( wb_ack_o ),
-    .wb_err_o ( wb_err_o ),
-    .wb_dat_o ( wb_dat_o )
+    .HSEL      ( mst_dbg_HSEL      ),
+    .HADDR     ( mst_dbg_HADDR     ),
+    .HWDATA    ( mst_dbg_HWDATA    ),
+    .HRDATA    ( mst_dbg_HRDATA    ),
+    .HWRITE    ( mst_dbg_HWRITE    ),
+    .HSIZE     ( mst_dbg_HSIZE     ),
+    .HBURST    ( mst_dbg_HBURST    ),
+    .HPROT     ( mst_dbg_HPROT     ),
+    .HTRANS    ( mst_dbg_HTRANS    ),
+    .HMASTLOCK ( mst_dbg_HMASTLOCK ),
+    .HREADYOUT ( mst_dbg_HREADYOUT ),
+    .HREADY    ( mst_dbg_HREADY    ),
+    .HRESP     ( mst_dbg_HRESP     )
   );
 endmodule

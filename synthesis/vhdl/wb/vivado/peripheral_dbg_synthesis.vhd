@@ -1,4 +1,4 @@
--- Converted from peripheral_spram_synthesis.sv
+-- Converted from peripheral_dbg_synthesis.sv
 -- by verilog2vhdl - QueenField
 
 --------------------------------------------------------------------------------
@@ -48,9 +48,9 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use ieee.math_real.all;
 
-use work.peripheral_spram_wb_pkg.all;
+use work.peripheral_dbg_wb_pkg.all;
 
-entity peripheral_spram_synthesis is
+entity peripheral_dbg_synthesis is
   generic (
     --Memory parameters
     DEPTH   : integer := 256;
@@ -76,10 +76,10 @@ entity peripheral_spram_synthesis is
     wb_err_o : out std_logic;
     wb_dat_o : out std_logic_vector(DW-1 downto 0)
     );
-end peripheral_spram_synthesis;
+end peripheral_dbg_synthesis;
 
-architecture rtl of peripheral_spram_synthesis is
-  component peripheral_wb_spram
+architecture rtl of peripheral_dbg_synthesis is
+  component peripheral_wb_dbg
     generic (
       --Memory parameters
       DEPTH   : integer := 256;
@@ -115,7 +115,7 @@ begin
   --
 
   --DUT WB
-  wb_spram : peripheral_wb_spram
+  wb_dbg : peripheral_wb_dbg
     generic map (
       DEPTH   => DEPTH,
       MEMFILE => MEMFILE,
