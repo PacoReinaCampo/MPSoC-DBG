@@ -84,9 +84,8 @@ end peripheral_dbg_synthesis;
 architecture rtl of peripheral_dbg_synthesis is
 
   ------------------------------------------------------------------------------
-  --
   -- Components
-  --
+  ------------------------------------------------------------------------------
   component peripheral_ahb3_dbg
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes
@@ -120,9 +119,8 @@ architecture rtl of peripheral_dbg_synthesis is
 
 begin
   ------------------------------------------------------------------------------
-  --
   -- Module Body
-  --
+  ------------------------------------------------------------------------------
 
   --DUT AHB3
   ahb3_dbg : peripheral_ahb3_dbg

@@ -55,9 +55,8 @@ end peripheral_dbg_testbench;
 
 architecture rtl of peripheral_dbg_testbench is
   ------------------------------------------------------------------------------
-  --
   -- Variables
-  --
+  ------------------------------------------------------------------------------
 
   --Common signals
   signal HRESETn : std_logic;
@@ -79,9 +78,8 @@ architecture rtl of peripheral_dbg_testbench is
   signal mst_dbg_HRESP     : std_logic;
 
   ------------------------------------------------------------------------------
-  --
   -- Components
-  --
+  ------------------------------------------------------------------------------
   component peripheral_ahb3_dbg
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes
@@ -115,9 +113,8 @@ architecture rtl of peripheral_dbg_testbench is
 
 begin
   ------------------------------------------------------------------------------
-  --
   -- Module Body
-  --
+  ------------------------------------------------------------------------------
 
   --DUT AHB3
   ahb3_dbg : peripheral_ahb3_dbg
