@@ -79,6 +79,11 @@ entity peripheral_dbg_synthesis is
 end peripheral_dbg_synthesis;
 
 architecture rtl of peripheral_dbg_synthesis is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_wb_dbg
     generic (
       --Memory parameters

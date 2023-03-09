@@ -53,6 +53,11 @@ entity peripheral_dbg_testbench is
 end peripheral_dbg_testbench;
 
 architecture rtl of peripheral_dbg_testbench is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_top_ahb3
     generic (
       X              : integer := 2;

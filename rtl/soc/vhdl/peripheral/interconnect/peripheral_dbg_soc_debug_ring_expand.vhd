@@ -83,6 +83,11 @@ entity peripheral_dbg_soc_debug_ring_expand is
 end peripheral_dbg_soc_debug_ring_expand;
 
 architecture rtl of peripheral_dbg_soc_debug_ring_expand is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_soc_ring_router
     generic (
       XLEN : integer := 64

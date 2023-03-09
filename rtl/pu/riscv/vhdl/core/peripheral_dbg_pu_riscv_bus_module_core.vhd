@@ -92,6 +92,11 @@ entity peripheral_dbg_pu_riscv_bus_module_core is
 end peripheral_dbg_pu_riscv_bus_module_core;
 
 architecture rtl of peripheral_dbg_pu_riscv_bus_module_core is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_crc32
     port (
       rstn       : in  std_logic;

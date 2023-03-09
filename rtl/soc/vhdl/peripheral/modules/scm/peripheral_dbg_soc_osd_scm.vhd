@@ -78,6 +78,11 @@ entity peripheral_dbg_soc_osd_scm is
 end peripheral_dbg_soc_osd_scm;
 
 architecture rtl of peripheral_dbg_soc_osd_scm is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_soc_osd_regaccess
     generic (
       XLEN : integer := 64;

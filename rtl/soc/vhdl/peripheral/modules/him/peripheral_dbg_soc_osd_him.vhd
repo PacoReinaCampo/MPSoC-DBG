@@ -81,6 +81,11 @@ entity peripheral_dbg_soc_osd_him is
 end peripheral_dbg_soc_osd_him;
 
 architecture rtl of peripheral_dbg_soc_osd_him is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_soc_dii_buffer
     generic (
       XLEN        : integer := 64;

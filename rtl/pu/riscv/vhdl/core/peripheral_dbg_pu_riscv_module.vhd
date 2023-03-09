@@ -91,6 +91,11 @@ entity peripheral_dbg_pu_riscv_module is
 end peripheral_dbg_pu_riscv_module;
 
 architecture rtl of peripheral_dbg_pu_riscv_module is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_status_reg
     generic (
       X : integer := 2;

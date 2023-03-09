@@ -94,6 +94,11 @@ entity peripheral_dbg_soc_osd_regaccess_layer is
 end peripheral_dbg_soc_osd_regaccess_layer;
 
 architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_soc_osd_regaccess
     generic (
       XLEN : integer := 64;

@@ -84,6 +84,11 @@ entity peripheral_dbg_pu_riscv_jsp_module_wb is
 end peripheral_dbg_pu_riscv_jsp_module_wb;
 
 architecture rtl of peripheral_dbg_pu_riscv_jsp_module_wb is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_jsp_module_core
     generic (
       DBG_JSP_DATAREG_LEN : integer := 64

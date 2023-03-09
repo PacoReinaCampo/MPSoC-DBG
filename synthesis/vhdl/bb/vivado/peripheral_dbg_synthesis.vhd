@@ -74,6 +74,11 @@ entity peripheral_dbg_synthesis is
 end peripheral_dbg_synthesis;
 
 architecture rtl of peripheral_dbg_synthesis is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component bb_ram
     generic (
       AW       : integer := 6;   -- Address bus

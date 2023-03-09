@@ -88,6 +88,11 @@ entity peripheral_dbg_pu_riscv_module_wb is
 end peripheral_dbg_pu_riscv_module_wb;
 
 architecture rtl of peripheral_dbg_pu_riscv_module_wb is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_bus_module_core
     generic (
       --parameter such that these can be pushed down from the higher level

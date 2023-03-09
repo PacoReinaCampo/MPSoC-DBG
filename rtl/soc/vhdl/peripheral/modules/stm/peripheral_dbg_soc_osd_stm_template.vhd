@@ -85,6 +85,11 @@ entity peripheral_dbg_soc_osd_stm_template is
 end peripheral_dbg_soc_osd_stm_template;
 
 architecture rtl of peripheral_dbg_soc_osd_stm_template is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_soc_osd_stm
     generic (
       XLEN : integer := 64;

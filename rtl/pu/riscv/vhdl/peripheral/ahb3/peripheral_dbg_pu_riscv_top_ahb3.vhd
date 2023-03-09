@@ -123,6 +123,11 @@ entity peripheral_dbg_pu_riscv_top_ahb3 is
 end peripheral_dbg_pu_riscv_top_ahb3;
 
 architecture rtl of peripheral_dbg_pu_riscv_top_ahb3 is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_module_ahb3
     generic (
       ADDR_WIDTH          : integer := 32;

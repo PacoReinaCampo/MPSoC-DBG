@@ -91,6 +91,11 @@ entity peripheral_dbg_pu_riscv_module_ahb3 is
 end peripheral_dbg_pu_riscv_module_ahb3;
 
 architecture rtl of peripheral_dbg_pu_riscv_module_ahb3 is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_bus_module_core
     generic (
       --parameter such that these can be pushed down from the higher level

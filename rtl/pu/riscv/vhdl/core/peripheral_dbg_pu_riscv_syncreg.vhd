@@ -62,6 +62,11 @@ entity peripheral_dbg_pu_riscv_syncreg is
 end peripheral_dbg_pu_riscv_syncreg;
 
 architecture rtl of peripheral_dbg_pu_riscv_syncreg is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_syncflop
     port (
       DEST_CLK  : in  std_logic;

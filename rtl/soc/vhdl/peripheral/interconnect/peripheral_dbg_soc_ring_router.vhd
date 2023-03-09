@@ -92,6 +92,11 @@ entity peripheral_dbg_soc_ring_router is
 end peripheral_dbg_soc_ring_router;
 
 architecture rtl of peripheral_dbg_soc_ring_router is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_soc_ring_router_demux
     generic (
       XLEN : integer := 64

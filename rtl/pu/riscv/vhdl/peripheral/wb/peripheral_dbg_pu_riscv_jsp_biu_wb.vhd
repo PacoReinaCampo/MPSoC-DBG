@@ -78,6 +78,11 @@ entity peripheral_dbg_pu_riscv_jsp_biu_wb is
 end peripheral_dbg_pu_riscv_jsp_biu_wb;
 
 architecture rtl of peripheral_dbg_pu_riscv_jsp_biu_wb is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_syncflop
     port (
       RESET : in std_logic;             -- asynchronous reset

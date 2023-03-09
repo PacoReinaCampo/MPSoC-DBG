@@ -79,6 +79,11 @@ entity peripheral_dbg_pu_riscv_jsp_biu_apb4 is
 end peripheral_dbg_pu_riscv_jsp_biu_apb4;
 
 architecture rtl of peripheral_dbg_pu_riscv_jsp_biu_apb4 is
+
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
+
   component peripheral_dbg_pu_riscv_syncflop
     port (
       RESET : in std_logic;             -- asynchronous reset
