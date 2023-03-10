@@ -1,0 +1,43 @@
+soc/vhdl
+├── peripheral
+│   ├── blocks
+│   │   ├── buffer
+│   │   │   ├── peripheral_dbg_soc_dii_buffer.vhd
+│   │   │   └── peripheral_dbg_soc_osd_fifo.vhd
+│   │   ├── eventpacket
+│   │   │   ├── peripheral_dbg_soc_osd_event_packetization_fixedwidth.vhd
+│   │   │   └── peripheral_dbg_soc_osd_event_packetization.vhd
+│   │   ├── regaccess
+│   │   │   ├── peripheral_dbg_soc_osd_regaccess_demux.vhd
+│   │   │   ├── peripheral_dbg_soc_osd_regaccess_layer.vhd
+│   │   │   └── peripheral_dbg_soc_osd_regaccess.vhd
+│   │   └── tracesample
+│   │       └── peripheral_dbg_soc_osd_tracesample.vhd
+│   ├── interconnect
+│   │   ├── peripheral_dbg_soc_debug_ring_expand.vhd
+│   │   ├── peripheral_dbg_soc_debug_ring.vhd
+│   │   ├── peripheral_dbg_soc_ring_router_demux.vhd
+│   │   ├── peripheral_dbg_soc_ring_router_gateway_demux.vhd
+│   │   ├── peripheral_dbg_soc_ring_router_gateway_mux.vhd
+│   │   ├── peripheral_dbg_soc_ring_router_gateway.vhd
+│   │   ├── peripheral_dbg_soc_ring_router_mux_rr.vhd
+│   │   ├── peripheral_dbg_soc_ring_router_mux.vhd
+│   │   └── peripheral_dbg_soc_ring_router.vhd
+│   ├── modules
+│   │   ├── ctm
+│   │   │   ├── peripheral_dbg_soc_osd_ctm_template.vhd
+│   │   │   └── peripheral_dbg_soc_osd_ctm.vhd
+│   │   ├── him
+│   │   │   └── peripheral_dbg_soc_osd_him.vhd
+│   │   ├── scm
+│   │   │   └── peripheral_dbg_soc_osd_scm.vhd
+│   │   └── stm
+│   │       ├── peripheral_dbg_soc_osd_stm_template.vhd
+│   │       └── peripheral_dbg_soc_osd_stm.vhd
+│   └── top
+│       └── peripheral_dbg_soc_interface.vhd
+└── pkg
+    ├── peripheral_dbg_pu_pkg.vhd
+    └── peripheral_dbg_soc_pkg.vhd
+
+14 directories, 26 files

@@ -1,0 +1,23 @@
+pu/or1k/verilog
+├── peripheral
+│   └── wb
+│       ├── peripheral_dbg_pu_or1k_biu.sv
+│       ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│       ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│       ├── peripheral_dbg_pu_or1k_crc32.sv
+│       ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│       ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│       ├── peripheral_dbg_pu_or1k_module.sv
+│       ├── peripheral_dbg_pu_or1k_module_wb.sv
+│       ├── peripheral_dbg_pu_or1k_status_reg.sv
+│       ├── peripheral_dbg_pu_or1k_syncflop.sv
+│       ├── peripheral_dbg_pu_or1k_syncreg.sv
+│       └── peripheral_dbg_pu_or1k_top.sv
+└── pkg
+    └── wb
+        ├── peripheral_dbg_pu_or1k_defines.sv
+        ├── peripheral_dbg_pu_or1k_defines_wb.sv
+        ├── peripheral_dbg_pu_or1k_tap_defines.sv
+        └── peripheral_dbg_pu_or1k_timescale.sv
+
+4 directories, 16 files

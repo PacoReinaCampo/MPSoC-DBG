@@ -1,9 +1,0 @@
-soc
-├── verilog
-│   └── tests
-│       └── peripheral_dbg_testbench.sv
-└── vhdl
-    └── tests
-        └── peripheral_dbg_testbench.vhd
-
-4 directories, 2 files

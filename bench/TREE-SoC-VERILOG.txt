@@ -1,0 +1,5 @@
+soc/verilog
+└── tests
+    └── peripheral_dbg_testbench.sv
+
+1 directory, 1 file

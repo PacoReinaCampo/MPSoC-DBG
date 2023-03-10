@@ -42,5 +42,11 @@
 ##                                                                               ##
 ###################################################################################
 
-tree -P '*.vhd|*.sv' pu > TREE-PU.txt
-tree -P '*.vhd|*.sv' soc > TREE-SoC.txt
+tree -P '*.vhd' pu/msp430/vhdl > TREE-PU-MSP430-VHDL.txt
+tree -P '*.sv' pu/msp430/verilog > TREE-PU-MSP430-VERILOG.txt
+#tree -P '*.vhd' pu/or1k/vhdl > TREE-PU-OR1K-VHDL.txt
+tree -P '*.sv' pu/or1k/verilog > TREE-PU-OR1K-VERILOG.txt
+tree -P '*.vhd' pu/riscv/vhdl > TREE-PU-RISCV-VHDL.txt
+tree -P '*.sv' pu/riscv/verilog > TREE-PU-RISCV-VERILOG.txt
+tree -P '*.vhd' soc/vhdl > TREE-SoC-VHDL.txt
+tree -P '*.sv' soc/verilog > TREE-SoC-VERILOG.txt

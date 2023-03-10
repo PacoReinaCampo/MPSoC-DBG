@@ -1,0 +1,16 @@
+pu/msp430/vhdl
+├── peripheral
+│   └── bb
+│       ├── fuse
+│       │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│       ├── main
+│       │   └── peripheral_dbg_pu_msp430.vhd
+│       └── omsp
+│           ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│           ├── peripheral_dbg_pu_msp430_i2c.vhd
+│           └── peripheral_dbg_pu_msp430_uart.vhd
+└── pkg
+    └── bb
+        └── peripheral_dbg_pu_msp430_pkg.vhd
+
+7 directories, 6 files

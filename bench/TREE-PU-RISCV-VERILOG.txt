@@ -1,0 +1,8 @@
+pu/riscv/verilog
+└── tests
+    ├── ahb3
+    │   └── peripheral_dbg_testbench.sv
+    └── wb
+        └── peripheral_dbg_testbench.sv
+
+3 directories, 2 files

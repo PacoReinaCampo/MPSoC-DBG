@@ -1,0 +1,5 @@
+soc/vhdl
+└── tests
+    └── peripheral_dbg_testbench.vhd
+
+1 directory, 1 file

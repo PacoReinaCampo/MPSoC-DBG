@@ -1,0 +1,18 @@
+pu/msp430/verilog
+├── peripheral
+│   └── bb
+│       ├── fuse
+│       │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│       ├── main
+│       │   └── peripheral_dbg_pu_msp430.sv
+│       └── omsp
+│           ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│           ├── peripheral_dbg_pu_msp430_i2c.sv
+│           └── peripheral_dbg_pu_msp430_uart.sv
+└── pkg
+    └── bb
+        ├── peripheral_dbg_pu_msp430_defines.sv
+        ├── peripheral_dbg_pu_msp430_timescale.sv
+        └── peripheral_dbg_pu_msp430_undefines.sv
+
+7 directories, 8 files
