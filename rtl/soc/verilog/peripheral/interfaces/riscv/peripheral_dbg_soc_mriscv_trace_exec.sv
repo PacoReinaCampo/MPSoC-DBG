@@ -51,9 +51,9 @@ package opensocdebug;
     logic [31:0] jbtarget;
     logic        valid;
     logic [31:0] wbdata;
-    logic [ 4:0] wbreg;
+    logic [4:0]  wbreg;
     logic        wben;
   } peripheral_dbg_soc_mriscv_trace_exec;
 
 
-endpackage // opensocdebug
+endpackage  // opensocdebug

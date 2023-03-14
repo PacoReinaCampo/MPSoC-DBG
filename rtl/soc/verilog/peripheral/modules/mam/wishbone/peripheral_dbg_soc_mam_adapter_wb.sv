@@ -52,9 +52,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
   parameter USE_DEBUG = 1,
 
   // byte select width
-  localparam SW = (DW == 32) ? 4 :
-  (DW == 16) ? 2 :
-  (DW ==  8) ? 1 : 'hx,
+  localparam SW = (DW == 32) ? 4 : (DW == 16) ? 2 : (DW == 8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -66,25 +64,24 @@ module peripheral_dbg_soc_mam_adapter_wb #(
 
   localparam BYTE_AW = SW >> 1,
   localparam WORD_AW = AW - BYTE_AW
-)
-  (
+) (
   // Blackbone SLAVE interface: input side (to the CPU etc.)
-  input  [AW-1:0] wb_in_adr_i,
-  input  [   1:0] wb_in_bte_i,
-  input  [   2:0] wb_in_cti_i,
-  input           wb_in_cyc_i,
-  input  [DW-1:0] wb_in_dat_i,
-  input  [SW-1:0] wb_in_sel_i,
-  input           wb_in_stb_i,
-  input           wb_in_we_i,
+  input [AW-1:0] wb_in_adr_i,
+  input [   1:0] wb_in_bte_i,
+  input [   2:0] wb_in_cti_i,
+  input          wb_in_cyc_i,
+  input [DW-1:0] wb_in_dat_i,
+  input [SW-1:0] wb_in_sel_i,
+  input          wb_in_stb_i,
+  input          wb_in_we_i,
 
   output          wb_in_ack_o,
   output          wb_in_err_o,
   output          wb_in_rty_o,
   output [DW-1:0] wb_in_dat_o,
 
-  input           wb_in_clk_i,
-  input           wb_in_rst_i,
+  input wb_in_clk_i,
+  input wb_in_rst_i,
 
   // Blackbone SLAVE interface: output side (to the memory)
   output [AW-1:0] wb_out_adr_i,
@@ -96,13 +93,13 @@ module peripheral_dbg_soc_mam_adapter_wb #(
   output          wb_out_stb_i,
   output          wb_out_we_i,
 
-  input           wb_out_ack_o,
-  input           wb_out_err_o,
-  input           wb_out_rty_o,
-  input [DW-1:0]  wb_out_dat_o,
+  input          wb_out_ack_o,
+  input          wb_out_err_o,
+  input          wb_out_rty_o,
+  input [DW-1:0] wb_out_dat_o,
 
-  output          wb_out_clk_i,
-  output          wb_out_rst_i,
+  output wb_out_clk_i,
+  output wb_out_rst_i,
 
   // MAM Blackbone MASTER interface (incoming)
   input  [AW-1:0] wb_mam_adr_o,
@@ -134,41 +131,37 @@ module peripheral_dbg_soc_mam_adapter_wb #(
     reg [STATE_ARB_WIDTH-1:0] fsm_arb_state;
     reg [STATE_ARB_WIDTH-1:0] fsm_arb_state_next;
 
-    reg grant_access_cpu;
-    reg grant_access_mam;
-    reg access_cpu;
+    reg                       grant_access_cpu;
+    reg                       grant_access_mam;
+    reg                       access_cpu;
 
     // arbiter FSM: MAM has higher priority than CPU
     always @(posedge wb_in_clk_i) begin
       if (wb_in_rst_i) begin
         fsm_arb_state <= STATE_ARB_IDLE;
-      end
-      else begin
+      end else begin
         fsm_arb_state <= fsm_arb_state_next;
 
         if (grant_access_cpu) begin
           access_cpu <= 1'b1;
-        end
-        else if (grant_access_mam) begin
+        end else if (grant_access_mam) begin
           access_cpu <= 1'b0;
         end
       end
     end
 
     always @(*) begin
-      grant_access_cpu = 1'b0;
-      grant_access_mam = 1'b0;
+      grant_access_cpu   = 1'b0;
+      grant_access_mam   = 1'b0;
       fsm_arb_state_next = STATE_ARB_IDLE;
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
           if (wb_mam_cyc_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else if (wb_in_cyc_i == 1'b1) begin
+          end else if (wb_in_cyc_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -178,8 +171,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
 
           if (wb_mam_cyc_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -188,11 +180,9 @@ module peripheral_dbg_soc_mam_adapter_wb #(
           grant_access_cpu = 1'b1;
           if (wb_in_cyc_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end
-          else if (wb_mam_cyc_o == 1'b1) begin
+          end else if (wb_mam_cyc_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -207,20 +197,19 @@ module peripheral_dbg_soc_mam_adapter_wb #(
     assign wb_out_dat_i = access_cpu ? wb_in_dat_i : wb_mam_dat_o;
     assign wb_out_sel_i = access_cpu ? wb_in_sel_i : wb_mam_sel_o;
     assign wb_out_stb_i = access_cpu ? wb_in_stb_i : wb_mam_stb_o;
-    assign wb_out_we_i  = access_cpu ? wb_in_we_i  : wb_mam_we_o;
+    assign wb_out_we_i  = access_cpu ? wb_in_we_i : wb_mam_we_o;
 
     // MUX of signals FROM the memory
-    assign wb_in_ack_o = access_cpu ? wb_out_ack_o : 1'b0;
-    assign wb_in_err_o = access_cpu ? wb_out_err_o : 1'b0;
-    assign wb_in_rty_o = access_cpu ? wb_out_rty_o : 1'b0;
-    assign wb_in_dat_o = access_cpu ? wb_out_dat_o : {DW{1'b0}};
+    assign wb_in_ack_o  = access_cpu ? wb_out_ack_o : 1'b0;
+    assign wb_in_err_o  = access_cpu ? wb_out_err_o : 1'b0;
+    assign wb_in_rty_o  = access_cpu ? wb_out_rty_o : 1'b0;
+    assign wb_in_dat_o  = access_cpu ? wb_out_dat_o : {DW{1'b0}};
 
     assign wb_mam_ack_i = ~access_cpu ? wb_out_ack_o : 1'b0;
     assign wb_mam_err_i = ~access_cpu ? wb_out_err_o : 1'b0;
     assign wb_mam_rty_i = ~access_cpu ? wb_out_rty_o : 1'b0;
     assign wb_mam_dat_i = ~access_cpu ? wb_out_dat_o : {DW{1'b0}};
-  end
-  else begin
+  end else begin
     assign wb_out_adr_i = wb_in_adr_i;
     assign wb_out_bte_i = wb_in_bte_i;
     assign wb_out_cti_i = wb_in_cti_i;
@@ -230,9 +219,9 @@ module peripheral_dbg_soc_mam_adapter_wb #(
     assign wb_out_stb_i = wb_in_stb_i;
     assign wb_out_we_i  = wb_in_we_i;
 
-    assign wb_in_ack_o = wb_out_ack_o;
-    assign wb_in_err_o = wb_out_err_o;
-    assign wb_in_rty_o = wb_out_rty_o;
-    assign wb_in_dat_o = wb_out_dat_o;
+    assign wb_in_ack_o  = wb_out_ack_o;
+    assign wb_in_err_o  = wb_out_err_o;
+    assign wb_in_rty_o  = wb_out_rty_o;
+    assign wb_in_dat_o  = wb_out_dat_o;
   end
 endmodule

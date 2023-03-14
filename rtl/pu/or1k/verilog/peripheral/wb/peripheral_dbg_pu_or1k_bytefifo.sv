@@ -58,11 +58,11 @@ module peripheral_dbg_pu_or1k_bytefifo (
   // Variables
   //
 
-  reg [7:0]  reg0, reg1, reg2, reg3, reg4, reg5, reg6, reg7;
-  reg [3:0]  counter;
+  reg [7:0] reg0, reg1, reg2, reg3, reg4, reg5, reg6, reg7;
+  reg  [3:0] counter;
 
-  wire        push_ok;
-  wire        pop_ok;
+  wire       push_ok;
+  wire       pop_ok;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -70,99 +70,82 @@ module peripheral_dbg_pu_or1k_bytefifo (
   //
 
   // Combinatorial assignments
-  assign  BYTES_AVAIL = counter;
-  assign  BYTES_FREE = 4'h8 - BYTES_AVAIL;
-  assign  push_ok = !(counter == 4'h8);
-  assign  pop_ok = !(counter == 4'h0);
+  assign BYTES_AVAIL = counter;
+  assign BYTES_FREE  = 4'h8 - BYTES_AVAIL;
+  assign push_ok     = !(counter == 4'h8);
+  assign pop_ok      = !(counter == 4'h0);
 
   // FIFO memory / shift registers
 
   // Reg 0 - takes input from DATA_IN
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg0 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg0 <= DATA_IN;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg0 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg0 <= DATA_IN;
   end
 
   // Reg 1 - takes input from reg0
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg1 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg1 <= reg0;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg1 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg1 <= reg0;
   end
 
   // Reg 2 - takes input from reg1
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg2 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg2 <= reg1;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg2 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg2 <= reg1;
   end
 
   // Reg 3 - takes input from reg2
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg3 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg3 <= reg2;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg3 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg3 <= reg2;
   end
 
   // Reg 4 - takes input from reg3
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg4 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg4 <= reg3;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg4 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg4 <= reg3;
   end
 
   // Reg 5 - takes input from reg4
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg5 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg5 <= reg4;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg5 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg5 <= reg4;
   end
 
   // Reg 6 - takes input from reg5
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg6 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg6 <= reg5;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg6 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg6 <= reg5;
   end
 
   // Reg 7 - takes input from reg6
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)
-      reg7 <= 8'h0;
-    else if(EN & PUSH_POPn & push_ok)
-      reg7 <= reg6;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) reg7 <= 8'h0;
+    else if (EN & PUSH_POPn & push_ok) reg7 <= reg6;
   end
 
   // Read counter
   // This is a 4-bit saturating up/down counter
   // The 'saturating' is done via push_ok and pop_ok
-  always @ (posedge CLK or posedge RST) begin
-    if(RST)             counter <= 4'h0;
-    else if(EN & PUSH_POPn & push_ok)   counter <= counter + 4'h1;
-    else if(EN & (~PUSH_POPn) & pop_ok) counter <= counter - 4'h1;
+  always @(posedge CLK or posedge RST) begin
+    if (RST) counter <= 4'h0;
+    else if (EN & PUSH_POPn & push_ok) counter <= counter + 4'h1;
+    else if (EN & (~PUSH_POPn) & pop_ok) counter <= counter - 4'h1;
   end
 
   // Output decoder
-  always @ (counter or reg0 or reg1 or reg2 or reg3 or reg4 or reg5
-  or reg6 or reg7) begin
+  always @(counter or reg0 or reg1 or reg2 or reg3 or reg4 or reg5 or reg6 or reg7) begin
     case (counter)
-      4'h1:     DATA_OUT <= reg0;
-      4'h2:     DATA_OUT <= reg1;
-      4'h3:     DATA_OUT <= reg2;
-      4'h4:     DATA_OUT <= reg3;
-      4'h5:     DATA_OUT <= reg4;
-      4'h6:     DATA_OUT <= reg5;
-      4'h7:     DATA_OUT <= reg6;
-      4'h8:     DATA_OUT <= reg7;
-      default:  DATA_OUT <= 8'hXX;
+      4'h1:    DATA_OUT <= reg0;
+      4'h2:    DATA_OUT <= reg1;
+      4'h3:    DATA_OUT <= reg2;
+      4'h4:    DATA_OUT <= reg3;
+      4'h5:    DATA_OUT <= reg4;
+      4'h6:    DATA_OUT <= reg5;
+      4'h7:    DATA_OUT <= reg6;
+      4'h8:    DATA_OUT <= reg7;
+      default: DATA_OUT <= 8'hXX;
     endcase
   end
 endmodule

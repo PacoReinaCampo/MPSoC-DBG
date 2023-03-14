@@ -47,33 +47,32 @@
 // Module interface
 module peripheral_dbg_pu_riscv_jsp_module_core #(
   parameter DBG_JSP_DATAREG_LEN = 64
-)
-  (
-    input                            rst_i,
+) (
+  input rst_i,
 
-    // JTAG signals
-    input                            tck_i,
-    input                            tdi_i,
-    output                           module_tdo_o,
+  // JTAG signals
+  input  tck_i,
+  input  tdi_i,
+  output module_tdo_o,
 
-    // TAP states
-    input                            capture_dr_i,
-    input                            shift_dr_i,
-    input                            update_dr_i,
+  // TAP states
+  input capture_dr_i,
+  input shift_dr_i,
+  input update_dr_i,
 
-    input  [DBG_JSP_DATAREG_LEN-1:0] data_register_i,  // the data register is at top level, shared between all modules
-    input                            module_select_i,
-    output                           top_inhibit_o,
+  input  [DBG_JSP_DATAREG_LEN-1:0] data_register_i,  // the data register is at top level, shared between all modules
+  input                            module_select_i,
+  output                           top_inhibit_o,
 
-    // JSP BIU interface
-    output                           biu_clk,
-    output                           biu_rst,
-    output [                    7:0] biu_di,               // data towards BIU
-    input  [                    7:0] biu_do,               // data from BIU
-    input  [                    3:0] biu_space_available,
-    input  [                    3:0] biu_bytes_available,
-    output logic                     biu_rd_strobe,        // Indicates that the BIU should ACK last read operation + start another
-    output logic                     biu_wr_strobe         // Indicates BIU should latch input + begin a write operation
+  // JSP BIU interface
+  output             biu_clk,
+  output             biu_rst,
+  output       [7:0] biu_di,               // data towards BIU
+  input        [7:0] biu_do,               // data from BIU
+  input        [3:0] biu_space_available,
+  input        [3:0] biu_bytes_available,
+  output logic       biu_rd_strobe,        // Indicates that the BIU should ACK last read operation + start another
+  output logic       biu_wr_strobe         // Indicates BIU should latch input + begin a write operation
 );
 
   // NOTE:  For the rest of this file, "input" and the "in" direction refer to bytes being transferred
@@ -90,15 +89,15 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   //
 
   //FSM states
-  localparam STATE_WR_IDLE   = 2'b11;
-  localparam STATE_WR_WAIT   = 2'b10;
+  localparam STATE_WR_IDLE = 2'b11;
+  localparam STATE_WR_WAIT = 2'b10;
   localparam STATE_WR_COUNTS = 2'b01;
-  localparam STATE_WR_XFER   = 2'b00;
+  localparam STATE_WR_XFER = 2'b00;
 
-  localparam STATE_RD_IDLE   = 2'b11;
+  localparam STATE_RD_IDLE = 2'b11;
   localparam STATE_RD_COUNTS = 2'b10;
-  localparam STATE_RD_RDACK  = 2'b01;
-  localparam STATE_RD_XFER   = 2'b00;
+  localparam STATE_RD_RDACK = 2'b01;
+  localparam STATE_RD_XFER = 2'b00;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -106,44 +105,44 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   //
 
   // Registers to hold state etc.
-  logic [3:0] read_bit_count;      // How many bits have been shifted out
-  logic [3:0] write_bit_count;     // How many bits have been shifted in
-  logic [3:0] input_word_count;    // space (bytes) remaining in input FIFO (from JTAG)
-  logic [3:0] output_word_count;   // bytes remaining in output FIFO (to JTAG)
-  logic [3:0] user_word_count;     // bytes user intends to send from PC
+  logic [3:0] read_bit_count;  // How many bits have been shifted out
+  logic [3:0] write_bit_count;  // How many bits have been shifted in
+  logic [3:0] input_word_count;  // space (bytes) remaining in input FIFO (from JTAG)
+  logic [3:0] output_word_count;  // bytes remaining in output FIFO (to JTAG)
+  logic [3:0] user_word_count;  // bytes user intends to send from PC
   logic [7:0] data_out_shift_reg;  // parallel-load output shift register
 
   // Control signals for the various counters / registers / state machines
-  logic rd_bit_ct_en;     // enable bit counter
-  logic rd_bit_ct_rst;    // reset (zero) bit count register
-  logic wr_bit_ct_en;     // enable bit counter
-  logic wr_bit_ct_rst;    // reset (zero) bit count register   
-  logic in_word_ct_sel;   // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
-  logic out_word_ct_sel;  // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
-  logic in_word_ct_en;    // Enable input byte counter register
-  logic out_word_ct_en;   // Enable output byte count register
-  logic user_word_ct_en;  // Enable user byte count registere
-  logic user_word_ct_sel; // selects data for user byte counter.  0 = user data, 1 = decremented byte count
-  logic out_reg_ld_en;    // Enable parallel load of data_out_shift_reg
-  logic out_reg_shift_en; // Enable shift of data_out_shift_reg
-  logic out_reg_data_sel; // 0 = BIU data, 1 = byte count data (also from BIU)
+  logic       rd_bit_ct_en;  // enable bit counter
+  logic       rd_bit_ct_rst;  // reset (zero) bit count register
+  logic       wr_bit_ct_en;  // enable bit counter
+  logic       wr_bit_ct_rst;  // reset (zero) bit count register   
+  logic       in_word_ct_sel;  // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
+  logic       out_word_ct_sel;  // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
+  logic       in_word_ct_en;  // Enable input byte counter register
+  logic       out_word_ct_en;  // Enable output byte count register
+  logic       user_word_ct_en;  // Enable user byte count registere
+  logic       user_word_ct_sel;  // selects data for user byte counter.  0 = user data, 1 = decremented byte count
+  logic       out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
+  logic       out_reg_shift_en;  // Enable shift of data_out_shift_reg
+  logic       out_reg_data_sel;  // 0 = BIU data, 1 = byte count data (also from BIU)
 
   // Status signals
-  logic in_word_count_zero;   // true when input byte counter is zero
-  logic out_word_count_zero;  // true when output byte counter is zero
-  logic user_word_count_zero; // true when user byte counter is zero
-  logic rd_bit_count_max;     // true when bit counter is equal to current word size
-  logic wr_bit_count_max;     // true when bit counter is equal to current word size
+  logic       in_word_count_zero;  // true when input byte counter is zero
+  logic       out_word_count_zero;  // true when output byte counter is zero
+  logic       user_word_count_zero;  // true when user byte counter is zero
+  logic       rd_bit_count_max;  // true when bit counter is equal to current word size
+  logic       wr_bit_count_max;  // true when bit counter is equal to current word size
 
   // Intermediate signals
-  logic [3:0] data_to_in_word_counter;     // output of the mux in front of the input byte counter reg
-  logic [3:0] data_to_out_word_counter;    // output of the mux in front of the output byte counter reg
-  logic [3:0] data_to_user_word_counter;   // output of mux in front of user word counter
-  logic [3:0] count_data_in;               // from data_register_i
-  logic [7:0] data_to_biu;                 // from data_register_i
-  logic [7:0] data_from_biu;               // to data_out_shift_register
-  logic [7:0] count_data_from_biu;         // combined space avail / bytes avail
-  logic [7:0] out_reg_data;                // parallel input to the output shift register
+  logic [3:0] data_to_in_word_counter;  // output of the mux in front of the input byte counter reg
+  logic [3:0] data_to_out_word_counter;  // output of the mux in front of the output byte counter reg
+  logic [3:0] data_to_user_word_counter;  // output of mux in front of user word counter
+  logic [3:0] count_data_in;  // from data_register_i
+  logic [7:0] data_to_biu;  // from data_register_i
+  logic [7:0] data_from_biu;  // to data_out_shift_register
+  logic [7:0] count_data_from_biu;  // combined space avail / bytes avail
+  logic [7:0] out_reg_data;  // parallel input to the output shift register
 
   //Statemachine
   logic [1:0] wr_module_state, wr_module_next_state;
@@ -156,68 +155,68 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
 
   // Combinatorial assignments
   assign count_data_from_biu = {biu_bytes_available, biu_space_available};
-  assign count_data_in       = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1 -: 3]}; // Second nibble of user data
-  assign data_to_biu         = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1 -: 7]};
+  assign count_data_in       = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1-:3]};  // Second nibble of user data
+  assign data_to_biu         = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1-:7]};
   assign top_inhibit_o       = 1'b0;
 
   // Input bit counter
   always @(posedge tck_i, posedge rst_i) begin
-    if      (rst_i        ) write_bit_count <= 'h0;
+    if (rst_i) write_bit_count <= 'h0;
     else if (wr_bit_ct_rst) write_bit_count <= 'h0;
-    else if (wr_bit_ct_en ) write_bit_count <= write_bit_count + 'h1;
+    else if (wr_bit_ct_en) write_bit_count <= write_bit_count + 'h1;
   end
 
   assign wr_bit_count_max = write_bit_count == 4'h7;
 
   // Output bit counter
-  always @(posedge tck_i,posedge rst_i) begin
-    if      (rst_i        ) read_bit_count <= 'h0;
+  always @(posedge tck_i, posedge rst_i) begin
+    if (rst_i) read_bit_count <= 'h0;
     else if (rd_bit_ct_rst) read_bit_count <= 'h0;
-    else if (rd_bit_ct_en ) read_bit_count <= read_bit_count + 'h1;
+    else if (rd_bit_ct_en) read_bit_count <= read_bit_count + 'h1;
   end
 
-  assign rd_bit_count_max = read_bit_count == 4'h7;
+  assign rd_bit_count_max        = read_bit_count == 4'h7;
 
   // Input word counter
   assign data_to_in_word_counter = in_word_ct_sel ? input_word_count - 'h1 : biu_space_available;
 
-  always @ (posedge tck_i,posedge rst_i) begin
-    if      (rst_i        ) input_word_count <= 'h0;
+  always @(posedge tck_i, posedge rst_i) begin
+    if (rst_i) input_word_count <= 'h0;
     else if (in_word_ct_en) input_word_count <= data_to_in_word_counter;
   end
 
-  assign in_word_count_zero = (input_word_count == 4'h0);
+  assign in_word_count_zero       = (input_word_count == 4'h0);
 
   // Output word counter
   assign data_to_out_word_counter = out_word_ct_sel ? output_word_count - 'h1 : biu_bytes_available;
 
-  always @ (posedge tck_i,posedge rst_i) begin
-    if      (rst_i         ) output_word_count <= 'h0;
+  always @(posedge tck_i, posedge rst_i) begin
+    if (rst_i) output_word_count <= 'h0;
     else if (out_word_ct_en) output_word_count <= data_to_out_word_counter;
   end
 
-  assign out_word_count_zero = ~|output_word_count;
+  assign out_word_count_zero       = ~|output_word_count;
 
   // User word counter
   assign data_to_user_word_counter = user_word_ct_sel ? user_word_count - 'h1 : count_data_in;
 
-  always @(posedge tck_i,posedge rst_i) begin
-    if      (rst_i          ) user_word_count <= 'h0;
+  always @(posedge tck_i, posedge rst_i) begin
+    if (rst_i) user_word_count <= 'h0;
     else if (user_word_ct_en) user_word_count <= data_to_user_word_counter;
   end
 
   assign user_word_count_zero = ~|user_word_count;
 
   // Output register and TDO output MUX
-  assign out_reg_data = (out_reg_data_sel) ? count_data_from_biu : data_from_biu;
+  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_biu : data_from_biu;
 
-  always @ (posedge tck_i or posedge rst_i) begin
-    if      (rst_i           ) data_out_shift_reg <= 'h0;
-    else if (out_reg_ld_en   ) data_out_shift_reg <= out_reg_data;
+  always @(posedge tck_i or posedge rst_i) begin
+    if (rst_i) data_out_shift_reg <= 'h0;
+    else if (out_reg_ld_en) data_out_shift_reg <= out_reg_data;
     else if (out_reg_shift_en) data_out_shift_reg <= {1'b0, data_out_shift_reg[$bits(data_out_shift_reg)-1:1]};
   end
 
-  assign module_tdo_o = data_out_shift_reg[0];
+  assign module_tdo_o  = data_out_shift_reg[0];
 
   // Bus Interface Unit (to JTAG / WB UART)
   // It is assumed that the BIU has internal registers, and will
@@ -261,31 +260,31 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   // Input Control FSM
 
   // sequential part of the FSM
-  always @ (posedge tck_i,posedge rst_i) begin
+  always @(posedge tck_i, posedge rst_i) begin
     if (rst_i) wr_module_state <= STATE_WR_IDLE;
-    else       wr_module_state <= wr_module_next_state;
+    else wr_module_state <= wr_module_next_state;
   end
 
   // Determination of next state; purely combinatorial
   always @(*) begin
-    case(wr_module_state)
+    case (wr_module_state)
       STATE_WR_IDLE: begin
         if (module_select_i && capture_dr_i) wr_module_next_state = STATE_WR_COUNTS;
-        else                                 wr_module_next_state = STATE_WR_IDLE;
+        else wr_module_next_state = STATE_WR_IDLE;
       end
       STATE_WR_WAIT: begin
-        if      (update_dr_i             ) wr_module_next_state = STATE_WR_IDLE;
+        if (update_dr_i) wr_module_next_state = STATE_WR_IDLE;
         else if (module_select_i && tdi_i) wr_module_next_state = STATE_WR_COUNTS;  // got start bit
-        else                               wr_module_next_state = STATE_WR_WAIT;
+        else wr_module_next_state = STATE_WR_WAIT;
       end
       STATE_WR_COUNTS: begin
-        if      (update_dr_i     ) wr_module_next_state = STATE_WR_IDLE;
+        if (update_dr_i) wr_module_next_state = STATE_WR_IDLE;
         else if (wr_bit_count_max) wr_module_next_state = STATE_WR_XFER;
-        else                       wr_module_next_state = STATE_WR_COUNTS;
+        else wr_module_next_state = STATE_WR_COUNTS;
       end
       STATE_WR_XFER: begin
         if (update_dr_i) wr_module_next_state = STATE_WR_IDLE;
-        else             wr_module_next_state = STATE_WR_XFER;
+        else wr_module_next_state = STATE_WR_XFER;
       end
       default: wr_module_next_state = STATE_WR_IDLE;  // shouldn't actually happen...
     endcase
@@ -294,15 +293,15 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   // Outputs of state machine, pure combinatorial
   always @(*) begin
     // Default everything to 0, keeps the case statement simple
-    wr_bit_ct_en     = 1'b0; // enable bit counter
-    wr_bit_ct_rst    = 1'b0; // reset (zero) bit count register
-    in_word_ct_sel   = 1'b0; // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
-    user_word_ct_sel = 1'b0; // selects data for user byte counter, 0 = user data, 1 = decremented count
-    in_word_ct_en    = 1'b0; // Enable input byte counter register
-    user_word_ct_en  = 1'b0; // enable user byte count register
-    biu_wr_strobe    = 1'b0; // Indicates BIU should latch input + begin a write operation
+    wr_bit_ct_en     = 1'b0;  // enable bit counter
+    wr_bit_ct_rst    = 1'b0;  // reset (zero) bit count register
+    in_word_ct_sel   = 1'b0;  // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
+    user_word_ct_sel = 1'b0;  // selects data for user byte counter, 0 = user data, 1 = decremented count
+    in_word_ct_en    = 1'b0;  // Enable input byte counter register
+    user_word_ct_en  = 1'b0;  // enable user byte count register
+    biu_wr_strobe    = 1'b0;  // Indicates BIU should latch input + begin a write operation
 
-    case(wr_module_state)
+    case (wr_module_state)
       STATE_WR_IDLE: begin
         in_word_ct_sel = 1'b0;
 
@@ -317,15 +316,15 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
       STATE_WR_WAIT: wr_bit_ct_en = 1'b0;  // Don't do anything, just wait for the start bit.
 
       STATE_WR_COUNTS:
-        if (shift_dr_i) begin // Don't do anything in PAUSE or EXIT states...
-          wr_bit_ct_en     = 1'b1;
-          user_word_ct_sel = 1'b0;
+      if (shift_dr_i) begin  // Don't do anything in PAUSE or EXIT states...
+        wr_bit_ct_en     = 1'b1;
+        user_word_ct_sel = 1'b0;
 
-          if (wr_bit_count_max) begin
-            wr_bit_ct_rst   = 1'b1;
-            user_word_ct_en = 1'b1;
-          end
+        if (wr_bit_count_max) begin
+          wr_bit_ct_rst   = 1'b1;
+          user_word_ct_en = 1'b1;
         end
+      end
 
       STATE_WR_XFER: begin
         if (shift_dr_i) begin  // Don't do anything in PAUSE or EXIT states
@@ -355,9 +354,9 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   // input and output are going to be offset anyway, why bother...
 
   // sequential part of the FSM
-  always @(posedge tck_i,posedge rst_i) begin
-    if  (rst_i) rd_module_state = STATE_RD_IDLE;
-    else        rd_module_state = rd_module_next_state;
+  always @(posedge tck_i, posedge rst_i) begin
+    if (rst_i) rd_module_state = STATE_RD_IDLE;
+    else rd_module_state = rd_module_next_state;
   end
 
   // Determination of next state; purely combinatorial
@@ -365,21 +364,21 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
     case (rd_module_state)
       STATE_RD_IDLE: begin
         if (module_select_i && capture_dr_i) rd_module_next_state = STATE_RD_COUNTS;
-        else                                 rd_module_next_state = STATE_RD_IDLE;
+        else rd_module_next_state = STATE_RD_IDLE;
       end
       STATE_RD_COUNTS: begin
-        if      (update_dr_i     ) rd_module_next_state = STATE_RD_IDLE;
+        if (update_dr_i) rd_module_next_state = STATE_RD_IDLE;
         else if (rd_bit_count_max) rd_module_next_state = STATE_RD_RDACK;
-        else                       rd_module_next_state = STATE_RD_COUNTS;
+        else rd_module_next_state = STATE_RD_COUNTS;
       end
       STATE_RD_RDACK: begin
         if (update_dr_i) rd_module_next_state = STATE_RD_IDLE;
-        else             rd_module_next_state = STATE_RD_XFER;
+        else rd_module_next_state = STATE_RD_XFER;
       end
       STATE_RD_XFER: begin
-        if      (update_dr_i     ) rd_module_next_state = STATE_RD_IDLE;
+        if (update_dr_i) rd_module_next_state = STATE_RD_IDLE;
         else if (rd_bit_count_max) rd_module_next_state = STATE_RD_RDACK;
-        else                       rd_module_next_state = STATE_RD_XFER;
+        else rd_module_next_state = STATE_RD_XFER;
       end
       default: rd_module_next_state = STATE_RD_IDLE;  // shouldn't actually happen...
     endcase
@@ -388,14 +387,14 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   // Outputs of state machine, pure combinatorial
   always @(*) begin
     // Default everything to 0, keeps the case statement simple
-    rd_bit_ct_en     = 1'b0; // enable bit counter
-    rd_bit_ct_rst    = 1'b0; // reset (zero) bit count register
-    out_word_ct_sel  = 1'b0; // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
-    out_word_ct_en   = 1'b0; // Enable output byte count register
-    out_reg_ld_en    = 1'b0; // Enable parallel load of data_out_shift_reg
-    out_reg_shift_en = 1'b0; // Enable shift of data_out_shift_reg
-    out_reg_data_sel = 1'b0; // 0 = BIU data, 1 = byte count data (also from BIU)
-    biu_rd_strobe    = 1'b0; // Indicates that the bus unit should ACK the last read operation + start another
+    rd_bit_ct_en     = 1'b0;  // enable bit counter
+    rd_bit_ct_rst    = 1'b0;  // reset (zero) bit count register
+    out_word_ct_sel  = 1'b0;  // Selects data for byte counter.  0 = data_register_i, 1 = decremented byte count
+    out_word_ct_en   = 1'b0;  // Enable output byte count register
+    out_reg_ld_en    = 1'b0;  // Enable parallel load of data_out_shift_reg
+    out_reg_shift_en = 1'b0;  // Enable shift of data_out_shift_reg
+    out_reg_data_sel = 1'b0;  // 0 = BIU data, 1 = byte count data (also from BIU)
+    biu_rd_strobe    = 1'b0;  // Indicates that the bus unit should ACK the last read operation + start another
 
     case (rd_module_state)
       STATE_RD_IDLE: begin
@@ -411,7 +410,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
       end
 
       STATE_RD_COUNTS: begin
-        if (shift_dr_i) begin // Don't do anything in PAUSE or EXIT states...
+        if (shift_dr_i) begin  // Don't do anything in PAUSE or EXIT states...
           rd_bit_ct_en     = 1'b1;
           out_reg_shift_en = 1'b1;
 
@@ -433,7 +432,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
           out_reg_data_sel = 1'b0;
 
           // Never have to worry about bit_count_max here.
-          if(!out_word_count_zero) biu_rd_strobe = 1'b1;
+          if (!out_word_count_zero) biu_rd_strobe = 1'b1;
         end
       end
       STATE_RD_XFER: begin

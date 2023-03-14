@@ -43,24 +43,23 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_stm #(
-  parameter REG_ADDR_WIDTH = 5, // the address width of the core register file
-  parameter VALWIDTH = 64,
-  parameter MAX_PKT_LEN = 'hx
-)
-  (
-  input                       clk,
-  input                       rst,
+  parameter REG_ADDR_WIDTH = 5,   // the address width of the core register file
+  parameter VALWIDTH       = 64,
+  parameter MAX_PKT_LEN    = 'hx
+) (
+  input clk,
+  input rst,
 
-  input                [15:0] id,
+  input [15:0] id,
 
-  input  dii_flit             debug_in,
-  output                      debug_in_ready,
-  output dii_flit             debug_out,
-  input                       debug_out_ready,
+  input  dii_flit debug_in,
+  output          debug_in_ready,
+  output dii_flit debug_out,
+  input           debug_out_ready,
 
-  input                       trace_valid,
-  input [        15:0]        trace_id,
-  input [VALWIDTH-1:0]        trace_value
+  input                trace_valid,
+  input [        15:0] trace_id,
+  input [VALWIDTH-1:0] trace_value
 );
 
   // Event width
@@ -91,38 +90,37 @@ module peripheral_dbg_soc_osd_stm #(
 
   logic          stall;
 
-  dii_flit       dp_out, dp_in;
+  dii_flit dp_out, dp_in;
 
-  logic          dp_out_ready, dp_in_ready;
+  logic dp_out_ready, dp_in_ready;
 
   // This module cannot receive packets other than register access packets
   assign dp_in_ready = 1'b0;
 
   peripheral_dbg_soc_osd_regaccess_layer #(
-  .MOD_VENDOR(16'h1),
-  .MOD_TYPE(16'h4),
-  .MOD_VERSION(16'h0),
-  .MAX_REG_SIZE(16),
-  .CAN_STALL(1),
-  .MOD_EVENT_DEST_DEFAULT(16'h0)
-  )
-  u_regaccess (
+    .MOD_VENDOR            (16'h1),
+    .MOD_TYPE              (16'h4),
+    .MOD_VERSION           (16'h0),
+    .MAX_REG_SIZE          (16),
+    .CAN_STALL             (1),
+    .MOD_EVENT_DEST_DEFAULT(16'h0)
+  ) u_regaccess (
     .*,
-    .event_dest       (event_dest),
-    .module_in        (dp_out),
-    .module_in_ready  (dp_out_ready),
-    .module_out       (dp_in),
-    .module_out_ready (dp_in_ready)
+    .event_dest      (event_dest),
+    .module_in       (dp_out),
+    .module_in_ready (dp_out_ready),
+    .module_out      (dp_in),
+    .module_out_ready(dp_in_ready)
   );
 
   always @(*) begin
-    reg_ack = 1;
+    reg_ack   = 1;
     reg_rdata = 'x;
-    reg_err = 0;
+    reg_err   = 0;
 
     case (reg_addr)
       16'h200: reg_rdata = 16'(VALWIDTH);
-      default: reg_err   = reg_request;
+      default: reg_err = reg_request;
     endcase
   end
 
@@ -130,63 +128,59 @@ module peripheral_dbg_soc_osd_stm #(
   assign sample_data  = {trace_value, trace_id, timestamp};
 
   peripheral_dbg_soc_osd_timestamp #(
-  .WIDTH(32)
-  )
-  u_timestamp(
-    .clk       (clk),
-    .rst       (rst),
-    .enable    (1'b1),
-    .timestamp (timestamp)
+    .WIDTH(32)
+  ) u_timestamp (
+    .clk      (clk),
+    .rst      (rst),
+    .enable   (1'b1),
+    .timestamp(timestamp)
   );
 
   peripheral_dbg_soc_osd_tracesample #(
-  .WIDTH(EW)
-  )
-  u_sample(
-    .clk (clk),
-    .rst (rst),
+    .WIDTH(EW)
+  ) u_sample (
+    .clk(clk),
+    .rst(rst),
 
-    .sample_data    (sample_data),
-    .sample_valid   (sample_valid & !stall),
-    .fifo_data      (fifo_data),
-    .fifo_overflow  (fifo_overflow),
-    .fifo_valid     (fifo_valid),
-    .fifo_ready     (fifo_ready)
+    .sample_data  (sample_data),
+    .sample_valid (sample_valid & !stall),
+    .fifo_data    (fifo_data),
+    .fifo_overflow(fifo_overflow),
+    .fifo_valid   (fifo_valid),
+    .fifo_ready   (fifo_ready)
   );
 
   peripheral_dbg_soc_osd_fifo #(
-  .WIDTH(EW+1),
-  .DEPTH(8)
-  )
-  u_buffer(
-    .clk (clk),
-    .rst (rst),
+    .WIDTH(EW + 1),
+    .DEPTH(8)
+  ) u_buffer (
+    .clk(clk),
+    .rst(rst),
 
-    .in_data   ({fifo_overflow, fifo_data}),
-    .in_valid  (fifo_valid),
-    .in_ready  (fifo_ready),
-    .out_data  ({packet_overflow, packet_data}),
-    .out_valid (packet_valid),
-    .out_ready (packet_ready)
+    .in_data  ({fifo_overflow, fifo_data}),
+    .in_valid (fifo_valid),
+    .in_ready (fifo_ready),
+    .out_data ({packet_overflow, packet_data}),
+    .out_valid(packet_valid),
+    .out_ready(packet_ready)
   );
 
   peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
-  .DATA_WIDTH(EW),
-  .MAX_PKT_LEN(MAX_PKT_LEN)
-  )
-  u_packetization (
-    .clk (clk),
-    .rst (rst),
+    .DATA_WIDTH (EW),
+    .MAX_PKT_LEN(MAX_PKT_LEN)
+  ) u_packetization (
+    .clk(clk),
+    .rst(rst),
 
-    .debug_out       (dp_out),
-    .debug_out_ready (dp_out_ready),
+    .debug_out      (dp_out),
+    .debug_out_ready(dp_out_ready),
 
-    .id              (id),
-    .dest            (event_dest),
-    .overflow        (packet_overflow),
-    .event_available (packet_valid),
-    .event_consumed  (packet_ready),
+    .id             (id),
+    .dest           (event_dest),
+    .overflow       (packet_overflow),
+    .event_available(packet_valid),
+    .event_consumed (packet_ready),
 
-    .data            (packet_data)
+    .data(packet_data)
   );
 endmodule

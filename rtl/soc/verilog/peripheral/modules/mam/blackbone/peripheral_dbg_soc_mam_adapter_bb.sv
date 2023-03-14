@@ -52,9 +52,7 @@ module peripheral_dbg_soc_mam_adapter_bb #(
   parameter USE_DEBUG = 1,
 
   // byte select width
-  localparam SW = (DW == 32) ? 4 :
-  (DW == 16) ? 2 :
-  (DW ==  8) ? 1 : 'hx,
+  localparam SW = (DW == 32) ? 4 : (DW == 16) ? 2 : (DW == 8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -66,18 +64,17 @@ module peripheral_dbg_soc_mam_adapter_bb #(
 
   localparam BYTE_AW = SW >> 1,
   localparam WORD_AW = AW - BYTE_AW
-)
-  (
+) (
   // Blackbone SLAVE interface: input side (to the CPU etc.)
-  input  [AW-1:0] bb_in_addr_i,
-  input  [DW-1:0] bb_in_din_i,
-  input           bb_in_en_i,
-  input           bb_in_we_i,
+  input [AW-1:0] bb_in_addr_i,
+  input [DW-1:0] bb_in_din_i,
+  input          bb_in_en_i,
+  input          bb_in_we_i,
 
   output [DW-1:0] bb_in_dout_o,
 
-  input           bb_in_clk_i,
-  input           bb_in_rst_i,
+  input bb_in_clk_i,
+  input bb_in_rst_i,
 
   // Blackbone SLAVE interface: output side (to the memory)
   output [AW-1:0] bb_out_addr_i,
@@ -85,16 +82,16 @@ module peripheral_dbg_soc_mam_adapter_bb #(
   output          bb_out_en_i,
   output          bb_out_we_i,
 
-  input [DW-1:0]  bb_out_dout_o,
+  input [DW-1:0] bb_out_dout_o,
 
-  output          bb_out_clk_i,
-  output          bb_out_rst_i,
+  output bb_out_clk_i,
+  output bb_out_rst_i,
 
   // MAM Blackbone MASTER interface (incoming)
-  input  [AW-1:0] bb_mam_addr_o,
-  input  [DW-1:0] bb_mam_din_o,
-  input           bb_mam_en_o,
-  input           bb_mam_we_o,
+  input [AW-1:0] bb_mam_addr_o,
+  input [DW-1:0] bb_mam_din_o,
+  input          bb_mam_en_o,
+  input          bb_mam_we_o,
 
   output [DW-1:0] bb_mam_dout_i
 );
@@ -113,41 +110,37 @@ module peripheral_dbg_soc_mam_adapter_bb #(
     reg [STATE_ARB_WIDTH-1:0] fsm_arb_state;
     reg [STATE_ARB_WIDTH-1:0] fsm_arb_state_next;
 
-    reg grant_access_cpu;
-    reg grant_access_mam;
-    reg access_cpu;
+    reg                       grant_access_cpu;
+    reg                       grant_access_mam;
+    reg                       access_cpu;
 
     // arbiter FSM: MAM has higher priority than CPU
     always @(posedge bb_in_clk_i) begin
       if (bb_in_rst_i) begin
         fsm_arb_state <= STATE_ARB_IDLE;
-      end
-      else begin
+      end else begin
         fsm_arb_state <= fsm_arb_state_next;
 
         if (grant_access_cpu) begin
           access_cpu <= 1'b1;
-        end
-        else if (grant_access_mam) begin
+        end else if (grant_access_mam) begin
           access_cpu <= 1'b0;
         end
       end
     end
 
     always @(*) begin
-      grant_access_cpu = 1'b0;
-      grant_access_mam = 1'b0;
+      grant_access_cpu   = 1'b0;
+      grant_access_mam   = 1'b0;
       fsm_arb_state_next = STATE_ARB_IDLE;
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
           if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else if (bb_in_en_i == 1'b1) begin
+          end else if (bb_in_en_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -157,8 +150,7 @@ module peripheral_dbg_soc_mam_adapter_bb #(
 
           if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -167,11 +159,9 @@ module peripheral_dbg_soc_mam_adapter_bb #(
           grant_access_cpu = 1'b1;
           if (bb_in_en_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end
-          else if (bb_mam_en_o == 1'b1) begin
+          end else if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -180,20 +170,19 @@ module peripheral_dbg_soc_mam_adapter_bb #(
 
     // MUX of signals TO the memory
     assign bb_out_addr_i = access_cpu ? bb_in_addr_i : bb_mam_addr_o;
-    assign bb_out_din_i  = access_cpu ? bb_in_din_i  : bb_mam_din_o;
-    assign bb_out_en_i   = access_cpu ? bb_in_en_i   : bb_mam_en_o;
-    assign bb_out_we_i   = access_cpu ? bb_in_we_i   : bb_mam_we_o;
+    assign bb_out_din_i  = access_cpu ? bb_in_din_i : bb_mam_din_o;
+    assign bb_out_en_i   = access_cpu ? bb_in_en_i : bb_mam_en_o;
+    assign bb_out_we_i   = access_cpu ? bb_in_we_i : bb_mam_we_o;
     // MUX of signals FROM the memory
-    assign bb_in_dout_o = access_cpu ? bb_out_dout_o : {DW{1'b0}};
+    assign bb_in_dout_o  = access_cpu ? bb_out_dout_o : {DW{1'b0}};
 
     assign bb_mam_dout_i = ~access_cpu ? bb_out_dout_o : {DW{1'b0}};
-  end
-  else begin
+  end else begin
     assign bb_out_addr_i = bb_in_addr_i;
     assign bb_out_din_i  = bb_in_din_i;
     assign bb_out_en_i   = bb_in_en_i;
     assign bb_out_we_i   = bb_in_we_i;
 
-    assign bb_in_dout_o = bb_out_dout_o;
+    assign bb_in_dout_o  = bb_out_dout_o;
   end
 endmodule

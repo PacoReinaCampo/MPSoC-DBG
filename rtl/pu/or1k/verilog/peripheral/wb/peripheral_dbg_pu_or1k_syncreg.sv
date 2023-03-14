@@ -55,15 +55,15 @@ module peripheral_dbg_pu_or1k_syncreg (
   // Variables
   //
 
-  reg     [3:0] regA;
-  reg     [3:0] regB;
-  reg           strobe_toggle;
-  reg           ack_toggle;
+  reg  [3:0] regA;
+  reg  [3:0] regB;
+  reg        strobe_toggle;
+  reg        ack_toggle;
 
-  wire          A_not_equal;
-  wire          A_enable;
-  wire          strobe_sff_out;
-  wire          ack_sff_out;
+  wire       A_not_equal;
+  wire       A_enable;
+  wire       strobe_sff_out;
+  wire       ack_sff_out;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -71,60 +71,52 @@ module peripheral_dbg_pu_or1k_syncreg (
   //
 
   // Combinatorial assignments
-  assign  A_enable = A_not_equal & ack_sff_out;
-  assign  A_not_equal = !(DATA_IN == regA);
-  assign DATA_OUT = regB;
+  assign A_enable    = A_not_equal & ack_sff_out;
+  assign A_not_equal = !(DATA_IN == regA);
+  assign DATA_OUT    = regB;
 
   // register A (latches input any time it changes)
-  always @ (posedge CLKA or posedge RST) begin
-    if(RST)
-      regA <= 4'b0;
-    else if(A_enable)
-      regA <= DATA_IN;
+  always @(posedge CLKA or posedge RST) begin
+    if (RST) regA <= 4'b0;
+    else if (A_enable) regA <= DATA_IN;
   end
 
   // register B (latches data from regA when enabled by the strobe SFF)
-  always @ (posedge CLKB or posedge RST) begin
-    if(RST)
-      regB <= 4'b0;
-    else if(strobe_sff_out)
-      regB <= regA;
+  always @(posedge CLKB or posedge RST) begin
+    if (RST) regB <= 4'b0;
+    else if (strobe_sff_out) regB <= regA;
   end
 
   // 'strobe' toggle FF
-  always @ (posedge CLKA or posedge RST) begin
-    if(RST)
-      strobe_toggle <= 1'b0;
-    else if(A_enable)
-      strobe_toggle <= ~strobe_toggle;
+  always @(posedge CLKA or posedge RST) begin
+    if (RST) strobe_toggle <= 1'b0;
+    else if (A_enable) strobe_toggle <= ~strobe_toggle;
   end
 
   // 'ack' toggle FF
   // This is set to '1' at reset, to initialize the unit.
-  always @ (posedge CLKB or posedge RST) begin
-    if(RST)
-      ack_toggle <= 1'b1;
-    else if (strobe_sff_out)
-      ack_toggle <= ~ack_toggle;
+  always @(posedge CLKB or posedge RST) begin
+    if (RST) ack_toggle <= 1'b1;
+    else if (strobe_sff_out) ack_toggle <= ~ack_toggle;
   end
 
   // 'strobe' sync element
   peripheral_dbg_pu_or1k_syncflop strobe_sff (
     .DEST_CLK (CLKB),
-    .D_SET (1'b0),
-    .D_RST (strobe_sff_out),
-    .RESET (RST),
-    .TOGGLE_IN (strobe_toggle),
-    .D_OUT (strobe_sff_out)
+    .D_SET    (1'b0),
+    .D_RST    (strobe_sff_out),
+    .RESET    (RST),
+    .TOGGLE_IN(strobe_toggle),
+    .D_OUT    (strobe_sff_out)
   );
 
   // 'ack' sync element
   peripheral_dbg_pu_or1k_syncflop ack_sff (
     .DEST_CLK (CLKA),
-    .D_SET (1'b0),
-    .D_RST (A_enable),
-    .RESET (RST),
-    .TOGGLE_IN (ack_toggle),
-    .D_OUT (ack_sff_out)
+    .D_SET    (1'b0),
+    .D_RST    (A_enable),
+    .RESET    (RST),
+    .TOGGLE_IN(ack_toggle),
+    .D_OUT    (ack_sff_out)
   );
 endmodule

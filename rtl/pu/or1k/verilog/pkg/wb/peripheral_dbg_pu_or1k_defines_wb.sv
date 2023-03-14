@@ -50,7 +50,7 @@
 // These relate to the number of internal registers, and how
 // many bits are required in the Reg. Select register
 `define DBG_WB_REGSELECT_SIZE 1
-`define DBG_WB_NUM_INTREG     1
+`define DBG_WB_NUM_INTREG 1
 
 // Register index definitions for module-internal registers
 // The WB module has just 1, the error register
@@ -71,11 +71,11 @@
 // 1101  Internal register select
 // 1110 - 1111 Reserved
 
-`define DBG_WB_CMD_BWRITE8  4'h1
+`define DBG_WB_CMD_BWRITE8 4'h1
 `define DBG_WB_CMD_BWRITE16 4'h2
 `define DBG_WB_CMD_BWRITE32 4'h3
-`define DBG_WB_CMD_BREAD8   4'h5
-`define DBG_WB_CMD_BREAD16  4'h6
-`define DBG_WB_CMD_BREAD32  4'h7
-`define DBG_WB_CMD_IREG_WR  4'h9
+`define DBG_WB_CMD_BREAD8 4'h5
+`define DBG_WB_CMD_BREAD16 4'h6
+`define DBG_WB_CMD_BREAD32 4'h7
+`define DBG_WB_CMD_IREG_WR 4'h9
 `define DBG_WB_CMD_IREG_SEL 4'hd

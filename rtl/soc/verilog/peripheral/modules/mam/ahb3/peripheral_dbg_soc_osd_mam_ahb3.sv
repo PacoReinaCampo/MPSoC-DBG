@@ -43,7 +43,7 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_mam_ahb3 #(
-  parameter XLEN = 16, // in bits, must be multiple of 16
+  parameter XLEN = 16,  // in bits, must be multiple of 16
   parameter PLEN = 32,
 
   parameter MAX_PKT_LEN = 'x,
@@ -66,18 +66,15 @@ module peripheral_dbg_soc_osd_mam_ahb3 #(
   parameter BASE_ADDR7  = 'x,
 
   //Byte select width
-  localparam SW = (XLEN == 32) ? 4 :
-  (XLEN == 16) ? 2 :
-  (XLEN ==  8) ? 1 : 'hx
-)
-  (
+  localparam SW = (XLEN == 32) ? 4 : (XLEN == 16) ? 2 : (XLEN == 8) ? 1 : 'hx
+) (
   input clk_i,
   input rst_i,
 
   input  dii_flit debug_in,
   output dii_flit debug_out,
-  output debug_in_ready,
-  input  debug_out_ready,
+  output          debug_in_ready,
+  input           debug_out_ready,
 
   input [15:0] id,
 
@@ -91,9 +88,9 @@ module peripheral_dbg_soc_osd_mam_ahb3 #(
   output [     1:0] ahb3_htrans_o,
   output            ahb3_hmastlock_o,
 
-  input  [XLEN-1:0] ahb3_hrdata_i,
-  input             ahb3_hready_i,
-  input             ahb3_hresp_i
+  input [XLEN-1:0] ahb3_hrdata_i,
+  input            ahb3_hready_i,
+  input            ahb3_hresp_i
 );
 
   logic              req_valid;
@@ -115,39 +112,39 @@ module peripheral_dbg_soc_osd_mam_ahb3 #(
   logic              read_ready;
 
   peripheral_dbg_soc_osd_mam #(
-  .ADDR_WIDTH (PLEN),
-  .DATA_WIDTH (XLEN),
+    .ADDR_WIDTH(PLEN),
+    .DATA_WIDTH(XLEN),
 
-  .MAX_PKT_LEN(MAX_PKT_LEN),
-  .REGIONS(REGIONS),
-  .BASE_ADDR0(BASE_ADDR0),
-  .MEM_SIZE0(MEM_SIZE0),
-  .BASE_ADDR1(BASE_ADDR1),
-  .MEM_SIZE1(MEM_SIZE1),
-  .BASE_ADDR2(BASE_ADDR2),
-  .MEM_SIZE2(MEM_SIZE2),
-  .BASE_ADDR3(BASE_ADDR3),
-  .MEM_SIZE3(MEM_SIZE3),
-  .BASE_ADDR4(BASE_ADDR4),
-  .MEM_SIZE4(MEM_SIZE4),
-  .BASE_ADDR5(BASE_ADDR5),
-  .MEM_SIZE5(MEM_SIZE5),
-  .BASE_ADDR6(BASE_ADDR6),
-  .MEM_SIZE6(MEM_SIZE6),
-  .BASE_ADDR7(BASE_ADDR7),
-  .MEM_SIZE7(MEM_SIZE7)
-  )
-  u_mam (
+    .MAX_PKT_LEN(MAX_PKT_LEN),
+    .REGIONS    (REGIONS),
+    .BASE_ADDR0 (BASE_ADDR0),
+    .MEM_SIZE0  (MEM_SIZE0),
+    .BASE_ADDR1 (BASE_ADDR1),
+    .MEM_SIZE1  (MEM_SIZE1),
+    .BASE_ADDR2 (BASE_ADDR2),
+    .MEM_SIZE2  (MEM_SIZE2),
+    .BASE_ADDR3 (BASE_ADDR3),
+    .MEM_SIZE3  (MEM_SIZE3),
+    .BASE_ADDR4 (BASE_ADDR4),
+    .MEM_SIZE4  (MEM_SIZE4),
+    .BASE_ADDR5 (BASE_ADDR5),
+    .MEM_SIZE5  (MEM_SIZE5),
+    .BASE_ADDR6 (BASE_ADDR6),
+    .MEM_SIZE6  (MEM_SIZE6),
+    .BASE_ADDR7 (BASE_ADDR7),
+    .MEM_SIZE7  (MEM_SIZE7)
+  ) u_mam (
     .*,
-    .clk (clk_i),
-    .rst (rst_i)
+    .clk(clk_i),
+    .rst(rst_i)
   );
 
   assign write_complete = 1'b1;
 
   peripheral_dbg_soc_osd_mam_if_ahb3 #(
-  .XLEN(XLEN),
-  .PLEN(PLEN)
-  )
-  u_mam_ahb3_if (.*);
+    .XLEN(XLEN),
+    .PLEN(PLEN)
+  ) u_mam_ahb3_if (
+    .*
+  );
 endmodule

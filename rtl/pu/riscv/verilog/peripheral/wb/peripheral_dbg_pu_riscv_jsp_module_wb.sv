@@ -44,36 +44,35 @@
 // Module interface
 module peripheral_dbg_pu_riscv_jsp_module_wb #(
   parameter DBG_JSP_DATAREG_LEN = 64
-)
-  (
-  input                           rst_i,
+) (
+  input rst_i,
 
   // JTAG signals
-  input                           tck_i,
-  input                           tdi_i,
-  output                          module_tdo_o,
+  input  tck_i,
+  input  tdi_i,
+  output module_tdo_o,
 
   // TAP states
-  input                           capture_dr_i,
-  input                           shift_dr_i,
-  input                           update_dr_i,
+  input capture_dr_i,
+  input shift_dr_i,
+  input update_dr_i,
 
-  input [DBG_JSP_DATAREG_LEN-1:0] data_register_i, // the data register is at top level, shared between all modules
-  input                           module_select_i,
-  output                          top_inhibit_o,
+  input  [DBG_JSP_DATAREG_LEN-1:0] data_register_i,  // the data register is at top level, shared between all modules
+  input                            module_select_i,
+  output                           top_inhibit_o,
 
   // WISHBONE slave interface
-  input                           wb_clk_i,
-  input                           wb_rst_i,
-  input                           wb_cyc_i,
-  input                           wb_stb_i,
-  input                           wb_we_i,
-  input  [                   2:0] wb_adr_i,
-  input  [                   7:0] wb_dat_i,
-  output [                   7:0] wb_dat_o,
-  output                          wb_ack_o,
-  output                          wb_err_o,
-  output                          int_o
+  input        wb_clk_i,
+  input        wb_rst_i,
+  input        wb_cyc_i,
+  input        wb_stb_i,
+  input        wb_we_i,
+  input  [2:0] wb_adr_i,
+  input  [7:0] wb_dat_i,
+  output [7:0] wb_dat_o,
+  output       wb_ack_o,
+  output       wb_err_o,
+  output       int_o
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -96,60 +95,59 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
 
   //Hookup JSP Debug Core
   peripheral_dbg_pu_riscv_jsp_module_core #(
-  .DBG_JSP_DATAREG_LEN ( DBG_JSP_DATAREG_LEN )
-  )
-  jsp_core_inst (
-    .rst_i ( rst_i ),
+    .DBG_JSP_DATAREG_LEN(DBG_JSP_DATAREG_LEN)
+  ) jsp_core_inst (
+    .rst_i(rst_i),
 
     // JTAG signals
-    .tck_i        ( tck_i        ),
-    .tdi_i        ( tdi_i        ),
-    .module_tdo_o ( module_tdo_o ),
+    .tck_i       (tck_i),
+    .tdi_i       (tdi_i),
+    .module_tdo_o(module_tdo_o),
 
     // TAP states
-    .capture_dr_i ( capture_dr_i ),
-    .shift_dr_i   ( shift_dr_i   ),
-    .update_dr_i  ( update_dr_i  ),
+    .capture_dr_i(capture_dr_i),
+    .shift_dr_i  (shift_dr_i),
+    .update_dr_i (update_dr_i),
 
-    .data_register_i ( data_register_i ), // the data register is at top level, shared between all modules
-    .module_select_i ( module_select_i ),
-    .top_inhibit_o   ( top_inhibit_o   ),
+    .data_register_i(data_register_i),  // the data register is at top level, shared between all modules
+    .module_select_i(module_select_i),
+    .top_inhibit_o  (top_inhibit_o),
 
     // JSP BIU interface
-    .biu_clk             ( biu_clk             ),
-    .biu_rst             ( biu_rst             ),
-    .biu_di              ( biu_di              ), // data towards BIU
-    .biu_do              ( biu_do              ), // data from BIU
-    .biu_space_available ( biu_space_available ),
-    .biu_bytes_available ( biu_bytes_available ),
-    .biu_rd_strobe       ( biu_rd_strobe       ), // Indicates that the BIU should ACK last read operation + start another
-    .biu_wr_strobe       ( biu_wr_strobe       ) // Indicates BIU should latch input + begin a write operation
+    .biu_clk            (biu_clk),
+    .biu_rst            (biu_rst),
+    .biu_di             (biu_di),               // data towards BIU
+    .biu_do             (biu_do),               // data from BIU
+    .biu_space_available(biu_space_available),
+    .biu_bytes_available(biu_bytes_available),
+    .biu_rd_strobe      (biu_rd_strobe),        // Indicates that the BIU should ACK last read operation + start another
+    .biu_wr_strobe      (biu_wr_strobe)         // Indicates BIU should latch input + begin a write operation
   );
 
   //Hookup JSP Wishbone Interface
   peripheral_dbg_pu_riscv_jsp_biu_wb jsp_biu_inst (
     // Debug interface signals
-    .tck_i             ( biu_clk             ),
-    .rst_i             ( biu_rst             ),
-    .data_i            ( biu_di              ),
-    .data_o            ( biu_do              ),
-    .bytes_available_o ( biu_bytes_available ),
-    .bytes_free_o      ( biu_space_available ),
-    .rd_strobe_i       ( biu_rd_strobe       ),
-    .wr_strobe_i       ( biu_wr_strobe       ),
+    .tck_i            (biu_clk),
+    .rst_i            (biu_rst),
+    .data_i           (biu_di),
+    .data_o           (biu_do),
+    .bytes_available_o(biu_bytes_available),
+    .bytes_free_o     (biu_space_available),
+    .rd_strobe_i      (biu_rd_strobe),
+    .wr_strobe_i      (biu_wr_strobe),
 
     // Wishbone slave signals
-    .wb_clk_i ( wb_clk_i ),
-    .wb_rst_i ( wb_rst_i ),
-    .wb_cyc_i ( wb_cyc_i ),
-    .wb_stb_i ( wb_stb_i ),
-    .wb_we_i  ( wb_we_i  ),
-    .wb_adr_i ( wb_adr_i ),
-    .wb_dat_i ( wb_dat_i ),
-    .wb_dat_o ( wb_dat_o ),
-    .wb_ack_o ( wb_ack_o ),
-    .wb_err_o ( wb_err_o ),
+    .wb_clk_i(wb_clk_i),
+    .wb_rst_i(wb_rst_i),
+    .wb_cyc_i(wb_cyc_i),
+    .wb_stb_i(wb_stb_i),
+    .wb_we_i (wb_we_i),
+    .wb_adr_i(wb_adr_i),
+    .wb_dat_i(wb_dat_i),
+    .wb_dat_o(wb_dat_o),
+    .wb_ack_o(wb_ack_o),
+    .wb_err_o(wb_err_o),
 
-    .int_o ( int_o )
+    .int_o(int_o)
   );
 endmodule

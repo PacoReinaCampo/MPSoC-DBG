@@ -54,7 +54,7 @@ module peripheral_dbg_testbench;
   localparam TECHNOLOGY = "GENERIC";
 
   //Memory parameters
-  parameter DEPTH   = 256;
+  parameter DEPTH = 256;
   parameter MEMFILE = "";
 
   //////////////////////////////////////////////////////////////////
@@ -63,23 +63,23 @@ module peripheral_dbg_testbench;
   //
 
   //Common signals
-  wire                                     HRESETn;
-  wire                                     HCLK;
+  wire                       HRESETn;
+  wire                       HCLK;
 
   //AHB3 signals
-  wire                                     mst_dbg_HSEL;
-  wire               [PLEN           -1:0] mst_dbg_HADDR;
-  wire               [XLEN           -1:0] mst_dbg_HWDATA;
-  wire               [XLEN           -1:0] mst_dbg_HRDATA;
-  wire                                     mst_dbg_HWRITE;
-  wire               [                2:0] mst_dbg_HSIZE;
-  wire               [                2:0] mst_dbg_HBURST;
-  wire               [                3:0] mst_dbg_HPROT;
-  wire               [                1:0] mst_dbg_HTRANS;
-  wire                                     mst_dbg_HMASTLOCK;
-  wire                                     mst_dbg_HREADY;
-  wire                                     mst_dbg_HREADYOUT;
-  wire                                     mst_dbg_HRESP;
+  wire                       mst_dbg_HSEL;
+  wire [PLEN           -1:0] mst_dbg_HADDR;
+  wire [XLEN           -1:0] mst_dbg_HWDATA;
+  wire [XLEN           -1:0] mst_dbg_HRDATA;
+  wire                       mst_dbg_HWRITE;
+  wire [                2:0] mst_dbg_HSIZE;
+  wire [                2:0] mst_dbg_HBURST;
+  wire [                3:0] mst_dbg_HPROT;
+  wire [                1:0] mst_dbg_HTRANS;
+  wire                       mst_dbg_HMASTLOCK;
+  wire                       mst_dbg_HREADY;
+  wire                       mst_dbg_HREADYOUT;
+  wire                       mst_dbg_HRESP;
 
   //////////////////////////////////////////////////////////////////
   //
@@ -88,29 +88,28 @@ module peripheral_dbg_testbench;
 
   //DUT AHB3
   peripheral_ahb3_dbg #(
-  .MEM_SIZE          ( 256 ),
-  .MEM_DEPTH         ( 256 ),
-  .PLEN              ( PLEN ),
-  .XLEN              ( XLEN ),
-  .TECHNOLOGY        ( TECHNOLOGY ),
-  .REGISTERED_OUTPUT ( "NO" )
-  )
-  ahb3_dbg (
-    .HRESETn   ( HRESETn ),
-    .HCLK      ( HCLK    ),
+    .MEM_SIZE         (256),
+    .MEM_DEPTH        (256),
+    .PLEN             (PLEN),
+    .XLEN             (XLEN),
+    .TECHNOLOGY       (TECHNOLOGY),
+    .REGISTERED_OUTPUT("NO")
+  ) ahb3_dbg (
+    .HRESETn(HRESETn),
+    .HCLK   (HCLK),
 
-    .HSEL      ( mst_dbg_HSEL      ),
-    .HADDR     ( mst_dbg_HADDR     ),
-    .HWDATA    ( mst_dbg_HWDATA    ),
-    .HRDATA    ( mst_dbg_HRDATA    ),
-    .HWRITE    ( mst_dbg_HWRITE    ),
-    .HSIZE     ( mst_dbg_HSIZE     ),
-    .HBURST    ( mst_dbg_HBURST    ),
-    .HPROT     ( mst_dbg_HPROT     ),
-    .HTRANS    ( mst_dbg_HTRANS    ),
-    .HMASTLOCK ( mst_dbg_HMASTLOCK ),
-    .HREADYOUT ( mst_dbg_HREADYOUT ),
-    .HREADY    ( mst_dbg_HREADY    ),
-    .HRESP     ( mst_dbg_HRESP     )
+    .HSEL     (mst_dbg_HSEL),
+    .HADDR    (mst_dbg_HADDR),
+    .HWDATA   (mst_dbg_HWDATA),
+    .HRDATA   (mst_dbg_HRDATA),
+    .HWRITE   (mst_dbg_HWRITE),
+    .HSIZE    (mst_dbg_HSIZE),
+    .HBURST   (mst_dbg_HBURST),
+    .HPROT    (mst_dbg_HPROT),
+    .HTRANS   (mst_dbg_HTRANS),
+    .HMASTLOCK(mst_dbg_HMASTLOCK),
+    .HREADYOUT(mst_dbg_HREADYOUT),
+    .HREADY   (mst_dbg_HREADY),
+    .HRESP    (mst_dbg_HRESP)
   );
 endmodule

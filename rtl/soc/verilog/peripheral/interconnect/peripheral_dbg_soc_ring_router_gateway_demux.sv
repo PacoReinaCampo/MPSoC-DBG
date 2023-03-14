@@ -46,8 +46,7 @@ import peripheral_dbg_soc_dii_channel::dii_flit;
 module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
   parameter SUBNET_BITS  = 6,
   parameter LOCAL_SUBNET = 0
-)
-  (
+) (
   input clk,
   input rst,
 
@@ -65,9 +64,9 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
   input out_ring_ready
 );
 
-  reg worm;
-  reg worm_local;
-  reg worm_ext;
+  reg   worm;
+  reg   worm_local;
+  reg   worm_ext;
 
   logic is_local;
   logic is_ext;
@@ -82,24 +81,22 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
   assign out_ring.data  = in_ring.data;
   assign out_ring.last  = in_ring.last;
 
-  assign is_local = (in_ring.data[15:0] == id);
-  assign is_ext   = (in_ring.data[15:16-SUBNET_BITS] != LOCAL_SUBNET);
+  assign is_local       = (in_ring.data[15:0] == id);
+  assign is_ext         = (in_ring.data[15:16-SUBNET_BITS] != LOCAL_SUBNET);
 
   always_ff @(posedge clk) begin
     if (rst) begin
-      worm <= 0;
+      worm       <= 0;
       worm_local <= 1'bx;
-      worm_ext <= 1'bx;
-    end
-    else begin
+      worm_ext   <= 1'bx;
+    end else begin
       if (!worm) begin
         worm_local <= is_local;
-        worm_ext <= is_ext;
+        worm_ext   <= is_ext;
         if (in_ring_ready & in_ring.valid & !in_ring.last) begin
           worm <= 1;
         end
-      end
-      else begin
+      end else begin
         if (in_ring_ready & in_ring.valid & in_ring.last) begin
           worm <= 0;
         end
@@ -118,12 +115,10 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
     if (switch_local) begin
       out_local.valid = in_ring.valid;
       in_ring_ready   = out_local_ready;
-    end
-    else if (switch_ext) begin
+    end else if (switch_ext) begin
       out_ext.valid = in_ring.valid;
       in_ring_ready = out_ext_ready;
-    end
-    else begin
+    end else begin
       out_ring.valid = in_ring.valid;
       in_ring_ready  = out_ring_ready;
     end

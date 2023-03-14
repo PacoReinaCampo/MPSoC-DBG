@@ -56,8 +56,8 @@ module peripheral_dbg_pu_riscv_crc32 (
   //
   // Variables
   //
-  reg    [31:0] crc;
-  wire   [31:0] new_crc;
+  reg  [31:0] crc;
+  wire [31:0] new_crc;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -98,24 +98,21 @@ module peripheral_dbg_pu_riscv_crc32 (
   assign new_crc[28] = crc[29];
   assign new_crc[29] = crc[30] ^ data ^ crc[0];
   assign new_crc[30] = crc[31] ^ data ^ crc[0];
-  assign new_crc[31] =           data ^ crc[0];
+  assign new_crc[31] = data ^ crc[0];
 
-  always @ (posedge clk or negedge rstn) begin
-    if(!rstn) begin
+  always @(posedge clk or negedge rstn) begin
+    if (!rstn) begin
       crc[31:0] <= 32'hffffffff;
-    end
-    else if(clr) begin
+    end else if (clr) begin
       crc[31:0] <= 32'hffffffff;
-    end
-    else if(enable) begin
+    end else if (enable) begin
       crc[31:0] <= new_crc;
-    end
-    else if (shift) begin
+    end else if (shift) begin
       crc[31:0] <= {1'b0, crc[31:1]};
     end
   end
 
   //assign crc_match = (crc == 32'h0);
-  assign crc_out = crc; //[31];
+  assign crc_out    = crc;  //[31];
   assign serial_out = crc[0];
 endmodule

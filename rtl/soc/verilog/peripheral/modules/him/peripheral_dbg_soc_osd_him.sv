@@ -44,8 +44,7 @@ import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_him #(
   parameter MAX_PKT_LEN = 12
-)
-  (
+) (
   input clk,
   input rst,
 
@@ -60,17 +59,17 @@ module peripheral_dbg_soc_osd_him #(
 
   localparam BUF_SIZE = MAX_PKT_LEN;
 
-  dii_flit dii_ingress;
+  dii_flit        dii_ingress;
 
-  logic dii_ingress_ready;
+  logic           dii_ingress_ready;
 
-  logic ingress_active;
+  logic           ingress_active;
 
-  logic [4:0] ingress_size;
+  logic    [ 4:0] ingress_size;
 
-  logic [15:0] ingress_data;
+  logic    [15:0] ingress_data;
 
-  assign ingress_data = glip_in.data;
+  assign ingress_data      = glip_in.data;
 
   assign glip_in.ready     = !ingress_active | dii_ingress_ready;
   assign dii_ingress.data  = ingress_data;
@@ -80,15 +79,13 @@ module peripheral_dbg_soc_osd_him #(
   always @(posedge clk) begin
     if (rst) begin
       ingress_active <= 0;
-    end
-    else begin
+    end else begin
       if (!ingress_active) begin
         if (glip_in.valid & glip_in.ready) begin
-          ingress_size <= ingress_data[4:0] - 1;
+          ingress_size   <= ingress_data[4:0] - 1;
           ingress_active <= 1;
         end
-      end
-      else begin
+      end else begin
         if (glip_in.valid & glip_in.ready) begin
           ingress_size <= ingress_size - 1;
           if (ingress_size == 0) begin
@@ -100,55 +97,51 @@ module peripheral_dbg_soc_osd_him #(
   end
 
   peripheral_dbg_soc_dii_buffer #(
-  .BUF_SIZE(BUF_SIZE),
-  .FULLPACKET(1)
-  )
-  u_ingress_buffer(
+    .BUF_SIZE  (BUF_SIZE),
+    .FULLPACKET(1)
+  ) u_ingress_buffer (
     .*,
-    .packet_size    (),
-    .flit_in        (dii_ingress),
-    .flit_in_ready  (dii_ingress_ready),
-    .flit_out       (dii_out),
-    .flit_out_ready (dii_out_ready)
+    .packet_size   (),
+    .flit_in       (dii_ingress),
+    .flit_in_ready (dii_ingress_ready),
+    .flit_out      (dii_out),
+    .flit_out_ready(dii_out_ready)
   );
 
-  dii_flit dii_egress;
+  dii_flit                      dii_egress;
 
-  logic dii_egress_ready;
+  logic                         dii_egress_ready;
 
-  logic [$clog2(BUF_SIZE):0] egress_packet_size;
+  logic    [$clog2(BUF_SIZE):0] egress_packet_size;
 
-  logic egress_active;
+  logic                         egress_active;
 
-  logic [15:0] egress_data;
+  logic    [              15:0] egress_data;
 
   always @(*) begin
     if (!egress_active) begin
-      egress_data = 0;
+      egress_data                     = 0;
       egress_data[$clog2(BUF_SIZE):0] = egress_packet_size;
-    end
-    else begin
+    end else begin
       egress_data = dii_egress.data;
     end
   end
 
   always @(*) begin
-    glip_out.data = egress_data;
-    glip_out.valid = dii_egress.valid;
+    glip_out.data    = egress_data;
+    glip_out.valid   = dii_egress.valid;
     dii_egress_ready = egress_active & glip_out.ready;
   end
 
   always @(posedge clk) begin
     if (rst) begin
       egress_active <= 0;
-    end
-    else begin
+    end else begin
       if (!egress_active) begin
         if (dii_egress.valid & glip_out.ready) begin
           egress_active <= 1;
         end
-      end
-      else begin
+      end else begin
         if (dii_egress.valid & dii_egress_ready & dii_egress.last) begin
           egress_active <= 0;
         end
@@ -157,15 +150,14 @@ module peripheral_dbg_soc_osd_him #(
   end
 
   peripheral_dbg_soc_dii_buffer #(
-  .BUF_SIZE(BUF_SIZE),
-  .FULLPACKET(1)
-  )
-  u_egress_buffer(
+    .BUF_SIZE  (BUF_SIZE),
+    .FULLPACKET(1)
+  ) u_egress_buffer (
     .*,
-    .packet_size    (egress_packet_size),
-    .flit_in        (dii_in),
-    .flit_in_ready  (dii_in_ready),
-    .flit_out       (dii_egress),
-    .flit_out_ready (dii_egress_ready)
+    .packet_size   (egress_packet_size),
+    .flit_in       (dii_in),
+    .flit_in_ready (dii_in_ready),
+    .flit_out      (dii_egress),
+    .flit_out_ready(dii_egress_ready)
   );
 endmodule

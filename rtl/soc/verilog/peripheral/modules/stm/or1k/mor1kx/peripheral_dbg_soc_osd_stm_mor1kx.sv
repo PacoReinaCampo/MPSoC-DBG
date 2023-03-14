@@ -45,39 +45,39 @@ import opensocdebug::peripheral_dbg_soc_mor1kx_trace_exec;
 
 module peripheral_dbg_soc_osd_stm_mor1kx #(
   parameter MAX_PKT_LEN = 'hx
-)
-  (
-  input                        clk,
-  input                        rst,
+) (
+  input clk,
+  input rst,
 
-  input                 [15:0] id,
+  input [15:0] id,
 
-  input  dii_flit              debug_in,
-  output                       debug_in_ready,
-  output dii_flit              debug_out,
-  input                        debug_out_ready,
+  input  dii_flit debug_in,
+  output          debug_in_ready,
+  output dii_flit debug_out,
+  input           debug_out_ready,
 
-  input  peripheral_dbg_soc_mor1kx_trace_exec     trace_port
+  input peripheral_dbg_soc_mor1kx_trace_exec trace_port
 );
 
-  localparam VALWIDTH       = 32;
+  localparam VALWIDTH = 32;
   localparam REG_ADDR_WIDTH = 5;
 
-  logic                         trace_valid;
-  logic [              15:0]    trace_id;
-  logic [VALWIDTH      -1:0]    trace_value;
+  logic                      trace_valid;
+  logic [              15:0] trace_id;
+  logic [VALWIDTH      -1:0] trace_value;
 
-  logic                         trace_reg_enable;
-  logic [REG_ADDR_WIDTH-1:0]    trace_reg_addr;
+  logic                      trace_reg_enable;
+  logic [REG_ADDR_WIDTH-1:0] trace_reg_addr;
 
-  reg   [              31:0]    r3_copy;
+  reg   [              31:0] r3_copy;
 
   peripheral_dbg_soc_osd_stm #(
-  .REG_ADDR_WIDTH (REG_ADDR_WIDTH),
-  .VALWIDTH       (VALWIDTH),
-  .MAX_PKT_LEN    (MAX_PKT_LEN)
-  )
-  u_stm (.*);
+    .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
+    .VALWIDTH      (VALWIDTH),
+    .MAX_PKT_LEN   (MAX_PKT_LEN)
+  ) u_stm (
+    .*
+  );
 
   always @(posedge clk) begin
     if (trace_port.wben && (trace_port.wbreg == 3)) begin
@@ -85,9 +85,7 @@ module peripheral_dbg_soc_osd_stm_mor1kx #(
     end
   end
 
-  assign trace_valid = trace_port.valid &&
-  (trace_port.insn[31:16] == 16'h1500) &&
-  (trace_port.insn[15:0] != 16'h0);
+  assign trace_valid = trace_port.valid && (trace_port.insn[31:16] == 16'h1500) && (trace_port.insn[15:0] != 16'h0);
 
   assign trace_id    = trace_port.insn[15:0];
   assign trace_value = r3_copy;

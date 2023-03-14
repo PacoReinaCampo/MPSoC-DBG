@@ -42,13 +42,12 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_dbg_pu_riscv_status_reg  #(
+module peripheral_dbg_pu_riscv_status_reg #(
   parameter X              = 2,
   parameter Y              = 2,
   parameter Z              = 2,
   parameter CORES_PER_TILE = 1
-)
-  (
+) (
   input                                                  tlr_i,
   input                                                  tck_i,
   input                                                  we_i,
@@ -65,10 +64,10 @@ module peripheral_dbg_pu_riscv_status_reg  #(
   //
   // Variables
   //
-  reg   [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] stall_bp, stall_bp_csff, stall_bp_tck;
-  reg   [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] stall_reg, stall_reg_csff, stall_reg_cpu;
+  reg [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] stall_bp, stall_bp_csff, stall_bp_tck;
+  reg [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] stall_reg, stall_reg_csff, stall_reg_cpu;
 
-  genvar i,j,k,t;
+  genvar i, j, k, t;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -82,15 +81,15 @@ module peripheral_dbg_pu_riscv_status_reg  #(
   // the debug host can read the state.
 
   generate
-    for (i=0;i<X;i=i+1) begin
-      for (j=0;j<Y;j=j+1) begin
-        for (k=0;k<Z;k=k+1) begin
-          for (t=0;t<CORES_PER_TILE;t=t+1) begin
-            always @(posedge cpu_clk_i,negedge cpu_rstn_i) begin
-              if        (!cpu_rstn_i                ) stall_bp [i][j][k][t] <= 1'b0;
+    for (i = 0; i < X; i = i + 1) begin
+      for (j = 0; j < Y; j = j + 1) begin
+        for (k = 0; k < Z; k = k + 1) begin
+          for (t = 0; t < CORES_PER_TILE; t = t + 1) begin
+            always @(posedge cpu_clk_i, negedge cpu_rstn_i) begin
+              if (!cpu_rstn_i) stall_bp[i][j][k][t] <= 1'b0;
               else begin
-                if      (bp_i          [i][j][k][t] ) stall_bp [i][j][k][t] <= 1'b1;
-                else if (stall_reg_cpu [i][j][k][t] ) stall_bp [i][j][k][t] <= 1'b0;
+                if (bp_i[i][j][k][t]) stall_bp[i][j][k][t] <= 1'b1;
+                else if (stall_reg_cpu[i][j][k][t]) stall_bp[i][j][k][t] <= 1'b0;
               end
             end
           end
@@ -100,23 +99,21 @@ module peripheral_dbg_pu_riscv_status_reg  #(
   endgenerate
 
   // Synchronizing
-  always @(posedge tck_i,posedge tlr_i) begin
+  always @(posedge tck_i, posedge tlr_i) begin
     if (tlr_i) begin
       stall_bp_csff <= 'h0;
       stall_bp_tck  <= 'h0;
-    end
-    else begin
+    end else begin
       stall_bp_csff <= stall_bp;
       stall_bp_tck  <= stall_bp_csff;
     end
   end
 
-  always @(posedge cpu_clk_i,negedge cpu_rstn_i) begin
+  always @(posedge cpu_clk_i, negedge cpu_rstn_i) begin
     if (!cpu_rstn_i) begin
       stall_reg_csff <= 'h0;
       stall_reg_cpu  <= 'h0;
-    end
-    else begin
+    end else begin
       stall_reg_csff <= stall_reg;
       stall_reg_cpu  <= stall_reg_csff;
     end
@@ -131,15 +128,15 @@ module peripheral_dbg_pu_riscv_status_reg  #(
   // This can be set either by the debug host, or by
   // a CPU breakpoint.  It can only be cleared by the host.
   generate
-    for (i=0;i<X;i=i+1) begin
-      for (j=0;j<Y;j=j+1) begin
-        for (k=0;k<Z;k=k+1) begin
-          for (t=0;t<CORES_PER_TILE;t=t+1) begin
-            always @(posedge tck_i,posedge tlr_i) begin
-              if        (tlr_i                     ) stall_reg [i][j][k][t] <= 1'b0;
+    for (i = 0; i < X; i = i + 1) begin
+      for (j = 0; j < Y; j = j + 1) begin
+        for (k = 0; k < Z; k = k + 1) begin
+          for (t = 0; t < CORES_PER_TILE; t = t + 1) begin
+            always @(posedge tck_i, posedge tlr_i) begin
+              if (tlr_i) stall_reg[i][j][k][t] <= 1'b0;
               else begin
-                if      (stall_bp_tck [i][j][k][t] ) stall_reg [i][j][k][t] <= 1'b1;
-                else if (we_i                      ) stall_reg [i][j][k][t] <= data_i[i][j][k][t];
+                if (stall_bp_tck[i][j][k][t]) stall_reg[i][j][k][t] <= 1'b1;
+                else if (we_i) stall_reg[i][j][k][t] <= data_i[i][j][k][t];
               end
             end
           end

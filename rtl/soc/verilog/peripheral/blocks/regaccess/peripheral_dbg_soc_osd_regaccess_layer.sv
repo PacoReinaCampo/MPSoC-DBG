@@ -43,24 +43,23 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_regaccess_layer #(
-  parameter MOD_VENDOR = 'x,
-  parameter MOD_TYPE = 'x,
-  parameter MOD_VERSION = 'x,
+  parameter MOD_VENDOR             = 'x,
+  parameter MOD_TYPE               = 'x,
+  parameter MOD_VERSION            = 'x,
   parameter MOD_EVENT_DEST_DEFAULT = 0,
-  parameter CAN_STALL = 0,
-  parameter MAX_REG_SIZE = 16
-)
-  (
+  parameter CAN_STALL              = 0,
+  parameter MAX_REG_SIZE           = 16
+) (
   input clk,
   input rst,
 
-  input [15:0]  id,
+  input [15:0] id,
 
-  input         dii_flit debug_in,
-  output        dii_flit debug_out,
+  input  dii_flit debug_in,
+  output dii_flit debug_out,
 
-  output        dii_flit module_out,
-  input         dii_flit module_in,
+  output dii_flit module_out,
+  input  dii_flit module_in,
 
   output logic debug_in_ready,
   input        debug_out_ready,
@@ -68,14 +67,14 @@ module peripheral_dbg_soc_osd_regaccess_layer #(
   input  module_out_ready,
   output module_in_ready,
 
-  output reg                reg_request,
-  output                    reg_write,
-  output [            15:0] reg_addr,
-  output [             1:0] reg_size,
-  output [MAX_REG_SIZE-1:0] reg_wdata,
-  input                     reg_ack,
-  input                     reg_err,
-  input  [MAX_REG_SIZE-1:0] reg_rdata,
+  output reg                    reg_request,
+  output                        reg_write,
+  output     [            15:0] reg_addr,
+  output     [             1:0] reg_size,
+  output     [MAX_REG_SIZE-1:0] reg_wdata,
+  input                         reg_ack,
+  input                         reg_err,
+  input      [MAX_REG_SIZE-1:0] reg_rdata,
 
   // DI address of the event destination
   output [15:0] event_dest,
@@ -85,45 +84,44 @@ module peripheral_dbg_soc_osd_regaccess_layer #(
   dii_flit regaccess_in;
   dii_flit regaccess_out;
 
-  logic regaccess_in_ready;
-  logic regaccess_out_ready;
+  logic    regaccess_in_ready;
+  logic    regaccess_out_ready;
 
   peripheral_dbg_soc_osd_regaccess #(
-  .MOD_VENDOR(MOD_VENDOR),
-  .MOD_TYPE(MOD_TYPE),
-  .MOD_EVENT_DEST_DEFAULT(MOD_EVENT_DEST_DEFAULT),
-  .MOD_VERSION(MOD_VERSION),
-  .CAN_STALL(CAN_STALL),
-  .MAX_REG_SIZE(MAX_REG_SIZE)
-  )
-  u_regaccess (
+    .MOD_VENDOR            (MOD_VENDOR),
+    .MOD_TYPE              (MOD_TYPE),
+    .MOD_EVENT_DEST_DEFAULT(MOD_EVENT_DEST_DEFAULT),
+    .MOD_VERSION           (MOD_VERSION),
+    .CAN_STALL             (CAN_STALL),
+    .MAX_REG_SIZE          (MAX_REG_SIZE)
+  ) u_regaccess (
     .*,
-    .event_dest      (event_dest),
-    .debug_in        (regaccess_in),
-    .debug_in_ready  (regaccess_in_ready),
-    .debug_out       (regaccess_out),
-    .debug_out_ready (regaccess_out_ready)
+    .event_dest     (event_dest),
+    .debug_in       (regaccess_in),
+    .debug_in_ready (regaccess_in_ready),
+    .debug_out      (regaccess_out),
+    .debug_out_ready(regaccess_out_ready)
   );
 
   // Ingress path demux
   peripheral_dbg_soc_osd_regaccess_demux u_demux (
     .*,
-    .in (debug_in),
-    .in_ready         (debug_in_ready),
-    .out_reg          (regaccess_in),
-    .out_reg_ready    (regaccess_in_ready),
-    .out_bypass       (module_out),
-    .out_bypass_ready (module_out_ready)
+    .in              (debug_in),
+    .in_ready        (debug_in_ready),
+    .out_reg         (regaccess_in),
+    .out_reg_ready   (regaccess_in_ready),
+    .out_bypass      (module_out),
+    .out_bypass_ready(module_out_ready)
   );
 
   // Egress path mux
   peripheral_dbg_soc_ring_router_mux u_mux (
     .*,
-    .in_local       (module_in),
-    .in_local_ready (module_in_ready),
-    .in_ring        (regaccess_out),
-    .in_ring_ready  (regaccess_out_ready),
-    .out_mux        (debug_out),
-    .out_mux_ready  (debug_out_ready)
+    .in_local      (module_in),
+    .in_local_ready(module_in_ready),
+    .in_ring       (regaccess_out),
+    .in_ring_ready (regaccess_out_ready),
+    .out_mux       (debug_out),
+    .out_mux_ready (debug_out_ready)
   );
 endmodule

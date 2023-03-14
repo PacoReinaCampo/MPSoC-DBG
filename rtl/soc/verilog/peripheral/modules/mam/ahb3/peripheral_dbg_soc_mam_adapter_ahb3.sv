@@ -52,9 +52,7 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
   parameter USE_DEBUG = 1,
 
   // byte select width
-  localparam SW = (XLEN == 32) ? 4 :
-  (XLEN == 16) ? 2 :
-  (XLEN ==  8) ? 1 : 'hx,
+  localparam SW = (XLEN == 32) ? 4 : (XLEN == 16) ? 2 : (XLEN == 8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -66,25 +64,24 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
 
   localparam BYTE_AW = SW >> 1,
   localparam WORD_AW = PLEN - BYTE_AW
-)
-  (
+) (
   // AHB3 SLAVE interface: input side (to the CPU etc.)
-  input             ahb3_in_hsel_i,
-  input  [PLEN-1:0] ahb3_in_haddr_i,
-  input  [XLEN-1:0] ahb3_in_hwdata_i,
-  input             ahb3_in_hwrite_i,
-  input  [     2:0] ahb3_in_hsize_i,
-  input  [     2:0] ahb3_in_hburst_i,
-  input  [SW  -1:0] ahb3_in_hprot_i,
-  input  [     1:0] ahb3_in_htrans_i,
-  input             ahb3_in_hmastlock_i,
+  input            ahb3_in_hsel_i,
+  input [PLEN-1:0] ahb3_in_haddr_i,
+  input [XLEN-1:0] ahb3_in_hwdata_i,
+  input            ahb3_in_hwrite_i,
+  input [     2:0] ahb3_in_hsize_i,
+  input [     2:0] ahb3_in_hburst_i,
+  input [SW  -1:0] ahb3_in_hprot_i,
+  input [     1:0] ahb3_in_htrans_i,
+  input            ahb3_in_hmastlock_i,
 
   output [XLEN-1:0] ahb3_in_hrdata_o,
   output            ahb3_in_hready_o,
   output            ahb3_in_hresp_o,
 
-  input             ahb3_in_clk_i,
-  input             ahb3_in_rst_i,
+  input ahb3_in_clk_i,
+  input ahb3_in_rst_i,
 
   // AHB3 SLAVE interface: output side (to the memory)
   output            ahb3_out_hsel_i,
@@ -97,23 +94,23 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
   output [     1:0] ahb3_out_htrans_i,
   output            ahb3_out_hmastlock_i,
 
-  input  [XLEN-1:0] ahb3_out_hrdata_o,
-  input             ahb3_out_hready_o,
-  input             ahb3_out_hresp_o,
+  input [XLEN-1:0] ahb3_out_hrdata_o,
+  input            ahb3_out_hready_o,
+  input            ahb3_out_hresp_o,
 
-  output            ahb3_out_clk_i,
-  output            ahb3_out_rst_i,
+  output ahb3_out_clk_i,
+  output ahb3_out_rst_i,
 
   // MAM AHB3 MASTER interface (incoming)
-  input             ahb3_mam_hsel_o,
-  input  [PLEN-1:0] ahb3_mam_haddr_o,
-  input  [XLEN-1:0] ahb3_mam_hwdata_o,
-  input             ahb3_mam_hwrite_o,
-  input  [     2:0] ahb3_mam_hsize_o,
-  input  [     2:0] ahb3_mam_hburst_o,
-  input  [SW  -1:0] ahb3_mam_hprot_o,
-  input  [     1:0] ahb3_mam_htrans_o,
-  input             ahb3_mam_hmastlock_o,
+  input            ahb3_mam_hsel_o,
+  input [PLEN-1:0] ahb3_mam_haddr_o,
+  input [XLEN-1:0] ahb3_mam_hwdata_o,
+  input            ahb3_mam_hwrite_o,
+  input [     2:0] ahb3_mam_hsize_o,
+  input [     2:0] ahb3_mam_hburst_o,
+  input [SW  -1:0] ahb3_mam_hprot_o,
+  input [     1:0] ahb3_mam_htrans_o,
+  input            ahb3_mam_hmastlock_o,
 
   output [XLEN-1:0] ahb3_mam_hrdata_i,
   output            ahb3_mam_hready_i,
@@ -134,41 +131,37 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
     reg [STATE_ARB_WIDTH-1:0] fsm_arb_state;
     reg [STATE_ARB_WIDTH-1:0] fsm_arb_state_next;
 
-    reg grant_access_cpu;
-    reg grant_access_mam;
-    reg access_cpu;
+    reg                       grant_access_cpu;
+    reg                       grant_access_mam;
+    reg                       access_cpu;
 
     // arbiter FSM: MAM has higher priority than CPU
     always @(posedge ahb3_in_clk_i) begin
       if (ahb3_in_rst_i) begin
         fsm_arb_state <= STATE_ARB_IDLE;
-      end
-      else begin
+      end else begin
         fsm_arb_state <= fsm_arb_state_next;
 
         if (grant_access_cpu) begin
           access_cpu <= 1'b1;
-        end
-        else if (grant_access_mam) begin
+        end else if (grant_access_mam) begin
           access_cpu <= 1'b0;
         end
       end
     end
 
     always @(*) begin
-      grant_access_cpu = 1'b0;
-      grant_access_mam = 1'b0;
+      grant_access_cpu   = 1'b0;
+      grant_access_mam   = 1'b0;
       fsm_arb_state_next = STATE_ARB_IDLE;
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
           if (ahb3_mam_hmastlock_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else if (ahb3_in_hmastlock_i == 1'b1) begin
+          end else if (ahb3_in_hmastlock_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -178,8 +171,7 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
 
           if (ahb3_mam_hmastlock_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -188,11 +180,9 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
           grant_access_cpu = 1'b1;
           if (ahb3_in_hmastlock_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end
-          else if (ahb3_mam_hmastlock_o == 1'b1) begin
+          end else if (ahb3_mam_hmastlock_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end
-          else begin
+          end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
@@ -200,25 +190,24 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
     end
 
     // MUX of signals TO the memory
-    assign ahb3_out_hsel_i      = access_cpu ? ahb3_in_hsel_i      : ahb3_mam_hsel_o;
-    assign ahb3_out_haddr_i     = access_cpu ? ahb3_in_haddr_i     : ahb3_mam_haddr_o;
-    assign ahb3_out_hwdata_i    = access_cpu ? ahb3_in_hwdata_i    : ahb3_mam_hwdata_o;
-    assign ahb3_out_hwrite_i    = access_cpu ? ahb3_in_hwrite_i    : ahb3_mam_hwrite_o;
-    assign ahb3_out_hburst_i    = access_cpu ? ahb3_in_hburst_i    : ahb3_mam_hburst_o;
-    assign ahb3_out_hprot_i     = access_cpu ? ahb3_in_hprot_i     : ahb3_mam_hprot_o;
-    assign ahb3_out_htrans_i    = access_cpu ? ahb3_in_htrans_i    : ahb3_mam_htrans_o;
+    assign ahb3_out_hsel_i      = access_cpu ? ahb3_in_hsel_i : ahb3_mam_hsel_o;
+    assign ahb3_out_haddr_i     = access_cpu ? ahb3_in_haddr_i : ahb3_mam_haddr_o;
+    assign ahb3_out_hwdata_i    = access_cpu ? ahb3_in_hwdata_i : ahb3_mam_hwdata_o;
+    assign ahb3_out_hwrite_i    = access_cpu ? ahb3_in_hwrite_i : ahb3_mam_hwrite_o;
+    assign ahb3_out_hburst_i    = access_cpu ? ahb3_in_hburst_i : ahb3_mam_hburst_o;
+    assign ahb3_out_hprot_i     = access_cpu ? ahb3_in_hprot_i : ahb3_mam_hprot_o;
+    assign ahb3_out_htrans_i    = access_cpu ? ahb3_in_htrans_i : ahb3_mam_htrans_o;
     assign ahb3_out_hmastlock_i = access_cpu ? ahb3_in_hmastlock_i : ahb3_mam_hmastlock_o;
 
     // MUX of signals FROM the memory
-    assign ahb3_in_hrdata_o = access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
-    assign ahb3_in_hready_o = access_cpu ? ahb3_out_hready_o : 1'b0;
-    assign ahb3_in_hresp_o  = access_cpu ? ahb3_out_hresp_o  : 1'b0;
+    assign ahb3_in_hrdata_o     = access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
+    assign ahb3_in_hready_o     = access_cpu ? ahb3_out_hready_o : 1'b0;
+    assign ahb3_in_hresp_o      = access_cpu ? ahb3_out_hresp_o : 1'b0;
 
-    assign ahb3_mam_hrdata_i = ~access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
-    assign ahb3_mam_hready_i = ~access_cpu ? ahb3_out_hready_o : 1'b0;
-    assign ahb3_mam_hresp_i  = ~access_cpu ? ahb3_out_hresp_o  : 1'b0;
-  end
-  else begin
+    assign ahb3_mam_hrdata_i    = ~access_cpu ? ahb3_out_hrdata_o : {XLEN{1'b0}};
+    assign ahb3_mam_hready_i    = ~access_cpu ? ahb3_out_hready_o : 1'b0;
+    assign ahb3_mam_hresp_i     = ~access_cpu ? ahb3_out_hresp_o : 1'b0;
+  end else begin
     assign ahb3_out_hsel_i      = ahb3_in_hsel_i;
     assign ahb3_out_haddr_i     = ahb3_in_haddr_i;
     assign ahb3_out_hwdata_i    = ahb3_in_hwdata_i;
@@ -228,8 +217,8 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
     assign ahb3_out_hwrite_i    = ahb3_in_hwrite_i;
     assign ahb3_out_hmastlock_i = ahb3_in_hmastlock_i;
 
-    assign ahb3_in_hrdata_o = ahb3_out_hrdata_o;
-    assign ahb3_in_hready_o = ahb3_out_hready_o;
-    assign ahb3_in_hresp_o  = ahb3_out_hresp_o;
+    assign ahb3_in_hrdata_o     = ahb3_out_hrdata_o;
+    assign ahb3_in_hready_o     = ahb3_out_hready_o;
+    assign ahb3_in_hresp_o      = ahb3_out_hresp_o;
   end
 endmodule

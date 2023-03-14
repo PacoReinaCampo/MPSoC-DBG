@@ -43,8 +43,8 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_ring_router_demux (
-  input       clk,
-  input       rst,
+  input clk,
+  input rst,
 
   input [15:0] id,
 
@@ -59,13 +59,13 @@ module peripheral_dbg_soc_ring_router_demux (
 
   assign out_local.data = in_ring.data;
   assign out_local.last = in_ring.last;
-  assign out_ring.data = in_ring.data;
-  assign out_ring.last = in_ring.last;
+  assign out_ring.data  = in_ring.data;
+  assign out_ring.last  = in_ring.last;
 
-  reg         worm;
-  reg         worm_local;
+  reg   worm;
+  reg   worm_local;
 
-  logic       is_local;
+  logic is_local;
 
   logic switch_local;
 
@@ -73,27 +73,25 @@ module peripheral_dbg_soc_ring_router_demux (
 
   always_ff @(posedge clk) begin
     if (rst) begin
-      worm <= 0;
+      worm       <= 0;
       worm_local <= 1'bx;
-    end
-    else begin
+    end else begin
       if (!worm) begin
         worm_local <= is_local;
         if (in_ring_ready & in_ring.valid & !in_ring.last) begin
           worm <= 1;
         end
-      end
-      else begin
+      end else begin
         if (in_ring_ready & in_ring.valid & in_ring.last) begin
           worm <= 0;
         end
       end
     end
   end
-  assign switch_local = worm ? worm_local : is_local;
+  assign switch_local    = worm ? worm_local : is_local;
 
-  assign out_ring.valid = !switch_local & in_ring.valid;
+  assign out_ring.valid  = !switch_local & in_ring.valid;
   assign out_local.valid = switch_local & in_ring.valid;
 
-  assign in_ring_ready = switch_local ? out_local_ready : out_ring_ready;
+  assign in_ring_ready   = switch_local ? out_local_ready : out_ring_ready;
 endmodule

@@ -46,39 +46,38 @@
 // Module interface
 module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
   parameter DBG_JSP_DATAREG_LEN = 64
-)
-  (
-    input                           rst_i,
+) (
+  input rst_i,
 
-    // JTAG signals
-    input                           tck_i,
-    input                           tdi_i,
-    output                          module_tdo_o,
+  // JTAG signals
+  input  tck_i,
+  input  tdi_i,
+  output module_tdo_o,
 
-    // TAP states
-    input                           capture_dr_i,
-    input                           shift_dr_i,
-    input                           update_dr_i,
+  // TAP states
+  input capture_dr_i,
+  input shift_dr_i,
+  input update_dr_i,
 
-    // the data register is at top level, shared between all modules
-    input [DBG_JSP_DATAREG_LEN-1:0] data_register_i,
-    input                           module_select_i,
-    output                          top_inhibit_o,
+  // the data register is at top level, shared between all modules
+  input  [DBG_JSP_DATAREG_LEN-1:0] data_register_i,
+  input                            module_select_i,
+  output                           top_inhibit_o,
 
-    // AMBA APB interface
-    input                           PRESETn,
-    input                           PCLK,
+  // AMBA APB interface
+  input PRESETn,
+  input PCLK,
 
-    input                           PSEL,
-    input                           PENABLE,
-    input                           PWRITE,
-    input  [                   2:0] PADDR,
-    input  [                   7:0] PWDATA,
-    output [                   7:0] PRDATA,
-    output                          PREADY,
-    output                          PSLVERR,
+  input        PSEL,
+  input        PENABLE,
+  input        PWRITE,
+  input  [2:0] PADDR,
+  input  [7:0] PWDATA,
+  output [7:0] PRDATA,
+  output       PREADY,
+  output       PSLVERR,
 
-    output                          int_o
+  output int_o
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -101,61 +100,60 @@ module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
 
   //Hookup JSP Debug Core
   peripheral_dbg_pu_riscv_jsp_module_core #(
-    .DBG_JSP_DATAREG_LEN ( DBG_JSP_DATAREG_LEN )
-  )
-  jsp_core_inst (
-    .rst_i ( rst_i ),
+    .DBG_JSP_DATAREG_LEN(DBG_JSP_DATAREG_LEN)
+  ) jsp_core_inst (
+    .rst_i(rst_i),
 
     // JTAG signals
-    .tck_i        ( tck_i        ),
-    .tdi_i        ( tdi_i        ),
-    .module_tdo_o ( module_tdo_o ),
+    .tck_i       (tck_i),
+    .tdi_i       (tdi_i),
+    .module_tdo_o(module_tdo_o),
 
     // TAP states
-    .capture_dr_i ( capture_dr_i ),
-    .shift_dr_i   ( shift_dr_i   ),
-    .update_dr_i  ( update_dr_i  ),
+    .capture_dr_i(capture_dr_i),
+    .shift_dr_i  (shift_dr_i),
+    .update_dr_i (update_dr_i),
 
-    .data_register_i ( data_register_i ),  // the data register is at top level, shared between all modules
-    .module_select_i ( module_select_i ),
-    .top_inhibit_o   ( top_inhibit_o   ),
+    .data_register_i(data_register_i),  // the data register is at top level, shared between all modules
+    .module_select_i(module_select_i),
+    .top_inhibit_o  (top_inhibit_o),
 
     // JSP BIU interface
-    .biu_clk             ( biu_clk             ),
-    .biu_rst             ( biu_rst             ),
-    .biu_di              ( biu_di              ),  // data towards BIU
-    .biu_do              ( biu_do              ),  // data from BIU
-    .biu_space_available ( biu_space_available ),
-    .biu_bytes_available ( biu_bytes_available ),
-    .biu_rd_strobe       ( biu_rd_strobe       ),  // Indicates that the BIU should ACK last read operation + start another
-    .biu_wr_strobe       ( biu_wr_strobe       )   // Indicates BIU should latch input + begin a write operation
+    .biu_clk            (biu_clk),
+    .biu_rst            (biu_rst),
+    .biu_di             (biu_di),               // data towards BIU
+    .biu_do             (biu_do),               // data from BIU
+    .biu_space_available(biu_space_available),
+    .biu_bytes_available(biu_bytes_available),
+    .biu_rd_strobe      (biu_rd_strobe),        // Indicates that the BIU should ACK last read operation + start another
+    .biu_wr_strobe      (biu_wr_strobe)         // Indicates BIU should latch input + begin a write operation
   );
 
   // Hookup JSP APB Interface
   peripheral_dbg_pu_riscv_jsp_biu_apb4 jsp_biu_inst (
     // Debug interface signals
-    .tck_i             ( biu_clk             ),
-    .rst_i             ( biu_rst             ),
-    .data_i            ( biu_di              ),
-    .data_o            ( biu_do              ),
-    .bytes_available_o ( biu_bytes_available ),
-    .bytes_free_o      ( biu_space_available ),
-    .rd_strobe_i       ( biu_rd_strobe       ),
-    .wr_strobe_i       ( biu_wr_strobe       ),
+    .tck_i            (biu_clk),
+    .rst_i            (biu_rst),
+    .data_i           (biu_di),
+    .data_o           (biu_do),
+    .bytes_available_o(biu_bytes_available),
+    .bytes_free_o     (biu_space_available),
+    .rd_strobe_i      (biu_rd_strobe),
+    .wr_strobe_i      (biu_wr_strobe),
 
     // APB signals
-    .PRESETn ( PRESETn ),
-    .PCLK    ( PCLK    ),
+    .PRESETn(PRESETn),
+    .PCLK   (PCLK),
 
-    .PSEL    ( PSEL    ),
-    .PENABLE ( PENABLE ),
-    .PWRITE  ( PWRITE  ),
-    .PADDR   ( PADDR   ),
-    .PWDATA  ( PWDATA  ),
-    .PRDATA  ( PRDATA  ),
-    .PREADY  ( PREADY  ),
-    .PSLVERR ( PSLVERR ),
+    .PSEL   (PSEL),
+    .PENABLE(PENABLE),
+    .PWRITE (PWRITE),
+    .PADDR  (PADDR),
+    .PWDATA (PWDATA),
+    .PRDATA (PRDATA),
+    .PREADY (PREADY),
+    .PSLVERR(PSLVERR),
 
-    .int_o ( int_o )
+    .int_o(int_o)
   );
 endmodule

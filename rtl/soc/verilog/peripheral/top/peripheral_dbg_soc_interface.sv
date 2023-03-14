@@ -44,27 +44,26 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_interface #(
-  parameter SYSTEM_VENDOR_ID = 'x,
-  parameter SYSTEM_DEVICE_ID = 'x,
-  parameter NUM_MODULES = 0,
-  parameter MAX_PKT_LEN = 'x,
-  parameter SUBNET_BITS = 6,
-  parameter LOCAL_SUBNET = 0,
+  parameter SYSTEM_VENDOR_ID         = 'x,
+  parameter SYSTEM_DEVICE_ID         = 'x,
+  parameter NUM_MODULES              = 0,
+  parameter MAX_PKT_LEN              = 'x,
+  parameter SUBNET_BITS              = 6,
+  parameter LOCAL_SUBNET             = 0,
   parameter DEBUG_ROUTER_BUFFER_SIZE = 4
-)
-  (
-  input  clk,
-  input  rst,
+) (
+  input clk,
+  input rst,
 
   // GLIP host connection
-  glip_channel.slave glip_in,
+  glip_channel.slave  glip_in,
   glip_channel.master glip_out,
 
   // ring connection
   output dii_flit [1:0] ring_out,
   input  dii_flit [1:0] ring_in,
-  input  [1:0] ring_out_ready,
-  output [1:0] ring_in_ready,
+  input           [1:0] ring_out_ready,
+  output          [1:0] ring_in_ready,
 
   // system reset request
   output sys_rst,
@@ -73,99 +72,96 @@ module peripheral_dbg_soc_interface #(
   output cpu_rst
 );
 
-  dii_flit ring_tie;
-  logic  ring_tie_ready;
+  dii_flit             ring_tie;
+  logic                ring_tie_ready;
 
-  dii_flit [1:0] dii_in;
-  dii_flit [1:0] dii_out;
+  dii_flit [      1:0] dii_in;
+  dii_flit [      1:0] dii_out;
 
-  logic [1:0] dii_out_ready;
-  logic [1:0] dii_in_ready;
+  logic      [1:0]     dii_out_ready;
+  logic      [1:0]     dii_in_ready;
 
-  dii_flit him_debug_in;
-  dii_flit him_debug_out;
+  dii_flit             him_debug_in;
+  dii_flit             him_debug_out;
 
-  logic him_debug_in_ready;
-  logic him_debug_out_ready;
+  logic                him_debug_in_ready;
+  logic                him_debug_out_ready;
 
-  dii_flit scm_debug_in;
-  dii_flit scm_debug_out;
+  dii_flit             scm_debug_in;
+  dii_flit             scm_debug_out;
 
-  logic scm_debug_in_ready;
-  logic scm_debug_out_ready;
+  logic                scm_debug_in_ready;
+  logic                scm_debug_out_ready;
 
   assign ring_tie.valid = 0;
 
   peripheral_dbg_soc_ring_router_gateway #(
-  .BUFFER_SIZE  (DEBUG_ROUTER_BUFFER_SIZE),
-  .SUBNET_BITS  (SUBNET_BITS),
-  .LOCAL_SUBNET (LOCAL_SUBNET)
-  )
-  u_peripheral_dbg_soc_ring_router_gateway (
+    .BUFFER_SIZE (DEBUG_ROUTER_BUFFER_SIZE),
+    .SUBNET_BITS (SUBNET_BITS),
+    .LOCAL_SUBNET(LOCAL_SUBNET)
+  ) u_peripheral_dbg_soc_ring_router_gateway (
     .clk(clk),
     .rst(rst),
 
     // the gateway is always at local address 0
     .id(16'h0),
 
-    .ring_in0(ring_in[0]),
-    .ring_in1(ring_in[1]),
+    .ring_in0      (ring_in[0]),
+    .ring_in1      (ring_in[1]),
     .ring_in0_ready(ring_in_ready[0]),
     .ring_in1_ready(ring_in_ready[1]),
 
 
-    .ring_out0(ring_out[0]),
-    .ring_out1(ring_out[1]),
+    .ring_out0      (ring_out[0]),
+    .ring_out1      (ring_out[1]),
     .ring_out0_ready(ring_out_ready[0]),
     .ring_out1_ready(ring_out_ready[1]),
 
     // local traffic for address 0: SCM
-    .local_in(scm_debug_out),
-    .local_out(scm_debug_in),
-    .local_in_ready(scm_debug_out_ready),
+    .local_in       (scm_debug_out),
+    .local_out      (scm_debug_in),
+    .local_in_ready (scm_debug_out_ready),
     .local_out_ready(scm_debug_in_ready),
 
     // traffic not belonging to LOCAL_SUBNET (sent out to the host)
-    .ext_in(him_debug_out),
-    .ext_out(him_debug_in),
-    .ext_in_ready(him_debug_out_ready),
+    .ext_in       (him_debug_out),
+    .ext_out      (him_debug_in),
+    .ext_in_ready (him_debug_out_ready),
     .ext_out_ready(him_debug_in_ready)
   );
 
   // Host Interface: all traffic to foreign subnets goes through this interface
   peripheral_dbg_soc_osd_him #(
-  .MAX_PKT_LEN(MAX_PKT_LEN)
-  )
-  u_him (
-    .clk             (clk),
-    .rst             (rst),
-    .glip_in         (glip_in),
-    .glip_out        (glip_out),
-    .dii_out         (him_debug_out),
-    .dii_out_ready   (him_debug_out_ready),
-    .dii_in          (him_debug_in),
-    .dii_in_ready    (him_debug_in_ready)
+    .MAX_PKT_LEN(MAX_PKT_LEN)
+  ) u_him (
+    .clk          (clk),
+    .rst          (rst),
+    .glip_in      (glip_in),
+    .glip_out     (glip_out),
+    .dii_out      (him_debug_out),
+    .dii_out_ready(him_debug_out_ready),
+    .dii_in       (him_debug_in),
+    .dii_in_ready (him_debug_in_ready)
   );
 
   // Subnet Control Module
   // Manages this subnet, i.e. the on-chip OSD part
   peripheral_dbg_soc_osd_scm #(
-  .SYSTEM_VENDOR_ID(SYSTEM_VENDOR_ID),
-  .SYSTEM_DEVICE_ID(SYSTEM_DEVICE_ID),
-  .NUM_MOD(NUM_MODULES)
-  )
-  u_scm (
-    .clk             (clk),
-    .rst             (rst),
+    .SYSTEM_VENDOR_ID(SYSTEM_VENDOR_ID),
+    .SYSTEM_DEVICE_ID(SYSTEM_DEVICE_ID),
+    .NUM_MOD         (NUM_MODULES)
+  ) u_scm (
+    .clk(clk),
+    .rst(rst),
 
-    .id              (16'd0), // must be 0
+    .id(16'd0),  // must be 0
 
-    .debug_in        (scm_debug_in),
-    .debug_in_ready  (scm_debug_in_ready),
-    .debug_out       (scm_debug_out),
-    .debug_out_ready (scm_debug_out_ready),
+    .debug_in       (scm_debug_in),
+    .debug_in_ready (scm_debug_in_ready),
+    .debug_out      (scm_debug_out),
+    .debug_out_ready(scm_debug_out_ready),
 
-    .sys_rst         (sys_rst),
-    .cpu_rst         (cpu_rst)
+    .sys_rst(sys_rst),
+    .cpu_rst(cpu_rst)
   );
 endmodule

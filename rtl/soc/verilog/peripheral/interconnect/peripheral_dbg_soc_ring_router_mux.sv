@@ -56,19 +56,23 @@ module peripheral_dbg_soc_ring_router_mux (
   input out_mux_ready
 );
 
-  enum { NOWORM, WORM_LOCAL, WORM_RING } state, nxt_state;
+  enum {
+    NOWORM,
+    WORM_LOCAL,
+    WORM_RING
+  }
+    state, nxt_state;
 
   always_ff @(posedge clk) begin
     if (rst) begin
       state <= NOWORM;
-    end
-    else begin
+    end else begin
       state <= nxt_state;
     end
   end
 
   always_comb begin
-    nxt_state = state;
+    nxt_state      = state;
     out_mux.valid  = 0;
     out_mux.data   = 'x;
     out_mux.last   = 'x;
@@ -85,8 +89,7 @@ module peripheral_dbg_soc_ring_router_mux (
           if (!in_ring.last) begin
             nxt_state = WORM_RING;
           end
-        end
-        else if (in_local.valid) begin
+        end else if (in_local.valid) begin
           in_local_ready = out_mux_ready;
           out_mux        = in_local;
           out_mux.valid  = 1'b1;

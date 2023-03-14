@@ -42,19 +42,16 @@
 
 module peripheral_dbg_soc_osd_timestamp #(
   parameter WIDTH = 16
-)
-  (
-  input                  clk,
-  input                  enable,
-  input                  rst,
+) (
+  input clk,
+  input enable,
+  input rst,
 
   output reg [WIDTH-1:0] timestamp
 );
 
   always_ff @(posedge clk) begin
-    if (rst)
-      timestamp <= 0;
-    else if (enable)
-      timestamp <= timestamp + 1;
+    if (rst) timestamp <= 0;
+    else if (enable) timestamp <= timestamp + 1;
   end
 endmodule

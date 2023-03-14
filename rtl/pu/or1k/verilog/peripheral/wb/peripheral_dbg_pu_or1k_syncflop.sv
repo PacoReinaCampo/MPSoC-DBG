@@ -43,12 +43,12 @@
  */
 
 module peripheral_dbg_pu_or1k_syncflop (
-  input   DEST_CLK,
-  input   D_SET,
-  input   D_RST,
-  input   RESET,
-  input   TOGGLE_IN,
-  output  D_OUT
+  input  DEST_CLK,
+  input  D_SET,
+  input  D_RST,
+  input  RESET,
+  input  TOGGLE_IN,
+  output D_OUT
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -56,13 +56,13 @@ module peripheral_dbg_pu_or1k_syncflop (
   // Variables
   //
 
-  reg     sync1;
-  reg     sync2;
-  reg     syncprev;
-  reg     srflop;
+  reg  sync1;
+  reg  sync2;
+  reg  syncprev;
+  reg  srflop;
 
-  wire    syncxor;
-  wire    srinput;
+  wire syncxor;
+  wire srinput;
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -70,32 +70,32 @@ module peripheral_dbg_pu_or1k_syncflop (
   //
 
   // Combinatorial assignments
-  assign  syncxor = sync2 ^ syncprev;
-  assign  srinput = syncxor | D_SET;
-  assign  D_OUT = srflop | syncxor;
+  assign syncxor = sync2 ^ syncprev;
+  assign srinput = syncxor | D_SET;
+  assign D_OUT   = srflop | syncxor;
 
   // First DFF (always enabled)
-  always @ (posedge DEST_CLK or posedge RESET) begin
-    if(RESET) sync1 <= 1'b0;
+  always @(posedge DEST_CLK or posedge RESET) begin
+    if (RESET) sync1 <= 1'b0;
     else sync1 <= TOGGLE_IN;
   end
 
   // Second DFF (always enabled)
-  always @ (posedge DEST_CLK or posedge RESET) begin
-    if(RESET) sync2 <= 1'b0;
+  always @(posedge DEST_CLK or posedge RESET) begin
+    if (RESET) sync2 <= 1'b0;
     else sync2 <= sync1;
   end
 
   // Third DFF (always enabled, used to detect toggles)
-  always @ (posedge DEST_CLK or posedge RESET) begin
-    if(RESET) syncprev <= 1'b0;
+  always @(posedge DEST_CLK or posedge RESET) begin
+    if (RESET) syncprev <= 1'b0;
     else syncprev <= sync2;
   end
 
   // Set/Reset FF (holds detected toggles)
-  always @ (posedge DEST_CLK or posedge RESET) begin
-    if(RESET)         srflop <= 1'b0;
-    else if(D_RST)    srflop <= 1'b0;
+  always @(posedge DEST_CLK or posedge RESET) begin
+    if (RESET) srflop <= 1'b0;
+    else if (D_RST) srflop <= 1'b0;
     else if (srinput) srflop <= 1'b1;
   end
 endmodule

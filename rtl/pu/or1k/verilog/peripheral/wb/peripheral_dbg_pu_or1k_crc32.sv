@@ -57,20 +57,20 @@ module peripheral_dbg_pu_or1k_crc32 (
   // Variables
   //
 
-  reg    [31:0] crc;
-  wire   [31:0] new_crc;
-  wire          data_sim;
+  reg  [31:0] crc;
+  wire [31:0] new_crc;
+  wire        data_sim;
 
   //////////////////////////////////////////////////////////////////////////////
   //
   // Module body
   //
 
-  `ifdef SIM
+`ifdef SIM
   assign data_sim = (data === 1'bx || data === 1'b0) ? 1'b0 : 1'b1;
-  `else
+`else
   assign data_sim = data;
-  `endif
+`endif
 
   // You may notice that the 'poly' in this implementation is backwards.
   // This is because the shift is also 'backwards', so that the data can
@@ -106,20 +106,16 @@ module peripheral_dbg_pu_or1k_crc32 (
   assign new_crc[28] = crc[29];
   assign new_crc[29] = crc[30] ^ data_sim ^ crc[0];
   assign new_crc[30] = crc[31] ^ data_sim ^ crc[0];
-  assign new_crc[31] =           data_sim ^ crc[0];
+  assign new_crc[31] = data_sim ^ crc[0];
 
-  always @ (posedge clk or posedge rst) begin
-    if(rst)
-      crc[31:0] <= 32'hffffffff;
-    else if(clr)
-      crc[31:0] <= 32'hffffffff;
-    else if(enable)
-      crc[31:0] <= new_crc;
-    else if (shift)
-      crc[31:0] <= {1'b0, crc[31:1]};
+  always @(posedge clk or posedge rst) begin
+    if (rst) crc[31:0] <= 32'hffffffff;
+    else if (clr) crc[31:0] <= 32'hffffffff;
+    else if (enable) crc[31:0] <= new_crc;
+    else if (shift) crc[31:0] <= {1'b0, crc[31:1]};
   end
 
   //assign crc_match = (crc == 32'h0);
-  assign crc_out = crc; //[31];
+  assign crc_out    = crc;  //[31];
   assign serial_out = crc[0];
 endmodule

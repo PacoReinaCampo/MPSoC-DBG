@@ -44,13 +44,13 @@
 
 // Top module
 module peripheral_dbg_pu_riscv_syncflop (
-  input  RESET, // asynchronous reset
+  input RESET,  // asynchronous reset
 
-  input  DEST_CLK, // destination clock domain clock
-  input  D_SET, // synchronously set output to '1' (synchronous to dest.clock domain)
-  input  D_RST, // synchronously reset output to '0' (synch. to dest.clock domain)
-  input  TOGGLE_IN, // toggle data from source clock domain
-  output D_OUT // output (synch. to dest.clock domain)
+  input  DEST_CLK,   // destination clock domain clock
+  input  D_SET,      // synchronously set output to '1' (synchronous to dest.clock domain)
+  input  D_RST,      // synchronously reset output to '0' (synch. to dest.clock domain)
+  input  TOGGLE_IN,  // toggle data from source clock domain
+  output D_OUT       // output (synch. to dest.clock domain)
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ module peripheral_dbg_pu_riscv_syncflop (
   // Variables
   //
   reg sync1, sync2, syncprev;
-  reg srflop;
+  reg  srflop;
 
   // Combinatorial assignments
   wire toggle;
@@ -72,23 +72,23 @@ module peripheral_dbg_pu_riscv_syncflop (
   // Synchronise toggle signal to destination clock domain
 
   // First synchronisation stage
-  always @(posedge DEST_CLK,posedge RESET) begin
+  always @(posedge DEST_CLK, posedge RESET) begin
     if (RESET) sync1 <= 1'b0;
-    else       sync1 <= TOGGLE_IN;
+    else sync1 <= TOGGLE_IN;
   end
 
   // Second synchronisation stage
-  always @ (posedge DEST_CLK or posedge RESET) begin
+  always @(posedge DEST_CLK or posedge RESET) begin
     if (RESET) sync2 <= 1'b0;
-    else       sync2 <= sync1;
+    else sync2 <= sync1;
   end
 
   // Detect toggle
 
   // Previous synchronized value
-  always @ (posedge DEST_CLK or posedge RESET) begin
+  always @(posedge DEST_CLK or posedge RESET) begin
     if (RESET) syncprev <= 1'b0;
-    else       syncprev <= sync2;
+    else syncprev <= sync2;
   end
 
   // Combinatorial assignments
@@ -98,9 +98,9 @@ module peripheral_dbg_pu_riscv_syncflop (
   assign D_OUT   = toggle | srflop;
 
   // Set/Reset FF (holds detected toggles)
-  always @ (posedge DEST_CLK or posedge RESET) begin
-    if      (RESET  ) srflop <= 1'b0;
-    else if (D_RST  ) srflop <= 1'b0;
+  always @(posedge DEST_CLK or posedge RESET) begin
+    if (RESET) srflop <= 1'b0;
+    else if (D_RST) srflop <= 1'b0;
     else if (srinput) srflop <= 1'b1;
   end
 endmodule

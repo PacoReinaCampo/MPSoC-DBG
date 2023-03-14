@@ -40,39 +40,39 @@
  *    Javier Reina Campo <frareicam@gmail.com>
  */
 
-  //////////////////////////////////////////////////////////////////////////////
-  //
-  // Constants
-  //
-  `define WIDTH 64
+//////////////////////////////////////////////////////////////////////////////
+//
+// Constants
+//
+`define WIDTH 64
 
-  `define DEPTH 8
+`define DEPTH 8
 
-  `define SYSTEM_VENDOR_ID 2
-  `define SYSTEM_DEVICE_ID 2
-  `define NUM_MODULES 0
+`define SYSTEM_VENDOR_ID 2
+`define SYSTEM_DEVICE_ID 2
+`define NUM_MODULES 0
 
-  `define SUBNET_BITS 6
-  `define LOCAL_SUBNET 0
-  `define DEBUG_ROUTER_BUFFER_SIZE 4
+`define SUBNET_BITS 6
+`define LOCAL_SUBNET 0
+`define DEBUG_ROUTER_BUFFER_SIZE 4
 
-  `define BUFFER_SIZE 4
+`define BUFFER_SIZE 4
 
-  `define FULLPACKET 0
+`define FULLPACKET 0
 
-  // Width of memory addresses
-  `define ADDR_WIDTH 64
+// Width of memory addresses
+`define ADDR_WIDTH 64
 
-  // System word length
-  `define DATA_WIDTH 64
+// System word length
+`define DATA_WIDTH 64
 
-  `define MOD_VENDOR 4
-  `define MOD_TYPE 4
-  `define MOD_VERSION 4
-  `define MOD_EVENT_DEST_DEFAULT 4
-  `define CAN_STALL 0
-  `define MAX_REG_SIZE 64
+`define MOD_VENDOR 4
+`define MOD_TYPE 4
+`define MOD_VERSION 4
+`define MOD_EVENT_DEST_DEFAULT 4
+`define CAN_STALL 0
+`define MAX_REG_SIZE 64
 
-  // The maximum number of payload words the packet could consist of.
-  // The actual number of payload words is given by data_num_words.
-  `define MAX_DATA_NUM_WORDS ((`DATA_WIDTH + 15) >> 4)
+// The maximum number of payload words the packet could consist of.
+// The actual number of payload words is given by data_num_words.
+`define MAX_DATA_NUM_WORDS ((`DATA_WIDTH + 15) >> 4)
