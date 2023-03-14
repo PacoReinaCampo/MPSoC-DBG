@@ -55,13 +55,13 @@ module peripheral_dbg_jtag_vpi #(
   parameter CMD_DELAY       = 1000
 )   
   (
-    output reg tms,
-    output reg tck,
-    output reg tdi,
-    input      tdo,
-    input      enable,
-    input      init_done
-  );
+  output reg tms,
+  output reg tck,
+  output reg tdi,
+  input      tdo,
+  input      enable,
+  input      init_done
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -71,8 +71,8 @@ module peripheral_dbg_jtag_vpi #(
   integer length;
   integer nb_bits;
 
-  reg [31:0] buffer_out [0:4095];  // Data storage from the jtag server
-  reg [31:0] buffer_in  [0:4095];  // Data storage to the jtag server
+  reg [31:0] buffer_out [0:4095]; // Data storage from the jtag server
+  reg [31:0] buffer_in  [0:4095]; // Data storage to the jtag server
 
   integer flip_tms;
 
@@ -188,7 +188,7 @@ module peripheral_dbg_jtag_vpi #(
       if (DEBUG_INFO)
         $display("(%0t) Task do_tms_seq of %d bits (length = %d)", $time, nb_bits, length);
 
-      // Number of bits to send in the last byte
+        // Number of bits to send in the last byte
       nb_bits_rem = nb_bits % 8;
 
       for (i = 0; i < length; i = i + 1) begin
@@ -219,7 +219,7 @@ module peripheral_dbg_jtag_vpi #(
       if(DEBUG_INFO)
         $display("(%0t) Task do_scan_chain of %d bits (length = %d)", $time, nb_bits, length);
 
-      // Number of bits to send in the last byte
+        // Number of bits to send in the last byte
       nb_bits_rem = nb_bits % 8;
 
       for (index = 0; index < length; index = index + 1) begin

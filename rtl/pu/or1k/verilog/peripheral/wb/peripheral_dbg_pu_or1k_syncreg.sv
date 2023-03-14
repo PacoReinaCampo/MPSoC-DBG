@@ -73,7 +73,7 @@ module peripheral_dbg_pu_or1k_syncreg (
   // Combinatorial assignments
   assign  A_enable = A_not_equal & ack_sff_out;
   assign  A_not_equal = !(DATA_IN == regA);
-  assign DATA_OUT = regB;   
+  assign DATA_OUT = regB;
 
   // register A (latches input any time it changes)
   always @ (posedge CLKA or posedge RST) begin
@@ -126,5 +126,5 @@ module peripheral_dbg_pu_or1k_syncreg (
     .RESET (RST),
     .TOGGLE_IN (ack_toggle),
     .D_OUT (ack_sff_out)
-  );  
+  );
 endmodule

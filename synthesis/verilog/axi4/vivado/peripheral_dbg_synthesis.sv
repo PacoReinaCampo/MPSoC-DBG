@@ -88,12 +88,12 @@ module peripheral_dbg_testbench;
 
   //DUT AHB3
   peripheral_ahb3_dbg #(
-    .MEM_SIZE          ( 256 ),
-    .MEM_DEPTH         ( 256 ),
-    .PLEN              ( PLEN ),
-    .XLEN              ( XLEN ),
-    .TECHNOLOGY        ( TECHNOLOGY ),
-    .REGISTERED_OUTPUT ( "NO" )
+  .MEM_SIZE          ( 256 ),
+  .MEM_DEPTH         ( 256 ),
+  .PLEN              ( PLEN ),
+  .XLEN              ( XLEN ),
+  .TECHNOLOGY        ( TECHNOLOGY ),
+  .REGISTERED_OUTPUT ( "NO" )
   )
   ahb3_dbg (
     .HRESETn   ( HRESETn ),

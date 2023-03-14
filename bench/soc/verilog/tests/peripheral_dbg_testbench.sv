@@ -53,7 +53,7 @@ module peripheral_dbg_testbench;
   localparam XLEN     = 64;
   localparam CHANNELS = 2;
   localparam NODES    = 8;
-  
+
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
@@ -117,78 +117,78 @@ module peripheral_dbg_testbench;
 
   //DUT
   peripheral_dbg_soc_interface dbg_soc_interface (
-    .clk            ( HCLK    ),
-    .rst            ( HRESETn ),
+  .clk            ( HCLK    ),
+  .rst            ( HRESETn ),
 
-    .sys_rst        ( rst_sys ),
-    .cpu_rst        ( rst_cpu ),
+  .sys_rst        ( rst_sys ),
+  .cpu_rst        ( rst_cpu ),
 
-    .glip_in_data   ( glip_in_data  ),
-    .glip_in_valid  ( glip_in_valid ),
-    .glip_in_ready  ( glip_in_ready ),
+  .glip_in_data   ( glip_in_data  ),
+  .glip_in_valid  ( glip_in_valid ),
+  .glip_in_ready  ( glip_in_ready ),
 
-    .glip_out_data  ( glip_out_data  ),
-    .glip_out_valid ( glip_out_valid ),
-    .glip_out_ready ( glip_out_ready ),
+  .glip_out_data  ( glip_out_data  ),
+  .glip_out_valid ( glip_out_valid ),
+  .glip_out_ready ( glip_out_ready ),
 
-    .ring_out_data  ( debug_ring_in_data   ),
-    .ring_out_last  ( debug_ring_in_last   ),
-    .ring_out_valid ( debug_ring_in_valid  ),
-    .ring_out_ready ( debug_ring_in_ready  ),
+  .ring_out_data  ( debug_ring_in_data   ),
+  .ring_out_last  ( debug_ring_in_last   ),
+  .ring_out_valid ( debug_ring_in_valid  ),
+  .ring_out_ready ( debug_ring_in_ready  ),
 
-    .ring_in_data   ( debug_ring_out_data  ),
-    .ring_in_last   ( debug_ring_out_last  ),
-    .ring_in_valid  ( debug_ring_out_valid ),
-    .ring_in_ready  ( debug_ring_out_ready )
+  .ring_in_data   ( debug_ring_out_data  ),
+  .ring_in_last   ( debug_ring_out_last  ),
+  .ring_in_valid  ( debug_ring_out_valid ),
+  .ring_in_ready  ( debug_ring_out_ready )
   );
 
   peripheral_dbg_soc_debug_ring #(
-    .PORTS ( CHANNELS )
+  .PORTS ( CHANNELS )
   )
   dbg_soc_debug_ring (
-    .clk (HCLK),
-    .rst (HRESETn),
+  .clk (HCLK),
+  .rst (HRESETn),
 
-    .id_map (id_map),
+  .id_map (id_map),
 
-    .dii_in_data   (dii_in_data),
-    .dii_in_last   (dii_in_last),
-    .dii_in_valid  (dii_in_valid),
-    .dii_in_ready  (dii_in_ready),
+  .dii_in_data   (dii_in_data),
+  .dii_in_last   (dii_in_last),
+  .dii_in_valid  (dii_in_valid),
+  .dii_in_ready  (dii_in_ready),
 
-    .dii_out_data  (dii_out_data),
-    .dii_out_last  (dii_out_last),
-    .dii_out_valid (dii_out_valid),
-    .dii_out_ready (dii_out_ready)
+  .dii_out_data  (dii_out_data),
+  .dii_out_last  (dii_out_last),
+  .dii_out_valid (dii_out_valid),
+  .dii_out_ready (dii_out_ready)
   );
 
   peripheral_dbg_soc_debug_ring_expand #(
-    .PORTS ( CHANNELS )
+  .PORTS ( CHANNELS )
   )
   dbg_soc_debug_ring_expand (
-    .clk (HCLK),
-    .rst (HRESETn),
+  .clk (HCLK),
+  .rst (HRESETn),
 
-    .id_map (id_map),
+  .id_map (id_map),
 
-    .dii_in_data   (dii_in_data),
-    .dii_in_last   (dii_in_last),
-    .dii_in_valid  (dii_in_valid),
-    .dii_in_ready  (dii_in_ready_expand),
+  .dii_in_data   (dii_in_data),
+  .dii_in_last   (dii_in_last),
+  .dii_in_valid  (dii_in_valid),
+  .dii_in_ready  (dii_in_ready_expand),
 
-    .dii_out_data  (dii_out_data_expand),
-    .dii_out_last  (dii_out_last_expand),
-    .dii_out_valid (dii_out_valid_expand),
-    .dii_out_ready (dii_out_ready),
+  .dii_out_data  (dii_out_data_expand),
+  .dii_out_last  (dii_out_last_expand),
+  .dii_out_valid (dii_out_valid_expand),
+  .dii_out_ready (dii_out_ready),
 
-    .ext_in_data  (ext_in_data),
-    .ext_in_last  (ext_in_last),
-    .ext_in_valid (ext_in_valid),
-    .ext_in_ready (ext_in_ready),
+  .ext_in_data  (ext_in_data),
+  .ext_in_last  (ext_in_last),
+  .ext_in_valid (ext_in_valid),
+  .ext_in_ready (ext_in_ready),
 
-    .ext_out_data  (ext_out_data),
-    .ext_out_last  (ext_out_last),
-    .ext_out_valid (ext_out_valid),
-    .ext_out_ready (ext_out_ready)
+  .ext_out_data  (ext_out_data),
+  .ext_out_last  (ext_out_last),
+  .ext_out_valid (ext_out_valid),
+  .ext_out_ready (ext_out_ready)
   );
 endmodule

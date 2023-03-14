@@ -46,25 +46,25 @@ module peripheral_dbg_soc_osd_dem_uart_bb #(
   parameter DW = 32
 )
   (
-    input         clk,
-    input         rst,
+  input         clk,
+  input         rst,
 
-    input   dii_flit debug_in,
-    output  dii_flit debug_out,
-    output  debug_in_ready,
-    input   debug_out_ready,
+  input   dii_flit debug_in,
+  output  dii_flit debug_out,
+  output  debug_in_ready,
+  input   debug_out_ready,
 
-    input  [15:0] id,
+  input  [15:0] id,
 
-    output        irq,
+  output        irq,
 
-    input  [   3:0] bb_addr_i,
-    input  [DW-1:0] bb_din_i,
-    input           bb_en_i,
-    input           bb_we_i,
+  input  [   3:0] bb_addr_i,
+  input  [DW-1:0] bb_din_i,
+  input           bb_en_i,
+  input           bb_we_i,
 
-    output [DW-1:0] bb_dout_o
-  );
+  output [DW-1:0] bb_dout_o
+);
 
   logic          bus_req;
   logic [2:0]    bus_addr;

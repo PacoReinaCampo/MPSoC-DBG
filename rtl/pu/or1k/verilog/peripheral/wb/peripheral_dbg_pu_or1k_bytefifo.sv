@@ -70,7 +70,7 @@ module peripheral_dbg_pu_or1k_bytefifo (
   //
 
   // Combinatorial assignments
-  assign  BYTES_AVAIL = counter;  
+  assign  BYTES_AVAIL = counter;
   assign  BYTES_FREE = 4'h8 - BYTES_AVAIL;
   assign  push_ok = !(counter == 4'h8);
   assign  pop_ok = !(counter == 4'h0);
@@ -152,9 +152,9 @@ module peripheral_dbg_pu_or1k_bytefifo (
 
   // Output decoder
   always @ (counter or reg0 or reg1 or reg2 or reg3 or reg4 or reg5
-            or reg6 or reg7) begin
+  or reg6 or reg7) begin
     case (counter)
-      4'h1:     DATA_OUT <= reg0; 
+      4'h1:     DATA_OUT <= reg0;
       4'h2:     DATA_OUT <= reg1;
       4'h3:     DATA_OUT <= reg2;
       4'h4:     DATA_OUT <= reg3;
@@ -164,5 +164,5 @@ module peripheral_dbg_pu_or1k_bytefifo (
       4'h8:     DATA_OUT <= reg7;
       default:  DATA_OUT <= 8'hXX;
     endcase
-  end   
+  end
 endmodule

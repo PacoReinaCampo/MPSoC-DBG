@@ -114,9 +114,9 @@ module peripheral_dbg_soc_osd_dem_uart_16550 (
 
   logic dlab;
 
-  assign irq_rbf = erbfi & in_valid;            // Receive data available
-  assign irq_tbe = etbei & (out_ready | drop);  // (THRE) Transmitter holding register empty
-  assign irq_ls  = elsi & 1'b0;                 // Receiver line status
+  assign irq_rbf = erbfi & in_valid; // Receive data available
+  assign irq_tbe = etbei & (out_ready | drop); // (THRE) Transmitter holding register empty
+  assign irq_ls  = elsi & 1'b0; // Receiver line status
 
   assign irq = irq_rbf | irq_tbe | irq_ls;
 

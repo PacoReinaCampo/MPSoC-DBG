@@ -44,13 +44,13 @@
 
 // Top module
 module peripheral_dbg_pu_riscv_syncflop (
-  input  RESET,     // asynchronous reset
+  input  RESET, // asynchronous reset
 
-  input  DEST_CLK,  // destination clock domain clock
-  input  D_SET,     // synchronously set output to '1' (synchronous to dest.clock domain)
-  input  D_RST,     // synchronously reset output to '0' (synch. to dest.clock domain)
+  input  DEST_CLK, // destination clock domain clock
+  input  D_SET, // synchronously set output to '1' (synchronous to dest.clock domain)
+  input  D_RST, // synchronously reset output to '0' (synch. to dest.clock domain)
   input  TOGGLE_IN, // toggle data from source clock domain
-  output D_OUT      // output (synch. to dest.clock domain)
+  output D_OUT // output (synch. to dest.clock domain)
 );
 
   //////////////////////////////////////////////////////////////////////////////

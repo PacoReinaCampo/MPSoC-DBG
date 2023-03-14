@@ -45,37 +45,37 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_regaccess #(
-  parameter MOD_VENDOR = 'x,     // module vendor
-  parameter MOD_TYPE = 'x,       // module type
-  parameter MOD_VERSION = 'x,    // module version
+  parameter MOD_VENDOR = 'x, // module vendor
+  parameter MOD_TYPE = 'x, // module type
+  parameter MOD_VERSION = 'x, // module version
   parameter MOD_EVENT_DEST_DEFAULT = 'x, // default event destination
   parameter CAN_STALL = 0,
   parameter MAX_REG_SIZE = 16
 )
   (
-    input clk,
-    input rst,
+  input clk,
+  input rst,
 
-    input [15:0] id,
+  input [15:0] id,
 
-    input  dii_flit debug_in,
-    output dii_flit debug_out,
+  input  dii_flit debug_in,
+  output dii_flit debug_out,
 
-    output logic debug_in_ready,
-    input        debug_out_ready,
+  output logic debug_in_ready,
+  input        debug_out_ready,
 
-    output reg                   reg_request,
-    output                       reg_write,
-    output [               15:0] reg_addr,
-    output [                1:0] reg_size,
-    output [MAX_REG_SIZE   -1:0] reg_wdata,
-    input                        reg_ack,
-    input                        reg_err,
-    input  [MAX_REG_SIZE   -1:0] reg_rdata,
+  output reg                   reg_request,
+  output                       reg_write,
+  output [               15:0] reg_addr,
+  output [                1:0] reg_size,
+  output [MAX_REG_SIZE   -1:0] reg_wdata,
+  input                        reg_ack,
+  input                        reg_err,
+  input  [MAX_REG_SIZE   -1:0] reg_rdata,
 
-    output [               15:0] event_dest,
-    output                       stall
-  );
+  output [               15:0] event_dest,
+  output                       stall
+);
 
   localparam ACCESS_SIZE_16  = 2'b00;
   localparam ACCESS_SIZE_32  = 2'b01;
@@ -83,8 +83,8 @@ module peripheral_dbg_soc_osd_regaccess #(
   localparam ACCESS_SIZE_128 = 2'b11;
 
   localparam MAX_REQ_SIZE = MAX_REG_SIZE == 16 ? ACCESS_SIZE_16 :
-                            MAX_REG_SIZE == 32 ? ACCESS_SIZE_32 :
-                            MAX_REG_SIZE == 64 ? ACCESS_SIZE_64 : ACCESS_SIZE_128;
+  MAX_REG_SIZE == 32 ? ACCESS_SIZE_32 :
+  MAX_REG_SIZE == 64 ? ACCESS_SIZE_64 : ACCESS_SIZE_128;
 
   // base register addresses
   localparam REG_MOD_VENDOR     = 16'h0;

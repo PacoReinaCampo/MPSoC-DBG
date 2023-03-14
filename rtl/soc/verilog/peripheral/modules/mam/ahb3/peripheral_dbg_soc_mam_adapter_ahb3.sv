@@ -53,8 +53,8 @@ module peripheral_dbg_soc_mam_adapter_ahb3 #(
 
   // byte select width
   localparam SW = (XLEN == 32) ? 4 :
-                  (XLEN == 16) ? 2 :
-                  (XLEN ==  8) ? 1 : 'hx,
+  (XLEN == 16) ? 2 :
+  (XLEN ==  8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+

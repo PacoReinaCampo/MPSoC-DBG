@@ -45,21 +45,21 @@ import peripheral_dbg_soc_dii_channel::dii_flit;
 import peripheral_dbg_soc_dii_channel::dii_flit_assemble;
 
 module peripheral_dbg_soc_dii_buffer #(
-  parameter BUF_SIZE   = 4,  // length of the buffer
+  parameter BUF_SIZE   = 4, // length of the buffer
   parameter FULLPACKET = 0
 )
   (
-    input                               clk,
-    input                               rst,
+  input                               clk,
+  input                               rst,
 
-    output logic   [$clog2(BUF_SIZE):0] packet_size,
+  output logic   [$clog2(BUF_SIZE):0] packet_size,
 
-    input  dii_flit                     flit_in,
-    output dii_flit                     flit_out,
+  input  dii_flit                     flit_in,
+  output dii_flit                     flit_out,
 
-    output                              flit_in_ready,
-    input                               flit_out_ready
-  );
+  output                              flit_in_ready,
+  input                               flit_out_ready
+);
 
   // the width of the index
   localparam ID_W = $clog2(BUF_SIZE);
@@ -103,7 +103,7 @@ module peripheral_dbg_soc_dii_buffer #(
       data <= {data, flit_in};
   end
 
-  generate                     // SRL does not allow parallel read
+  generate // SRL does not allow parallel read
     if(FULLPACKET != 0) begin
       logic [BUF_SIZE-1:0] data_last_buf, data_last_shifted;
 

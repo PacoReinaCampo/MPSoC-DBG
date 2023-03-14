@@ -46,17 +46,17 @@ module peripheral_dbg_soc_osd_him #(
   parameter MAX_PKT_LEN = 12
 )
   (
-    input clk,
-    input rst,
+  input clk,
+  input rst,
 
-    glip_channel.slave  glip_in,
-    glip_channel.master glip_out,
+  glip_channel.slave  glip_in,
+  glip_channel.master glip_out,
 
-    output dii_flit dii_out,
-    input           dii_out_ready,
-    input  dii_flit dii_in,
-    output          dii_in_ready
-  );
+  output dii_flit dii_out,
+  input           dii_out_ready,
+  input  dii_flit dii_in,
+  output          dii_in_ready
+);
 
   localparam BUF_SIZE = MAX_PKT_LEN;
 
@@ -100,8 +100,8 @@ module peripheral_dbg_soc_osd_him #(
   end
 
   peripheral_dbg_soc_dii_buffer #(
-    .BUF_SIZE(BUF_SIZE),
-    .FULLPACKET(1)
+  .BUF_SIZE(BUF_SIZE),
+  .FULLPACKET(1)
   )
   u_ingress_buffer(
     .*,
@@ -157,8 +157,8 @@ module peripheral_dbg_soc_osd_him #(
   end
 
   peripheral_dbg_soc_dii_buffer #(
-    .BUF_SIZE(BUF_SIZE),
-    .FULLPACKET(1)
+  .BUF_SIZE(BUF_SIZE),
+  .FULLPACKET(1)
   )
   u_egress_buffer(
     .*,

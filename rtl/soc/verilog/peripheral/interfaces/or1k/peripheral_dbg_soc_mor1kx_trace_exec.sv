@@ -42,17 +42,17 @@
 
 package opensocdebug;
 
-   typedef struct packed {
-      logic [31:0] insn;
-      logic [31:0] pc;
-      logic        jb;
-      logic        jal;
-      logic        jr;
-      logic [31:0] jbtarget;
-      logic        valid;
-      logic [31:0] wbdata;
-      logic [ 4:0] wbreg;
-      logic        wben;
-   } peripheral_dbg_soc_mor1kx_trace_exec;
+  typedef struct packed {
+    logic [31:0] insn;
+    logic [31:0] pc;
+    logic        jb;
+    logic        jal;
+    logic        jr;
+    logic [31:0] jbtarget;
+    logic        valid;
+    logic [31:0] wbdata;
+    logic [ 4:0] wbreg;
+    logic        wben;
+  } peripheral_dbg_soc_mor1kx_trace_exec;
 
 endpackage // opensocdebug

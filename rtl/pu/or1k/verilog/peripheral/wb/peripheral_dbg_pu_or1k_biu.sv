@@ -46,7 +46,7 @@ module peripheral_dbg_pu_or1k_biu (
   // Debug interface signals
   input              tck_i,
   input              rst_i,
-  input       [31:0] data_i,  // Assume short words are in UPPER order bits!
+  input       [31:0] data_i, // Assume short words are in UPPER order bits!
   output      [31:0] data_o,
   input       [31:0] addr_i,
   input              strobe_i,
@@ -78,27 +78,27 @@ module peripheral_dbg_pu_or1k_biu (
 
   // Registers
   reg [31:0] addr_reg;
-  reg [31:0] data_in_reg;  // dbg->WB
-  reg [31:0] data_out_reg;  // WB->dbg
+  reg [31:0] data_in_reg; // dbg->WB
+  reg [31:0] data_out_reg; // WB->dbg
   reg        wr_reg;
-  reg        str_sync;  // This is 'active-toggle' rather than -high or -low.
-  reg        rdy_sync;  // ditto, active-toggle
+  reg        str_sync; // This is 'active-toggle' rather than -high or -low.
+  reg        rdy_sync; // ditto, active-toggle
 
 
   // Sync registers.  TFF indicates TCK domain, WBFF indicates cpu_clk domain
   reg    rdy_sync_tff1;
   reg    rdy_sync_tff2;
-  reg    rdy_sync_tff2q;  // used to detect toggles
+  reg    rdy_sync_tff2q; // used to detect toggles
   reg    str_sync_wbff1;
   reg    str_sync_wbff2;
-  reg    str_sync_wbff2q;  // used to detect toggles
+  reg    str_sync_wbff2q; // used to detect toggles
 
   // Control Signals
-  reg    data_o_en;    // latch wb_data_i
-  reg    rdy_sync_en;  // toggle the rdy_sync signal, indicate ready to TCK domain
+  reg    data_o_en; // latch wb_data_i
+  reg    rdy_sync_en; // toggle the rdy_sync signal, indicate ready to TCK domain
 
   // Internal signals
-  wire start_toggle;  // CPU domain, indicates a toggle on the start strobe
+  wire start_toggle; // CPU domain, indicates a toggle on the start strobe
 
   reg cpu_fsm_state;
   reg next_fsm_state;
@@ -123,7 +123,7 @@ module peripheral_dbg_pu_or1k_biu (
         addr_reg <= addr_i;
         if(!rd_wrn_i) data_in_reg <= data_i;
         wr_reg <= ~rd_wrn_i;
-      end 
+      end
   end
 
   // Create toggle-active strobe signal for clock sync.  This will start a transaction
@@ -131,7 +131,7 @@ module peripheral_dbg_pu_or1k_biu (
   always @ (posedge tck_i or posedge rst_i) begin
     if(rst_i) str_sync <= 1'b0;
     else if(strobe_i && rdy_o) str_sync <= ~str_sync;
-  end 
+  end
 
   // Create rdy_o output.  Set on reset, clear on strobe (if set), set on input toggle
   always @ (posedge tck_i or posedge rst_i) begin
@@ -139,17 +139,17 @@ module peripheral_dbg_pu_or1k_biu (
       rdy_sync_tff1 <= 1'b0;
       rdy_sync_tff2 <= 1'b0;
       rdy_sync_tff2q <= 1'b0;
-      rdy_o <= 1'b1; 
+      rdy_o <= 1'b1;
     end
-    else begin  
-      rdy_sync_tff1 <= rdy_sync;       // Synchronize the ready signal across clock domains
+    else begin
+      rdy_sync_tff1 <= rdy_sync; // Synchronize the ready signal across clock domains
       rdy_sync_tff2 <= rdy_sync_tff1;
-      rdy_sync_tff2q <= rdy_sync_tff2;  // used to detect toggles
+      rdy_sync_tff2q <= rdy_sync_tff2; // used to detect toggles
 
       if(strobe_i && rdy_o) rdy_o <= 1'b0;
       else if(rdy_sync_tff2 != rdy_sync_tff2q) rdy_o <= 1'b1;
     end
-  end 
+  end
 
   // Direct assignments, unsynchronized
   assign cpu_data_o = data_in_reg;
@@ -165,12 +165,12 @@ module peripheral_dbg_pu_or1k_biu (
     if(rst_i) begin
       str_sync_wbff1 <= 1'b0;
       str_sync_wbff2 <= 1'b0;
-      str_sync_wbff2q <= 1'b0;      
+      str_sync_wbff2q <= 1'b0;
     end
     else begin
       str_sync_wbff1 <= str_sync;
       str_sync_wbff2 <= str_sync_wbff1;
-      str_sync_wbff2q <= str_sync_wbff2;  // used to detect toggles
+      str_sync_wbff2q <= str_sync_wbff2; // used to detect toggles
     end
   end
 
@@ -186,7 +186,7 @@ module peripheral_dbg_pu_or1k_biu (
   always @ (posedge cpu_clk_i or posedge rst_i) begin
     if(rst_i) rdy_sync <= 1'b0;
     else if(rdy_sync_en) rdy_sync <= ~rdy_sync;
-  end 
+  end
 
   // Small state machine to create OR1K SPR bus accesses
   // Not much more that an 'in_progress' bit, but easier
@@ -196,14 +196,14 @@ module peripheral_dbg_pu_or1k_biu (
   // Sequential bit
   always @ (posedge cpu_clk_i or posedge rst_i) begin
     if(rst_i) cpu_fsm_state <= `STATE_IDLE;
-    else cpu_fsm_state <= next_fsm_state; 
+    else cpu_fsm_state <= next_fsm_state;
   end
 
   // Determination of next state (combinatorial)
   always @ (cpu_fsm_state or start_toggle or cpu_ack_i) begin
     case (cpu_fsm_state)
       `STATE_IDLE : begin
-        if(start_toggle && !cpu_ack_i) next_fsm_state <= `STATE_TRANSFER;  // Don't go to next state for 1-cycle transfer
+        if(start_toggle && !cpu_ack_i) next_fsm_state <= `STATE_TRANSFER; // Don't go to next state for 1-cycle transfer
         else next_fsm_state <= `STATE_IDLE;
       end
       `STATE_TRANSFER : begin
@@ -226,13 +226,13 @@ module peripheral_dbg_pu_or1k_biu (
           if(cpu_ack_i) begin
             rdy_sync_en <= 1'b1;
           end
-          if (cpu_ack_i && !wr_reg) begin  // latch read data
+          if (cpu_ack_i && !wr_reg) begin // latch read data
             data_o_en <= 1'b1;
           end
         end
       end
       `STATE_TRANSFER :  begin
-        cpu_stb_o <= 1'b1;  // OR1K behavioral model needs this.  OR1200 should be indifferent.
+        cpu_stb_o <= 1'b1; // OR1K behavioral model needs this.  OR1200 should be indifferent.
         if(cpu_ack_i) begin
           data_o_en <= 1'b1;
           rdy_sync_en <= 1'b1;

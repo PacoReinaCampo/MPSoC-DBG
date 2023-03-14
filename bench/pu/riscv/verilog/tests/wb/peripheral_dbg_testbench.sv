@@ -74,7 +74,7 @@ module peripheral_dbg_testbench;
   logic                    wb_tdo_o;
 
   // TAP states
-  logic                    wb_tlr_i;  //TestLogicReset
+  logic                    wb_tlr_i; //TestLogicReset
   logic                    wb_shift_dr_i;
   logic                    wb_pause_dr_i;
   logic                    wb_update_dr_i;
@@ -131,19 +131,19 @@ module peripheral_dbg_testbench;
 
   //DUT WB
   peripheral_dbg_pu_riscv_top_wb #(
-    .X ( X ),
-    .Y ( Y ),
-    .Z ( Z ),
+  .X ( X ),
+  .Y ( Y ),
+  .Z ( Z ),
 
-    .CORES_PER_TILE ( CORES_PER_TILE ),
+  .CORES_PER_TILE ( CORES_PER_TILE ),
 
-    .ADDR_WIDTH ( ADDR_WIDTH ),
-    .DATA_WIDTH ( DATA_WIDTH ),
+  .ADDR_WIDTH ( ADDR_WIDTH ),
+  .DATA_WIDTH ( DATA_WIDTH ),
 
-    .CPU_ADDR_WIDTH ( CPU_ADDR_WIDTH ),
-    .CPU_DATA_WIDTH ( CPU_DATA_WIDTH ),
+  .CPU_ADDR_WIDTH ( CPU_ADDR_WIDTH ),
+  .CPU_DATA_WIDTH ( CPU_DATA_WIDTH ),
 
-    .DATAREG_LEN ( DATAREG_LEN )
+  .DATAREG_LEN ( DATAREG_LEN )
   )
   dbg_pu_riscv_top_wb (
     // JTAG signals

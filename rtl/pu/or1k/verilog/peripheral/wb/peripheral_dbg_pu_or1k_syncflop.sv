@@ -71,7 +71,7 @@ module peripheral_dbg_pu_or1k_syncflop (
 
   // Combinatorial assignments
   assign  syncxor = sync2 ^ syncprev;
-  assign  srinput = syncxor | D_SET;  
+  assign  srinput = syncxor | D_SET;
   assign  D_OUT = srflop | syncxor;
 
   // First DFF (always enabled)

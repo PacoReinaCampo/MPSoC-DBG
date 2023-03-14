@@ -46,7 +46,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   // Debug interface signals
   input        tck_i,
   input        rst_i,
-  input  [7:0] data_i,  // Assume short words are in UPPER order bits!
+  input  [7:0] data_i, // Assume short words are in UPPER order bits!
   output [7:0] data_o,
   output [3:0] bytes_free_o,
   output [3:0] bytes_available_o,
@@ -102,33 +102,33 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   wire         wb_fifo_ack;
   wire [3:0]   wr_bytes_free;
   wire [3:0]   rd_bytes_avail;
-  wire [3:0]   wr_bytes_avail;  // used to generate wr_fifo_not_empty
+  wire [3:0]   wr_bytes_avail; // used to generate wr_fifo_not_empty
   wire         rd_bytes_avail_not_zero;
-  wire         ren_sff_out;   
+  wire         ren_sff_out;
   wire [7:0]   rd_fifo_data_out;
   wire [7:0]   data_to_wb;
   wire [7:0]   data_from_wb;
-  wire         wr_fifo_not_empty;  // this is for the WishBone interface LSR register
-  wire         rcvr_fifo_rst;  // rcvr in the WB sense, opposite most of the rest of this file
-  wire         xmit_fifo_rst;  // ditto
+  wire         wr_fifo_not_empty; // this is for the WishBone interface LSR register
+  wire         rcvr_fifo_rst; // rcvr in the WB sense, opposite most of the rest of this file
+  wire         xmit_fifo_rst; // ditto
 
   // Control Signals (FSM outputs)
-  reg    wda_rst;   // reset wdata_avail SFF
-  reg    wpp;       // Write FIFO PUSH (1) or POP (0)
+  reg    wda_rst; // reset wdata_avail SFF
+  reg    wpp; // Write FIFO PUSH (1) or POP (0)
   reg    w_fifo_en; // Enable write FIFO
-  reg    ren_rst;   // reset 'pop' SFF
-  reg    rdata_en;  // enable 'rdata' register
-  reg    rpp;       // read FIFO PUSH (1) or POP (0)
+  reg    ren_rst; // reset 'pop' SFF
+  reg    rdata_en; // enable 'rdata' register
+  reg    rpp; // read FIFO PUSH (1) or POP (0)
   reg    r_fifo_en; // enable read FIFO    
-  reg    r_wb_ack;  // read FSM acks WB transaction
-  reg    w_wb_ack;  // write FSM acks WB transaction
+  reg    r_wb_ack; // read FSM acks WB transaction
+  reg    w_wb_ack; // write FSM acks WB transaction
 
   // Indicators to FSMs
   wire   wdata_avail; // JTAG side has data available
-  wire   wb_rd;       // WishBone requests read
-  wire   wb_wr;       // WishBone requests write
-  wire   pop;         // JTAG side received a byte, pop and get next
-  wire   rcz;         // zero bytes available in read FIFO
+  wire   wb_rd; // WishBone requests read
+  wire   wb_wr; // WishBone requests write
+  wire   pop; // JTAG side received a byte, pop and get next
+  wire   rcz; // zero bytes available in read FIFO
 
   // State machine for the read FIFO
 
@@ -144,21 +144,21 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   wire [31:0] bus_data_lo;
   wire [31:0] bus_data_hi;
   wire        wb_reg_ack;
-  wire        rd_fifo_not_full;  // "rd fifo" is the one the WB writes to
-  reg  [2:0]  iir_gen;  // actually combinatorial
+  wire        rd_fifo_not_full; // "rd fifo" is the one the WB writes to
+  reg  [2:0]  iir_gen; // actually combinatorial
   wire        rd_fifo_becoming_empty;
 
   // These 16550 registers are at least partly implemented
-  reg         reg_dlab_bit;  // part of the LCR
+  reg         reg_dlab_bit; // part of the LCR
   reg [3:0]   reg_ier;
   wire [2:0]  reg_iir;
-  reg         thr_int_arm;  // used so that an IIR read can clear a transmit interrupt
+  reg         thr_int_arm; // used so that an IIR read can clear a transmit interrupt
   wire [7:0]  reg_lsr;
   wire        reg_dlab_bit_wren;
   wire        reg_ier_wren;
   wire        reg_iir_rden;
-  wire [7:0]  reg_lcr;  // the DLAB bit above is the 8th bit
-  wire        reg_fcr_wren;  // FCR is WR-only, at the same address as the IIR (contains SW reset bits)
+  wire [7:0]  reg_lcr; // the DLAB bit above is the 8th bit
+  wire        reg_fcr_wren; // FCR is WR-only, at the same address as the IIR (contains SW reset bits)
 
   // These 16550 registers are not implemented here
   wire [7:0]  reg_mcr;
@@ -183,7 +183,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   always @ (posedge tck_i or posedge rst_i) begin
     if(rst_i) wen_tff <= 1'b0;
     else if(wr_strobe_i) wen_tff <= ~wen_tff;
-  end 
+  end
 
   // Read enable (REN) toggle FF
   always @ (posedge tck_i or posedge rst_i) begin
@@ -253,7 +253,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   // write FIFO
   peripheral_dbg_pu_or1k_bytefifo wr_fifo (
     .CLK(wb_clk_i),
-    .RST(rst_i | rcvr_fifo_rst),  // rst_i from JTAG clk domain, rcvr_fifo_rst from WB, RST is async reset
+    .RST(rst_i | rcvr_fifo_rst), // rst_i from JTAG clk domain, rcvr_fifo_rst from WB, RST is async reset
     .DATA_IN(data_in),
     .DATA_OUT(data_to_wb),
     .PUSH_POPn(wpp),
@@ -265,7 +265,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   // read FIFO
   peripheral_dbg_pu_or1k_bytefifo rd_fifo (
     .CLK(wb_clk_i),
-    .RST(rst_i | xmit_fifo_rst),  // rst_i from JTAG clk domain, xmit_fifo_rst from WB, RST is async reset
+    .RST(rst_i | xmit_fifo_rst), // rst_i from JTAG clk domain, xmit_fifo_rst from WB, RST is async reset
     .DATA_IN(data_from_wb),
     .DATA_OUT(rd_fifo_data_out),
     .PUSH_POPn(rpp),
@@ -277,7 +277,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   // Sequential bit
   always @ (posedge wb_clk_i or posedge rst_i) begin
     if(rst_i) rd_fsm_state <= `STATE_RD_IDLE;
-    else rd_fsm_state <= next_rd_fsm_state; 
+    else rd_fsm_state <= next_rd_fsm_state;
   end
 
   // Determination of next state (combinatorial)
@@ -289,7 +289,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
         else next_rd_fsm_state <= `STATE_RD_IDLE;
       end
       `STATE_RD_PUSH : begin
-        if(rcz) next_rd_fsm_state <= `STATE_RD_LATCH;  // putting first item in fifo, move to rdata in state LATCH
+        if(rcz) next_rd_fsm_state <= `STATE_RD_LATCH; // putting first item in fifo, move to rdata in state LATCH
         else if(pop) next_rd_fsm_state <= `STATE_RD_POP;
         else next_rd_fsm_state <= `STATE_RD_IDLE;
       end
@@ -335,7 +335,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   // Sequential bit
   always @ (posedge wb_clk_i or posedge rst_i) begin
     if(rst_i) wr_fsm_state <= `STATE_WR_IDLE;
-    else wr_fsm_state <= next_wr_fsm_state; 
+    else wr_fsm_state <= next_wr_fsm_state;
   end
 
   // Determination of next state (combinatorial)
@@ -390,14 +390,14 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   assign      wb_err_o = 1'b0;
 
   // Assign the unimplemented registers
-  assign      reg_mcr = 8'h00;  // These bits control modem control lines, unused here
-  assign      reg_msr = 8'hB0;  // CD, DSR, CTS true, RI false, no changes indicated
-  assign      reg_scr = 8'h00;  // scratch register.
+  assign      reg_mcr = 8'h00; // These bits control modem control lines, unused here
+  assign      reg_msr = 8'hB0; // CD, DSR, CTS true, RI false, no changes indicated
+  assign      reg_scr = 8'h00; // scratch register.
 
   // Create the simple / combinatorial registers
   assign      rd_fifo_not_full = !(rd_bytes_avail == 4'h8);
-  assign      reg_lcr = {reg_dlab_bit, 7'h03};  // Always set for 8n1
-  assign      reg_lsr = {1'b0, rd_fifo_not_full, rd_fifo_not_full, 4'b0000, wr_fifo_not_empty};   
+  assign      reg_lcr = {reg_dlab_bit, 7'h03}; // Always set for 8n1
+  assign      reg_lsr = {1'b0, rd_fifo_not_full, rd_fifo_not_full, 4'b0000, wr_fifo_not_empty};
 
   // Create enable bits for the 16550 registers that we actually implement
   assign      reg_dlab_bit_wren = wb_cyc_i & wb_stb_i & wb_we_i & wb_sel_i[0] & (wb_adr_i[2] == 1'b0);
@@ -422,11 +422,11 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   end
 
   // Create IIR (and THR INT arm bit)
-  assign rd_fifo_becoming_empty = r_fifo_en & (~rpp) & (rd_bytes_avail == 4'h1);  // "rd fifo" is the WB write FIFO...
+  assign rd_fifo_becoming_empty = r_fifo_en & (~rpp) & (rd_bytes_avail == 4'h1); // "rd fifo" is the WB write FIFO...
 
   always @ (posedge wb_clk_i) begin
     if(wb_rst_i) thr_int_arm <= 1'b0;
-    else if(wb_wr | rd_fifo_becoming_empty) thr_int_arm <= 1'b1;  // Set when WB write fifo becomes empty, or on a write to it
+    else if(wb_wr | rd_fifo_becoming_empty) thr_int_arm <= 1'b1; // Set when WB write fifo becomes empty, or on a write to it
     else if(reg_iir_rden & (~wr_fifo_not_empty)) thr_int_arm <= 1'b0;
   end
 
@@ -434,7 +434,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
     if(wr_fifo_not_empty) iir_gen <= 3'b100;
     else if(thr_int_arm & rd_fifo_not_full) iir_gen <= 3'b010;
     else iir_gen <= 3'b001;
-  end 
+  end
 
   assign reg_iir = iir_gen;
 
@@ -445,7 +445,7 @@ module peripheral_dbg_pu_or1k_jsp_biu (
   assign bus_data_hi = {reg_mcr, reg_lsr, reg_msr, reg_scr};
   assign wb_dat_o = (wb_adr_i[2]) ? bus_data_hi : bus_data_lo;
 
-  assign data_from_wb = wb_dat_i[31:24];  // Data to the FIFO
+  assign data_from_wb = wb_dat_i[31:24]; // Data to the FIFO
 
   // Generate interrupt output
   assign int_o = (rd_fifo_not_full & thr_int_arm & reg_ier[1]) | (wr_fifo_not_empty & reg_ier[0]);

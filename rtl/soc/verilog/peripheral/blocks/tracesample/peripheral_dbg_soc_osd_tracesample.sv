@@ -45,17 +45,17 @@ module peripheral_dbg_soc_osd_tracesample #(
   parameter WIDTH = 16
 )
   (
-    input              clk,
-    input              rst,
+  input              clk,
+  input              rst,
 
-    input  [WIDTH-1:0] sample_data,
-    input              sample_valid,
+  input  [WIDTH-1:0] sample_data,
+  input              sample_valid,
 
-    output [WIDTH-1:0] fifo_data,
-    output             fifo_overflow,
-    output             fifo_valid,
-    input              fifo_ready
-  );
+  output [WIDTH-1:0] fifo_data,
+  output             fifo_overflow,
+  output             fifo_valid,
+  input              fifo_ready
+);
 
   reg [15:0]          ov_counter;
 

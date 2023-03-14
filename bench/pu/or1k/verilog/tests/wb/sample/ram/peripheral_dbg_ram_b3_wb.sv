@@ -52,23 +52,23 @@ module peripheral_dbg_ram_b3_wb #(
   parameter MEM_ADR_WIDTH  = 15
 )
   (
-    input wb_clk_i,
-    input wb_rst_i,
+  input wb_clk_i,
+  input wb_rst_i,
 
-    input  [AW-1:0] wb_adr_i,
-    input  [DW-1:0] wb_dat_i,
-    input  [   3:0] wb_sel_i,
-    input           wb_we_i,
-    input  [   1:0] wb_bte_i,
-    input  [   2:0] wb_cti_i,
-    input           wb_cyc_i,
-    input           wb_stb_i,
+  input  [AW-1:0] wb_adr_i,
+  input  [DW-1:0] wb_dat_i,
+  input  [   3:0] wb_sel_i,
+  input           wb_we_i,
+  input  [   1:0] wb_bte_i,
+  input  [   2:0] wb_cti_i,
+  input           wb_cyc_i,
+  input           wb_stb_i,
 
-    output          wb_ack_o,
-    output          wb_err_o,
-    output          wb_rty_o,
-    output [DW-1:0] wb_dat_o
-  );
+  output          wb_ack_o,
+  output          wb_err_o,
+  output          wb_rty_o,
+  output [DW-1:0] wb_dat_o
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -115,7 +115,7 @@ module peripheral_dbg_ram_b3_wb #(
 
   // Error when out of bounds of memory - skip top nibble of address in case
   // this is mapped somewhere other than 0x0.
-  wire addr_err  = wb_cyc_i & wb_stb_i & (|wb_adr_i[AW-1-4:MEM_ADR_WIDTH]);  
+  wire addr_err  = wb_cyc_i & wb_stb_i & (|wb_adr_i[AW-1-4:MEM_ADR_WIDTH]);
 
   reg wb_ack_o_r;
 
@@ -152,8 +152,8 @@ module peripheral_dbg_ram_b3_wb #(
       temp_word = mem[{addr[AW-1:2],2'd0}];
       // Big endian mapping.
       get_mem8 = (addr[1:0]==2'b00) ? temp_word[31:24] :
-                 (addr[1:0]==2'b01) ? temp_word[23:16] :
-                 (addr[1:0]==2'b10) ? temp_word[15: 8] : temp_word[7:0];
+      (addr[1:0]==2'b01) ? temp_word[23:16] :
+      (addr[1:0]==2'b10) ? temp_word[15: 8] : temp_word[7:0];
     end
   endfunction // get_mem8   
 
@@ -188,7 +188,7 @@ module peripheral_dbg_ram_b3_wb #(
 
   // Burst address generation logic
   always @(wb_ack_o or wb_b3_trans or wb_b3_trans_start
-           or wb_bte_i_r or wb_cti_i_r or wb_adr_i or adr) begin
+  or wb_bte_i_r or wb_cti_i_r or wb_adr_i or adr) begin
     if (wb_b3_trans_start)
       // Kick off burst_adr_counter, this assumes 4-byte words when getting
       // address off incoming Wishbone bus address! 
@@ -230,8 +230,8 @@ module peripheral_dbg_ram_b3_wb #(
   end
 
   // Ack Logic
-  assign wb_ack_o = wb_ack_o_r & wb_stb_i & 
-    !(burst_access_wrong_wb_adr | addr_err);
+  assign wb_ack_o = wb_ack_o_r & wb_stb_i &
+  !(burst_access_wrong_wb_adr | addr_err);
 
   //Handle wb_ack
   always @ (posedge wb_clk_i) begin

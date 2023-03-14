@@ -47,18 +47,18 @@ module peripheral_dbg_soc_osd_ctm_mmsp430 #(
   parameter MAX_PKT_LEN = 'hx
 )
   (
-    input                        clk,
-    input                        rst,
+  input                        clk,
+  input                        rst,
 
-    input                 [15:0] id,
+  input                 [15:0] id,
 
-    input  dii_flit              debug_in,
-    output dii_flit              debug_out,
-    output                       debug_in_ready,
-    input                        debug_out_ready,
+  input  dii_flit              debug_in,
+  output dii_flit              debug_out,
+  output                       debug_in_ready,
+  input                        debug_out_ready,
 
-    input mmsp430_trace_exec      trace_port
-  );
+  input mmsp430_trace_exec      trace_port
+);
 
   localparam ADDR_WIDTH = 32;
   localparam DATA_WIDTH = 32;
@@ -83,9 +83,9 @@ module peripheral_dbg_soc_osd_ctm_mmsp430 #(
   logic [DATA_WIDTH-1:0]        trace_time;
 
   peripheral_dbg_soc_osd_ctm #(
-    .ADDR_WIDTH(ADDR_WIDTH),
-    .DATA_WIDTH(DATA_WIDTH),
-    .MAX_PKT_LEN(MAX_PKT_LEN)
+  .ADDR_WIDTH(ADDR_WIDTH),
+  .DATA_WIDTH(DATA_WIDTH),
+  .MAX_PKT_LEN(MAX_PKT_LEN)
   )
   u_ctm (.*);
 

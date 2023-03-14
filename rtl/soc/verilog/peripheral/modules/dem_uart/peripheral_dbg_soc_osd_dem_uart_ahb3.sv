@@ -46,32 +46,32 @@ module peripheral_dbg_soc_osd_dem_uart_ahb3 #(
   parameter XLEN = 32
 )
   (
-    input         clk,
-    input         rst,
+  input         clk,
+  input         rst,
 
-    input   dii_flit debug_in,
-    output  debug_in_ready,
-    output  dii_flit debug_out,
-    input   debug_out_ready,
+  input   dii_flit debug_in,
+  output  debug_in_ready,
+  output  dii_flit debug_out,
+  input   debug_out_ready,
 
-    input [15:0]  id,
+  input [15:0]  id,
 
-    output        irq,
+  output        irq,
 
-    input             ahb3_hsel_i,
-    input  [    15:0] ahb3_haddr_i,
-    input  [XLEN-1:0] ahb3_hwdata_i,
-    input             ahb3_hwrite_i,
-    input  [     2:0] ahb3_hsize_i,
-    input  [     2:0] ahb3_hburst_i,
-    input  [     3:0] ahb3_hprot_i,
-    input  [     1:0] ahb3_htrans_i,
-    input             ahb3_hmastlock_i,
+  input             ahb3_hsel_i,
+  input  [    15:0] ahb3_haddr_i,
+  input  [XLEN-1:0] ahb3_hwdata_i,
+  input             ahb3_hwrite_i,
+  input  [     2:0] ahb3_hsize_i,
+  input  [     2:0] ahb3_hburst_i,
+  input  [     3:0] ahb3_hprot_i,
+  input  [     1:0] ahb3_htrans_i,
+  input             ahb3_hmastlock_i,
 
-    output [XLEN-1:0] ahb3_hrdata_o,
-    output            ahb3_hready_o,
-    output            ahb3_hresp_o
-  );
+  output [XLEN-1:0] ahb3_hrdata_o,
+  output            ahb3_hready_o,
+  output            ahb3_hresp_o
+);
 
   logic          bus_req;
   logic [2:0]    bus_addr;

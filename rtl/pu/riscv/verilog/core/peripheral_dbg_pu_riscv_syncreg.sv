@@ -73,7 +73,7 @@ module peripheral_dbg_pu_riscv_syncreg (
   // Combinatorial assignments
   assign a_enable    = a_not_equal & ack_sff_out;
   assign a_not_equal = !(DATA_IN == regA);
-  assign DATA_OUT    = regB;   
+  assign DATA_OUT    = regB;
 
   // register A (latches input any time it changes)
   always @ (posedge CLKA or posedge RST) begin
@@ -100,8 +100,8 @@ module peripheral_dbg_pu_riscv_syncreg (
     if(RST) begin
       strobe_toggle <= 1'b0;
     end
-      else if(a_enable) begin
-        strobe_toggle <= ~strobe_toggle;
+    else if(a_enable) begin
+      strobe_toggle <= ~strobe_toggle;
     end
   end
 
@@ -134,5 +134,5 @@ module peripheral_dbg_pu_riscv_syncreg (
     .RESET     (RST),
     .TOGGLE_IN (ack_toggle),
     .D_OUT     (ack_sff_out)
-  );  
+  );
 endmodule

@@ -86,7 +86,7 @@ module peripheral_dbg_jtag_vpi_testbench;
   end
 
   always
-    #20 sys_clock <= ~sys_clock;
+  #20 sys_clock <= ~sys_clock;
 
   initial begin
     #100 sys_reset <= 1;
@@ -94,7 +94,7 @@ module peripheral_dbg_jtag_vpi_testbench;
   end
 
   peripheral_dbg_jtag_vpi #(
-    .DEBUG_INFO(0)
+  .DEBUG_INFO(0)
   )
   jtag_vpi (
     .tms (tms_pad_i),

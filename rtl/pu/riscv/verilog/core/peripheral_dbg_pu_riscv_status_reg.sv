@@ -49,17 +49,17 @@ module peripheral_dbg_pu_riscv_status_reg  #(
   parameter CORES_PER_TILE = 1
 )
   (
-    input                                                  tlr_i,
-    input                                                  tck_i,
-    input                                                  we_i,
-    output logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] ctrl_reg_o,
+  input                                                  tlr_i,
+  input                                                  tck_i,
+  input                                                  we_i,
+  output logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] ctrl_reg_o,
 
-    input                                                  cpu_rstn_i,
-    input                                                  cpu_clk_i,
-    input  logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] data_i,
-    input  logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] bp_i,
-    output logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] cpu_stall_o
-  );
+  input                                                  cpu_rstn_i,
+  input                                                  cpu_clk_i,
+  input  logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] data_i,
+  input  logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] bp_i,
+  output logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] cpu_stall_o
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //

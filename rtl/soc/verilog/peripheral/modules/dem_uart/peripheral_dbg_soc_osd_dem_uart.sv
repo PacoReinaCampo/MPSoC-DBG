@@ -81,12 +81,12 @@ module peripheral_dbg_soc_osd_dem_uart (
   assign drop = stall;
 
   peripheral_dbg_soc_osd_regaccess_layer #(
-    .MOD_VENDOR(16'h1),
-    .MOD_TYPE(16'h2),
-    .MOD_VERSION(16'h0),
-    .MAX_REG_SIZE(16),
-    .CAN_STALL(1),
-    .MOD_EVENT_DEST_DEFAULT(16'h0)
+  .MOD_VENDOR(16'h1),
+  .MOD_TYPE(16'h2),
+  .MOD_VERSION(16'h0),
+  .MAX_REG_SIZE(16),
+  .CAN_STALL(1),
+  .MOD_EVENT_DEST_DEFAULT(16'h0)
   )
   u_regaccess(
     .clk (clk),

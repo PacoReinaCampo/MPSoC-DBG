@@ -53,8 +53,8 @@ module peripheral_dbg_soc_mam_adapter_bb #(
 
   // byte select width
   localparam SW = (DW == 32) ? 4 :
-                  (DW == 16) ? 2 :
-                  (DW ==  8) ? 1 : 'hx,
+  (DW == 16) ? 2 :
+  (DW ==  8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -68,36 +68,36 @@ module peripheral_dbg_soc_mam_adapter_bb #(
   localparam WORD_AW = AW - BYTE_AW
 )
   (
-    // Blackbone SLAVE interface: input side (to the CPU etc.)
-    input  [AW-1:0] bb_in_addr_i,
-    input  [DW-1:0] bb_in_din_i,
-    input           bb_in_en_i,
-    input           bb_in_we_i,
+  // Blackbone SLAVE interface: input side (to the CPU etc.)
+  input  [AW-1:0] bb_in_addr_i,
+  input  [DW-1:0] bb_in_din_i,
+  input           bb_in_en_i,
+  input           bb_in_we_i,
 
-    output [DW-1:0] bb_in_dout_o,
+  output [DW-1:0] bb_in_dout_o,
 
-    input           bb_in_clk_i,
-    input           bb_in_rst_i,
+  input           bb_in_clk_i,
+  input           bb_in_rst_i,
 
-    // Blackbone SLAVE interface: output side (to the memory)
-    output [AW-1:0] bb_out_addr_i,
-    output [DW-1:0] bb_out_din_i,
-    output          bb_out_en_i,
-    output          bb_out_we_i,
+  // Blackbone SLAVE interface: output side (to the memory)
+  output [AW-1:0] bb_out_addr_i,
+  output [DW-1:0] bb_out_din_i,
+  output          bb_out_en_i,
+  output          bb_out_we_i,
 
-    input [DW-1:0]  bb_out_dout_o,
+  input [DW-1:0]  bb_out_dout_o,
 
-    output          bb_out_clk_i,
-    output          bb_out_rst_i,
+  output          bb_out_clk_i,
+  output          bb_out_rst_i,
 
-    // MAM Blackbone MASTER interface (incoming)
-    input  [AW-1:0] bb_mam_addr_o,
-    input  [DW-1:0] bb_mam_din_o,
-    input           bb_mam_en_o,
-    input           bb_mam_we_o,
+  // MAM Blackbone MASTER interface (incoming)
+  input  [AW-1:0] bb_mam_addr_o,
+  input  [DW-1:0] bb_mam_din_o,
+  input           bb_mam_en_o,
+  input           bb_mam_we_o,
 
-    output [DW-1:0] bb_mam_dout_i
-  );
+  output [DW-1:0] bb_mam_dout_i
+);
 
   // we use a common clock for all this module!
   assign bb_out_clk_i = bb_in_clk_i;

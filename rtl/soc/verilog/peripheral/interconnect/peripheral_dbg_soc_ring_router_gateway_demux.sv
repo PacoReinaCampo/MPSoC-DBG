@@ -48,22 +48,22 @@ module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_demux #(
   parameter LOCAL_SUBNET = 0
 )
   (
-    input clk,
-    input rst,
+  input clk,
+  input rst,
 
-    input [15:0] id,
+  input [15:0] id,
 
-    input  dii_flit in_ring,
-    output dii_flit out_local,
-    output dii_flit out_ext,
-    output dii_flit out_ring,
+  input  dii_flit in_ring,
+  output dii_flit out_local,
+  output dii_flit out_ext,
+  output dii_flit out_ring,
 
-    output reg in_ring_ready,
+  output reg in_ring_ready,
 
-    input out_local_ready,
-    input out_ext_ready,
-    input out_ring_ready
-  );
+  input out_local_ready,
+  input out_ext_ready,
+  input out_ring_ready
+);
 
   reg worm;
   reg worm_local;

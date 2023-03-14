@@ -66,36 +66,36 @@ module peripheral_dbg_soc_osd_mam #(
   parameter ENDIAN      = 1
 )
   (
-    input                         clk,
-    input                         rst,
+  input                         clk,
+  input                         rst,
 
-    input                         dii_flit debug_in,
-    output                        dii_flit debug_out,
+  input                         dii_flit debug_in,
+  output                        dii_flit debug_out,
 
-    output debug_in_ready,
-    input  debug_out_ready,
+  output debug_in_ready,
+  input  debug_out_ready,
 
-    input [15:0]                  id,
+  input [15:0]                  id,
 
-    output reg                    req_valid, // Start a new memory access request
-    input                         req_ready, // Acknowledge the new memory access request
-    output reg                    req_we, // 0: Read, 1: Write
-    output reg [ADDR_WIDTH  -1:0] req_addr, // Request base address
-    output reg                    req_burst, // 0 for single beat access, 1 for incremental burst
-    output reg [            12:0] req_beats, // Burst length in number of words
-    output reg                    req_sync, // Request a synchronous access
+  output reg                    req_valid, // Start a new memory access request
+  input                         req_ready, // Acknowledge the new memory access request
+  output reg                    req_we, // 0: Read, 1: Write
+  output reg [ADDR_WIDTH  -1:0] req_addr, // Request base address
+  output reg                    req_burst, // 0 for single beat access, 1 for incremental burst
+  output reg [            12:0] req_beats, // Burst length in number of words
+  output reg                    req_sync, // Request a synchronous access
 
-    output reg                    write_valid, // Next write data is valid
-    output reg [DATA_WIDTH  -1:0] write_data, // Write data
-    output reg [DATA_WIDTH/8-1:0] write_strb, // Byte strobe if req_burst==0
-    input                         write_ready, // Acknowledge this data item
+  output reg                    write_valid, // Next write data is valid
+  output reg [DATA_WIDTH  -1:0] write_data, // Write data
+  output reg [DATA_WIDTH/8-1:0] write_strb, // Byte strobe if req_burst==0
+  input                         write_ready, // Acknowledge this data item
 
-    input                         write_complete, // Signal completion if sync access
+  input                         write_complete, // Signal completion if sync access
 
-    input                         read_valid, // Next read data is valid
-    input      [DATA_WIDTH  -1:0] read_data, // Read data
-    output reg                    read_ready // Acknowledge this data item
-  );
+  input                         read_valid, // Next read data is valid
+  input      [DATA_WIDTH  -1:0] read_data, // Read data
+  output reg                    read_ready // Acknowledge this data item
+);
 
   // This is the number of (16 bit) words needed to form an address
   localparam ADDR_WORDS = ADDR_WIDTH >> 4;
@@ -165,19 +165,19 @@ module peripheral_dbg_soc_osd_mam #(
 
   initial begin
     assert(DATA_WIDTH[2:0] == 0)
-      else $fatal(1, "datawidth of MAM read/write port must be times of bytes!");
+    else $fatal(1, "datawidth of MAM read/write port must be times of bytes!");
   end
 
   assign read_data_m = ENDIAN ? read_data    : endian_conv(read_data);
   assign write_data  = ENDIAN ? write_data_m : endian_conv(write_data_m);
 
   peripheral_dbg_soc_osd_regaccess_layer #(
-    .MOD_VENDOR(16'h1),
-    .MOD_TYPE(16'h3),
-    .MOD_VERSION(16'h0),
-    .MOD_EVENT_DEST_DEFAULT(16'h0),
-    .MAX_REG_SIZE(16),
-    .CAN_STALL(0)
+  .MOD_VENDOR(16'h1),
+  .MOD_TYPE(16'h3),
+  .MOD_VERSION(16'h0),
+  .MOD_EVENT_DEST_DEFAULT(16'h0),
+  .MAX_REG_SIZE(16),
+  .CAN_STALL(0)
   )
   u_regaccess(
     .*,
@@ -224,22 +224,22 @@ module peripheral_dbg_soc_osd_mam #(
     else if (reg_addr[15:7] == 9'h5) // 0x280-0x300
       if (reg_addr[3])
         reg_err = 1'b1;
-    else if (reg_addr[6:4] > REGIONS)
-      reg_err = 1'b1;
-    else if (reg_addr[2] == 0) // addr
-      case (reg_addr[1:0])
-        0: reg_rdata = base_addr[reg_addr[6:4]][15:0];
-        1: reg_rdata = base_addr[reg_addr[6:4]][31:16];
-        2: reg_rdata = base_addr[reg_addr[6:4]][47:32];
-        3: reg_rdata = base_addr[reg_addr[6:4]][63:48];
-      endcase // case (reg_addr[1:0])
-    else
-      case (reg_addr[1:0])
-        0: reg_rdata = mem_size[reg_addr[6:4]][15:0];
-        1: reg_rdata = mem_size[reg_addr[6:4]][31:16];
-        2: reg_rdata = mem_size[reg_addr[6:4]][47:32];
-        3: reg_rdata = mem_size[reg_addr[6:4]][63:48];
-      endcase // case (reg_addr[1:0])
+      else if (reg_addr[6:4] > REGIONS)
+        reg_err = 1'b1;
+      else if (reg_addr[2] == 0) // addr
+        case (reg_addr[1:0])
+          0: reg_rdata = base_addr[reg_addr[6:4]][15:0];
+          1: reg_rdata = base_addr[reg_addr[6:4]][31:16];
+          2: reg_rdata = base_addr[reg_addr[6:4]][47:32];
+          3: reg_rdata = base_addr[reg_addr[6:4]][63:48];
+        endcase // case (reg_addr[1:0])
+      else
+        case (reg_addr[1:0])
+          0: reg_rdata = mem_size[reg_addr[6:4]][15:0];
+          1: reg_rdata = mem_size[reg_addr[6:4]][31:16];
+          2: reg_rdata = mem_size[reg_addr[6:4]][47:32];
+          3: reg_rdata = mem_size[reg_addr[6:4]][63:48];
+        endcase // case (reg_addr[1:0])
   end
 
   enum {
@@ -511,9 +511,9 @@ module peripheral_dbg_soc_osd_mam #(
         end
         else begin
           // DI FLAGS
-          dp_out.data[15:14] = 2'b10;   // FLAGS.TYPE = EVENT
+          dp_out.data[15:14] = 2'b10; // FLAGS.TYPE = EVENT
           dp_out.data[13:10] = 4'b0000; // FLAGS.TYPE_SUB = 0
-          dp_out.data[9:0] = 10'h0;     // reserved
+          dp_out.data[9:0] = 10'h0; // reserved
           dp_out.last = 1;
         end
         if (dp_out_ready) begin
@@ -535,9 +535,9 @@ module peripheral_dbg_soc_osd_mam #(
         end
         else begin
           // DI FLAGS
-          dp_out.data[15:14] = 2'b10;    // FLAGS.TYPE = EVENT
-          dp_out.data[13:10] = 4'b0000;  // FLAGS.TYPE_SUB = 0
-          dp_out.data[9:0]   = 10'h0;    // reserved
+          dp_out.data[15:14] = 2'b10; // FLAGS.TYPE = EVENT
+          dp_out.data[13:10] = 4'b0000; // FLAGS.TYPE_SUB = 0
+          dp_out.data[9:0]   = 10'h0; // reserved
         end
         if (dp_out_ready) begin
           nxt_counter = counter + 1;

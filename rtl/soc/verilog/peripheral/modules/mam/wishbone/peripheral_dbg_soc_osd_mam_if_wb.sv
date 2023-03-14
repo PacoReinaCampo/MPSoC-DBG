@@ -46,44 +46,44 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
 
   //Byte select width
   localparam SW = (DATA_WIDTH == 32) ? 4 :
-                  (DATA_WIDTH == 16) ? 2 :
-                  (DATA_WIDTH ==  8) ? 1 : 'hx
+  (DATA_WIDTH == 16) ? 2 :
+  (DATA_WIDTH ==  8) ? 1 : 'hx
 )
   (
-    input                       clk_i,
-    input                       rst_i,
+  input                       clk_i,
+  input                       rst_i,
 
-    input                       req_valid,  // Start a new memory access request
-    output reg                  req_ready,  // Acknowledge the new memory access request
-    input                       req_we,     // 0: Read, 1: Write
-    input    [ADDR_WIDTH  -1:0] req_addr,   // Request base address
-    input                       req_burst,  // 0 for single beat access, 1 for incremental burst
-    input    [            12:0] req_beats,  // Burst length in number of words
+  input                       req_valid, // Start a new memory access request
+  output reg                  req_ready, // Acknowledge the new memory access request
+  input                       req_we, // 0: Read, 1: Write
+  input    [ADDR_WIDTH  -1:0] req_addr, // Request base address
+  input                       req_burst, // 0 for single beat access, 1 for incremental burst
+  input    [            12:0] req_beats, // Burst length in number of words
 
-    input                       write_valid,  // Next write data is valid
-    input    [DATA_WIDTH  -1:0] write_data,   // Write data
-    input    [DATA_WIDTH/8-1:0] write_strb,   // Byte strobe if req_burst==0
-    output reg                  write_ready,  // Acknowledge this data item
+  input                       write_valid, // Next write data is valid
+  input    [DATA_WIDTH  -1:0] write_data, // Write data
+  input    [DATA_WIDTH/8-1:0] write_strb, // Byte strobe if req_burst==0
+  output reg                  write_ready, // Acknowledge this data item
 
-    output reg                  read_valid,  // Next read data is valid
-    output reg [DATA_WIDTH-1:0] read_data,   // Read data
-    input                       read_ready,  // Acknowledge this data item
+  output reg                  read_valid, // Next read data is valid
+  output reg [DATA_WIDTH-1:0] read_data, // Read data
+  input                       read_ready, // Acknowledge this data item
 
-    output reg                  stb_o,
-    output                      cyc_o,
-    input                       ack_i,
-    output reg                  we_o,
-    output reg [ADDR_WIDTH-1:0] addr_o,
-    output reg [DATA_WIDTH-1:0] dat_o,
-    input      [DATA_WIDTH-1:0] dat_i,
-    output reg [           2:0] cti_o,
-    output reg [           1:0] bte_o,
-    output reg [SW        -1:0] sel_o
-  );
+  output reg                  stb_o,
+  output                      cyc_o,
+  input                       ack_i,
+  output reg                  we_o,
+  output reg [ADDR_WIDTH-1:0] addr_o,
+  output reg [DATA_WIDTH-1:0] dat_o,
+  input      [DATA_WIDTH-1:0] dat_i,
+  output reg [           2:0] cti_o,
+  output reg [           1:0] bte_o,
+  output reg [SW        -1:0] sel_o
+);
 
   enum { STATE_IDLE, STATE_WRITE_LAST, STATE_WRITE_LAST_WAIT,
-         STATE_WRITE, STATE_WRITE_WAIT, STATE_READ,
-         STATE_READ_WAIT } state, nxt_state;
+    STATE_WRITE, STATE_WRITE_WAIT, STATE_READ,
+    STATE_READ_WAIT } state, nxt_state;
 
   logic       nxt_we_o;
   logic [2:0] nxt_cti_o;
@@ -245,7 +245,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
             else begin
               nxt_state = STATE_WRITE_WAIT;
             end
-          end 
+          end
         end
       end // STATE_WRITE
       STATE_READ: begin

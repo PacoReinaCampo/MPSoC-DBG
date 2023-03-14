@@ -74,7 +74,7 @@ module peripheral_dbg_testbench;
   logic                    ahb3_tdo_o;
 
   // TAP states
-  logic                    ahb3_tlr_i;  //TestLogicReset
+  logic                    ahb3_tlr_i; //TestLogicReset
   logic                    ahb3_shift_dr_i;
   logic                    ahb3_pause_dr_i;
   logic                    ahb3_update_dr_i;
@@ -132,19 +132,19 @@ module peripheral_dbg_testbench;
 
   //DUT AHB3
   peripheral_dbg_pu_riscv_top_ahb3 #(
-    .X ( X ),
-    .Y ( Y ),
-    .Z ( Z ),
+  .X ( X ),
+  .Y ( Y ),
+  .Z ( Z ),
 
-    .CORES_PER_TILE ( CORES_PER_TILE ),
+  .CORES_PER_TILE ( CORES_PER_TILE ),
 
-    .ADDR_WIDTH ( ADDR_WIDTH ),
-    .DATA_WIDTH ( DATA_WIDTH ),
+  .ADDR_WIDTH ( ADDR_WIDTH ),
+  .DATA_WIDTH ( DATA_WIDTH ),
 
-    .CPU_ADDR_WIDTH ( CPU_ADDR_WIDTH ),
-    .CPU_DATA_WIDTH ( CPU_DATA_WIDTH ),
+  .CPU_ADDR_WIDTH ( CPU_ADDR_WIDTH ),
+  .CPU_DATA_WIDTH ( CPU_DATA_WIDTH ),
 
-    .DATAREG_LEN ( DATAREG_LEN )
+  .DATAREG_LEN ( DATAREG_LEN )
   )
   dbg_pu_riscv_top_ahb3 (
     // JTAG signals
@@ -189,7 +189,7 @@ module peripheral_dbg_testbench;
     .jsp_PRDATA  ( jsp_PRDATA  ),
     .jsp_PREADY  ( jsp_PREADY  ),
     .jsp_PSLVERR ( jsp_PSLVERR ),
-  
+
     .int_o ( int_o ),
 
     //CPU/Thread debug ports

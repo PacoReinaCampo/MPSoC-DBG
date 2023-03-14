@@ -53,8 +53,8 @@ module peripheral_dbg_soc_mam_adapter_wb #(
 
   // byte select width
   localparam SW = (DW == 32) ? 4 :
-                  (DW == 16) ? 2 :
-                  (DW ==  8) ? 1 : 'hx,
+  (DW == 16) ? 2 :
+  (DW ==  8) ? 1 : 'hx,
 
   /*
    * +--------------+--------------+
@@ -68,57 +68,57 @@ module peripheral_dbg_soc_mam_adapter_wb #(
   localparam WORD_AW = AW - BYTE_AW
 )
   (
-    // Blackbone SLAVE interface: input side (to the CPU etc.)
-    input  [AW-1:0] wb_in_adr_i,
-    input  [   1:0] wb_in_bte_i,
-    input  [   2:0] wb_in_cti_i,
-    input           wb_in_cyc_i,
-    input  [DW-1:0] wb_in_dat_i,
-    input  [SW-1:0] wb_in_sel_i,
-    input           wb_in_stb_i,
-    input           wb_in_we_i,
+  // Blackbone SLAVE interface: input side (to the CPU etc.)
+  input  [AW-1:0] wb_in_adr_i,
+  input  [   1:0] wb_in_bte_i,
+  input  [   2:0] wb_in_cti_i,
+  input           wb_in_cyc_i,
+  input  [DW-1:0] wb_in_dat_i,
+  input  [SW-1:0] wb_in_sel_i,
+  input           wb_in_stb_i,
+  input           wb_in_we_i,
 
-    output          wb_in_ack_o,
-    output          wb_in_err_o,
-    output          wb_in_rty_o,
-    output [DW-1:0] wb_in_dat_o,
+  output          wb_in_ack_o,
+  output          wb_in_err_o,
+  output          wb_in_rty_o,
+  output [DW-1:0] wb_in_dat_o,
 
-    input           wb_in_clk_i,
-    input           wb_in_rst_i,
+  input           wb_in_clk_i,
+  input           wb_in_rst_i,
 
-    // Blackbone SLAVE interface: output side (to the memory)
-    output [AW-1:0] wb_out_adr_i,
-    output [   1:0] wb_out_bte_i,
-    output [   2:0] wb_out_cti_i,
-    output          wb_out_cyc_i,
-    output [DW-1:0] wb_out_dat_i,
-    output [SW-1:0] wb_out_sel_i,
-    output          wb_out_stb_i,
-    output          wb_out_we_i,
+  // Blackbone SLAVE interface: output side (to the memory)
+  output [AW-1:0] wb_out_adr_i,
+  output [   1:0] wb_out_bte_i,
+  output [   2:0] wb_out_cti_i,
+  output          wb_out_cyc_i,
+  output [DW-1:0] wb_out_dat_i,
+  output [SW-1:0] wb_out_sel_i,
+  output          wb_out_stb_i,
+  output          wb_out_we_i,
 
-    input           wb_out_ack_o,
-    input           wb_out_err_o,
-    input           wb_out_rty_o,
-    input [DW-1:0]  wb_out_dat_o,
+  input           wb_out_ack_o,
+  input           wb_out_err_o,
+  input           wb_out_rty_o,
+  input [DW-1:0]  wb_out_dat_o,
 
-    output          wb_out_clk_i,
-    output          wb_out_rst_i,
+  output          wb_out_clk_i,
+  output          wb_out_rst_i,
 
-    // MAM Blackbone MASTER interface (incoming)
-    input  [AW-1:0] wb_mam_adr_o,
-    input           wb_mam_cyc_o,
-    input  [DW-1:0] wb_mam_dat_o,
-    input  [SW-1:0] wb_mam_sel_o,
-    input           wb_mam_stb_o,
-    input           wb_mam_we_o,
-    input           wb_mam_cab_o,
-    input  [   2:0] wb_mam_cti_o,
-    input  [   1:0] wb_mam_bte_o,
-    output          wb_mam_ack_i,
-    output          wb_mam_rty_i,
-    output          wb_mam_err_i,
-    output [DW-1:0] wb_mam_dat_i
-  );
+  // MAM Blackbone MASTER interface (incoming)
+  input  [AW-1:0] wb_mam_adr_o,
+  input           wb_mam_cyc_o,
+  input  [DW-1:0] wb_mam_dat_o,
+  input  [SW-1:0] wb_mam_sel_o,
+  input           wb_mam_stb_o,
+  input           wb_mam_we_o,
+  input           wb_mam_cab_o,
+  input  [   2:0] wb_mam_cti_o,
+  input  [   1:0] wb_mam_bte_o,
+  output          wb_mam_ack_i,
+  output          wb_mam_rty_i,
+  output          wb_mam_err_i,
+  output [DW-1:0] wb_mam_dat_i
+);
 
   // we use a common clock for all this module!
   assign wb_out_clk_i = wb_in_clk_i;

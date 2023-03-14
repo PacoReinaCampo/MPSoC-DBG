@@ -43,40 +43,40 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_ctm #(
-  parameter ADDR_WIDTH  = 64,  // width of memory addresses
-  parameter DATA_WIDTH  = 64,  // system word length
-  parameter MAX_PKT_LEN = 'hx  // maximum length of a DI packet in flits
+  parameter ADDR_WIDTH  = 64, // width of memory addresses
+  parameter DATA_WIDTH  = 64, // system word length
+  parameter MAX_PKT_LEN = 'hx // maximum length of a DI packet in flits
 )
   (
-    input                  clk,
-    input                  rst,
+  input                  clk,
+  input                  rst,
 
-    input [          15:0] id,
+  input [          15:0] id,
 
-    input                  dii_flit debug_in,
-    output                 debug_in_ready,
-    output                 dii_flit debug_out,
-    input                  debug_out_ready,
+  input                  dii_flit debug_in,
+  output                 debug_in_ready,
+  output                 dii_flit debug_out,
+  input                  debug_out_ready,
 
-    input                  trace_valid,
-    input [ADDR_WIDTH-1:0] trace_pc,
-    input [ADDR_WIDTH-1:0] trace_npc,
-    input                  trace_jal,
-    input                  trace_jalr,
-    input                  trace_branch,
-    input                  trace_load,
-    input                  trace_store,
-    input                  trace_trap,
-    input                  trace_xcpt,
-    input                  trace_mem,
-    input                  trace_csr,
-    input                  trace_br_taken,
-    input [           1:0] trace_prv,
-    input [ADDR_WIDTH-1:0] trace_addr,
-    input [DATA_WIDTH-1:0] trace_rdata,
-    input [DATA_WIDTH-1:0] trace_wdata,
-    input [DATA_WIDTH-1:0] trace_time
-  );
+  input                  trace_valid,
+  input [ADDR_WIDTH-1:0] trace_pc,
+  input [ADDR_WIDTH-1:0] trace_npc,
+  input                  trace_jal,
+  input                  trace_jalr,
+  input                  trace_branch,
+  input                  trace_load,
+  input                  trace_store,
+  input                  trace_trap,
+  input                  trace_xcpt,
+  input                  trace_mem,
+  input                  trace_csr,
+  input                  trace_br_taken,
+  input [           1:0] trace_prv,
+  input [ADDR_WIDTH-1:0] trace_addr,
+  input [DATA_WIDTH-1:0] trace_rdata,
+  input [DATA_WIDTH-1:0] trace_wdata,
+  input [DATA_WIDTH-1:0] trace_time
+);
 
   localparam EW = 3 + 32 + 2 + ADDR_WIDTH + ADDR_WIDTH;
 
@@ -113,11 +113,11 @@ module peripheral_dbg_soc_osd_ctm #(
   logic                   sample_prvchange;
 
   peripheral_dbg_soc_osd_regaccess_layer #(
-    .MOD_VENDOR(16'h1),
-    .MOD_TYPE(16'h5),
-    .MOD_VERSION(16'h0),
-    .MAX_REG_SIZE(16),
-    .CAN_STALL(1)
+  .MOD_VENDOR(16'h1),
+  .MOD_TYPE(16'h5),
+  .MOD_VERSION(16'h0),
+  .MAX_REG_SIZE(16),
+  .CAN_STALL(1)
   )
   u_regaccess (
     .*,
@@ -150,13 +150,13 @@ module peripheral_dbg_soc_osd_ctm #(
   assign sample_prvchange = (prv_reg != trace_prv);
 
   assign sample_valid = (trace_valid & !trace_mem &
-                        (trace_jal | trace_jalr)) | sample_prvchange;
+  (trace_jal | trace_jalr)) | sample_prvchange;
 
   assign sample_data = {sample_prvchange, trace_jal, trace_jalr,
-                        trace_prv, trace_pc, trace_npc, timestamp};
+  trace_prv, trace_pc, trace_npc, timestamp};
 
   peripheral_dbg_soc_osd_timestamp #(
-    .WIDTH(32)
+  .WIDTH(32)
   )
   u_timestamp(
     .clk  (clk),
@@ -166,7 +166,7 @@ module peripheral_dbg_soc_osd_ctm #(
   );
 
   peripheral_dbg_soc_osd_tracesample #(
-    .WIDTH(EW)
+  .WIDTH(EW)
   )
   u_sample (
     .clk            (clk),
@@ -180,8 +180,8 @@ module peripheral_dbg_soc_osd_ctm #(
   );
 
   peripheral_dbg_soc_osd_fifo #(
-    .WIDTH(EW+1),
-    .DEPTH(8)
+  .WIDTH(EW+1),
+  .DEPTH(8)
   )
   u_buffer(
     .clk (clk),
@@ -196,8 +196,8 @@ module peripheral_dbg_soc_osd_ctm #(
   );
 
   peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
-    .DATA_WIDTH(EW),
-    .MAX_PKT_LEN(MAX_PKT_LEN)
+  .DATA_WIDTH(EW),
+  .MAX_PKT_LEN(MAX_PKT_LEN)
   )
   u_packetization (
     .clk             (clk),

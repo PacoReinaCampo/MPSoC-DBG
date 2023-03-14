@@ -49,20 +49,20 @@ module peripheral_dbg_soc_osd_scm #(
   parameter MAX_PKT_LEN=12
 )
   (
-    input clk,
-    input rst,
+  input clk,
+  input rst,
 
-    input [15:0] id,
+  input [15:0] id,
 
-    input  dii_flit debug_in,
-    output dii_flit debug_out,
+  input  dii_flit debug_in,
+  output dii_flit debug_out,
 
-    output debug_in_ready,
-    input  debug_out_ready,
+  output debug_in_ready,
+  input  debug_out_ready,
 
-    output sys_rst,
-    output cpu_rst
-  );
+  output sys_rst,
+  output cpu_rst
+);
 
   logic        reg_request;
   logic        reg_write;
@@ -79,10 +79,10 @@ module peripheral_dbg_soc_osd_scm #(
   assign cpu_rst = rst_vector[1] | rst;
 
   peripheral_dbg_soc_osd_regaccess #(
-    .MOD_VENDOR(16'h1),
-    .MOD_TYPE(16'h1),
-    .MOD_VERSION(16'h0),
-    .MAX_REG_SIZE(16)
+  .MOD_VENDOR(16'h1),
+  .MOD_TYPE(16'h1),
+  .MOD_VERSION(16'h0),
+  .MAX_REG_SIZE(16)
   )
   u_regaccess(
     .*,

@@ -48,22 +48,22 @@ module peripheral_dbg_soc_debug_ring_expand #(
   parameter BUFFER_SIZE = 4
 )
   (
-    input clk,
-    input rst,
-    input [PORTS-1:0][15:0] id_map,
+  input clk,
+  input rst,
+  input [PORTS-1:0][15:0] id_map,
 
-    input  dii_flit [PORTS-1:0] dii_in,
-    output dii_flit [PORTS-1:0] dii_out,
+  input  dii_flit [PORTS-1:0] dii_in,
+  output dii_flit [PORTS-1:0] dii_out,
 
-    output [PORTS-1:0] dii_in_ready,
-    input  [PORTS-1:0] dii_out_ready,
+  output [PORTS-1:0] dii_in_ready,
+  input  [PORTS-1:0] dii_out_ready,
 
-    input  dii_flit [1:0] ext_in,
-    output dii_flit [1:0] ext_out,
+  input  dii_flit [1:0] ext_in,
+  output dii_flit [1:0] ext_out,
 
-    output [1:0] ext_in_ready, // extension input ports
-    input  [1:0] ext_out_ready // extension output ports
-  );
+  output [1:0] ext_in_ready, // extension input ports
+  input  [1:0] ext_out_ready // extension output ports
+);
 
   genvar i;
 
@@ -74,7 +74,7 @@ module peripheral_dbg_soc_debug_ring_expand #(
   generate
     for(i=0; i<PORTS; i++) begin : gen_router
       peripheral_dbg_soc_ring_router #(
-        .BUFFER_SIZE(BUFFER_SIZE)
+      .BUFFER_SIZE(BUFFER_SIZE)
       )
       u_router (
         .*,

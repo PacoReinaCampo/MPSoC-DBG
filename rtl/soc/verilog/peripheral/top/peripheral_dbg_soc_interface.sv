@@ -53,25 +53,25 @@ module peripheral_dbg_soc_interface #(
   parameter DEBUG_ROUTER_BUFFER_SIZE = 4
 )
   (
-    input  clk,
-    input  rst,
+  input  clk,
+  input  rst,
 
-    // GLIP host connection
-    glip_channel.slave glip_in,
-    glip_channel.master glip_out,
+  // GLIP host connection
+  glip_channel.slave glip_in,
+  glip_channel.master glip_out,
 
-    // ring connection
-    output dii_flit [1:0] ring_out,
-    input  dii_flit [1:0] ring_in,
-    input  [1:0] ring_out_ready,
-    output [1:0] ring_in_ready,
+  // ring connection
+  output dii_flit [1:0] ring_out,
+  input  dii_flit [1:0] ring_in,
+  input  [1:0] ring_out_ready,
+  output [1:0] ring_in_ready,
 
-    // system reset request
-    output sys_rst,
+  // system reset request
+  output sys_rst,
 
-    // CPU reset request
-    output cpu_rst
-  );
+  // CPU reset request
+  output cpu_rst
+);
 
   dii_flit ring_tie;
   logic  ring_tie_ready;
@@ -97,9 +97,9 @@ module peripheral_dbg_soc_interface #(
   assign ring_tie.valid = 0;
 
   peripheral_dbg_soc_ring_router_gateway #(
-    .BUFFER_SIZE  (DEBUG_ROUTER_BUFFER_SIZE),
-    .SUBNET_BITS  (SUBNET_BITS),
-    .LOCAL_SUBNET (LOCAL_SUBNET)
+  .BUFFER_SIZE  (DEBUG_ROUTER_BUFFER_SIZE),
+  .SUBNET_BITS  (SUBNET_BITS),
+  .LOCAL_SUBNET (LOCAL_SUBNET)
   )
   u_peripheral_dbg_soc_ring_router_gateway (
     .clk(clk),
@@ -134,7 +134,7 @@ module peripheral_dbg_soc_interface #(
 
   // Host Interface: all traffic to foreign subnets goes through this interface
   peripheral_dbg_soc_osd_him #(
-    .MAX_PKT_LEN(MAX_PKT_LEN)
+  .MAX_PKT_LEN(MAX_PKT_LEN)
   )
   u_him (
     .clk             (clk),
@@ -150,9 +150,9 @@ module peripheral_dbg_soc_interface #(
   // Subnet Control Module
   // Manages this subnet, i.e. the on-chip OSD part
   peripheral_dbg_soc_osd_scm #(
-    .SYSTEM_VENDOR_ID(SYSTEM_VENDOR_ID),
-    .SYSTEM_DEVICE_ID(SYSTEM_DEVICE_ID),
-    .NUM_MOD(NUM_MODULES)
+  .SYSTEM_VENDOR_ID(SYSTEM_VENDOR_ID),
+  .SYSTEM_DEVICE_ID(SYSTEM_DEVICE_ID),
+  .NUM_MOD(NUM_MODULES)
   )
   u_scm (
     .clk             (clk),

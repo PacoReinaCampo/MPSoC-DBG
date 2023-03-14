@@ -46,17 +46,17 @@ module peripheral_dbg_soc_osd_fifo #(
   parameter DEPTH = 'x
 )
   (
-    input              clk,
-    input              rst,
+  input              clk,
+  input              rst,
 
-    input [WIDTH-1:0]  in_data,
-    input              in_valid,
-    output             in_ready,
+  input [WIDTH-1:0]  in_data,
+  input              in_valid,
+  output             in_ready,
 
-    output [WIDTH-1:0] out_data,
-    output             out_valid,
-    input              out_ready
-  );
+  output [WIDTH-1:0] out_data,
+  output             out_valid,
+  input              out_ready
+);
 
   // Signals for fifo
   reg [WIDTH-1:0] fifo_data     [0:DEPTH-1]; //actual fifo

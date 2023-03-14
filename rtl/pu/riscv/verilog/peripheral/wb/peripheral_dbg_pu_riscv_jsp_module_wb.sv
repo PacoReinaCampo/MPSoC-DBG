@@ -46,35 +46,35 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
   parameter DBG_JSP_DATAREG_LEN = 64
 )
   (
-    input                           rst_i,
+  input                           rst_i,
 
-    // JTAG signals
-    input                           tck_i,
-    input                           tdi_i,
-    output                          module_tdo_o,
+  // JTAG signals
+  input                           tck_i,
+  input                           tdi_i,
+  output                          module_tdo_o,
 
   // TAP states
-    input                           capture_dr_i,
-    input                           shift_dr_i,
-    input                           update_dr_i,
+  input                           capture_dr_i,
+  input                           shift_dr_i,
+  input                           update_dr_i,
 
-    input [DBG_JSP_DATAREG_LEN-1:0] data_register_i,  // the data register is at top level, shared between all modules
-    input                           module_select_i,
-    output                          top_inhibit_o,
+  input [DBG_JSP_DATAREG_LEN-1:0] data_register_i, // the data register is at top level, shared between all modules
+  input                           module_select_i,
+  output                          top_inhibit_o,
 
-    // WISHBONE slave interface
-    input                           wb_clk_i,
-    input                           wb_rst_i,
-    input                           wb_cyc_i,
-    input                           wb_stb_i,
-    input                           wb_we_i,
-    input  [                   2:0] wb_adr_i,
-    input  [                   7:0] wb_dat_i,
-    output [                   7:0] wb_dat_o,
-    output                          wb_ack_o,
-    output                          wb_err_o,
-    output                          int_o 
-  );
+  // WISHBONE slave interface
+  input                           wb_clk_i,
+  input                           wb_rst_i,
+  input                           wb_cyc_i,
+  input                           wb_stb_i,
+  input                           wb_we_i,
+  input  [                   2:0] wb_adr_i,
+  input  [                   7:0] wb_dat_i,
+  output [                   7:0] wb_dat_o,
+  output                          wb_ack_o,
+  output                          wb_err_o,
+  output                          int_o
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -96,7 +96,7 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
 
   //Hookup JSP Debug Core
   peripheral_dbg_pu_riscv_jsp_module_core #(
-    .DBG_JSP_DATAREG_LEN ( DBG_JSP_DATAREG_LEN )
+  .DBG_JSP_DATAREG_LEN ( DBG_JSP_DATAREG_LEN )
   )
   jsp_core_inst (
     .rst_i ( rst_i ),
@@ -111,19 +111,19 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
     .shift_dr_i   ( shift_dr_i   ),
     .update_dr_i  ( update_dr_i  ),
 
-    .data_register_i ( data_register_i ),  // the data register is at top level, shared between all modules
+    .data_register_i ( data_register_i ), // the data register is at top level, shared between all modules
     .module_select_i ( module_select_i ),
     .top_inhibit_o   ( top_inhibit_o   ),
 
     // JSP BIU interface
     .biu_clk             ( biu_clk             ),
     .biu_rst             ( biu_rst             ),
-    .biu_di              ( biu_di              ),  // data towards BIU
-    .biu_do              ( biu_do              ),  // data from BIU
+    .biu_di              ( biu_di              ), // data towards BIU
+    .biu_do              ( biu_do              ), // data from BIU
     .biu_space_available ( biu_space_available ),
     .biu_bytes_available ( biu_bytes_available ),
-    .biu_rd_strobe       ( biu_rd_strobe       ),  // Indicates that the BIU should ACK last read operation + start another
-    .biu_wr_strobe       ( biu_wr_strobe       )   // Indicates BIU should latch input + begin a write operation
+    .biu_rd_strobe       ( biu_rd_strobe       ), // Indicates that the BIU should ACK last read operation + start another
+    .biu_wr_strobe       ( biu_wr_strobe       ) // Indicates BIU should latch input + begin a write operation
   );
 
   //Hookup JSP Wishbone Interface

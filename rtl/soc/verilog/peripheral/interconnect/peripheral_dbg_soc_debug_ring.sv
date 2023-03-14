@@ -50,25 +50,25 @@ module peripheral_dbg_soc_debug_ring #(
   parameter LOCAL_SUBNET = 0
 )
   (
-    input clk, 
-    input rst,
+  input clk,
+  input rst,
 
-    input [PORTS-1:0][15:0] id_map,
+  input [PORTS-1:0][15:0] id_map,
 
-    input  dii_flit [PORTS-1:0] dii_in,
-    output dii_flit [PORTS-1:0] dii_out,
+  input  dii_flit [PORTS-1:0] dii_in,
+  output dii_flit [PORTS-1:0] dii_out,
 
-    output [PORTS-1:0] dii_in_ready,
-    input  [PORTS-1:0] dii_out_ready
-  );
+  output [PORTS-1:0] dii_in_ready,
+  input  [PORTS-1:0] dii_out_ready
+);
 
   dii_flit [1:0][1:0] ext_port;
 
   logic [1:0][1:0] ext_port_ready;
 
   peripheral_dbg_soc_debug_ring_expand #(
-    .PORTS       (PORTS),
-    .BUFFER_SIZE (BUFFER_SIZE)
+  .PORTS       (PORTS),
+  .BUFFER_SIZE (BUFFER_SIZE)
   )
   ring (
     .*,

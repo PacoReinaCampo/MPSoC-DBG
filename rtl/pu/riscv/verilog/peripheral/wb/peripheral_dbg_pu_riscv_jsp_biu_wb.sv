@@ -96,33 +96,33 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
   wire       fifo_ack;
   wire [3:0] wr_bytes_free;
   wire [3:0] rd_bytes_avail;
-  wire [3:0] wr_bytes_avail;  // used to generate wr_fifo_not_empty
+  wire [3:0] wr_bytes_avail; // used to generate wr_fifo_not_empty
   wire       rd_bytes_avail_not_zero;
-  wire       ren_sff_out;   
+  wire       ren_sff_out;
   wire [7:0] rd_fifo_data_out;
   wire [7:0] data_to_extbus;
   wire [7:0] data_from_extbus;
-  wire       wr_fifo_not_empty;  // this is for the WishBone interface LSR register
-  wire       rx_fifo_rst;  // rcvr in the WB sense, opposite most of the rest of this file
-  wire       tx_fifo_rst;  // ditto
+  wire       wr_fifo_not_empty; // this is for the WishBone interface LSR register
+  wire       rx_fifo_rst; // rcvr in the WB sense, opposite most of the rest of this file
+  wire       tx_fifo_rst; // ditto
 
   // Control Signals (FSM outputs)
-  reg        wda_rst;   // reset wdata_avail SFF
-  reg        wpp;       // Write FIFO PUSH (1) or POP (0)
+  reg        wda_rst; // reset wdata_avail SFF
+  reg        wpp; // Write FIFO PUSH (1) or POP (0)
   reg        w_fifo_en; // Enable write FIFO
-  reg        ren_rst;   // reset 'pop' SFF
-  reg        rdata_en;  // enable 'rdata' register
-  reg        rpp;       // read FIFO PUSH (1) or POP (0)
+  reg        ren_rst; // reset 'pop' SFF
+  reg        rdata_en; // enable 'rdata' register
+  reg        rpp; // read FIFO PUSH (1) or POP (0)
   reg        r_fifo_en; // enable read FIFO    
-  reg        r_wb_ack;  // read FSM acks WB transaction
-  reg        w_wb_ack;  // write FSM acks WB transaction
+  reg        r_wb_ack; // read FSM acks WB transaction
+  reg        w_wb_ack; // write FSM acks WB transaction
 
   // Indicators to FSMs
   wire       wdata_avail; // JTAG side has data available
-  wire       fifo_rd;     // ext.bus requests read
-  wire       fifo_wr;     // ext.bus requests write
-  wire       pop;         // JTAG side received a byte, pop and get next
-  wire       rcz;         // zero bytes available in read FIFO
+  wire       fifo_rd; // ext.bus requests read
+  wire       fifo_wr; // ext.bus requests write
+  wire       pop; // JTAG side received a byte, pop and get next
+  wire       rcz; // zero bytes available in read FIFO
 
   logic [1:0]  rd_fsm_state, next_rd_fsm_state;
   logic [1:0]  wr_fsm_state, next_wr_fsm_state;
@@ -144,9 +144,9 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
   logic [7:0] scr;
 
   wire reg_ack;
-  wire rd_fifo_not_full;  // "rd fifo" is the one the WB writes to
+  wire rd_fifo_not_full; // "rd fifo" is the one the WB writes to
   wire rd_fifo_becoming_empty;
-  reg  thr_int_arm;       // used so that an IIR read can clear a transmit interrupt
+  reg  thr_int_arm; // used so that an IIR read can clear a transmit interrupt
   wire iir_read;
 
   //////////////////////////////////////////////////////////////////////////////
@@ -255,7 +255,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
     .EN          ( r_fifo_en           ),
     .BYTES_AVAIL ( rd_bytes_avail      ),
     .BYTES_FREE  ( )
-  );			      
+  );
 
   // State machine for the read FIFO
 
@@ -274,7 +274,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
         else              next_rd_fsm_state = RD_IDLE;
       end
       RD_PUSH: begin
-        if      (rcz    ) next_rd_fsm_state = RD_LATCH;  // putting first item in fifo, move to rdata in state LATCH
+        if      (rcz    ) next_rd_fsm_state = RD_LATCH; // putting first item in fifo, move to rdata in state LATCH
         else if (pop    ) next_rd_fsm_state = RD_POP;
         else              next_rd_fsm_state = RD_IDLE;
       end
@@ -320,7 +320,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
   // Sequential bit
   always @(posedge wb_clk_i,posedge rst_i) begin
     if (rst_i) wr_fsm_state <= WR_IDLE;
-    else       wr_fsm_state <= next_wr_fsm_state; 
+    else       wr_fsm_state <= next_wr_fsm_state;
   end
 
   // Determination of next state (combinatorial)
@@ -373,7 +373,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
 
   // Create the simple / combinatorial registers
   assign rd_fifo_not_full = !(rd_bytes_avail == 4'h8);
-  assign lsr              = {1'b0, rd_fifo_not_full, rd_fifo_not_full, 4'h0, wr_fifo_not_empty};   
+  assign lsr              = {1'b0, rd_fifo_not_full, rd_fifo_not_full, 4'h0, wr_fifo_not_empty};
 
   // Create writeable registers
   always @(posedge wb_clk_i) begin
@@ -407,13 +407,13 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
   assign tx_fifo_rst = wb_cyc_i & wb_stb_i & wb_we_i & (wb_adr_i == 3'b010) & wb_dat_i[2];
 
   // Create IIR (and THR INT arm bit)
-  assign rd_fifo_becoming_empty = r_fifo_en & (~rpp) & (rd_bytes_avail == 4'h1);  // "rd fifo" is the ext.bus write FIFO...
+  assign rd_fifo_becoming_empty = r_fifo_en & (~rpp) & (rd_bytes_avail == 4'h1); // "rd fifo" is the ext.bus write FIFO...
 
   assign iir_read = wb_cyc_i & wb_stb_i & ~wb_we_i & (wb_adr_i == 3'b010);
 
   always @(posedge wb_clk_i) begin
     if      (wb_rst_i                           ) thr_int_arm <= 1'b0;
-    else if (fifo_wr  ||  rd_fifo_becoming_empty) thr_int_arm <= 1'b1;  // Set when WB write fifo becomes empty, or on a write to it
+    else if (fifo_wr  ||  rd_fifo_becoming_empty) thr_int_arm <= 1'b1; // Set when WB write fifo becomes empty, or on a write to it
     else if (iir_read && !wr_fifo_not_empty     ) thr_int_arm <= 1'b0;
   end
 
@@ -438,7 +438,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_wb (
     endcase
   end
 
-  assign data_from_extbus = wb_dat_i;  // Data to the FIFO
+  assign data_from_extbus = wb_dat_i; // Data to the FIFO
 
   // Generate interrupt output
   assign int_o = (rd_fifo_not_full & thr_int_arm & ier[1]) | (wr_fifo_not_empty & ier[0]);

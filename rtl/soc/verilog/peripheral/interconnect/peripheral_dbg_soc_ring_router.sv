@@ -46,29 +46,29 @@ module peripheral_dbg_soc_ring_router #(
   parameter BUFFER_SIZE=4
 )
   (
-    input         clk,
-    input         rst,
+  input         clk,
+  input         rst,
 
-    input [15:0]  id,
+  input [15:0]  id,
 
-    input dii_flit ring_in0,
-    input dii_flit ring_in1,
+  input dii_flit ring_in0,
+  input dii_flit ring_in1,
 
-    output dii_flit ring_out0,
-    output dii_flit ring_out1,
+  output dii_flit ring_out0,
+  output dii_flit ring_out1,
 
-    input  dii_flit local_in,
-    output dii_flit local_out,
+  input  dii_flit local_in,
+  output dii_flit local_out,
 
-    output ring_in0_ready,
-    output ring_in1_ready,
+  output ring_in0_ready,
+  output ring_in1_ready,
 
-    input ring_out0_ready,
-    input ring_out1_ready,
+  input ring_out0_ready,
+  input ring_out1_ready,
 
-    output local_in_ready,
-    input  local_out_ready
-  );
+  output local_in_ready,
+  input  local_out_ready
+);
 
   dii_flit ring_fwd0;
   dii_flit ring_fwd1;
@@ -123,7 +123,7 @@ module peripheral_dbg_soc_ring_router #(
   );
 
   peripheral_dbg_soc_dii_buffer #(
-    .BUF_SIZE(BUFFER_SIZE)
+  .BUF_SIZE(BUFFER_SIZE)
   )
   u_buffer0 (
     .*,
@@ -135,7 +135,7 @@ module peripheral_dbg_soc_ring_router #(
   );
 
   peripheral_dbg_soc_dii_buffer #(
-    .BUF_SIZE(BUFFER_SIZE)
+  .BUF_SIZE(BUFFER_SIZE)
   )
   u_buffer1(
     .*,

@@ -47,18 +47,18 @@ module peripheral_dbg_soc_osd_stm_mmsp430 #(
   parameter MAX_PKT_LEN = 'hx
 )
   (
-    input                        clk,
-    input                        rst,
+  input                        clk,
+  input                        rst,
 
-    input                 [15:0] id,
+  input                 [15:0] id,
 
-    input  dii_flit              debug_in,
-    output                       debug_in_ready,
-    output dii_flit              debug_out,
-    input                        debug_out_ready,
+  input  dii_flit              debug_in,
+  output                       debug_in_ready,
+  output dii_flit              debug_out,
+  input                        debug_out_ready,
 
-    input  mmsp430_trace_exec    trace_port
-  );
+  input  mmsp430_trace_exec    trace_port
+);
 
   localparam VALWIDTH       = 32;
   localparam REG_ADDR_WIDTH = 5;
@@ -73,9 +73,9 @@ module peripheral_dbg_soc_osd_stm_mmsp430 #(
   reg   [              31:0]    r3_copy;
 
   peripheral_dbg_soc_osd_stm #(
-    .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
-    .VALWIDTH(VALWIDTH),
-    .MAX_PKT_LEN(MAX_PKT_LEN)
+  .REG_ADDR_WIDTH(REG_ADDR_WIDTH),
+  .VALWIDTH(VALWIDTH),
+  .MAX_PKT_LEN(MAX_PKT_LEN)
   )
   u_stm (.*);
 
@@ -86,8 +86,8 @@ module peripheral_dbg_soc_osd_stm_mmsp430 #(
   end
 
   assign trace_valid = trace_port.valid &&
-                      (trace_port.insn[31:16] == 16'h1500) &&
-                      (trace_port.insn[15:0] != 16'h0);
+  (trace_port.insn[31:16] == 16'h1500) &&
+  (trace_port.insn[15:0] != 16'h0);
 
   assign trace_id    = trace_port.insn[15:0];
   assign trace_value = r3_copy;

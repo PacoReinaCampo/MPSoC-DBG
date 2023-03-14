@@ -67,29 +67,29 @@ module peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
   localparam DATA_NUM_WORDS = ((DATA_WIDTH + 15) >> 4)
 )
   (
-    input                  clk,
-    input                  rst,
+  input                  clk,
+  input                  rst,
 
-    output dii_flit        debug_out,
-    input                  debug_out_ready,
+  output dii_flit        debug_out,
+  input                  debug_out_ready,
 
-    // DI address of this module (SRC)
-    input [15:0]           id,
+  // DI address of this module (SRC)
+  input [15:0]           id,
 
-    // DI address of the event destination (DEST)
-    input [15:0]           dest,
+  // DI address of the event destination (DEST)
+  input [15:0]           dest,
 
-    // Generate an overflow packet
-    input                  overflow,
+  // Generate an overflow packet
+  input                  overflow,
 
-    // a new event is available
-    input                  event_available,
+  // a new event is available
+  input                  event_available,
 
-    // the packet has been sent
-    output                 event_consumed,
+  // the packet has been sent
+  output                 event_consumed,
 
-    input [DATA_WIDTH-1:0] data
-  );
+  input [DATA_WIDTH-1:0] data
+);
 
   logic [$clog2(DATA_NUM_WORDS)-1:0] data_req_idx;
   logic [15:0] data_word;
@@ -121,8 +121,8 @@ module peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
   end
 
   peripheral_dbg_soc_osd_event_packetization #(
-    .MAX_PKT_LEN        (MAX_PKT_LEN),
-    .MAX_DATA_NUM_WORDS (DATA_NUM_WORDS)
+  .MAX_PKT_LEN        (MAX_PKT_LEN),
+  .MAX_DATA_NUM_WORDS (DATA_NUM_WORDS)
   )
   u_packetization(
     .clk(clk),

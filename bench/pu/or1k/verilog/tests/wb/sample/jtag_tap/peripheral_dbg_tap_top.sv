@@ -51,34 +51,34 @@ module peripheral_dbg_tap_top #(
   parameter IR_LENGTH    = 4
 )
   (
-    // JTAG pins
-    input   tms_pad_i,      // JTAG test mode select pad
-    input   tck_pad_i,      // JTAG test clock pad
-    input   trst_pad_i,     // JTAG test reset pad
-    input   tdi_pad_i,      // JTAG test data input pad
-    output  tdo_pad_o,      // JTAG test data output pad
-    output  tdo_padoe_o,    // Output enable for JTAG test data output pad 
+  // JTAG pins
+  input   tms_pad_i, // JTAG test mode select pad
+  input   tck_pad_i, // JTAG test clock pad
+  input   trst_pad_i, // JTAG test reset pad
+  input   tdi_pad_i, // JTAG test data input pad
+  output  tdo_pad_o, // JTAG test data output pad
+  output  tdo_padoe_o, // Output enable for JTAG test data output pad 
 
-    // TAP states
-    output  shift_dr_o,
-    output  pause_dr_o,
-    output  update_dr_o,
-    output  capture_dr_o,
+  // TAP states
+  output  shift_dr_o,
+  output  pause_dr_o,
+  output  update_dr_o,
+  output  capture_dr_o,
 
-    // Select signals for boundary scan or mbist
-    output  extest_select_o,
-    output  sample_preload_select_o,
-    output  mbist_select_o,
-    output  debug_select_o,
+  // Select signals for boundary scan or mbist
+  output  extest_select_o,
+  output  sample_preload_select_o,
+  output  mbist_select_o,
+  output  debug_select_o,
 
-    // TDO signal that is connected to TDI of sub-modules.
-    output  tdo_o,
+  // TDO signal that is connected to TDI of sub-modules.
+  output  tdo_o,
 
-    // TDI signals from sub-modules
-    input   debug_tdi_i,    // from debug module
-    input   bs_chain_tdi_i, // from Boundary Scan Chain
-    input   mbist_tdi_i     // from Mbist Chain
-  );
+  // TDI signals from sub-modules
+  input   debug_tdi_i, // from debug module
+  input   bs_chain_tdi_i, // from Boundary Scan Chain
+  input   mbist_tdi_i // from Mbist Chain
+);
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -160,7 +160,7 @@ module peripheral_dbg_tap_top #(
     tms_q4 <= tms_q3;
   end
 
-  assign tms_reset = tms_q1 & tms_q2 & tms_q3 & tms_q4 & tms_pad_i;  // 5 consecutive TMS=1 causes reset
+  assign tms_reset = tms_q1 & tms_q2 & tms_q3 & tms_q4 & tms_pad_i; // 5 consecutive TMS=1 causes reset
 
   // TAP State Machine: Fully JTAG compliant
 
@@ -396,7 +396,7 @@ module peripheral_dbg_tap_top #(
     if(trst_pad_i)
       jtag_ir[IR_LENGTH-1:0] <= {IR_LENGTH{1'b0}};
     else if(capture_ir)
-      jtag_ir <= 4'b0101;          // This value is fixed for easier fault detection
+      jtag_ir <= 4'b0101; // This value is fixed for easier fault detection
     else if(shift_ir)
       jtag_ir[IR_LENGTH-1:0] <= {tdi_pad_i, jtag_ir[IR_LENGTH-1:1]};
   end
@@ -442,9 +442,9 @@ module peripheral_dbg_tap_top #(
   // Updating jtag_ir (Instruction Register)
   always @ (posedge tck_pad_i or posedge trst_pad_i) begin
     if(trst_pad_i)
-      latched_jtag_ir <= IDCODE;   // IDCODE selected after reset
+      latched_jtag_ir <= IDCODE; // IDCODE selected after reset
     else if (tms_reset)
-      latched_jtag_ir <= IDCODE;   // IDCODE selected after reset
+      latched_jtag_ir <= IDCODE; // IDCODE selected after reset
     else if(update_ir)
       latched_jtag_ir <= jtag_ir;
   end
@@ -461,30 +461,30 @@ module peripheral_dbg_tap_top #(
     bypass_select           = 1'b0;
 
     case(latched_jtag_ir)
-      EXTEST:            extest_select           = 1'b1;    // External test
-      SAMPLE_PRELOAD:    sample_preload_select   = 1'b1;    // Sample preload
-      IDCODE:            idcode_select           = 1'b1;    // ID Code
-      MBIST:             mbist_select            = 1'b1;    // Mbist test
-      DEBUG:             debug_select            = 1'b1;    // Debug
-      BYPASS:            bypass_select           = 1'b1;    // BYPASS
-      default:           bypass_select           = 1'b1;    // BYPASS
+      EXTEST:            extest_select           = 1'b1; // External test
+      SAMPLE_PRELOAD:    sample_preload_select   = 1'b1; // Sample preload
+      IDCODE:            idcode_select           = 1'b1; // ID Code
+      MBIST:             mbist_select            = 1'b1; // Mbist test
+      DEBUG:             debug_select            = 1'b1; // Debug
+      BYPASS:            bypass_select           = 1'b1; // BYPASS
+      default:           bypass_select           = 1'b1; // BYPASS
     endcase
   end
 
   // Multiplexing TDO data
   always @ (shift_ir_neg or exit1_ir or instruction_tdo or latched_jtag_ir_neg or idcode_tdo or
-            debug_tdi_i or bs_chain_tdi_i or mbist_tdi_i or 
-            bypassed_tdo) begin
+  debug_tdi_i or bs_chain_tdi_i or mbist_tdi_i or
+  bypassed_tdo) begin
     if(shift_ir_neg)
       tdo_pad_o = instruction_tdo;
     else begin
-      case(latched_jtag_ir_neg)  // synthesis parallel_case
-        IDCODE:            tdo_pad_o = idcode_tdo;       // Reading ID code
-        DEBUG:             tdo_pad_o = debug_tdi_i;      // Debug
-        SAMPLE_PRELOAD:    tdo_pad_o = bs_chain_tdi_i;   // Sampling/Preloading
-        EXTEST:            tdo_pad_o = bs_chain_tdi_i;   // External test
-        MBIST:             tdo_pad_o = mbist_tdi_i;      // Mbist test
-        default:           tdo_pad_o = bypassed_tdo;     // BYPASS instruction
+      case(latched_jtag_ir_neg) // synthesis parallel_case
+        IDCODE:            tdo_pad_o = idcode_tdo; // Reading ID code
+        DEBUG:             tdo_pad_o = debug_tdi_i; // Debug
+        SAMPLE_PRELOAD:    tdo_pad_o = bs_chain_tdi_i; // Sampling/Preloading
+        EXTEST:            tdo_pad_o = bs_chain_tdi_i; // External test
+        MBIST:             tdo_pad_o = mbist_tdi_i; // Mbist test
+        default:           tdo_pad_o = bypassed_tdo; // BYPASS instruction
       endcase
     end
   end

@@ -51,36 +51,36 @@ module peripheral_dbg_soc_osd_regaccess_layer #(
   parameter MAX_REG_SIZE = 16
 )
   (
-    input clk,
-    input rst,
+  input clk,
+  input rst,
 
-    input [15:0]  id,
+  input [15:0]  id,
 
-    input         dii_flit debug_in,
-    output        dii_flit debug_out,
+  input         dii_flit debug_in,
+  output        dii_flit debug_out,
 
-    output        dii_flit module_out,
-    input         dii_flit module_in,
+  output        dii_flit module_out,
+  input         dii_flit module_in,
 
-    output logic debug_in_ready,
-    input        debug_out_ready,
+  output logic debug_in_ready,
+  input        debug_out_ready,
 
-    input  module_out_ready,
-    output module_in_ready,
+  input  module_out_ready,
+  output module_in_ready,
 
-    output reg                reg_request,
-    output                    reg_write,
-    output [            15:0] reg_addr,
-    output [             1:0] reg_size,
-    output [MAX_REG_SIZE-1:0] reg_wdata,
-    input                     reg_ack,
-    input                     reg_err,
-    input  [MAX_REG_SIZE-1:0] reg_rdata,
+  output reg                reg_request,
+  output                    reg_write,
+  output [            15:0] reg_addr,
+  output [             1:0] reg_size,
+  output [MAX_REG_SIZE-1:0] reg_wdata,
+  input                     reg_ack,
+  input                     reg_err,
+  input  [MAX_REG_SIZE-1:0] reg_rdata,
 
-    // DI address of the event destination
-    output [15:0] event_dest,
-    output        stall
-  );
+  // DI address of the event destination
+  output [15:0] event_dest,
+  output        stall
+);
 
   dii_flit regaccess_in;
   dii_flit regaccess_out;
@@ -89,12 +89,12 @@ module peripheral_dbg_soc_osd_regaccess_layer #(
   logic regaccess_out_ready;
 
   peripheral_dbg_soc_osd_regaccess #(
-    .MOD_VENDOR(MOD_VENDOR),
-    .MOD_TYPE(MOD_TYPE),
-    .MOD_EVENT_DEST_DEFAULT(MOD_EVENT_DEST_DEFAULT),
-    .MOD_VERSION(MOD_VERSION),
-    .CAN_STALL(CAN_STALL),
-    .MAX_REG_SIZE(MAX_REG_SIZE)
+  .MOD_VENDOR(MOD_VENDOR),
+  .MOD_TYPE(MOD_TYPE),
+  .MOD_EVENT_DEST_DEFAULT(MOD_EVENT_DEST_DEFAULT),
+  .MOD_VERSION(MOD_VERSION),
+  .CAN_STALL(CAN_STALL),
+  .MAX_REG_SIZE(MAX_REG_SIZE)
   )
   u_regaccess (
     .*,
