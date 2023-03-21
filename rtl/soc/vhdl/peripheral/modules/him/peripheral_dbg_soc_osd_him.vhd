@@ -54,7 +54,7 @@ entity peripheral_dbg_soc_osd_him is
     XLEN : integer := 64;
 
     BUFFER_SIZE : integer := 4
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -88,10 +88,10 @@ architecture rtl of peripheral_dbg_soc_osd_him is
 
   component peripheral_dbg_soc_dii_buffer
     generic (
-      XLEN        : integer := 64;
-      BUFFER_SIZE : integer := 4;
+      XLEN        : integer   := 64;
+      BUFFER_SIZE : integer   := 4;
       FULLPACKET  : std_logic := '0'
-    );
+      );
     port (
       -- length of the buffer
       clk         : in  std_logic;
@@ -107,7 +107,7 @@ architecture rtl of peripheral_dbg_soc_osd_him is
       flit_out_last  : out std_logic;
       flit_out_valid : out std_logic;
       flit_out_ready : in  std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -173,7 +173,7 @@ begin
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE,
       FULLPACKET  => '0'
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -225,7 +225,7 @@ begin
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE,
       FULLPACKET  => '0'
-    )
+      )
     port map (
       clk => clk,
       rst => rst,

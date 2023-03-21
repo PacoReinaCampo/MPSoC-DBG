@@ -105,7 +105,7 @@ module peripheral_dbg_pu_msp430_uart (
 
   // Majority decision
   //------------------------
-  reg                                                                                               rxd_maj;
+  reg  rxd_maj;
 
   wire rxd_maj_nxt = (uart_rxd & rxd_buf[0]) | (uart_rxd & rxd_buf[1]) | (rxd_buf[0] & rxd_buf[1]);
 
@@ -114,10 +114,10 @@ module peripheral_dbg_pu_msp430_uart (
     else rxd_maj <= rxd_maj_nxt;
   end
 
-  wire rxd_s = rxd_maj;
-  wire rxd_fe = rxd_maj & ~rxd_maj_nxt;
-  wire rxd_re = ~rxd_maj & rxd_maj_nxt;
-  wire rxd_edge = rxd_maj ^ rxd_maj_nxt;
+  wire        rxd_s = rxd_maj;
+  wire        rxd_fe = rxd_maj & ~rxd_maj_nxt;
+  wire        rxd_re = ~rxd_maj & rxd_maj_nxt;
+  wire        rxd_edge = rxd_maj ^ rxd_maj_nxt;
 
   //=============================================================================
   // 2)  UART STATE MACHINE
@@ -125,13 +125,13 @@ module peripheral_dbg_pu_msp430_uart (
 
   // Receive state
   //------------------------
-  reg                                    [ 2:0] uart_state;
-  reg                                    [ 2:0] uart_state_nxt;
+  reg  [ 2:0] uart_state;
+  reg  [ 2:0] uart_state_nxt;
 
-  wire                                          sync_done;
-  wire                                          xfer_done;
-  reg                                    [19:0] xfer_buf;
-  wire                                   [19:0] xfer_buf_nxt;
+  wire        sync_done;
+  wire        xfer_done;
+  reg  [19:0] xfer_buf;
+  wire [19:0] xfer_buf_nxt;
 
   // State machine definition
   parameter RX_SYNC = 3'h0;
@@ -175,7 +175,7 @@ module peripheral_dbg_pu_msp430_uart (
   // If this feature doesn't work properly, it is possible to disable it by
   // commenting the DBG_UART_AUTO_SYNC define in the openMSP430.inc file.
 
-  reg                                                                                            sync_busy;
+  reg  sync_busy;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) sync_busy <= 1'b0;
@@ -205,12 +205,12 @@ module peripheral_dbg_pu_msp430_uart (
 
   // Transfer counter
   //------------------------
-  reg                                                                                  [                     3:0] xfer_bit;
-  reg                                                                                  [`DBG_UART_XFER_CNT_W-1:0] xfer_cnt;
+  reg  [                     3:0] xfer_bit;
+  reg  [`DBG_UART_XFER_CNT_W-1:0] xfer_cnt;
 
-  wire txd_start = dbg_rd_rdy | (xfer_done & (uart_state == TX_DATA1));
-  wire rxd_start = (xfer_bit == 4'h0) & rxd_fe & ((uart_state != RX_SYNC));
-  wire xfer_bit_inc = (xfer_bit != 4'h0) & (xfer_cnt == {`DBG_UART_XFER_CNT_W{1'b0}});
+  wire                            txd_start = dbg_rd_rdy | (xfer_done & (uart_state == TX_DATA1));
+  wire                            rxd_start = (xfer_bit == 4'h0) & rxd_fe & ((uart_state != RX_SYNC));
+  wire                            xfer_bit_inc = (xfer_bit != 4'h0) & (xfer_cnt == {`DBG_UART_XFER_CNT_W{1'b0}});
   assign xfer_done = rx_active ? (xfer_bit == 4'ha) : (xfer_bit == 4'hb);
 
   always @(posedge dbg_clk or posedge dbg_rst) begin

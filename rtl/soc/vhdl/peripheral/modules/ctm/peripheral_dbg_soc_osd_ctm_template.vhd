@@ -57,7 +57,7 @@ entity peripheral_dbg_soc_osd_ctm_template is
     DATA_WIDTH : integer := 64;
 
     VALWIDTH : integer := 2
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -84,7 +84,7 @@ entity peripheral_dbg_soc_osd_ctm_template is
     trace_port_data     : in std_logic_vector(VALWIDTH-1 downto 0);
     trace_port_addr     : in std_logic_vector(4 downto 0);
     trace_port_we       : in std_logic
-  );
+    );
 end peripheral_dbg_soc_osd_ctm_template;
 
 architecture rtl of peripheral_dbg_soc_osd_ctm_template is
@@ -102,7 +102,7 @@ architecture rtl of peripheral_dbg_soc_osd_ctm_template is
 
       ADDR_WIDTH : integer := 64;
       DATA_WIDTH : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -137,7 +137,7 @@ architecture rtl of peripheral_dbg_soc_osd_ctm_template is
       trace_rdata    : in std_logic_vector(DATA_WIDTH-1 downto 0);
       trace_wdata    : in std_logic_vector(DATA_WIDTH-1 downto 0);
       trace_time     : in std_logic_vector(DATA_WIDTH-1 downto 0)
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -175,7 +175,7 @@ begin
 
       ADDR_WIDTH => ADDR_WIDTH,
       DATA_WIDTH => DATA_WIDTH
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -210,7 +210,7 @@ begin
       trace_rdata    => trace_rdata,
       trace_wdata    => trace_wdata,
       trace_time     => trace_time
-    );
+      );
 
   trace_valid <= trace_port_valid;
   trace_pc    <= trace_port_pc;

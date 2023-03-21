@@ -51,7 +51,7 @@ entity peripheral_dbg_soc_ring_router_gateway is
   generic (
     XLEN        : integer := 64;
     BUFFER_SIZE : integer := 4
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -97,7 +97,7 @@ entity peripheral_dbg_soc_ring_router_gateway is
     ext_out_last  : out std_logic;
     ext_out_valid : out std_logic;
     ext_out_ready : in  std_logic
-  );
+    );
 end peripheral_dbg_soc_ring_router_gateway;
 
 architecture rtl of peripheral_dbg_soc_ring_router_gateway is
@@ -109,7 +109,7 @@ architecture rtl of peripheral_dbg_soc_ring_router_gateway is
   component peripheral_dbg_soc_ring_router_gateway_demux
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -135,13 +135,13 @@ architecture rtl of peripheral_dbg_soc_ring_router_gateway is
       out_ring_last  : out std_logic;
       out_ring_valid : out std_logic;
       out_ring_ready : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_ring_router_mux_rr
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -160,13 +160,13 @@ architecture rtl of peripheral_dbg_soc_ring_router_gateway is
       out_mux_last  : out std_logic;
       out_mux_valid : out std_logic;
       out_mux_ready : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_ring_router_gateway_mux
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -190,15 +190,15 @@ architecture rtl of peripheral_dbg_soc_ring_router_gateway is
       out_mux_last  : out std_logic;
       out_mux_valid : out std_logic;
       out_mux_ready : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_dii_buffer
     generic (
-      XLEN        : integer := 64;
-      BUFFER_SIZE : integer := 4;
+      XLEN        : integer   := 64;
+      BUFFER_SIZE : integer   := 4;
       FULLPACKET  : std_logic := '0'
-    );
+      );
     port (
       -- length of the buffer
       clk         : in  std_logic;
@@ -214,7 +214,7 @@ architecture rtl of peripheral_dbg_soc_ring_router_gateway is
       flit_out_last  : out std_logic;
       flit_out_valid : out std_logic;
       flit_out_ready : in  std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ begin
   u_demux0 : peripheral_dbg_soc_ring_router_gateway_demux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -288,12 +288,12 @@ begin
       out_ext_last  => ring_ext0_last,
       out_ext_valid => ring_ext0_valid,
       out_ext_ready => ring_ext0_ready
-    );
+      );
 
   u_demux1 : peripheral_dbg_soc_ring_router_gateway_demux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -319,12 +319,12 @@ begin
       out_ext_last  => ring_ext1_last,
       out_ext_valid => ring_ext1_valid,
       out_ext_ready => ring_ext1_ready
-    );
+      );
 
   u_mux_local : peripheral_dbg_soc_ring_router_mux_rr
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -343,12 +343,12 @@ begin
       out_mux_last  => local_out_last,
       out_mux_valid => local_out_valid,
       out_mux_ready => local_out_ready
-    );
+      );
 
   u_mux_ext : peripheral_dbg_soc_ring_router_mux_rr
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -365,12 +365,12 @@ begin
       out_mux_last  => ext_out_last,
       out_mux_valid => ext_out_valid,
       out_mux_ready => ext_out_ready
-    );
+      );
 
   u_mux_ring0 : peripheral_dbg_soc_ring_router_gateway_mux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -394,14 +394,14 @@ begin
       out_mux_last  => ring_muxed_last,
       out_mux_valid => ring_muxed_valid,
       out_mux_ready => ring_muxed_ready
-    );
+      );
 
   u_buffer0 : peripheral_dbg_soc_dii_buffer
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE,
       FULLPACKET  => '0'
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -417,14 +417,14 @@ begin
       flit_out_last  => ring_out0_last,
       flit_out_valid => ring_out0_valid,
       flit_out_ready => ring_out0_ready
-    );
+      );
 
   u_buffer1 : peripheral_dbg_soc_dii_buffer
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE,
       FULLPACKET  => '0'
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -440,5 +440,5 @@ begin
       flit_out_last  => ring_out1_last,
       flit_out_valid => ring_out1_valid,
       flit_out_ready => ring_out1_ready
-    );
+      );
 end rtl;

@@ -244,7 +244,7 @@ package peripheral_dbg_pu_riscv_pkg is
   type std_logic_8array is array (natural range <>) of std_logic_7array;
   type std_logic_9array is array (natural range <>) of std_logic_8array;
 
-  type xy_std_logic        is array (natural range <>, natural range <>) of std_logic;
+  type xy_std_logic is array (natural range <>, natural range <>) of std_logic;
   type xy_std_logic_vector is array (natural range <>, natural range <>) of std_logic_vector;
   type xy_std_logic_matrix is array (natural range <>, natural range <>) of std_logic_matrix;
   type xy_std_logic_3array is array (natural range <>, natural range <>) of std_logic_3array;
@@ -255,7 +255,7 @@ package peripheral_dbg_pu_riscv_pkg is
   type xy_std_logic_8array is array (natural range <>, natural range <>) of std_logic_8array;
   type xy_std_logic_9array is array (natural range <>, natural range <>) of std_logic_9array;
 
-  type xyz_std_logic        is array (natural range <>, natural range <>, natural range <>) of std_logic;
+  type xyz_std_logic is array (natural range <>, natural range <>, natural range <>) of std_logic;
   type xyz_std_logic_vector is array (natural range <>, natural range <>, natural range <>) of std_logic_vector;
   type xyz_std_logic_matrix is array (natural range <>, natural range <>, natural range <>) of std_logic_matrix;
   type xyz_std_logic_3array is array (natural range <>, natural range <>, natural range <>) of std_logic_3array;
@@ -266,8 +266,8 @@ package peripheral_dbg_pu_riscv_pkg is
   type xyz_std_logic_8array is array (natural range <>, natural range <>, natural range <>) of std_logic_8array;
   type xyz_std_logic_9array is array (natural range <>, natural range <>, natural range <>) of std_logic_9array;
 
-  function to_stdlogic (input : boolean) return std_logic;
-  function reduce_or (reduce_or_in : std_logic_vector) return std_logic;
+  function to_stdlogic (input        : boolean) return std_logic;
+  function reduce_or (reduce_or_in   : std_logic_vector) return std_logic;
   function reduce_nor (reduce_nor_in : std_logic_vector) return std_logic;
 end peripheral_dbg_pu_riscv_pkg;
 

@@ -50,13 +50,13 @@ use ieee.numeric_std.all;
 
 entity peripheral_dbg_pu_riscv_syncflop is
   port (
-    RESET : in std_logic;  -- asynchronous reset
+    RESET : in std_logic;               -- asynchronous reset
 
-    DEST_CLK  : in  std_logic;  -- destination clock domain clock
+    DEST_CLK  : in  std_logic;          -- destination clock domain clock
     D_SET     : in  std_logic;  -- synchronously set output to '1' (synchronous to dest.clock domain)
     D_RST     : in  std_logic;  -- synchronously reset output to '0' (synch. to dest.clock domain)
-    TOGGLE_IN : in  std_logic;  -- toggle data from source clock domain
-    D_OUT     : out std_logic   -- output (synch. to dest.clock domain)
+    TOGGLE_IN : in  std_logic;          -- toggle data from source clock domain
+    D_OUT     : out std_logic           -- output (synch. to dest.clock domain)
     );
 end peripheral_dbg_pu_riscv_syncflop;
 

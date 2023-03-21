@@ -52,7 +52,7 @@ use work.peripheral_dbg_soc_pkg.all;
 entity peripheral_dbg_soc_ring_router_gateway_demux is
   generic (
     XLEN : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;

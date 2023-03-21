@@ -148,25 +148,25 @@ begin
           when "00" =>
             if (LITTLE_ENDIAN = '1') then
               be_dec <= "0001";
-            else 
+            else
               be_dec <= "1000";
             end if;
           when "01" =>
             if (LITTLE_ENDIAN = '1') then
               be_dec <= "0010";
-            else 
+            else
               be_dec <= "0100";
             end if;
           when "10" =>
             if (LITTLE_ENDIAN = '1') then
               be_dec <= "0100";
-            else 
+            else
               be_dec <= "0010";
             end if;
           when "11" =>
             if (LITTLE_ENDIAN = '1') then
               be_dec <= "1000";
-            else 
+            else
               be_dec <= "0001";
             end if;
           when others =>
@@ -177,13 +177,13 @@ begin
           when '0' =>
             if (LITTLE_ENDIAN = '1') then
               be_dec <= "0011";
-            else 
+            else
               be_dec <= "1100";
             end if;
           when '1' =>
             if (LITTLE_ENDIAN = '1') then
               be_dec <= "1100";
-            else 
+            else
               be_dec <= "0011";
             end if;
           when others =>

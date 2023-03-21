@@ -55,7 +55,7 @@ entity peripheral_dbg_soc_osd_scm is
     PLEN : integer := 64;
 
     MAX_REG_SIZE : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -74,7 +74,7 @@ entity peripheral_dbg_soc_osd_scm is
 
     sys_rst : out std_logic;
     cpu_rst : out std_logic
-  );
+    );
 end peripheral_dbg_soc_osd_scm;
 
 architecture rtl of peripheral_dbg_soc_osd_scm is
@@ -89,7 +89,7 @@ architecture rtl of peripheral_dbg_soc_osd_scm is
       PLEN : integer := 64;
 
       MAX_REG_SIZE : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -117,7 +117,7 @@ architecture rtl of peripheral_dbg_soc_osd_scm is
 
       event_dest : out std_logic_vector(XLEN-1 downto 0);
       stall      : out std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -147,7 +147,7 @@ begin
       PLEN => PLEN,
 
       MAX_REG_SIZE => MAX_REG_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -175,7 +175,7 @@ begin
 
       event_dest => open,
       stall      => open
-    );
+      );
 
   processing_0 : process (reg_addr)
   begin

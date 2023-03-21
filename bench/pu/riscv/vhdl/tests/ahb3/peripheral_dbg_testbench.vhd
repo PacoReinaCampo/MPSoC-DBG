@@ -218,9 +218,9 @@ begin
   --DUT AHB3
   dbg_pu_riscv_top_ahb3 : peripheral_dbg_pu_riscv_top_ahb3
     generic map (
-      X => X,
-      Y => Y,
-      Z => Z,
+      X              => X,
+      Y              => Y,
+      Z              => Z,
       CORES_PER_TILE => CORES_PER_TILE,
 
       ADDR_WIDTH => ADDR_WIDTH,

@@ -47,7 +47,7 @@ use IEEE.NUMERIC_STD .all;
 package peripheral_dbg_pu_msp430_pkg is
 
   function reduce_or (reduce_or_in : std_logic_vector) return std_logic;
-  function to_stdlogic (input : boolean) return std_logic;
+  function to_stdlogic (input      : boolean) return std_logic;
 
   type std_logic_matrix is array (natural range <>) of std_logic_vector;
   type std_logic_3array is array (natural range <>) of std_logic_matrix;
@@ -58,7 +58,7 @@ package peripheral_dbg_pu_msp430_pkg is
   type std_logic_8array is array (natural range <>) of std_logic_7array;
   type std_logic_9array is array (natural range <>) of std_logic_8array;
 
-  type xy_std_logic        is array (natural range <>, natural range <>) of std_logic;
+  type xy_std_logic is array (natural range <>, natural range <>) of std_logic;
   type xy_std_logic_vector is array (natural range <>, natural range <>) of std_logic_vector;
   type xy_std_logic_matrix is array (natural range <>, natural range <>) of std_logic_matrix;
   type xy_std_logic_3array is array (natural range <>, natural range <>) of std_logic_3array;
@@ -69,7 +69,7 @@ package peripheral_dbg_pu_msp430_pkg is
   type xy_std_logic_8array is array (natural range <>, natural range <>) of std_logic_8array;
   type xy_std_logic_9array is array (natural range <>, natural range <>) of std_logic_9array;
 
-  type xyz_std_logic        is array (natural range <>, natural range <>, natural range <>) of std_logic;
+  type xyz_std_logic is array (natural range <>, natural range <>, natural range <>) of std_logic;
   type xyz_std_logic_vector is array (natural range <>, natural range <>, natural range <>) of std_logic_vector;
   type xyz_std_logic_matrix is array (natural range <>, natural range <>, natural range <>) of std_logic_matrix;
   type xyz_std_logic_3array is array (natural range <>, natural range <>, natural range <>) of std_logic_3array;
@@ -344,9 +344,9 @@ package peripheral_dbg_pu_msp430_pkg is
   constant DBG_UART_XFER_CNT_W : integer := 16;
 
   --Debug UART interface data rate
-  constant DBG_UART_BAUD : integer                                              := 2000000;
-  constant DBG_DCO_FREQ  : integer                                              := 20000000;
-  constant DBG_UART_CNT  : integer                                              := (DBG_DCO_FREQ / DBG_UART_BAUD) - 1;
+  constant DBG_UART_BAUD : integer                                             := 2000000;
+  constant DBG_DCO_FREQ  : integer                                             := 20000000;
+  constant DBG_UART_CNT  : integer                                             := (DBG_DCO_FREQ / DBG_UART_BAUD) - 1;
   constant DBG_UART_CNTB : std_logic_vector (DBG_UART_XFER_CNT_W - 1 downto 0) := std_logic_vector(to_unsigned(DBG_UART_CNT, DBG_UART_XFER_CNT_W));
 
   --Debug interface input synchronizer

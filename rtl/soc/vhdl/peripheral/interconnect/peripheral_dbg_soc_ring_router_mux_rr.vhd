@@ -49,7 +49,7 @@ use ieee.numeric_std.all;
 entity peripheral_dbg_soc_ring_router_mux_rr is
   generic (
     XLEN : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;

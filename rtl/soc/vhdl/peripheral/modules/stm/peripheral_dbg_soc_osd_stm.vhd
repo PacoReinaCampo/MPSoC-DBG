@@ -54,7 +54,7 @@ entity peripheral_dbg_soc_osd_stm is
     MAX_REG_SIZE : integer := 64;
 
     VALWIDTH : integer := 2
-  );
+    );
   port (
     -- the address width of the core register file
     clk : in std_logic;
@@ -75,7 +75,7 @@ entity peripheral_dbg_soc_osd_stm is
     trace_valid : in std_logic;
     trace_id    : in std_logic_vector(XLEN-1 downto 0);
     trace_value : in std_logic_vector(VALWIDTH-1 downto 0)
-  );
+    );
 end peripheral_dbg_soc_osd_stm;
 
 architecture rtl of peripheral_dbg_soc_osd_stm is
@@ -90,7 +90,7 @@ architecture rtl of peripheral_dbg_soc_osd_stm is
       PLEN : integer := 64;
 
       MAX_REG_SIZE : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -128,13 +128,13 @@ architecture rtl of peripheral_dbg_soc_osd_stm is
 
       event_dest : out std_logic_vector(XLEN-1 downto 0);  -- DI address of the event destination
       stall      : out std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_osd_tracesample
     generic (
       WIDTH : integer := 64
-    );
+      );
     port (
       clk          : in std_logic;
       rst          : in std_logic;
@@ -145,14 +145,14 @@ architecture rtl of peripheral_dbg_soc_osd_stm is
       fifo_overflow : out std_logic;
       fifo_valid    : out std_logic;
       fifo_ready    : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_osd_fifo
     generic (
       WIDTH : integer := 64;
       DEPTH : integer := 8
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -164,14 +164,14 @@ architecture rtl of peripheral_dbg_soc_osd_stm is
       out_data  : out std_logic_vector(WIDTH-1 downto 0);
       out_valid : out std_logic;
       out_ready : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_osd_event_packetization_fixedwidth
     generic (
       XLEN       : integer := 64;
       DATA_WIDTH : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -195,7 +195,7 @@ architecture rtl of peripheral_dbg_soc_osd_stm is
       event_consumed  : out std_logic;
 
       data : in std_logic_vector(DATA_WIDTH-1 downto 0)
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -262,7 +262,7 @@ begin
       PLEN => PLEN,
 
       MAX_REG_SIZE => MAX_REG_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -300,7 +300,7 @@ begin
 
       event_dest => event_dest,
       stall      => stall
-    );
+      );
 
   processing_0 : process (reg_addr, reg_request)
   begin
@@ -333,7 +333,7 @@ begin
   osd_tracesample : peripheral_dbg_soc_osd_tracesample
     generic map (
       WIDTH => EW
-    )
+      )
     port map (
       clk           => clk,
       rst           => rst,
@@ -344,7 +344,7 @@ begin
       fifo_data  => fifo_data,
       fifo_valid => fifo_valid,
       fifo_ready => fifo_ready
-    );
+      );
 
   tracesample_sample_valid <= sample_valid and not stall;
 
@@ -352,7 +352,7 @@ begin
     generic map (
       WIDTH => EW+1,
       DEPTH => 8
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -364,18 +364,18 @@ begin
       out_data  => fifo_out_data,
       out_valid => packet_valid,
       out_ready => packet_ready
-    );
+      );
 
   fifo_in_data <= (fifo_overflow & fifo_data);
 
   packet_overflow <= fifo_out_data(EW);
-  packet_data <= fifo_out_data(EW-1 downto 0);
+  packet_data     <= fifo_out_data(EW-1 downto 0);
 
   osd_event_packetization_fixedwidth : peripheral_dbg_soc_osd_event_packetization_fixedwidth
     generic map (
       XLEN       => XLEN,
       DATA_WIDTH => EW
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -392,5 +392,5 @@ begin
       event_consumed  => packet_ready,
 
       data => packet_data
-    );
+      );
 end rtl;

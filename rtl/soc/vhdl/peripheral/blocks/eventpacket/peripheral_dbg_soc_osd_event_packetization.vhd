@@ -55,7 +55,7 @@ entity peripheral_dbg_soc_osd_event_packetization is
     DATA_WIDTH : integer := 64;
 
     MAX_DATA_NUM_WORDS : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -88,7 +88,7 @@ entity peripheral_dbg_soc_osd_event_packetization is
 
     -- a data word
     data : in std_logic_vector(XLEN-1 downto 0)
-  );
+    );
 end peripheral_dbg_soc_osd_event_packetization;
 
 architecture rtl of peripheral_dbg_soc_osd_event_packetization is

@@ -52,10 +52,10 @@ use work.peripheral_dbg_soc_pkg.all;
 
 entity peripheral_dbg_soc_dii_buffer is
   generic (
-    XLEN        : integer := 64;
-    BUFFER_SIZE : integer := 4;
+    XLEN        : integer   := 64;
+    BUFFER_SIZE : integer   := 4;
     FULLPACKET  : std_logic := '0'
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -71,7 +71,7 @@ entity peripheral_dbg_soc_dii_buffer is
     flit_out_last  : out std_logic;
     flit_out_valid : out std_logic;
     flit_out_ready : in  std_logic
-  );
+    );
 end peripheral_dbg_soc_dii_buffer;
 
 architecture rtl of peripheral_dbg_soc_dii_buffer is
@@ -80,7 +80,7 @@ architecture rtl of peripheral_dbg_soc_dii_buffer is
   ------------------------------------------------------------------------------
   function find_first_one (
     data : std_logic_vector(BUFFER_SIZE-1 downto 0)
-  ) return std_logic_vector is
+    ) return std_logic_vector is
     variable find_first_one_return : std_logic_vector (LOG2_BUFFER_SIZE downto 0);
   begin
     for i in BUFFER_SIZE downto 0 loop
@@ -101,7 +101,7 @@ architecture rtl of peripheral_dbg_soc_dii_buffer is
   signal data_valid : std_logic_vector(BUFFER_SIZE-1 downto 0);
 
   signal rp            : std_logic_vector(LOG2_BUFFER_SIZE downto 0);  -- read pointer
-  signal reg_out_valid : std_logic;  -- local output valid
+  signal reg_out_valid : std_logic;     -- local output valid
   signal flit_in_fire  : std_logic;
   signal flit_out_fire : std_logic;
 

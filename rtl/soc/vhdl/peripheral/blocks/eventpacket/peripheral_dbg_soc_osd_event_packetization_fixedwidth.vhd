@@ -53,7 +53,7 @@ entity peripheral_dbg_soc_osd_event_packetization_fixedwidth is
   generic (
     XLEN       : integer := 64;
     DATA_WIDTH : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -77,7 +77,7 @@ entity peripheral_dbg_soc_osd_event_packetization_fixedwidth is
     event_consumed  : out std_logic;
 
     data : in std_logic_vector(DATA_WIDTH-1 downto 0)
-  );
+    );
 end peripheral_dbg_soc_osd_event_packetization_fixedwidth;
 
 architecture rtl of peripheral_dbg_soc_osd_event_packetization_fixedwidth is
@@ -92,7 +92,7 @@ architecture rtl of peripheral_dbg_soc_osd_event_packetization_fixedwidth is
     generic (
       XLEN       : integer := 64;
       DATA_WIDTH : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -117,7 +117,7 @@ architecture rtl of peripheral_dbg_soc_osd_event_packetization_fixedwidth is
       data_req_valid : out std_logic;
 
       data : in std_logic_vector(XLEN-1 downto 0)
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ begin
   processing_0 : process (data, data_req_idx, fill_last)
   begin
     if (data_req_idx < std_logic_vector(to_unsigned(MAX_DATA_NUM_WORDS-1, LOG2_NUM_WORDS))) then
-      --data_word <= data(XLEN downto (to_integer(unsigned(data_req_idx))+1)*XLEN-1);
+    --data_word <= data(XLEN downto (to_integer(unsigned(data_req_idx))+1)*XLEN-1);
     elsif (unsigned(data_req_idx) = to_unsigned(MAX_DATA_NUM_WORDS-1, LOG2_NUM_WORDS)) then
       -- last word must be padded with 0s if the data doesn't fill a word
       for i in 0 to XLEN-1 loop
@@ -157,7 +157,7 @@ begin
     generic map (
       XLEN       => XLEN,
       DATA_WIDTH => DATA_WIDTH
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -178,5 +178,5 @@ begin
       data_req_idx   => data_req_idx,
 
       data => data_word
-    );
+      );
 end rtl;

@@ -420,7 +420,7 @@ begin
       if (out_reg_ld_en = '1') then
         if (out_reg_data_sel = '1') then
           data_out_shift_reg <= data_from_internal_reg;
-        else 
+        else
           data_out_shift_reg <= ('0' & biu_do);
         end if;
       elsif (out_reg_shift_en = '1') then
@@ -627,7 +627,7 @@ begin
         addr_sel    <= '0';
         word_ct_sel <= '0';
         -- Operations for internal registers - stay in idle state
-        if (module_select = '1' and shift_dr_i = '1') then     -- For module regs
+        if (module_select = '1' and shift_dr_i = '1') then  -- For module regs
           out_reg_shift_en <= '1';
         end if;
         if (module_select = '1' and capture_dr_i = '1') then
@@ -635,10 +635,10 @@ begin
           out_reg_ld_en    <= '1';      -- For module regs
         end if;
         if (module_select = '1' and module_cmd = '1' and update_dr_i = '1') then
-          if (intreg_instruction = '1') then  -- For module regs
+          if (intreg_instruction = '1') then       -- For module regs
             regsel_ld_en <= '1';
           end if;
-          if (intreg_write = '1') then        -- For module regs
+          if (intreg_write = '1') then  -- For module regs
             intreg_ld_en <= '1';
           end if;
         end if;
@@ -682,10 +682,10 @@ begin
         bit_ct_en        <= '1';
         crc_en           <= '1';
         crc_in_sel       <= '0';  -- read data in output shift register LSB (tdo)
-        inhibit          <= '1';  -- in case of early termination
+        inhibit          <= '1';        -- in case of early termination
         if (bit_count_max = '1') then
-          error_reg_en     <= '1';  -- Check the wb_error bit
-          out_reg_data_sel <= '0';  -- select BIU data
+          error_reg_en     <= '1';      -- Check the wb_error bit
+          out_reg_data_sel <= '0';      -- select BIU data
           out_reg_ld_en    <= '1';
           bit_ct_rst       <= '1';
           word_ct_sel      <= '1';

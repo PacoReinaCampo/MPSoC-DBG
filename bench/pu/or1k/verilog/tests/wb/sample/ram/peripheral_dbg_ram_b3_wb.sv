@@ -83,40 +83,40 @@ module peripheral_dbg_ram_b3_wb #(
   //
 
   // synthesis attribute ram_style of mem is block
-  reg                                                                                                          [                                          DW-1:0] mem               [0 : MEM_WORDS-1];
+  reg  [                                          DW-1:0] mem                                                                                                    [0 : MEM_WORDS-1];
 
   // Register to address internal memory array
-  reg                                                                                                          [(MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES)-1:0] adr;
+  reg  [(MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES)-1:0] adr;
 
   // Register to indicate if the cycle is a Wishbone B3-registered feedback 
   // type access
-  reg                                                                                                                                                             wb_b3_trans;
+  reg                                                     wb_b3_trans;
 
   // Register to use for counting the addresses when doing burst accesses
-  reg                                                                                                          [  MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES-1:0] burst_adr_counter;
+  reg  [  MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES-1:0] burst_adr_counter;
 
   // Logic to detect if there's a burst access going on
-  wire wb_b3_trans_start = ((wb_cti_i == 3'b001) | (wb_cti_i == 3'b010)) & wb_stb_i & !wb_b3_trans & wb_cyc_i;
+  wire                                                    wb_b3_trans_start = ((wb_cti_i == 3'b001) | (wb_cti_i == 3'b010)) & wb_stb_i & !wb_b3_trans & wb_cyc_i;
 
-  wire wb_b3_trans_stop = ((wb_cti_i == 3'b111) & wb_stb_i & wb_b3_trans & wb_ack_o) | wb_err_o;
+  wire                                                    wb_b3_trans_stop = ((wb_cti_i == 3'b111) & wb_stb_i & wb_b3_trans & wb_ack_o) | wb_err_o;
 
   // Register it locally
-  reg                                                                                                          [                                             1:0] wb_bte_i_r;
-  reg                                                                                                          [                                             2:0] wb_cti_i_r;
+  reg  [                                             1:0] wb_bte_i_r;
+  reg  [                                             2:0] wb_cti_i_r;
 
-  wire using_burst_adr = wb_b3_trans;
+  wire                                                    using_burst_adr = wb_b3_trans;
 
-  wire burst_access_wrong_wb_adr = (using_burst_adr & (adr != wb_adr_i[MEM_ADR_WIDTH-1:2]));
+  wire                                                    burst_access_wrong_wb_adr = (using_burst_adr & (adr != wb_adr_i[MEM_ADR_WIDTH-1:2]));
 
-  wire                                                                                                         [                                            31:0] wr_data;
+  wire [                                            31:0] wr_data;
 
-  wire ram_we = wb_we_i & wb_ack_o;
+  wire                                                    ram_we = wb_we_i & wb_ack_o;
 
   // Error when out of bounds of memory - skip top nibble of address in case
   // this is mapped somewhere other than 0x0.
-  wire addr_err = wb_cyc_i & wb_stb_i & (|wb_adr_i[AW-1-4:MEM_ADR_WIDTH]);
+  wire                                                    addr_err = wb_cyc_i & wb_stb_i & (|wb_adr_i[AW-1-4:MEM_ADR_WIDTH]);
 
-  reg                                                                                                                                                             wb_ack_o_r;
+  reg                                                     wb_ack_o_r;
 
   //////////////////////////////////////////////////////////////////////////////
   //

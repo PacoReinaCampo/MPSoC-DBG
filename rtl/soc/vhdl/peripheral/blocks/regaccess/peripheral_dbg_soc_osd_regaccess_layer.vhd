@@ -52,7 +52,7 @@ entity peripheral_dbg_soc_osd_regaccess_layer is
     PLEN : integer := 64;
 
     MAX_REG_SIZE : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -90,7 +90,7 @@ entity peripheral_dbg_soc_osd_regaccess_layer is
 
     event_dest : out std_logic_vector(XLEN-1 downto 0);  -- DI address of the event destination
     stall      : out std_logic
-  );
+    );
 end peripheral_dbg_soc_osd_regaccess_layer;
 
 architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
@@ -105,7 +105,7 @@ architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
       PLEN : integer := 64;
 
       MAX_REG_SIZE : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -133,13 +133,13 @@ architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
 
       event_dest : out std_logic_vector(XLEN-1 downto 0);
       stall      : out std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_osd_regaccess_demux
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -158,13 +158,13 @@ architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
       out_bypass_last  : out std_logic;
       out_bypass_valid : out std_logic;
       out_bypass_ready : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_ring_router_mux
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -183,7 +183,7 @@ architecture rtl of peripheral_dbg_soc_osd_regaccess_layer is
       out_mux_last  : out std_logic;
       out_mux_valid : out std_logic;
       out_mux_ready : in  std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -210,7 +210,7 @@ begin
       PLEN => PLEN,
 
       MAX_REG_SIZE => MAX_REG_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -238,13 +238,13 @@ begin
 
       event_dest => event_dest,
       stall      => stall
-    );
+      );
 
   -- Ingress path demux
   osd_regaccess_demux : peripheral_dbg_soc_osd_regaccess_demux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -263,13 +263,13 @@ begin
       out_bypass_last  => module_out_last,
       out_bypass_valid => module_out_valid,
       out_bypass_ready => module_out_ready
-    );
+      );
 
   -- Egress path mux
   ring_router_mux : peripheral_dbg_soc_ring_router_mux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -288,5 +288,5 @@ begin
       out_mux_last  => debug_out_last,
       out_mux_valid => debug_out_valid,
       out_mux_ready => debug_out_ready
-    );
+      );
 end rtl;

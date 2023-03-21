@@ -687,7 +687,7 @@ begin
         addr_sel    <= '0';
         word_ct_sel <= '0';
         -- Operations for internal registers - stay in idle state
-        if (module_select_i = '1' and shift_dr_i = '1') then   -- For module regs
+        if (module_select_i = '1' and shift_dr_i = '1') then  -- For module regs
           out_reg_shift_en <= '1';
         end if;
         if (module_select_i = '1' and capture_dr_i = '1') then
@@ -695,10 +695,10 @@ begin
           out_reg_ld_en    <= '1';      -- For module regs
         end if;
         if (module_select_i = '1' and module_cmd = '1' and update_dr_i = '1') then
-          if (intreg_instruction = '1') then  -- For module regs
+          if (intreg_instruction = '1') then       -- For module regs
             regsel_ld_en <= '1';
           end if;
-          if (intreg_write = '1') then        -- For module regs
+          if (intreg_write = '1') then  -- For module regs
             intreg_ld_en <= '1';
           end if;
           if (burst_instruction = '1') then

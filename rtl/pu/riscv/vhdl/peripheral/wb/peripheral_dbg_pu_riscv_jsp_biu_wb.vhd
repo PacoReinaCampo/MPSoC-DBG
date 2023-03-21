@@ -577,7 +577,7 @@ begin
     end case;
   end process;
 
-  data_from_extbus <= wb_dat_i;  -- Data to the FIFO
+  data_from_extbus <= wb_dat_i;         -- Data to the FIFO
 
   -- Generate interrupt output
   int_o <= (rd_fifo_not_full and thr_int_arm and ier(1)) or (wr_fifo_not_empty and ier(0));

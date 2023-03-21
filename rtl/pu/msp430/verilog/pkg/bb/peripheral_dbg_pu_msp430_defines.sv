@@ -258,10 +258,10 @@
 // (i.e. Flash/OTP/ROM/...) or when you are interested
 // in data breakpoints.
 //-------------------------------------------------------
-`define  DBG_HWBRK_0
-`define  DBG_HWBRK_1
-`define  DBG_HWBRK_2
-`define  DBG_HWBRK_3
+`define DBG_HWBRK_0
+`define DBG_HWBRK_1
+`define DBG_HWBRK_2
+`define DBG_HWBRK_3
 
 
 //-------------------------------------------------------
@@ -288,16 +288,16 @@
 //-------------------------------------------------------
 
 // Custom Program memory (enabled with PMEM_SIZE_CUSTOM)
-`define PMEM_CUSTOM_AWIDTH      13
-`define PMEM_CUSTOM_SIZE     10240
+`define PMEM_CUSTOM_AWIDTH 13
+`define PMEM_CUSTOM_SIZE 10240
 
 // Custom Data memory    (enabled with DMEM_SIZE_CUSTOM)
-`define DMEM_CUSTOM_AWIDTH      13
-`define DMEM_CUSTOM_SIZE     10240
+`define DMEM_CUSTOM_AWIDTH 13
+`define DMEM_CUSTOM_SIZE 10240
 
 // Custom Peripheral memory  (enabled with PER_SIZE_CUSTOM)
-`define PER_CUSTOM_AWIDTH        8
-`define PER_CUSTOM_SIZE        512
+`define PER_CUSTOM_AWIDTH 8
+`define PER_CUSTOM_SIZE 512
 
 
 //-------------------------------------------------------
@@ -487,175 +487,175 @@
 
 // Program Memory Size
 `ifdef PMEM_SIZE_59_KB
-  `define PMEM_AWIDTH      15
-  `define PMEM_SIZE     60416
+`define PMEM_AWIDTH 15
+`define PMEM_SIZE 60416
 `endif
 `ifdef PMEM_SIZE_55_KB
-  `define PMEM_AWIDTH      15
-  `define PMEM_SIZE     56320
+`define PMEM_AWIDTH 15
+`define PMEM_SIZE 56320
 `endif
 `ifdef PMEM_SIZE_54_KB
-  `define PMEM_AWIDTH      15
-  `define PMEM_SIZE     55296
+`define PMEM_AWIDTH 15
+`define PMEM_SIZE 55296
 `endif
 `ifdef PMEM_SIZE_51_KB
-  `define PMEM_AWIDTH      15
-  `define PMEM_SIZE     52224
+`define PMEM_AWIDTH 15
+`define PMEM_SIZE 52224
 `endif
 `ifdef PMEM_SIZE_48_KB
-  `define PMEM_AWIDTH      15
-  `define PMEM_SIZE     49152
+`define PMEM_AWIDTH 15
+`define PMEM_SIZE 49152
 `endif
 `ifdef PMEM_SIZE_41_KB
-  `define PMEM_AWIDTH      15
-  `define PMEM_SIZE     41984
+`define PMEM_AWIDTH 15
+`define PMEM_SIZE 41984
 `endif
 `ifdef PMEM_SIZE_32_KB
-  `define PMEM_AWIDTH      14
-  `define PMEM_SIZE     32768
+`define PMEM_AWIDTH 14
+`define PMEM_SIZE 32768
 `endif
 `ifdef PMEM_SIZE_24_KB
-  `define PMEM_AWIDTH      14
-  `define PMEM_SIZE     24576
+`define PMEM_AWIDTH 14
+`define PMEM_SIZE 24576
 `endif
 `ifdef PMEM_SIZE_16_KB
-  `define PMEM_AWIDTH      13
-  `define PMEM_SIZE     16384
+`define PMEM_AWIDTH 13
+`define PMEM_SIZE 16384
 `endif
 `ifdef PMEM_SIZE_12_KB
-  `define PMEM_AWIDTH      13
-  `define PMEM_SIZE     12288
+`define PMEM_AWIDTH 13
+`define PMEM_SIZE 12288
 `endif
 `ifdef PMEM_SIZE_8_KB
-  `define PMEM_AWIDTH      12
-  `define PMEM_SIZE      8192
+`define PMEM_AWIDTH 12
+`define PMEM_SIZE 8192
 `endif
 `ifdef PMEM_SIZE_4_KB
-  `define PMEM_AWIDTH      11
-  `define PMEM_SIZE      4096
+`define PMEM_AWIDTH 11
+`define PMEM_SIZE 4096
 `endif
 `ifdef PMEM_SIZE_2_KB
-  `define PMEM_AWIDTH      10
-  `define PMEM_SIZE      2048
+`define PMEM_AWIDTH 10
+`define PMEM_SIZE 2048
 `endif
 `ifdef PMEM_SIZE_1_KB
-  `define PMEM_AWIDTH       9
-  `define PMEM_SIZE      1024
+`define PMEM_AWIDTH 9
+`define PMEM_SIZE 1024
 `endif
 `ifdef PMEM_SIZE_CUSTOM
-  `define PMEM_AWIDTH       `PMEM_CUSTOM_AWIDTH
-  `define PMEM_SIZE         `PMEM_CUSTOM_SIZE
+`define PMEM_AWIDTH `PMEM_CUSTOM_AWIDTH
+`define PMEM_SIZE `PMEM_CUSTOM_SIZE
 `endif
 
 // Data Memory Size
 `ifdef DMEM_SIZE_32_KB
-  `define DMEM_AWIDTH       14
-  `define DMEM_SIZE      32768
+`define DMEM_AWIDTH 14
+`define DMEM_SIZE 32768
 `endif
 `ifdef DMEM_SIZE_24_KB
-  `define DMEM_AWIDTH       14
-  `define DMEM_SIZE      24576
+`define DMEM_AWIDTH 14
+`define DMEM_SIZE 24576
 `endif
 `ifdef DMEM_SIZE_16_KB
-  `define DMEM_AWIDTH       13
-  `define DMEM_SIZE      16384
+`define DMEM_AWIDTH 13
+`define DMEM_SIZE 16384
 `endif
 `ifdef DMEM_SIZE_10_KB
-  `define DMEM_AWIDTH       13
-  `define DMEM_SIZE      10240
+`define DMEM_AWIDTH 13
+`define DMEM_SIZE 10240
 `endif
 `ifdef DMEM_SIZE_8_KB
-  `define DMEM_AWIDTH       12
-  `define DMEM_SIZE       8192
+`define DMEM_AWIDTH 12
+`define DMEM_SIZE 8192
 `endif
 `ifdef DMEM_SIZE_5_KB
-  `define DMEM_AWIDTH       12
-  `define DMEM_SIZE       5120
+`define DMEM_AWIDTH 12
+`define DMEM_SIZE 5120
 `endif
 `ifdef DMEM_SIZE_4_KB
-  `define DMEM_AWIDTH       11
-  `define DMEM_SIZE       4096
+`define DMEM_AWIDTH 11
+`define DMEM_SIZE 4096
 `endif
 `ifdef DMEM_SIZE_2p5_KB
-  `define DMEM_AWIDTH       11
-  `define DMEM_SIZE       2560
+`define DMEM_AWIDTH 11
+`define DMEM_SIZE 2560
 `endif
 `ifdef DMEM_SIZE_2_KB
-  `define DMEM_AWIDTH       10
-  `define DMEM_SIZE       2048
+`define DMEM_AWIDTH 10
+`define DMEM_SIZE 2048
 `endif
 `ifdef DMEM_SIZE_1_KB
-  `define DMEM_AWIDTH        9
-  `define DMEM_SIZE       1024
+`define DMEM_AWIDTH 9
+`define DMEM_SIZE 1024
 `endif
 `ifdef DMEM_SIZE_512_B
-  `define DMEM_AWIDTH        8
-  `define DMEM_SIZE        512
+`define DMEM_AWIDTH 8
+`define DMEM_SIZE 512
 `endif
 `ifdef DMEM_SIZE_256_B
-  `define DMEM_AWIDTH        7
-  `define DMEM_SIZE        256
+`define DMEM_AWIDTH 7
+`define DMEM_SIZE 256
 `endif
 `ifdef DMEM_SIZE_128_B
-  `define DMEM_AWIDTH        6
-  `define DMEM_SIZE        128
+`define DMEM_AWIDTH 6
+`define DMEM_SIZE 128
 `endif
 `ifdef DMEM_SIZE_CUSTOM
-  `define DMEM_AWIDTH       `DMEM_CUSTOM_AWIDTH
-  `define DMEM_SIZE         `DMEM_CUSTOM_SIZE
+`define DMEM_AWIDTH `DMEM_CUSTOM_AWIDTH
+`define DMEM_SIZE `DMEM_CUSTOM_SIZE
 `endif
 
 // Peripheral Memory Size
 `ifdef PER_SIZE_32_KB
-  `define PER_AWIDTH        14
-  `define PER_SIZE       32768
+`define PER_AWIDTH 14
+`define PER_SIZE 32768
 `endif
 `ifdef PER_SIZE_16_KB
-  `define PER_AWIDTH        13
-  `define PER_SIZE       16384
+`define PER_AWIDTH 13
+`define PER_SIZE 16384
 `endif
 `ifdef PER_SIZE_8_KB
-  `define PER_AWIDTH        12
-  `define PER_SIZE        8192
+`define PER_AWIDTH 12
+`define PER_SIZE 8192
 `endif
 `ifdef PER_SIZE_4_KB
-  `define PER_AWIDTH        11
-  `define PER_SIZE        4096
+`define PER_AWIDTH 11
+`define PER_SIZE 4096
 `endif
 `ifdef PER_SIZE_2_KB
-  `define PER_AWIDTH        10
-  `define PER_SIZE        2048
+`define PER_AWIDTH 10
+`define PER_SIZE 2048
 `endif
 `ifdef PER_SIZE_1_KB
-  `define PER_AWIDTH         9
-  `define PER_SIZE        1024
+`define PER_AWIDTH 9
+`define PER_SIZE 1024
 `endif
 `ifdef PER_SIZE_512_B
-  `define PER_AWIDTH         8
-  `define PER_SIZE         512
+`define PER_AWIDTH 8
+`define PER_SIZE 512
 `endif
 `ifdef PER_SIZE_CUSTOM
-  `define PER_AWIDTH        `PER_CUSTOM_AWIDTH
-  `define PER_SIZE          `PER_CUSTOM_SIZE
+`define PER_AWIDTH `PER_CUSTOM_AWIDTH
+`define PER_SIZE `PER_CUSTOM_SIZE
 `endif
 
 // Data Memory Base Adresses
-`define DMEM_BASE  `PER_SIZE
+`define DMEM_BASE `PER_SIZE
 
 // Program & Data Memory most significant address bit (for 16 bit words)
-`define PMEM_MSB   `PMEM_AWIDTH-1
-`define DMEM_MSB   `DMEM_AWIDTH-1
-`define PER_MSB    `PER_AWIDTH-1
+`define PMEM_MSB `PMEM_AWIDTH-1
+`define DMEM_MSB `DMEM_AWIDTH-1
+`define PER_MSB `PER_AWIDTH-1
 
 // Number of available IRQs
-`ifdef  IRQ_16
+`ifdef IRQ_16
 `define IRQ_NR 16
 `endif
-`ifdef  IRQ_32
+`ifdef IRQ_32
 `define IRQ_NR 32
 `define IRQ_NR_GE_32
 `endif
-`ifdef  IRQ_64
+`ifdef IRQ_64
 `define IRQ_NR 64
 `define IRQ_NR_GE_32
 `endif
@@ -665,146 +665,146 @@
 //======================================
 
 // Instructions type
-`define INST_SO  0
+`define INST_SO 0
 `define INST_JMP 1
-`define INST_TO  2
+`define INST_TO 2
 
 // Single-operand arithmetic
-`define RRC    0
-`define SWPB   1
-`define RRA    2
-`define SXT    3
-`define PUSH   4
-`define CALL   5
-`define RETI   6
-`define IRQ    7
+`define RRC 0
+`define SWPB 1
+`define RRA 2
+`define SXT 3
+`define PUSH 4
+`define CALL 5
+`define RETI 6
+`define IRQ 7
 
 // Conditional jump
-`define JNE    0
-`define JEQ    1
-`define JNC    2
-`define JC     3
-`define JN     4
-`define JGE    5
-`define JL     6
-`define JMP    7
+`define JNE 0
+`define JEQ 1
+`define JNC 2
+`define JC 3
+`define JN 4
+`define JGE 5
+`define JL 6
+`define JMP 7
 
 // Two-operand arithmetic
-`define MOV    0
-`define ADD    1
-`define ADDC   2
-`define SUBC   3
-`define SUB    4
-`define CMP    5
-`define DADD   6
-`define BITC   7
-`define BIC    8
-`define BIS    9
-`define XORX  10
-`define ANDX  11
+`define MOV 0
+`define ADD 1
+`define ADDC 2
+`define SUBC 3
+`define SUB 4
+`define CMP 5
+`define DADD 6
+`define BITC 7
+`define BIC 8
+`define BIS 9
+`define XORX 10
+`define ANDX 11
 
 // Addressing modes
-`define DIR      0
-`define IDX      1
-`define INDIR    2
-`define INDIR_I  3
-`define SYMB     4
-`define IMM      5
-`define ABS      6
-`define CONST    7
+`define DIR 0
+`define IDX 1
+`define INDIR 2
+`define INDIR_I 3
+`define SYMB 4
+`define IMM 5
+`define ABS 6
+`define CONST 7
 
 // Instruction state machine
 `define I_IRQ_FETCH 3'h0
-`define I_IRQ_DONE  3'h1
-`define I_DEC       3'h2
-`define I_EXT1      3'h3
-`define I_EXT2      3'h4
-`define I_IDLE      3'h5
+`define I_IRQ_DONE 3'h1
+`define I_DEC 3'h2
+`define I_EXT1 3'h3
+`define I_EXT2 3'h4
+`define I_IDLE 3'h5
 
 // Execution state machine
 // (swapped E_IRQ_0 and E_IRQ_2 values to suppress glitch generation warning from lint tool)
-`define E_IRQ_0     4'h2
-`define E_IRQ_1     4'h1
-`define E_IRQ_2     4'h0
-`define E_IRQ_3     4'h3
-`define E_IRQ_4     4'h4
-`define E_SRC_AD    4'h5
-`define E_SRC_RD    4'h6
-`define E_SRC_WR    4'h7
-`define E_DST_AD    4'h8
-`define E_DST_RD    4'h9
-`define E_DST_WR    4'hA
-`define E_EXEC      4'hB
-`define E_JUMP      4'hC
-`define E_IDLE      4'hD
+`define E_IRQ_0 4'h2
+`define E_IRQ_1 4'h1
+`define E_IRQ_2 4'h0
+`define E_IRQ_3 4'h3
+`define E_IRQ_4 4'h4
+`define E_SRC_AD 4'h5
+`define E_SRC_RD 4'h6
+`define E_SRC_WR 4'h7
+`define E_DST_AD 4'h8
+`define E_DST_RD 4'h9
+`define E_DST_WR 4'hA
+`define E_EXEC 4'hB
+`define E_JUMP 4'hC
+`define E_IDLE 4'hD
 
 // ALU control signals
-`define ALU_SRC_INV   0
-`define ALU_INC       1
-`define ALU_INC_C     2
-`define ALU_ADD       3
-`define ALU_AND       4
-`define ALU_OR        5
-`define ALU_XOR       6
-`define ALU_DADD      7
-`define ALU_STAT_7    8
-`define ALU_STAT_F    9
-`define ALU_SHIFT    10
-`define EXEC_NO_WR   11
+`define ALU_SRC_INV 0
+`define ALU_INC 1
+`define ALU_INC_C 2
+`define ALU_ADD 3
+`define ALU_AND 4
+`define ALU_OR 5
+`define ALU_XOR 6
+`define ALU_DADD 7
+`define ALU_STAT_7 8
+`define ALU_STAT_F 9
+`define ALU_SHIFT 10
+`define EXEC_NO_WR 11
 
 // Debug interface
-`define DBG_UART_WR   18
-`define DBG_UART_BW   17
+`define DBG_UART_WR 18
+`define DBG_UART_BW 17
 `define DBG_UART_ADDR 16:11
 
 // Debug interface CPU_CTL register
-`define HALT        0
-`define RUN         1
-`define ISTEP       2
-`define SW_BRK_EN   3
-`define FRZ_BRK_EN  4
-`define RST_BRK_EN  5
-`define CPU_RST     6
+`define HALT 0
+`define RUN 1
+`define ISTEP 2
+`define SW_BRK_EN 3
+`define FRZ_BRK_EN 4
+`define RST_BRK_EN 5
+`define CPU_RST 6
 
 // Debug interface CPU_STAT register
-`define HALT_RUN    0
-`define PUC_PND     1
-`define SWBRK_PND   3
-`define HWBRK0_PND  4
-`define HWBRK1_PND  5
+`define HALT_RUN 0
+`define PUC_PND 1
+`define SWBRK_PND 3
+`define HWBRK0_PND 4
+`define HWBRK1_PND 5
 
 // Debug interface BRKx_CTL register
 `define BRK_MODE_RD 0
 `define BRK_MODE_WR 1
-`define BRK_MODE    1:0
-`define BRK_EN      2
-`define BRK_I_EN    3
-`define BRK_RANGE   4
+`define BRK_MODE 1:0
+`define BRK_EN 2
+`define BRK_I_EN 3
+`define BRK_RANGE 4
 
 // Basic clock module: BCSCTL1 Control Register
-`define DIVAx       5:4
+`define DIVAx 5:4
 
 // Basic clock module: BCSCTL2 Control Register
-`define SELMx       7
-`define DIVMx       5:4
-`define SELS        3
-`define DIVSx       2:1
+`define SELMx 7
+`define DIVMx 5:4
+`define SELS 3
+`define DIVSx 2:1
 
 // MCLK Clock gate
 `ifdef CPUOFF_EN
-  `define MCLK_CGATE
+`define MCLK_CGATE
 `else
 `ifdef MCLK_DIVIDER
-  `define MCLK_CGATE
+`define MCLK_CGATE
 `endif
 `endif
 
 // SMCLK Clock gate
 `ifdef SCG1_EN
-  `define SMCLK_CGATE
+`define SMCLK_CGATE
 `else
 `ifdef SMCLK_DIVIDER
-  `define SMCLK_CGATE
+`define SMCLK_CGATE
 `endif
 `endif
 
@@ -813,7 +813,7 @@
 //======================================
 
 // Debug interface: CPU version
-`define CPU_VERSION   3'h2
+`define CPU_VERSION 3'h2
 
 // Debug interface: Software breakpoint opcode
 `define DBG_SWBRK_OP 16'h4343
@@ -839,7 +839,7 @@
 //`define DBG_UART_BAUD  576000
 //`define DBG_UART_BAUD  921600
 `define DBG_UART_BAUD 2000000
-`define DBG_DCO_FREQ  20000000
+`define DBG_DCO_FREQ 20000000
 `define DBG_UART_CNT ((`DBG_DCO_FREQ/`DBG_UART_BAUD)-1)
 
 // Debug interface input synchronizer
@@ -847,27 +847,27 @@
 
 // Enable/Disable the hardware breakpoint RANGE mode
 `ifdef DBG_HWBRK_RANGE
- `define HWBRK_RANGE 1'b1
+`define HWBRK_RANGE 1'b1
 `else
- `define HWBRK_RANGE 1'b0
+`define HWBRK_RANGE 1'b0
 `endif
 
 // Counter width for the debug interface UART
 `define DBG_UART_XFER_CNT_W 16
 
 // Check configuration
-`ifdef DBG_EN
- `ifdef DBG_UART
-   `ifdef DBG_I2C
-CONFIGURATION ERROR: I2C AND UART DEBUG INTERFACE ARE BOTH ENABLED
-   `endif
- `else
-   `ifdef DBG_I2C
-   `else
-CONFIGURATION ERROR: I2C OR UART DEBUG INTERFACE SHOULD BE ENABLED
-   `endif
- `endif
-`endif
+// `ifdef DBG_EN
+// `ifdef DBG_UART
+// `ifdef DBG_I2C
+// CONFIGURATION ERROR: I2C AND UART DEBUG INTERFACE ARE BOTH ENABLED
+// `endif
+// `else
+// `ifdef DBG_I2C
+// `else
+// CONFIGURATION ERROR: I2C OR UART DEBUG INTERFACE SHOULD BE ENABLED
+// `endif
+// `endif
+// `endif
 
 //
 // MULTIPLIER CONFIGURATION
@@ -893,59 +893,59 @@ CONFIGURATION ERROR: I2C OR UART DEBUG INTERFACE SHOULD BE ENABLED
 //==========================================================================//
 
 // Timer A: TACTL Control Register
-`define TASSELx     9:8
-`define TAIDx       7:6
-`define TAMCx       5:4
-`define TACLR       2
-`define TAIE        1
-`define TAIFG       0
+`define TASSELx 9:8
+`define TAIDx 7:6
+`define TAMCx 5:4
+`define TACLR 2
+`define TAIE 1
+`define TAIFG 0
 
 // Timer A: TACCTLx Capture/Compare Control Register
-`define TACMx      15:14
-`define TACCISx    13:12
-`define TASCS      11
-`define TASCCI     10
-`define TACAP       8
-`define TAOUTMODx   7:5
-`define TACCIE      4
-`define TACCI       3
-`define TAOUT       2
-`define TACOV       1
-`define TACCIFG     0
-  
+`define TACMx 15:14
+`define TACCISx 13:12
+`define TASCS 11
+`define TASCCI 10
+`define TACAP 8
+`define TAOUTMODx 7:5
+`define TACCIE 4
+`define TACCI 3
+`define TAOUT 2
+`define TACOV 1
+`define TACCIFG 0
+
 //======================================
 // CONFIGURATION CHECKS
 //======================================
 
-`ifdef  IRQ_16
-  `ifdef  IRQ_32
-CONFIGURATION ERROR: ONLY ONE OF THE IRQ NUMBER OPTION CAN BE SELECTED
-  `endif
-  `ifdef  IRQ_64
-CONFIGURATION ERROR: ONLY ONE OF THE IRQ NUMBER OPTION CAN BE SELECTED
-  `endif
-`endif
-`ifdef  IRQ_32
-  `ifdef  IRQ_64
-CONFIGURATION ERROR: ONLY ONE OF THE IRQ NUMBER OPTION CAN BE SELECTED
-  `endif
-`endif
-`ifdef LFXT_DOMAIN
-`else
- `ifdef MCLK_MUX
-CONFIGURATION ERROR: THE MCLK_MUX CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
- `endif
- `ifdef SMCLK_MUX
-CONFIGURATION ERROR: THE SMCLK_MUX CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
- `endif   
- `ifdef WATCHDOG_MUX
-CONFIGURATION ERROR: THE WATCHDOG_MUX CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
- `else
-   `ifdef WATCHDOG_NOMUX_ACLK
-CONFIGURATION ERROR: THE WATCHDOG_NOMUX_ACLK CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
-   `endif
- `endif
- `ifdef OSCOFF_EN
-CONFIGURATION ERROR: THE OSCOFF LOW POWER MODE CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
- `endif   
-`endif
+// `ifdef  IRQ_16
+// `ifdef  IRQ_32
+// CONFIGURATION ERROR: ONLY ONE OF THE IRQ NUMBER OPTION CAN BE SELECTED
+// `endif
+// `ifdef  IRQ_64
+// CONFIGURATION ERROR: ONLY ONE OF THE IRQ NUMBER OPTION CAN BE SELECTED
+// `endif
+// `endif
+// `ifdef  IRQ_32
+// `ifdef  IRQ_64
+// CONFIGURATION ERROR: ONLY ONE OF THE IRQ NUMBER OPTION CAN BE SELECTED
+// `endif
+// `endif
+// `ifdef LFXT_DOMAIN
+// `else
+// `ifdef MCLK_MUX
+// CONFIGURATION ERROR: THE MCLK_MUX CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
+// `endif
+// `ifdef SMCLK_MUX
+// CONFIGURATION ERROR: THE SMCLK_MUX CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
+// `endif   
+// `ifdef WATCHDOG_MUX
+// CONFIGURATION ERROR: THE WATCHDOG_MUX CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
+// `else
+// `ifdef WATCHDOG_NOMUX_ACLK
+// CONFIGURATION ERROR: THE WATCHDOG_NOMUX_ACLK CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
+// `endif
+// `endif
+// `ifdef OSCOFF_EN
+// CONFIGURATION ERROR: THE OSCOFF LOW POWER MODE CAN ONLY BE ENABLED IF THE LFXT_DOMAIN IS ENABLED AS WELL
+// `endif   
+// `endif

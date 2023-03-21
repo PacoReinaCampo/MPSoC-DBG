@@ -93,7 +93,7 @@ module peripheral_dbg_pu_msp430_i2c (
 
   wire scl_sync = ~scl_sync_n;
 
-  wire                         sda_in_sync_n;
+  wire sda_in_sync_n;
 
   peripheral_dbg_pu_msp430_sync_cell sync_cell_i2c_sda (
     .data_out(sda_in_sync_n),
@@ -102,12 +102,12 @@ module peripheral_dbg_pu_msp430_i2c (
     .rst     (dbg_rst)
   );
 
-  wire sda_in_sync = ~sda_in_sync_n;
+  wire       sda_in_sync = ~sda_in_sync_n;
 
   // SCL/SDA input buffers
   //--------------------------------
 
-  reg                                [1:0] scl_buf;
+  reg  [1:0] scl_buf;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) scl_buf <= 2'h3;
@@ -132,7 +132,7 @@ module peripheral_dbg_pu_msp430_i2c (
   //------------------------------
 
   // SDA Edge detection
-  reg                                                                                                            sda_in_dly;
+  reg  sda_in_dly;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) sda_in_dly <= 1'b1;
@@ -144,19 +144,19 @@ module peripheral_dbg_pu_msp430_i2c (
   wire sda_in_edge = sda_in_dly ^ sda_in;
 
   // SCL Edge detection
-  reg                                     scl_dly;
+  reg  scl_dly;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) scl_dly <= 1'b1;
     else scl_dly <= scl;
   end
 
-  wire scl_fe = scl_dly & ~scl;
-  wire scl_re = ~scl_dly & scl;
-  wire scl_edge = scl_dly ^ scl;
+  wire       scl_fe = scl_dly & ~scl;
+  wire       scl_re = ~scl_dly & scl;
+  wire       scl_edge = scl_dly ^ scl;
 
   // Delayed SCL Rising-Edge for SDA data sampling
-  reg                            [1:0] scl_re_dly;
+  reg  [1:0] scl_re_dly;
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) scl_re_dly <= 2'b00;
     else scl_re_dly <= {scl_re_dly[0], scl_re};
@@ -187,9 +187,9 @@ module peripheral_dbg_pu_msp430_i2c (
   // is detected and will be disactivated if the slave address
   // doesn't match or if a stop condition is detected.
 
-  wire                                 i2c_addr_not_valid;
+  wire i2c_addr_not_valid;
 
-  reg                                  i2c_active_seq;
+  reg  i2c_active_seq;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) i2c_active_seq <= 1'b0;
@@ -197,21 +197,21 @@ module peripheral_dbg_pu_msp430_i2c (
     else if (stop_detect || i2c_addr_not_valid) i2c_active_seq <= 1'b0;
   end
 
-  wire i2c_active = i2c_active_seq & ~stop_detect;
-  wire i2c_init = ~i2c_active | start_detect;
+  wire       i2c_active = i2c_active_seq & ~stop_detect;
+  wire       i2c_init = ~i2c_active | start_detect;
 
   //=============================================================================
   // 3) I2C STATE MACHINE
   //=============================================================================
 
   // State register/wires
-  reg                                              [2:0] i2c_state;
-  reg                                              [2:0] i2c_state_nxt;
+  reg  [2:0] i2c_state;
+  reg  [2:0] i2c_state_nxt;
 
   // Utility signals
-  reg                                              [8:0] shift_buf;
-  wire                                                   shift_rx_done;
-  wire                                                   shift_tx_done;
+  reg  [8:0] shift_buf;
+  wire       shift_rx_done;
+  wire       shift_tx_done;
 
   // State machine definition
   parameter RX_ADDR = 3'h0;

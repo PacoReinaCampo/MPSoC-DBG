@@ -53,7 +53,7 @@ entity peripheral_dbg_soc_debug_ring_expand is
     XLEN     : integer := 64;
     CHANNELS : integer := 2;
     NODES    : integer := 2
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -79,7 +79,7 @@ entity peripheral_dbg_soc_debug_ring_expand is
     ext_out_last  : out std_logic_vector(CHANNELS-1 downto 0);
     ext_out_valid : out std_logic_vector(CHANNELS-1 downto 0);
     ext_out_ready : in  std_logic_vector(CHANNELS-1 downto 0)  -- extension output ports
-  );
+    );
 end peripheral_dbg_soc_debug_ring_expand;
 
 architecture rtl of peripheral_dbg_soc_debug_ring_expand is
@@ -91,7 +91,7 @@ architecture rtl of peripheral_dbg_soc_debug_ring_expand is
   component peripheral_dbg_soc_ring_router
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -127,7 +127,7 @@ architecture rtl of peripheral_dbg_soc_debug_ring_expand is
       local_out_last  : out std_logic;
       local_out_valid : out std_logic;
       local_out_ready : in  std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -138,15 +138,15 @@ architecture rtl of peripheral_dbg_soc_debug_ring_expand is
   signal chain_valid : std_logic_matrix(CHANNELS-1 downto 0)(NODES-1 downto 0);
   signal chain_ready : std_logic_matrix(CHANNELS-1 downto 0)(NODES-1 downto 0);
 
-  ------------------------------------------------------------------------------
-  -- Module Body
-  ------------------------------------------------------------------------------
+------------------------------------------------------------------------------
+-- Module Body
+------------------------------------------------------------------------------
 begin
   generating_0 : for i in 0 to NODES - 1 generate
     ring_router : peripheral_dbg_soc_ring_router
       generic map (
         XLEN => XLEN
-      )
+        )
       port map (
         clk => clk,
         rst => rst,
@@ -182,7 +182,7 @@ begin
         local_out_last  => dii_out_last(i),
         local_out_valid => dii_out_valid(i),
         local_out_ready => dii_out_ready(i)
-      );
+        );
   end generate;
 
   -- the expanded ports

@@ -55,7 +55,7 @@ entity peripheral_dbg_soc_osd_regaccess is
     PLEN : integer := 64;
 
     MAX_REG_SIZE : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -83,7 +83,7 @@ entity peripheral_dbg_soc_osd_regaccess is
 
     event_dest : out std_logic_vector(XLEN-1 downto 0);
     stall      : out std_logic
-  );
+    );
 end peripheral_dbg_soc_osd_regaccess;
 
 architecture rtl of peripheral_dbg_soc_osd_regaccess is
@@ -294,7 +294,7 @@ begin
                 nxt_resp_error <= '1';
             end case;
           end if;
-        else  -- case (debug_in_data)
+        else                            -- case (debug_in_data)
           -- if (nxt_req_write)
           -- LOCAL READ
           case (debug_in_data) is
@@ -335,7 +335,7 @@ begin
         debug_in_ready <= '1';
         if (debug_in_valid = '1') then
           if (req_addr(15 downto 9) /= "0000000") then
-            nxt_reqresp_value <= reqresp_value  or std_logic_vector(unsigned(debug_in_data) sll to_integer(unsigned(word_it))*16);
+            nxt_reqresp_value <= reqresp_value or std_logic_vector(unsigned(debug_in_data) sll to_integer(unsigned(word_it))*16);
             if (word_it = "000") then
               if (debug_in_last = '1') then
                 nxt_state <= STATE_EXT_START;
@@ -388,12 +388,12 @@ begin
         if (req_write = '1') then
           if (resp_error = '1') then
             debug_out_data(13 downto 10) <= "1111";  -- RESP_WRITE_REG_ERROR
-          else                                       -- RESP_WRITE_REG_SUCCESS
+          else                          -- RESP_WRITE_REG_SUCCESS
             debug_out_data(13 downto 10) <= "1110";
           end if;
         elsif (resp_error = '1') then
           debug_out_data(13 downto 10) <= "1100";    -- RESP_READ_REG_ERROR
-        else                                         -- RESP_READ_REG_SUCCESS_*
+        else                            -- RESP_READ_REG_SUCCESS_*
           debug_out_data(13 downto 10) <= ("10" & req_size);
         end if;
         debug_out_last <= resp_error or req_write;

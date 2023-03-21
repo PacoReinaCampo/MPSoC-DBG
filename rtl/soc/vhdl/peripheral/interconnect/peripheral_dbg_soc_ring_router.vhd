@@ -52,7 +52,7 @@ use work.peripheral_dbg_soc_pkg.all;
 entity peripheral_dbg_soc_ring_router is
   generic (
     XLEN : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -100,7 +100,7 @@ architecture rtl of peripheral_dbg_soc_ring_router is
   component peripheral_dbg_soc_ring_router_demux
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -127,7 +127,7 @@ architecture rtl of peripheral_dbg_soc_ring_router is
   component peripheral_dbg_soc_ring_router_mux_rr
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -152,7 +152,7 @@ architecture rtl of peripheral_dbg_soc_ring_router is
   component peripheral_dbg_soc_ring_router_mux
     generic (
       XLEN : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -178,7 +178,7 @@ architecture rtl of peripheral_dbg_soc_ring_router is
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4
-    );
+      );
     port (
       -- length of the buffer
       clk         : in  std_logic;
@@ -232,7 +232,7 @@ begin
   u_demux0 : peripheral_dbg_soc_ring_router_demux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -258,7 +258,7 @@ begin
   u_demux1 : peripheral_dbg_soc_ring_router_demux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -284,7 +284,7 @@ begin
   u_mux_local : peripheral_dbg_soc_ring_router_mux_rr
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -308,7 +308,7 @@ begin
   u_mux_ring0 : peripheral_dbg_soc_ring_router_mux
     generic map (
       XLEN => XLEN
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -333,7 +333,7 @@ begin
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -355,7 +355,7 @@ begin
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,

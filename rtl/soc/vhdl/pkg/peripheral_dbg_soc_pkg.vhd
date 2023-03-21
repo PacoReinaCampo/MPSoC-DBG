@@ -56,9 +56,9 @@ package peripheral_dbg_soc_pkg is
 
   constant DEPTH : integer := 8;
 
-  constant SYSTEM_VENDOR_ID         : integer := 2;
-  constant SYSTEM_DEVICE_ID         : integer := 2;
-  constant NUM_MODULES              : integer := 0;
+  constant SYSTEM_VENDOR_ID : integer := 2;
+  constant SYSTEM_DEVICE_ID : integer := 2;
+  constant NUM_MODULES      : integer := 0;
 
   constant SUBNET_BITS              : integer := 6;
   constant LOCAL_SUBNET             : integer := 0;
@@ -69,21 +69,21 @@ package peripheral_dbg_soc_pkg is
   constant FULLPACKET : std_logic := '0';
 
   --Width of memory addresses
-  constant ADDR_WIDTH : integer :=  64;
+  constant ADDR_WIDTH : integer := 64;
 
   --System word length
-  constant DATA_WIDTH : integer :=  64;
+  constant DATA_WIDTH : integer := 64;
 
   constant LOG2_BUFFER_SIZE : integer := integer(log2(real(BUFFER_SIZE)));
 
   --Regaccess
-  constant  MOD_VENDOR             : integer := 4;  -- module vendor
-  constant  MOD_TYPE               : integer := 4;  -- module type
-  constant  MOD_VERSION            : integer := 4;  -- module version
-  constant  MOD_EVENT_DEST_DEFAULT : integer := 4;  -- default event destination
-  constant  MAX_REG_SIZE           : integer := 64;
+  constant MOD_VENDOR             : integer := 4;  -- module vendor
+  constant MOD_TYPE               : integer := 4;  -- module type
+  constant MOD_VERSION            : integer := 4;  -- module version
+  constant MOD_EVENT_DEST_DEFAULT : integer := 4;  -- default event destination
+  constant MAX_REG_SIZE           : integer := 64;
 
-  constant  CAN_STALL : std_logic := '0';
+  constant CAN_STALL : std_logic := '0';
 
   -- The maximum number of payload words the packet could consist of.
   -- The actual number of payload words is given by data_num_words.

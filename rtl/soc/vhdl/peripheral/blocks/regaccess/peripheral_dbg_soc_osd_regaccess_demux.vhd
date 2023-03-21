@@ -51,7 +51,7 @@ use work.peripheral_dbg_pu_pkg.all;
 entity peripheral_dbg_soc_osd_regaccess_demux is
   generic (
     XLEN : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -70,7 +70,7 @@ entity peripheral_dbg_soc_osd_regaccess_demux is
     out_bypass_last  : out std_logic;
     out_bypass_valid : out std_logic;
     out_bypass_ready : in  std_logic
-  );
+    );
 end peripheral_dbg_soc_osd_regaccess_demux;
 
 architecture rtl of peripheral_dbg_soc_osd_regaccess_demux is

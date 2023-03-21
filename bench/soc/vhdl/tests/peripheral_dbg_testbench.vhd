@@ -68,7 +68,7 @@ architecture rtl of peripheral_dbg_testbench is
       BUFFER_SIZE : integer := 4;
 
       CHANNELS : integer := 2
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -98,7 +98,7 @@ architecture rtl of peripheral_dbg_testbench is
 
       -- CPU reset request
       cpu_rst : out std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_debug_ring
@@ -106,12 +106,12 @@ architecture rtl of peripheral_dbg_testbench is
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
       NODES    : integer := 1
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
 
-      id_map   : in std_logic_matrix(NODES-1 downto 0)(XLEN-1 downto 0);
+      id_map : in std_logic_matrix(NODES-1 downto 0)(XLEN-1 downto 0);
 
       dii_in_data  : in  std_logic_matrix(NODES-1 downto 0)(XLEN-1 downto 0);
       dii_in_last  : in  std_logic_vector(NODES-1 downto 0);
@@ -122,7 +122,7 @@ architecture rtl of peripheral_dbg_testbench is
       dii_out_last  : out std_logic_vector(NODES-1 downto 0);
       dii_out_valid : out std_logic_vector(NODES-1 downto 0);
       dii_out_ready : in  std_logic_vector(NODES-1 downto 0)
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_debug_ring_expand
@@ -130,7 +130,7 @@ architecture rtl of peripheral_dbg_testbench is
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
       NODES    : integer := 1
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -156,7 +156,7 @@ architecture rtl of peripheral_dbg_testbench is
       ext_out_last  : out std_logic_vector(CHANNELS-1 downto 0);
       ext_out_valid : out std_logic_vector(CHANNELS-1 downto 0);
       ext_out_ready : in  std_logic_vector(CHANNELS-1 downto 0)  -- extension output ports
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -228,15 +228,15 @@ begin
   --DUT
   dbg_soc_interface : peripheral_dbg_soc_interface
     generic map (
-      XLEN     => XLEN,
-      PLEN     => PLEN,
+      XLEN => XLEN,
+      PLEN => PLEN,
 
       MAX_REG_SIZE => MAX_REG_SIZE,
 
       BUFFER_SIZE => BUFFER_SIZE,
 
-      CHANNELS    => CHANNELS
-    )
+      CHANNELS => CHANNELS
+      )
     port map (
       clk => HCLK,
       rst => HRESETn,
@@ -261,14 +261,14 @@ begin
       ring_in_last  => debug_ring_out_last,
       ring_in_valid => debug_ring_out_valid,
       ring_in_ready => debug_ring_out_ready
-    );
+      );
 
   dbg_soc_debug_ring : peripheral_dbg_soc_debug_ring
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,
       NODES    => NODES
-    )
+      )
     port map (
       clk => HCLK,
       rst => HRESETn,
@@ -284,14 +284,14 @@ begin
       dii_out_last  => dii_out_last,
       dii_out_valid => dii_out_valid,
       dii_out_ready => dii_out_ready
-    );
+      );
 
   dbg_soc_debug_ring_expand : peripheral_dbg_soc_debug_ring_expand
     generic map (
       XLEN     => XLEN,
       CHANNELS => CHANNELS,
       NODES    => NODES
-    )
+      )
     port map (
       clk => HCLK,
       rst => HRESETn,
@@ -317,5 +317,5 @@ begin
       ext_out_last  => ext_out_last,
       ext_out_valid => ext_out_valid,
       ext_out_ready => ext_out_ready
-    );
+      );
 end rtl;

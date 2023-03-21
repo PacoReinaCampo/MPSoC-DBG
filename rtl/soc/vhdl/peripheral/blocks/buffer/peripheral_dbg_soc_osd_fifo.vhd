@@ -52,7 +52,7 @@ entity peripheral_dbg_soc_osd_fifo is
   generic (
     WIDTH : integer := 64;
     DEPTH : integer := 8
-  );
+    );
   port (
     clk : in std_ulogic;
     rst : in std_ulogic;

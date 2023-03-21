@@ -159,5 +159,5 @@ begin
       fe_mdb_in         => fe_mdb_in,
       pc                => pc,
       cpu_id            => cpu_id
-    );
+      );
 end rtl;

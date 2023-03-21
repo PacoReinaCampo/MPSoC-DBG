@@ -49,43 +49,43 @@ use ieee.numeric_std.all;
 entity peripheral_dbg_soc_ring_router_mux is
   generic (
     XLEN : integer := 64
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
 
-    in_ring_data : in std_logic_vector(XLEN-1 downto 0);
-    in_ring_last : in std_logic;
-    in_ring_valid : in std_logic;
+    in_ring_data  : in  std_logic_vector(XLEN-1 downto 0);
+    in_ring_last  : in  std_logic;
+    in_ring_valid : in  std_logic;
     in_ring_ready : out std_logic;
 
-    in_local_data : in std_logic_vector(XLEN-1 downto 0);
-    in_local_last : in std_logic;
-    in_local_valid : in std_logic;
+    in_local_data  : in  std_logic_vector(XLEN-1 downto 0);
+    in_local_last  : in  std_logic;
+    in_local_valid : in  std_logic;
     in_local_ready : out std_logic;
 
-    out_mux_data : out std_logic_vector(XLEN-1 downto 0);
-    out_mux_last : out std_logic;
+    out_mux_data  : out std_logic_vector(XLEN-1 downto 0);
+    out_mux_last  : out std_logic;
     out_mux_valid : out std_logic;
-    out_mux_ready : in std_logic
-  );
+    out_mux_ready : in  std_logic
+    );
 end peripheral_dbg_soc_ring_router_mux;
 
 architecture rtl of peripheral_dbg_soc_ring_router_mux is
   ------------------------------------------------------------------------------
   -- Constants
   ------------------------------------------------------------------------------
-  constant NOWORM : std_logic_vector(1 downto 0) := "00";
+  constant NOWORM     : std_logic_vector(1 downto 0) := "00";
   constant WORM_LOCAL : std_logic_vector(1 downto 0) := "01";
-  constant WORM_RING : std_logic_vector(1 downto 0) := "10";
+  constant WORM_RING  : std_logic_vector(1 downto 0) := "10";
 
   ------------------------------------------------------------------------------
   -- Variables
   ------------------------------------------------------------------------------
-  signal state : std_logic_vector(1 downto 0);
+  signal state     : std_logic_vector(1 downto 0);
   signal nxt_state : std_logic_vector(1 downto 0);
 
-  signal mux_last : std_logic;
+  signal mux_last  : std_logic;
   signal mux_valid : std_logic;
 
 begin
@@ -105,56 +105,56 @@ begin
 
   processing_1 : process (state)
   begin
-    nxt_state <= state;
-    mux_valid <= '0';
-    out_mux_data <= (others => 'X');
-    mux_last <= 'X';
-    in_ring_ready <= '0';
+    nxt_state      <= state;
+    mux_valid      <= '0';
+    out_mux_data   <= (others => 'X');
+    mux_last       <= 'X';
+    in_ring_ready  <= '0';
     in_local_ready <= '0';
     case (state) is
-    when NOWORM =>
-      if (in_ring_valid = '1') then
-        out_mux_data <= in_ring_data;
-        mux_last <= in_ring_last;
-        mux_valid <= '1';
+      when NOWORM =>
+        if (in_ring_valid = '1') then
+          out_mux_data  <= in_ring_data;
+          mux_last      <= in_ring_last;
+          mux_valid     <= '1';
+          in_ring_ready <= out_mux_ready;
+          if (in_ring_last = '0') then
+            nxt_state <= WORM_RING;
+          end if;
+        elsif (in_local_valid = '1') then
+          out_mux_data   <= in_local_data;
+          mux_last       <= in_local_last;
+          mux_valid      <= '1';
+          in_local_ready <= out_mux_ready;
+
+          if (in_local_last = '0') then
+            nxt_state <= WORM_LOCAL;
+          end if;
+        end if;
+      -- if (in_local_valid)
+      -- case: NOWORM
+      when WORM_RING =>
         in_ring_ready <= out_mux_ready;
-        if (in_ring_last = '0') then
-          nxt_state <= WORM_RING;
+        mux_valid     <= in_ring_valid;
+        mux_last      <= in_ring_last;
+        out_mux_data  <= in_ring_data;
+
+        if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
+          nxt_state <= NOWORM;
         end if;
-      elsif (in_local_valid = '1') then
-        out_mux_data <= in_local_data;
-        mux_last <= in_local_last;
-        mux_valid <= '1';
+      when WORM_LOCAL =>
         in_local_ready <= out_mux_ready;
-
-        if (in_local_last = '0') then
-          nxt_state <= WORM_LOCAL;
+        mux_valid      <= in_local_valid;
+        mux_last       <= in_local_last;
+        out_mux_data   <= in_local_data;
+        if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
+          nxt_state <= NOWORM;
         end if;
-      end if;
-    -- if (in_local_valid)
-    -- case: NOWORM
-    when WORM_RING =>
-      in_ring_ready <= out_mux_ready;
-      mux_valid <= in_ring_valid;
-      mux_last <= in_ring_last;
-      out_mux_data <= in_ring_data;
-
-      if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
-        nxt_state <= NOWORM;
-      end if;
-    when WORM_LOCAL =>
-      in_local_ready <= out_mux_ready;
-      mux_valid <= in_local_valid;
-      mux_last <= in_local_last;
-      out_mux_data <= in_local_data;
-      if (mux_last = '1' and mux_valid = '1' and out_mux_ready = '1') then
-        nxt_state <= NOWORM;
-      end if;
-    when others =>
-      null;
+      when others =>
+        null;
     end case;
 
-    out_mux_last <= mux_last;
-   out_mux_valid <= mux_valid;
+    out_mux_last  <= mux_last;
+    out_mux_valid <= mux_valid;
   end process;
 end rtl;

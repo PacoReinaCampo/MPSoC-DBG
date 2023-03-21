@@ -53,7 +53,7 @@ entity peripheral_dbg_soc_debug_ring is
     XLEN     : integer := 64;
     CHANNELS : integer := 2;
     NODES    : integer := 2
-  );
+    );
   port (
     clk    : in std_logic;
     rst    : in std_logic;
@@ -68,7 +68,7 @@ entity peripheral_dbg_soc_debug_ring is
     dii_out_last  : out std_logic_vector(NODES-1 downto 0);
     dii_out_valid : out std_logic_vector(NODES-1 downto 0);
     dii_out_ready : in  std_logic_vector(NODES-1 downto 0)
-  );
+    );
 end peripheral_dbg_soc_debug_ring;
 
 architecture rtl of peripheral_dbg_soc_debug_ring is
@@ -82,7 +82,7 @@ architecture rtl of peripheral_dbg_soc_debug_ring is
       XLEN     : integer := 64;
       CHANNELS : integer := 2;
       NODES    : integer := 1
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -108,7 +108,7 @@ architecture rtl of peripheral_dbg_soc_debug_ring is
       ext_out_last  : out std_logic_vector(CHANNELS-1 downto 0);
       ext_out_valid : out std_logic_vector(CHANNELS-1 downto 0);
       ext_out_ready : in  std_logic_vector(CHANNELS-1 downto 0)  -- extension output ports
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -128,7 +128,7 @@ begin
       XLEN     => XLEN,
       CHANNELS => CHANNELS,
       NODES    => NODES
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -154,7 +154,7 @@ begin
       ext_out_last  => ext_port_last(1),
       ext_out_valid => ext_port_valid(1),
       ext_out_ready => ext_port_ready(1)
-    );
+      );
 
   -- empty input for chain 0
   ext_port_valid(0)(0) <= '0';

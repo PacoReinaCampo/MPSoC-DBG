@@ -196,10 +196,10 @@ begin
 
   DATA_OUTPUT_GENERATION : block
   begin
-    brk_ctl_rd   <= ("00000000" & brk_ctl_full)  and (0 to 15 => brk_reg_rd(BRK_CTLC));
+    brk_ctl_rd   <= ("00000000" & brk_ctl_full) and (0 to 15  => brk_reg_rd(BRK_CTLC));
     brk_stat_rd  <= ("00000000" & brk_stat_full) and (0 to 15 => brk_reg_rd(BRK_STATC));
-    brk_addr0_rd <= brk_addr(0)                  and (0 to 15 => brk_reg_rd(BRK_ADDR0C));
-    brk_addr1_rd <= brk_addr(1)                  and (0 to 15 => brk_reg_rd(BRK_ADDR1C));
+    brk_addr0_rd <= brk_addr(0) and (0 to 15                  => brk_reg_rd(BRK_ADDR0C));
+    brk_addr1_rd <= brk_addr(1) and (0 to 15                  => brk_reg_rd(BRK_ADDR1C));
     brk_dout     <= brk_ctl_rd or brk_stat_rd or brk_addr0_rd or brk_addr1_rd;
   end block DATA_OUTPUT_GENERATION;
 

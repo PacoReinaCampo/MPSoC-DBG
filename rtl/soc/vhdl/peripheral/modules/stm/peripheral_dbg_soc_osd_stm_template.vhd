@@ -53,7 +53,7 @@ entity peripheral_dbg_soc_osd_stm_template is
   generic (
     XLEN     : integer := 64;
     VALWIDTH : integer := 2
-  );
+    );
   port (
     -- the address width of the core register file
     clk : in std_logic;
@@ -81,7 +81,7 @@ entity peripheral_dbg_soc_osd_stm_template is
     trace_port_data     : in std_logic_vector(VALWIDTH-1 downto 0);
     trace_port_addr     : in std_logic_vector(4 downto 0);
     trace_port_we       : in std_logic
-  );
+    );
 end peripheral_dbg_soc_osd_stm_template;
 
 architecture rtl of peripheral_dbg_soc_osd_stm_template is
@@ -98,7 +98,7 @@ architecture rtl of peripheral_dbg_soc_osd_stm_template is
       MAX_REG_SIZE : integer := 64;
 
       VALWIDTH : integer := 2
-    );
+      );
     port (
       -- the address width of the core register file
       clk : in std_logic;
@@ -119,7 +119,7 @@ architecture rtl of peripheral_dbg_soc_osd_stm_template is
       trace_valid : in std_logic;
       trace_id    : in std_logic_vector(XLEN-1 downto 0);
       trace_value : in std_logic_vector(VALWIDTH-1 downto 0)
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -146,7 +146,7 @@ begin
       MAX_REG_SIZE => MAX_REG_SIZE,
 
       VALWIDTH => VALWIDTH
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -166,7 +166,7 @@ begin
       trace_valid => trace_valid,
       trace_id    => trace_id,
       trace_value => trace_value
-    );
+      );
 
   processing_0 : process (clk)
   begin

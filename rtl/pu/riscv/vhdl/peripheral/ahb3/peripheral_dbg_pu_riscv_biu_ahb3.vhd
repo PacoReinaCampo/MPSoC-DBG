@@ -196,12 +196,12 @@ begin
   processing_3 : process (biu_clk, biu_rst)
   begin
     if (biu_rst = '1') then
-      HADDR_SGN  <= X"0";
-      HWRITE     <= '0';
+      HADDR_SGN <= X"0";
+      HWRITE    <= '0';
     elsif (rising_edge(biu_clk)) then
       if (biu_strb = '1' and biu_rdy_sgn = '1') then
-        HADDR_SGN  <= biu_addr;
-        HWRITE     <= not biu_rw;
+        HADDR_SGN <= biu_addr;
+        HWRITE    <= not biu_rw;
       end if;
     end if;
   end process;

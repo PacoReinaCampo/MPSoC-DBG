@@ -51,7 +51,7 @@ use work.peripheral_dbg_pu_pkg.all;
 entity peripheral_dbg_soc_osd_tracesample is
   generic (
     WIDTH : integer := 64
-  );
+    );
   port (
     clk          : in std_logic;
     rst          : in std_logic;

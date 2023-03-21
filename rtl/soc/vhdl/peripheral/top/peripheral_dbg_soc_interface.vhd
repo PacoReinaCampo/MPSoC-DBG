@@ -58,7 +58,7 @@ entity peripheral_dbg_soc_interface is
     BUFFER_SIZE : integer := 4;
 
     CHANNELS : integer := 2
-  );
+    );
   port (
     clk : in std_logic;
     rst : in std_logic;
@@ -88,7 +88,7 @@ entity peripheral_dbg_soc_interface is
 
     -- CPU reset request
     cpu_rst : out std_logic
-  );
+    );
 end peripheral_dbg_soc_interface;
 
 architecture rtl of peripheral_dbg_soc_interface is
@@ -101,7 +101,7 @@ architecture rtl of peripheral_dbg_soc_interface is
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -147,14 +147,14 @@ architecture rtl of peripheral_dbg_soc_interface is
       ext_out_last  : out std_logic;
       ext_out_valid : out std_logic;
       ext_out_ready : in  std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_osd_him
     generic (
       XLEN        : integer := 64;
       BUFFER_SIZE : integer := 4
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -177,7 +177,7 @@ architecture rtl of peripheral_dbg_soc_interface is
       dii_in_last  : in  std_logic;
       dii_in_valid : in  std_logic;
       dii_in_ready : out std_logic
-    );
+      );
   end component;
 
   component peripheral_dbg_soc_osd_scm
@@ -186,7 +186,7 @@ architecture rtl of peripheral_dbg_soc_interface is
       PLEN : integer := 64;
 
       MAX_REG_SIZE : integer := 64
-    );
+      );
     port (
       clk : in std_logic;
       rst : in std_logic;
@@ -205,7 +205,7 @@ architecture rtl of peripheral_dbg_soc_interface is
 
       sys_rst : out std_logic;
       cpu_rst : out std_logic
-    );
+      );
   end component;
 
   ------------------------------------------------------------------------------
@@ -256,7 +256,7 @@ begin
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -305,14 +305,14 @@ begin
       ext_out_last  => him_debug_in_last,
       ext_out_valid => him_debug_in_valid,
       ext_out_ready => him_debug_in_ready
-    );
+      );
 
   -- Host Interface: all traffic to foreign subnets goes through this interface
   osd_him : peripheral_dbg_soc_osd_him
     generic map (
       XLEN        => XLEN,
       BUFFER_SIZE => BUFFER_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -334,7 +334,7 @@ begin
       dii_in_last  => him_debug_in_last,
       dii_in_valid => him_debug_in_valid,
       dii_in_ready => him_debug_in_ready
-    );
+      );
 
   -- Subnet Control Module
   -- Manages this subnet, i.e. the on-chip OSD part
@@ -344,7 +344,7 @@ begin
       PLEN => PLEN,
 
       MAX_REG_SIZE => MAX_REG_SIZE
-    )
+      )
     port map (
       clk => clk,
       rst => rst,
@@ -363,5 +363,5 @@ begin
 
       sys_rst => sys_rst,
       cpu_rst => cpu_rst
-    );
+      );
 end rtl;

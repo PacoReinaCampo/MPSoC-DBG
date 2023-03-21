@@ -124,7 +124,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_biu_apb4 is
   ------------------------------------------------------------------------------
   function reduce_or (
     reduce_or_in : std_logic_vector
-  ) return std_logic is
+    ) return std_logic is
     variable reduce_or_out : std_logic := '0';
   begin
     for i in reduce_or_in'range loop
@@ -135,7 +135,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_biu_apb4 is
 
   function to_stdlogic (
     input : boolean
-  ) return std_logic is
+    ) return std_logic is
   begin
     if input then
       return('1');
