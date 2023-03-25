@@ -1,4 +1,4 @@
-pu/msp430/verilog
+code
 ├── peripheral
 │   └── bb
 │       ├── fuse

@@ -1,4 +1,4 @@
-soc/vhdl
+code
 ├── peripheral
 │   ├── blocks
 │   │   ├── buffer

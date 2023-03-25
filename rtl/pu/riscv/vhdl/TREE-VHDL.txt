@@ -1,4 +1,4 @@
-pu/riscv/vhdl
+code
 ├── core
 │   ├── peripheral_dbg_pu_riscv_biu.vhd
 │   ├── peripheral_dbg_pu_riscv_bus_module_core.vhd

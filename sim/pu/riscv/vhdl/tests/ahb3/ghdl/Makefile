@@ -45,22 +45,22 @@
 all: build simulate
 
 build:
-	ghdl -a --std=08 ../../../../../../../rtl/soc/vhdl/pkg/peripheral_dbg_pu_riscv_pkg.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/ahb3/peripheral_dbg_pu_riscv_biu_ahb3.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/ahb3/peripheral_dbg_pu_riscv_module_ahb3.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_apb_biu.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_apb_module.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/peripheral/ahb3/peripheral_dbg_pu_riscv_top_ahb3.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_bus_module_core.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_bytefifo.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_crc32.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_jsp_module_core.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_biu.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_module.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_status_reg.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncflop.vhd
-	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/core/peripheral_dbg_pu_riscv_syncreg.vhd
-	ghdl -a --std=08 ../../../../../../../bench/pu/riscv/vhdl/tests/ahb3/peripheral_dbg_testbench.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/soc/vhdl/code/pkg/peripheral_dbg_pu_riscv_pkg.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_biu_ahb3.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_module_ahb3.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_apb_biu.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_apb_module.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_top_ahb3.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bus_module_core.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bytefifo.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_crc32.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_jsp_module_core.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_biu.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_module.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_status_reg.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd
+	ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncreg.vhd
+	ghdl -a --std=08 ../../../../../../../bench/pu/riscv/vhdl/code/tests/ahb3/peripheral_dbg_testbench.vhd
 
 simulate:
 	ghdl -m --std=08 peripheral_dbg_testbench

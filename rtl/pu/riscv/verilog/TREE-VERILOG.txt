@@ -1,4 +1,4 @@
-pu/riscv/verilog
+code
 ├── core
 │   ├── peripheral_dbg_pu_riscv_biu.sv
 │   ├── peripheral_dbg_pu_riscv_bus_module_core.sv

@@ -42,29 +42,29 @@
 ##                                                                               ##
 ###################################################################################
 
-+incdir+../../../../../rtl/soc/verilog/pkg
++incdir+../../../../../rtl/soc/verilog/code/pkg
 
-../../../../../rtl/soc/verilog/peripheral/interfaces/common/peripheral_dbg_soc_dii_channel.sv
+../../../../../rtl/soc/verilog/code/peripheral/interfaces/common/peripheral_dbg_soc_dii_channel.sv
 
-../../../../../rtl/soc/verilog/peripheral/blocks/buffer/peripheral_dbg_soc_dii_buffer.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/buffer/peripheral_dbg_soc_osd_fifo.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/eventpacket/peripheral_dbg_soc_osd_event_packetization_fixedwidth.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/eventpacket/peripheral_dbg_soc_osd_event_packetization.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/regaccess/peripheral_dbg_soc_osd_regaccess_demux.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/regaccess/peripheral_dbg_soc_osd_regaccess_layer.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/regaccess/peripheral_dbg_soc_osd_regaccess.sv
-../../../../../rtl/soc/verilog/peripheral/blocks/tracesample/peripheral_dbg_soc_osd_tracesample.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_debug_ring_expand.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_debug_ring.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router_demux.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router_gateway_demux.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router_gateway_mux.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router_gateway.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router_mux_rr.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router_mux.sv
-../../../../../rtl/soc/verilog/peripheral/interconnect/peripheral_dbg_soc_ring_router.sv
-../../../../../rtl/soc/verilog/peripheral/modules/him/peripheral_dbg_soc_osd_him.sv
-../../../../../rtl/soc/verilog/peripheral/modules/scm/peripheral_dbg_soc_osd_scm.sv
-../../../../../rtl/soc/verilog/peripheral/top/peripheral_dbg_soc_interface.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/buffer/peripheral_dbg_soc_dii_buffer.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/buffer/peripheral_dbg_soc_osd_fifo.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/eventpacket/peripheral_dbg_soc_osd_event_packetization_fixedwidth.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/eventpacket/peripheral_dbg_soc_osd_event_packetization.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/regaccess/peripheral_dbg_soc_osd_regaccess_demux.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/regaccess/peripheral_dbg_soc_osd_regaccess_layer.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/regaccess/peripheral_dbg_soc_osd_regaccess.sv
+../../../../../rtl/soc/verilog/code/peripheral/blocks/tracesample/peripheral_dbg_soc_osd_tracesample.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_debug_ring_expand.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_debug_ring.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router_demux.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router_gateway_demux.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router_gateway_mux.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router_gateway.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router_mux_rr.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router_mux.sv
+../../../../../rtl/soc/verilog/code/peripheral/interconnect/peripheral_dbg_soc_ring_router.sv
+../../../../../rtl/soc/verilog/code/peripheral/modules/him/peripheral_dbg_soc_osd_him.sv
+../../../../../rtl/soc/verilog/code/peripheral/modules/scm/peripheral_dbg_soc_osd_scm.sv
+../../../../../rtl/soc/verilog/code/peripheral/top/peripheral_dbg_soc_interface.sv
 
-../../../../../bench/soc/verilog/tests/peripheral_dbg_testbench.sv
+../../../../../bench/soc/verilog/code/tests/peripheral_dbg_testbench.sv

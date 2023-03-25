@@ -9,14 +9,14 @@
 ##                  |_|                                                          ##
 ##                                                                               ##
 ##                                                                               ##
-##              Peripheral for MPSoC                                             ##
+##              QueenField                                                       ##
 ##              Multi-Processor System on Chip                                   ##
 ##                                                                               ##
 ###################################################################################
 
 ###################################################################################
 ##                                                                               ##
-## Copyright (c) 2015-2016 by the author(s)                                      ##
+## Copyright (c) 2022-2025 by the author(s)                                      ##
 ##                                                                               ##
 ## Permission is hereby granted, free of charge, to any person obtaining a copy  ##
 ## of this software and associated documentation files (the "Software"), to deal ##
@@ -42,11 +42,4 @@
 ##                                                                               ##
 ###################################################################################
 
-tree -P '*.vhd' pu/msp430/vhdl > TREE-PU-MSP430-VHDL.txt
-tree -P '*.sv' pu/msp430/verilog > TREE-PU-MSP430-VERILOG.txt
-#tree -P '*.vhd' pu/or1k/vhdl > TREE-PU-OR1K-VHDL.txt
-tree -P '*.sv' pu/or1k/verilog > TREE-PU-OR1K-VERILOG.txt
-tree -P '*.vhd' pu/riscv/vhdl > TREE-PU-RISCV-VHDL.txt
-tree -P '*.sv' pu/riscv/verilog > TREE-PU-RISCV-VERILOG.txt
-tree -P '*.vhd' soc/vhdl > TREE-SoC-VHDL.txt
-tree -P '*.sv' soc/verilog > TREE-SoC-VERILOG.txt
+find . -type f -name '*.vhd' -exec vhdl2verilog {} \;
