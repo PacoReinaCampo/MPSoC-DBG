@@ -35,43 +35,33 @@
 -- THE SOFTWARE.
 --
 --------------------------------------------------------------------------------
--- Author(s):
---   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity peripheral_osvvm_model is
-  generic (
-    DATA_SIZE : positive := 4
-    );
-  port (
-    CLK : in std_logic;
-    RST : in std_logic;
-
-    DATA_A_IN : in  unsigned(DATA_SIZE-1 downto 0);
-    DATA_B_IN : in  unsigned(DATA_SIZE-1 downto 0);
-    DATA_OUT  : out unsigned(DATA_SIZE downto 0)
-    );
-end entity peripheral_osvvm_model;
-
-architecture peripheral_osvvm_model_architecture of peripheral_osvvm_model is
-
-begin
+package peripheral_osvvm_model_pkg is
 
   ------------------------------------------------------------------------------
-  -- Body
+  -- Constants
   ------------------------------------------------------------------------------
 
-  model : process (CLK, RST) is
-    variable carry_int : std_logic;
-  begin
-    if(RST = '0') then
-      DATA_OUT <= (others => '0');
-    elsif(rising_edge(CLK)) then
-      DATA_OUT <= ('0' & DATA_A_IN) + ('0' & DATA_B_IN);
-    end if;
-  end process model;
+  ------------------------------------------------------------------------------
+  -- Components
+  ------------------------------------------------------------------------------
 
-end architecture peripheral_osvvm_model_architecture;
+  component peripheral_osvvm_model is
+    generic (
+      DATA_SIZE : positive := 4
+      );
+    port (
+      RST : in std_logic;
+      CLK : in std_logic;
+
+      DATA_A_IN : in  unsigned(DATA_SIZE-1 downto 0);
+      DATA_B_IN : in  unsigned(DATA_SIZE-1 downto 0);
+      DATA_OUT  : out unsigned(DATA_SIZE downto 0)
+      );
+  end component peripheral_osvvm_model;
+
+end peripheral_osvvm_model_pkg;
