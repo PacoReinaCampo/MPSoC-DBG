@@ -13,7 +13,7 @@
 //              Neural Turing Machine for MPSoC                               //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-// Copyright (c) 2020-2021 by the author(s)
+// Copyright (c) 2022-2025 by the author(s)
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy
 // of this software and associated documentation files (the "Software"), to deal
@@ -37,37 +37,46 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-class peripheral_bus_generator extends peripheral_base_transaction;
-  bit TrWrite;  //read/write transaction
-  int TrType;
-  int TrSize;
+module bench;
+  reg clk, rst;
+  reg [7:0] ip1, ip2;
+  wire [8:0] out;
 
-  extern function new();
-  extern virtual function bit compare(input peripheral_base_transaction to);
-  extern virtual function peripheral_base_transaction copy(input peripheral_base_transaction to = null);
-  extern virtual function void display(input string prefix = "");
-endclass : peripheral_bus_generator
+  adder DUT (
+    .clk(clk),
+    .rst(rst),
 
-////////////////////////////////////////////////////////////////////////////////
-//
-// Class Methods
-//
-function peripheral_bus_generator::new();
-  super.new();
-endfunction : new
+    .in1(ip1),
+    .in2(ip2),
 
-function bit peripheral_bus_generator::compare(input peripheral_base_transaction to);
-  peripheral_bus_generator cmp;
+    .out(out)
+  );
 
-  if (!$cast(cmp, to))  //is 'to' the correct type?
+  always #5 clk = ~clk;
+
+  initial begin
+    // Dump waves
+    $dumpfile("dump.vcd");
+    $dumpvars(1);
+
+    clk = 0;
+
+    ip1 = 0;
+    ip2 = 0;
+
+    rst = 0;
+    #2ns;
+    rst = 1;
+
+    #2ns;
+    rst = 0;
+    #10;
+
+    ip1 = 5;
+    ip2 = 2;
+    #5;
+    $display("End.");
     $finish;
+  end
 
-  return ((this.TrWrite == cmp.TrWrite) && (this.TrType == cmp.TrType) && (this.TrSize == cmp.TrSize));
-endfunction : compare
-
-function peripheral_base_transaction peripheral_bus_generator::copy(input peripheral_base_transaction to = null);
-  peripheral_bus_generator cp;
-
-  if (to == null) cp = new();
-  else $cast(cp, to);
-endfunction : copy
+endmodule
