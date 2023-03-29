@@ -37,23 +37,13 @@
 // Author(s):
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-class peripheral_enviroment;
-  peripheral_agent      agent;
-  peripheral_scoreboard scoreboard;
+interface peripheral_adder_if (
+  input logic clk,
+  input logic rst
+);
 
-  mailbox               monitor_to_scoreboard;
-  function new(virtual add_if vif);
-    monitor_to_scoreboard = new();
-    agent                 = new(vif, monitor_to_scoreboard);
-    scoreboard            = new(monitor_to_scoreboard);
-  endfunction
+  logic [7:0] ip1;
+  logic [7:0] ip2;
 
-  task run();
-    fork
-      agent.run();
-      scoreboard.run();
-    join_any
-    wait (agent.generator.count == scoreboard.compare_cnt);
-    $finish;
-  endtask
-endclass
+  logic [8:0] out;
+endinterface
