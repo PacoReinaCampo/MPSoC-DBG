@@ -76,7 +76,7 @@ build:
 
 sim: build
 	@echo '##### Start the simulation ######'
-	$(Q)vvp -n -M. -mjtag_vpi peripheral_dbg_jtag_vpi_testbench.vvp +jtag_vpi_enable=1 &
+	$(Q)vvp -n -M. -mjtag_vpi peripheral_dbg_jtag_vpi_testbench.vvp +peripheral_dbg_jtag_vpi_enable=1 &
 	@sleep 1
 	@echo '##### Running the test client ######'
 	$(Q)./test_client
