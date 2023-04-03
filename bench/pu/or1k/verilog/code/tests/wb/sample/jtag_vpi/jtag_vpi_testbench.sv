@@ -43,7 +43,7 @@
 
 `timescale 1ns / 10ps
 
-module peripheral_dbg_jtag_vpi_testbench;
+module jtag_vpi_testbench;
   //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
@@ -81,7 +81,7 @@ module peripheral_dbg_jtag_vpi_testbench;
   // Module body
   //
   initial begin
-    $dumpfile("peripheral_dbg_jtag_vpi.vcd");
+    $dumpfile("jtag_vpi.vcd");
     $dumpvars(0);
   end
 
@@ -92,7 +92,7 @@ module peripheral_dbg_jtag_vpi_testbench;
     #200 sys_reset <= 0;
   end
 
-  peripheral_dbg_jtag_vpi #(
+  jtag_vpi #(
     .DEBUG_INFO(0)
   ) jtag_vpi (
     .tms(tms_pad_i),
@@ -104,7 +104,7 @@ module peripheral_dbg_jtag_vpi_testbench;
     .init_done(1'b1)
   );
 
-  peripheral_dbg_tap_top peripheral_dbg_tap_top (
+  tap_top tap_top (
     .tdo_pad_o (tdo_pad_o),
     .tms_pad_i (tms_pad_i),
     .tck_pad_i (tck_pad_i),

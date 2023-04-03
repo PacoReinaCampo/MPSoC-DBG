@@ -42,7 +42,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-module peripheral_dbg_tap_top #(
+module tap_top #(
   // 0001             version
   // 0100100101010001 part number (IQ)
   // 00011100001      manufacturer id (flextronics)
@@ -51,12 +51,12 @@ module peripheral_dbg_tap_top #(
   parameter IR_LENGTH    = 4
 ) (
   // JTAG pins
-  input      tms_pad_i,   // JTAG test mode select pad
-  input      tck_pad_i,   // JTAG test clock pad
-  input      trst_pad_i,  // JTAG test reset pad
-  input      tdi_pad_i,   // JTAG test data input pad
-  output reg tdo_pad_o,   // JTAG test data output pad
-  output reg tdo_padoe_o, // Output enable for JTAG test data output pad 
+  input  tms_pad_i,   // JTAG test mode select pad
+  input  tck_pad_i,   // JTAG test clock pad
+  input  trst_pad_i,  // JTAG test reset pad
+  input  tdi_pad_i,   // JTAG test data input pad
+  output tdo_pad_o,   // JTAG test data output pad
+  output tdo_padoe_o, // Output enable for JTAG test data output pad 
 
   // TAP states
   output shift_dr_o,
@@ -120,6 +120,8 @@ module peripheral_dbg_tap_top #(
   reg mbist_select;
   reg debug_select;
   reg bypass_select;
+  reg tdo_pad_o;
+  reg tdo_padoe_o;
   reg tms_q1, tms_q2, tms_q3, tms_q4;
   wire                 tms_reset;
 

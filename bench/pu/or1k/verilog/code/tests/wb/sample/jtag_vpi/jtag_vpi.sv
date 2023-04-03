@@ -42,17 +42,19 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
+`timescale 1ns / 10ps
+
 `define CMD_RESET 0
 `define CMD_TMS_SEQ 1
 `define CMD_SCAN_CHAIN 2
 `define CMD_SCAN_CHAIN_FLIP_TMS 3
 `define CMD_STOP_SIMU 4
 
-module peripheral_dbg_jtag_vpi #(
+module jtag_vpi #(
   parameter DEBUG_INFO      = 0,
   parameter TP              = 1,
-  parameter TCK_HALF_PERIOD = 50,   // Clock half period (Clock period = 100 ns => 10 MHz)
-  parameter CMD_DELAY       = 1000
+  // Clock half period (Clock period = 100 ns => 10 MHz)
+  parameter TCK_HALF_PERIOD = 50
 ) (
   output reg tms,
   output reg tck,
@@ -89,43 +91,51 @@ module peripheral_dbg_jtag_vpi #(
       $display("JTAG debug module with VPI interface enabled\n");
 
       reset_tap;
-      goto_run_test_idle_from_reset;
+      goto_run_test_idle;
 
       while (1) begin
         // Check for incoming command
         // wait until a command is sent
         // poll with a delay here
         cmd = -1;
+
         while (cmd == -1) begin
-          #CMD_DELAY $check_for_command(cmd, length, nb_bits, buffer_out);
+          #1000 $check_for_command(cmd, length, nb_bits, buffer_out);
         end
+
         // now switch on the command
         case (cmd)
+
           `CMD_RESET: begin
             if (DEBUG_INFO) $display("%t ----> CMD_RESET %h\n", $time, length);
             reset_tap;
-            goto_run_test_idle_from_reset;
+            goto_run_test_idle;
           end
+
           `CMD_TMS_SEQ: begin
             if (DEBUG_INFO) $display("%t ----> CMD_TMS_SEQ\n", $time);
             do_tms_seq;
           end
+
           `CMD_SCAN_CHAIN: begin
             if (DEBUG_INFO) $display("%t ----> CMD_SCAN_CHAIN\n", $time);
             flip_tms = 0;
             do_scan_chain;
             $send_result_to_server(length, buffer_in);
           end
+
           `CMD_SCAN_CHAIN_FLIP_TMS: begin
             if (DEBUG_INFO) $display("%t ----> CMD_SCAN_CHAIN\n", $time);
             flip_tms = 1;
             do_scan_chain;
             $send_result_to_server(length, buffer_in);
           end
+
           `CMD_STOP_SIMU: begin
             if (DEBUG_INFO) $display("%t ----> End of simulation\n", $time);
             $finish();
           end
+
           default: begin
             $display("Somehow got to the default case in the command case statement.");
             $display("Command was: %x", cmd);
@@ -135,7 +145,7 @@ module peripheral_dbg_jtag_vpi #(
         endcase
       end
     end
-  endtask
+  endtask  // main
 
   // Generation of the TCK signal
   task gen_clk;
@@ -160,24 +170,23 @@ module peripheral_dbg_jtag_vpi #(
   endtask
 
   // Goes to RunTestIdle state
-  task goto_run_test_idle_from_reset;
+  task goto_run_test_idle;
     begin
-      if (DEBUG_INFO) $display("(%0t) Task goto_run_test_idle_from_reset", $time);
+      if (DEBUG_INFO) $display("(%0t) Task goto_run_test_idle", $time);
       tms <= #1 1'b0;
       gen_clk(1);
     end
   endtask
 
   task do_tms_seq;
+
     integer i, j;
-
     reg     [31:0] data;
-
     integer        nb_bits_rem;
     integer        nb_bits_in_this_byte;
 
     begin
-      if (DEBUG_INFO) $display("(%0t) Task do_tms_seq of %d bits (length = %d)", $time, nb_bits, length);
+      if (DEBUG_INFO) $display("(%0t) Task do_tms_seq", $time);
 
       // Number of bits to send in the last byte
       nb_bits_rem = nb_bits % 8;
@@ -196,18 +205,20 @@ module peripheral_dbg_jtag_vpi #(
           gen_clk(1);
         end
       end
+
       tms <= #1 1'b0;
     end
   endtask
 
   task do_scan_chain;
-    integer _bit;
+
+    integer bits;
     integer nb_bits_rem;
     integer nb_bits_in_this_byte;
     integer index;
 
     begin
-      if (DEBUG_INFO) $display("(%0t) Task do_scan_chain of %d bits (length = %d)", $time, nb_bits, length);
+      if (DEBUG_INFO) $display("(%0t) Task do_scan_chain", $time);
 
       // Number of bits to send in the last byte
       nb_bits_rem = nb_bits % 8;
@@ -219,21 +230,24 @@ module peripheral_dbg_jtag_vpi #(
         nb_bits_in_this_byte = (index == (length - 1)) ? ((nb_bits_rem == 0) ? 8 : nb_bits_rem) : 8;
 
         data_out             = buffer_out[index];
-        for (_bit = 0; _bit < nb_bits_in_this_byte; _bit = _bit + 1) begin
+        for (bits = 0; bits < nb_bits_in_this_byte; bits = bits + 1) begin
           tdi <= 1'b0;
-          if (data_out[_bit] == 1'b1) begin
+          if (data_out[bits] == 1'b1) begin
             tdi <= 1'b1;
           end
-          // On the last bit, set TMS to '1'
-          if (((_bit == (nb_bits_in_this_byte - 1)) && (index == (length - 1))) && (flip_tms == 1)) begin
+
+          // On the last bits, set TMS to '1'
+          if (((bits == (nb_bits_in_this_byte - 1)) && (index == (length - 1))) && (flip_tms == 1)) begin
             tms <= 1'b1;
           end
+
           #TCK_HALF_PERIOD tck <= 1;
-          data_in[_bit] <= tdo;
+          data_in[bits] <= tdo;
           #TCK_HALF_PERIOD tck <= 0;
         end
         buffer_in[index] = data_in;
       end
+
       tdi <= 1'b0;
       tms <= 1'b0;
     end
@@ -259,6 +273,6 @@ module peripheral_dbg_jtag_vpi #(
     // wait until the PC isn't pointing to flash anymore
     // (this is around 20k ns if the flash_crash boot code
     // is being booted from, else much bigger, around 10mil ns)
-    wait (init_done) if ($test$plusargs("peripheral_dbg_jtag_vpi_enable")) main;
+    wait (init_done) if ($test$plusargs("jtag_vpi_enable")) main;
   end
 endmodule
