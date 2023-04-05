@@ -48,8 +48,8 @@ module peripheral_dbg_soc_osd_him #(
   input clk,
   input rst,
 
-  glip_channel.slave  glip_in,
-  glip_channel.master glip_out,
+  soc_glip_channel.slave  glip_in,
+  soc_glip_channel.master glip_out,
 
   output dii_flit dii_out,
   input           dii_out_ready,

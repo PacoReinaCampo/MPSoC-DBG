@@ -56,8 +56,8 @@ module peripheral_dbg_soc_interface #(
   input rst,
 
   // GLIP host connection
-  glip_channel.slave  glip_in,
-  glip_channel.master glip_out,
+  soc_glip_channel.slave  glip_in,
+  soc_glip_channel.master glip_out,
 
   // ring connection
   output dii_flit [1:0] ring_out,
