@@ -40,7 +40,7 @@
  *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
-import optimsoc_functions::*;
+import soc_optimsoc_functions::*;
 
 module peripheral_dbg_soc_mam_adapter_wb #(
   // address width
