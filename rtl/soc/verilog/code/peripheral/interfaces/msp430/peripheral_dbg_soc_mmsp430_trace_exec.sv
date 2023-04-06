@@ -53,6 +53,6 @@ package opensocdebug;
     logic [31:0] wbdata;
     logic [4:0]  wbreg;
     logic        wben;
-  } mmsp430_trace_exec;
+  } peripheral_dbg_soc_mmsp430_trace_exec;
 
 endpackage  // opensocdebug

@@ -41,7 +41,7 @@
  */
 
 import peripheral_dbg_soc_dii_channel::dii_flit;
-import opensocdebug::mmsp430_trace_exec;
+import opensocdebug::peripheral_dbg_soc_mmsp430_trace_exec;
 
 module peripheral_dbg_soc_osd_stm_mmsp430 #(
   parameter MAX_PKT_LEN = 'hx
@@ -56,7 +56,7 @@ module peripheral_dbg_soc_osd_stm_mmsp430 #(
   output dii_flit debug_out,
   input           debug_out_ready,
 
-  input mmsp430_trace_exec trace_port
+  input peripheral_dbg_soc_mmsp430_trace_exec trace_port
 );
 
   localparam VALWIDTH = 32;
