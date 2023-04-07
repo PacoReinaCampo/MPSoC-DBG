@@ -37,7 +37,7 @@
  *
  * =============================================================================
  * Author(s):
- *    Javier Reina Campo <frareicam@gmail.com>
+ *    Javier Reina Campo <pacoreinacampo@queenfield.tech>
  */
 
 module peripheral_dbg_testbench;
