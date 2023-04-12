@@ -47,6 +47,7 @@ all: build simulate
 build:
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/pkg/peripheral_dbg_pu_pkg.vhd
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/pkg/peripheral_dbg_soc_pkg.vhd
+
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/blocks/buffer/peripheral_dbg_soc_dii_buffer.vhd
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/blocks/buffer/peripheral_dbg_soc_osd_fifo.vhd
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/blocks/eventpacket/peripheral_dbg_soc_osd_event_packetization_fixedwidth.vhd
@@ -71,6 +72,7 @@ build:
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/modules/stm/peripheral_dbg_soc_osd_stm_template.vhd
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/modules/stm/peripheral_dbg_soc_osd_stm.vhd
 	ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/top/peripheral_dbg_soc_interface.vhd
+
 	ghdl -a --std=08 ../../../../../bench/soc/vhdl/code/tests/peripheral_dbg_testbench.vhd
 
 simulate:
