@@ -86,7 +86,7 @@ architecture rtl of peripheral_dbg_synthesis is
   ------------------------------------------------------------------------------
   -- Components
   ------------------------------------------------------------------------------
-  component peripheral_ahb3_dbg
+  component peripheral_dbg_ahb3
     generic (
       MEM_SIZE          : integer := 256;  --Memory in Bytes
       MEM_DEPTH         : integer := 256;  --Memory depth
@@ -123,7 +123,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT AHB3
-  ahb3_dbg : peripheral_ahb3_dbg
+  dbg_ahb3 : peripheral_dbg_ahb3
     generic map (
       MEM_SIZE          => MEM_SIZE,
       MEM_DEPTH         => MEM_DEPTH,

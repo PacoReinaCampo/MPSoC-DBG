@@ -42,7 +42,7 @@
 
 module peripheral_dbg_testbench;
 
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Constants
   //
@@ -57,7 +57,7 @@ module peripheral_dbg_testbench;
   parameter DEPTH = 256;
   parameter MEMFILE = "";
 
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Variables
   //
@@ -81,20 +81,20 @@ module peripheral_dbg_testbench;
   wire                       mst_dbg_HREADYOUT;
   wire                       mst_dbg_HRESP;
 
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
 
-  //DUT AHB3
-  peripheral_ahb3_dbg #(
+  // DUT AHB3
+  peripheral_dbg_ahb3 #(
     .MEM_SIZE         (256),
     .MEM_DEPTH        (256),
     .PLEN             (PLEN),
     .XLEN             (XLEN),
     .TECHNOLOGY       (TECHNOLOGY),
     .REGISTERED_OUTPUT("NO")
-  ) ahb3_dbg (
+  ) dbg_ahb3 (
     .HRESETn(HRESETn),
     .HCLK   (HCLK),
 

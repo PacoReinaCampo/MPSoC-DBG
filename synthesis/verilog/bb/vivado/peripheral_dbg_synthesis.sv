@@ -60,17 +60,17 @@ module peripheral_dbg_synthesis #(
   input  [   1:0] ram_wen    // RAM write enable (low active)
 );
 
-  //////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   //
   // Module Body
   //
 
-  //DUT AHB3
-  bb_ram #(
+  // DUT BB
+  peripheral_dbg_bb #(
     .AW      (AW),
     .DW      (DW),
     .MEM_SIZE(MEM_SIZE)
-  ) ram (
+  ) dbg_bb (
     .ram_clk(ram_clk),
 
     .ram_addr(ram_addr),
@@ -79,4 +79,4 @@ module peripheral_dbg_synthesis #(
     .ram_cen (ram_cen),
     .ram_wen (ram_wen)
   );
-endmodule  // bb_ram
+endmodule

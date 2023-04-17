@@ -84,7 +84,7 @@ architecture rtl of peripheral_dbg_synthesis is
   -- Components
   ------------------------------------------------------------------------------
 
-  component peripheral_wb_dbg
+  component peripheral_dbg_wb
     generic (
       --Memory parameters
       DEPTH   : integer := 256;
@@ -119,7 +119,7 @@ begin
   ------------------------------------------------------------------------------
 
   --DUT WB
-  wb_dbg : peripheral_wb_dbg
+  dbg_wb : peripheral_dbg_wb
     generic map (
       DEPTH   => DEPTH,
       MEMFILE => MEMFILE,
