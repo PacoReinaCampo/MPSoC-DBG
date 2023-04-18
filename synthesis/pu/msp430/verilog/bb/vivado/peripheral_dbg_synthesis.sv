@@ -51,18 +51,11 @@
 `include "peripheral_dbg_pu_msp430_defines.sv"
 `endif
 
-module peripheral_dbg_testbench (
+module peripheral_dbg_synthesis (
   // OUTPUTs
   output        dbg_cpu_reset,    // Reset CPU from debug interface
   output        dbg_freeze,       // Freeze peripherals
-  output        dbg_halt_cmd,     // Halt CPU command
-  output        dbg_i2c_sda_out,  // Debug interface: I2C SDA OUT
   output [15:0] dbg_mem_addr,     // Debug address for rd/wr access
-  output [15:0] dbg_mem_dout,     // Debug unit data output
-  output        dbg_mem_en,       // Debug unit memory enable
-  output [ 1:0] dbg_mem_wr,       // Debug unit memory write
-  output        dbg_reg_wr,       // Debug unit CPU register write
-  output        dbg_uart_txd,     // Debug interface: UART TXD
 
   // INPUTs
   input        cpu_en_s,           // Enable CPU code execution (synchronous)
@@ -72,23 +65,38 @@ module peripheral_dbg_testbench (
   input        dbg_clk,            // Debug unit clock
   input        dbg_en_s,           // Debug interface enable (synchronous)
   input        dbg_halt_st,        // Halt/Run status from CPU
-  input [ 6:0] dbg_i2c_addr,       // Debug interface: I2C Address
-  input [ 6:0] dbg_i2c_broadcast,  // Debug interface: I2C Broadcast Address (for multicore systems)
   input        dbg_i2c_scl,        // Debug interface: I2C SCL
-  input        dbg_i2c_sda_in,     // Debug interface: I2C SDA IN
-  input [15:0] dbg_mem_din,        // Debug unit Memory data input
-  input [15:0] dbg_reg_din,        // Debug unit CPU register data input
   input        dbg_rst,            // Debug unit reset
   input        dbg_uart_rxd,       // Debug interface: UART RXD (asynchronous)
   input        decode_noirq,       // Frontend decode instruction
-  input [15:0] eu_mab,             // Execution-Unit Memory address bus
   input        eu_mb_en,           // Execution-Unit Memory bus enable
-  input [ 1:0] eu_mb_wr,           // Execution-Unit Memory bus write transfer
-  input [15:0] fe_mdb_in,          // Frontend Memory data bus input
-  input [15:0] pc,                 // Program counter
-  input        puc_pnd_set         // PUC pending set for the serial debug interface
+  input [ 1:0] eu_mb_wr            // Execution-Unit Memory bus write transfer
 );
 
+  //////////////////////////////////////////////////////////////////////////////
+  //
+  // Variables
+  //
+
+  // OUTPUTs
+  logic        dbg_halt_cmd;     // Halt CPU command
+  logic        dbg_i2c_sda_out;  // Debug interface: I2C SDA OUT
+  logic [15:0] dbg_mem_dout;     // Debug unit data output
+  logic        dbg_mem_en;       // Debug unit memory enable
+  logic [ 1:0] dbg_mem_wr;       // Debug unit memory write
+  logic        dbg_reg_wr;       // Debug unit CPU register write
+  logic        dbg_uart_txd;     // Debug interface: UART TXD
+
+  // INPUTs
+  logic [ 6:0] dbg_i2c_addr;       // Debug interface: I2C Address
+  logic [ 6:0] dbg_i2c_broadcast;  // Debug interface: I2C Broadcast Address (for multicore systems)
+  logic        dbg_i2c_sda_in;     // Debug interface: I2C SDA IN
+  logic [15:0] dbg_mem_din;        // Debug unit Memory data input
+  logic [15:0] dbg_reg_din;        // Debug unit CPU register data input
+  logic [15:0] eu_mab;             // Execution-Unit Memory address bus
+  logic [15:0] fe_mdb_in;          // Frontend Memory data bus input
+  logic [15:0] pc;                 // Program counter
+  logic        puc_pnd_set;        // PUC pending set for the serial debug interface
 
   //////////////////////////////////////////////////////////////////////////////
   //
@@ -133,7 +141,7 @@ module peripheral_dbg_testbench (
     .pc               (pc),                 // Program counter
     .puc_pnd_set      (puc_pnd_set)         // PUC pending set for the serial debug interface
   );
-endmodule  // peripheral_dbg_testbench
+endmodule  // peripheral_dbg_synthesis
 
 `ifdef OMSP_NO_INCLUDE
 `else
