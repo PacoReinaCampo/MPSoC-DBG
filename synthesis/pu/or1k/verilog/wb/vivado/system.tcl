@@ -42,14 +42,24 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../../rtl/verilog/wb/core/mpsoc_wb_ram_generic.sv
-read_verilog -sv ../../../../rtl/verilog/wb/core/mpsoc_wb_spram.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_biu.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_biu_wb.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_bytefifo.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_crc32.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_jsp_biu.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_jsp_module.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_module.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_module_wb.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_status_reg.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_syncflop.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_syncreg.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/wb/peripheral_dbg_pu_or1k_top.sv
 
 read_verilog -sv peripheral_dbg_synthesis.sv
 
 read_xdc system.xdc
 
-synth_design -part xc7z020-clg484-1 -include_dirs ../../../../rtl/verilog/wb/pkg -top peripheral_dbg_synthesis
+synth_design -part xc7z020-clg484-1 -include_dirs ../../../../../../rtl/pu/or1k/verilog/code/pkg/wb -top peripheral_dbg_synthesis
 
 opt_design
 place_design
