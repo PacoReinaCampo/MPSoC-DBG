@@ -163,7 +163,7 @@ module peripheral_dbg_testbench;
     // WISHBONE Master Interface Signals
     .wb_clk_i(wb_clk_i),
 
-    .wb_cyc_o(wb_clk_i),
+    .wb_cyc_o(wb_cyc_o),
     .wb_stb_o(wb_stb_o),
     .wb_cti_o(wb_cti_o),
     .wb_bte_o(wb_bte_o),

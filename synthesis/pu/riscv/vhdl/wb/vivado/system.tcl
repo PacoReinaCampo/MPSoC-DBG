@@ -42,10 +42,23 @@
 ##                                                                               ##
 ###################################################################################
 
-read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/core/mpsoc_wb_ram_generic.vhd
-read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/core/mpsoc_wb_spram.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-read_vhdl -vhdl2008 ../../../../rtl/vhdl/wb/pkg/mpsoc_spram_wb_pkg.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_biu.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bus_module_core.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bytefifo.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_crc32.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_jsp_module_core.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_module.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_status_reg.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncreg.vhd
+
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/wb/peripheral_dbg_pu_riscv_biu_wb.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/wb/peripheral_dbg_pu_riscv_jsp_biu_wb.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/wb/peripheral_dbg_pu_riscv_jsp_module_wb.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/wb/peripheral_dbg_pu_riscv_module_wb.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/wb/peripheral_dbg_pu_riscv_top_wb.vhd
 
 read_vhdl -vhdl2008 peripheral_dbg_synthesis.vhd
 

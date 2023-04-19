@@ -61,7 +61,7 @@ entity peripheral_dbg_pu_riscv_top_wb is
     CPU_ADDR_WIDTH : integer := 32;
     CPU_DATA_WIDTH : integer := 32;
     DATAREG_LEN    : integer := 64
-    );
+  );
   port (
     -- JTAG signals
     tck_i : in  std_logic;
@@ -117,7 +117,7 @@ entity peripheral_dbg_pu_riscv_top_wb is
     cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
     cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
     cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
-    );
+  );
 end peripheral_dbg_pu_riscv_top_wb;
 
 architecture rtl of peripheral_dbg_pu_riscv_top_wb is
@@ -131,7 +131,7 @@ architecture rtl of peripheral_dbg_pu_riscv_top_wb is
       ADDR_WIDTH         : integer := 32;
       DATA_WIDTH         : integer := 32;
       DBG_WB_DATAREG_LEN : integer := 64
-      );
+    );
     port (
       -- JTAG signals
       tck_i        : in  std_logic;
@@ -161,7 +161,7 @@ architecture rtl of peripheral_dbg_pu_riscv_top_wb is
       wb_bte_o : out std_logic_vector(1 downto 0);
       wb_ack_i : in  std_logic;
       wb_err_i : in  std_logic
-      );
+    );
   end component;
 
   component peripheral_dbg_pu_riscv_module
@@ -173,7 +173,7 @@ architecture rtl of peripheral_dbg_pu_riscv_top_wb is
       CPU_ADDR_WIDTH       : integer := 32;
       CPU_DATA_WIDTH       : integer := 32;
       DBG_OR1K_DATAREG_LEN : integer := 64
-      );
+    );
     port (
       -- JTAG signals
       tck_i        : in  std_logic;
@@ -201,13 +201,13 @@ architecture rtl of peripheral_dbg_pu_riscv_top_wb is
       cpu_stb_o   : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
       cpu_we_o    : out xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
       cpu_ack_i   : in  xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)
-      );
+    );
   end component;
 
   component peripheral_dbg_pu_riscv_jsp_module_wb
     generic (
       DBG_JSP_DATAREG_LEN : integer := 64
-      );
+    );
     port (
       rst_i : in std_logic;
 
@@ -237,7 +237,7 @@ architecture rtl of peripheral_dbg_pu_riscv_top_wb is
       wb_ack_o : out std_logic;
       wb_err_o : out std_logic;
       int_o    : out std_logic
-      );
+    );
   end component;
 
   ------------------------------------------------------------------------------
@@ -312,7 +312,7 @@ begin
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,
       DATA_WIDTH => DATA_WIDTH
-      )
+    )
     port map (
       -- JTAG signals
       tlr_i        => tlr_i,
@@ -344,7 +344,7 @@ begin
       wb_err_i => wb_err_i,
       wb_cti_o => wb_cti_o,
       wb_bte_o => wb_bte_o
-      );
+    );
 
   i_dbg_cpu_or1k : peripheral_dbg_pu_riscv_module
     generic map (
@@ -352,7 +352,7 @@ begin
       Y              => Z,
       Z              => Z,
       CORES_PER_TILE => CORES_PER_TILE
-      )
+    )
     port map (
       -- JTAG signals
       tck_i        => tck_i,
@@ -380,7 +380,7 @@ begin
       cpu_stb_o   => cpu_stb_o,
       cpu_we_o    => cpu_we_o,
       cpu_ack_i   => cpu_ack_i
-      );
+    );
 
   i_dbg_jsp : peripheral_dbg_pu_riscv_jsp_module_wb
     port map (
@@ -412,7 +412,7 @@ begin
       wb_ack_o => wb_jsp_ack_o,
       wb_err_o => wb_jsp_err_o,
       int_o    => jsp_int_o
-      );
+    );
 
   module_inhibit(DBG_TOP_RESERVED_DBG_MODULE) <= '0';
 

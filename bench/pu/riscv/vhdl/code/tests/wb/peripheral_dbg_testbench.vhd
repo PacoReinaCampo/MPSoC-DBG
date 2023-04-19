@@ -212,11 +212,12 @@ architecture rtl of peripheral_dbg_testbench is
   signal wb_cpu_ack_i   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
 begin
+
   ------------------------------------------------------------------------------
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT WB
+  -- DUT WB
   dbg_pu_riscv_top_wb : peripheral_dbg_pu_riscv_top_wb
     generic map (
       X              => X,
@@ -251,7 +252,7 @@ begin
       -- WISHBONE Master Interface Signals
       wb_clk_i => wb_clk_i,
 
-      wb_cyc_o => wb_clk_i,
+      wb_cyc_o => wb_cyc_o,
       wb_stb_o => wb_stb_o,
       wb_cti_o => wb_cti_o,
       wb_bte_o => wb_bte_o,
@@ -288,5 +289,5 @@ begin
       cpu_stb_o   => wb_cpu_stb_o,
       cpu_we_o    => wb_cpu_we_o,
       cpu_ack_i   => wb_cpu_ack_i
-      );
+    );
 end rtl;
