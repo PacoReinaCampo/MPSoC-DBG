@@ -42,14 +42,27 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../../rtl/verilog/wb/core/mpsoc_wb_ram_generic.sv
-read_verilog -sv ../../../../rtl/verilog/wb/core/mpsoc_wb_spram.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_biu.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bus_module_core.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bytefifo.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_crc32.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_jsp_module_core.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_module.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_status_reg.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncflop.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncreg.sv
+
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/wb/peripheral_dbg_pu_riscv_biu_wb.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/wb/peripheral_dbg_pu_riscv_jsp_biu_wb.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/wb/peripheral_dbg_pu_riscv_jsp_module_wb.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/wb/peripheral_dbg_pu_riscv_module_wb.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/wb/peripheral_dbg_pu_riscv_top_wb.sv
 
 read_verilog -sv peripheral_dbg_synthesis.sv
 
 read_xdc system.xdc
 
-synth_design -part xc7z020-clg484-1 -include_dirs ../../../../rtl/verilog/wb/pkg -top peripheral_dbg_synthesis
+synth_design -part xc7z020-clg484-1 -include_dirs ../../../../../../rtl/pu/riscv/verilog/code/pkg/core -top peripheral_dbg_synthesis
 
 opt_design
 place_design

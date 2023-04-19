@@ -63,50 +63,50 @@ set_property PACKAGE_PIN Y9 [get_ports {wb_clk_i}];  # "GCLK"
 # ----------------------------------------------------------------------------
 # JA Pmod - Bank 13 
 # ---------------------------------------------------------------------------- 
-set_property PACKAGE_PIN Y11  [get_ports {wb_adr_i[0]}];  # "JA1"
-set_property PACKAGE_PIN AA8  [get_ports {wb_adr_i[1]}];  # "JA10"
-set_property PACKAGE_PIN AA11 [get_ports {wb_adr_i[2]}];  # "JA2"
-set_property PACKAGE_PIN Y10  [get_ports {wb_adr_i[3]}];  # "JA3"
-set_property PACKAGE_PIN AA9  [get_ports {wb_adr_i[4]}];  # "JA4"
-set_property PACKAGE_PIN AB11 [get_ports {wb_adr_i[5]}];  # "JA7"
-set_property PACKAGE_PIN AB10 [get_ports {wb_adr_i[6]}];  # "JA8"
-set_property PACKAGE_PIN AB9  [get_ports {wb_adr_i[7]}];  # "JA9"
+set_property PACKAGE_PIN Y11  [get_ports {wb_adr_o[0]}];  # "JA1"
+set_property PACKAGE_PIN AA8  [get_ports {wb_adr_o[1]}];  # "JA10"
+set_property PACKAGE_PIN AA11 [get_ports {wb_adr_o[2]}];  # "JA2"
+set_property PACKAGE_PIN Y10  [get_ports {wb_adr_o[3]}];  # "JA3"
+set_property PACKAGE_PIN AA9  [get_ports {wb_adr_o[4]}];  # "JA4"
+set_property PACKAGE_PIN AB11 [get_ports {wb_adr_o[5]}];  # "JA7"
+set_property PACKAGE_PIN AB10 [get_ports {wb_adr_o[6]}];  # "JA8"
+set_property PACKAGE_PIN AB9  [get_ports {wb_adr_o[7]}];  # "JA9"
 
 # ----------------------------------------------------------------------------
 # JB Pmod - Bank 13
 # ---------------------------------------------------------------------------- 
 #set_property PACKAGE_PIN W12 [get_ports {JB1}];  # "JB1"
-set_property PACKAGE_PIN W11 [get_ports {wb_sel_i[0]}];  # "JB2"
-set_property PACKAGE_PIN V10 [get_ports {wb_sel_i[1]}];  # "JB3"
-set_property PACKAGE_PIN W8 [get_ports {wb_sel_i[2]}];  # "JB4"
-set_property PACKAGE_PIN V12 [get_ports {wb_sel_i[3]}];  # "JB7"
-#set_property PACKAGE_PIN W10 [get_ports {JB8]}];  # "JB8"
-set_property PACKAGE_PIN V9 [get_ports {wb_bte_i[0]}];  # "JB9"
-set_property PACKAGE_PIN V8 [get_ports {wb_bte_i[1]}];  # "JB10"
+set_property PACKAGE_PIN W11 [get_ports {wb_sel_o[0]}];  # "JB2"
+set_property PACKAGE_PIN V10 [get_ports {wb_sel_o[1]}];  # "JB3"
+set_property PACKAGE_PIN W8 [get_ports {wb_sel_o[2]}];  # "JB4"
+set_property PACKAGE_PIN V12 [get_ports {wb_sel_o[3]}];  # "JB7"
+set_property PACKAGE_PIN W10 [get_ports {wb_cab_o}];  # "JB8"
+set_property PACKAGE_PIN V9 [get_ports {wb_bte_o[0]}];  # "JB9"
+set_property PACKAGE_PIN V8 [get_ports {wb_bte_o[1]}];  # "JB10"
 
 # ----------------------------------------------------------------------------
 # JC Pmod - Bank 13
 # ---------------------------------------------------------------------------- 
-set_property PACKAGE_PIN AB6 [get_ports {wb_cti_i[0]}];  # "JC1_N"
-set_property PACKAGE_PIN AB7 [get_ports {wb_cti_i[1]}];  # "JC1_P"
-set_property PACKAGE_PIN AA4 [get_ports {wb_cti_i[2]}];  # "JC2_N"
-set_property PACKAGE_PIN Y4  [get_ports {wb_cyc_i}];  # "JC2_P"
-set_property PACKAGE_PIN T6  [get_ports {wb_stb_i}];  # "JC3_N"
-set_property PACKAGE_PIN R6  [get_ports {wb_ack_o}];  # "JC3_P"
-set_property PACKAGE_PIN U4  [get_ports {wb_err_o}];  # "JC4_N"
-set_property PACKAGE_PIN T4  [get_ports {wb_we_i}];  # "JC4_P"
+set_property PACKAGE_PIN AB6 [get_ports {wb_cti_o[0]}];  # "JC1_N"
+set_property PACKAGE_PIN AB7 [get_ports {wb_cti_o[1]}];  # "JC1_P"
+set_property PACKAGE_PIN AA4 [get_ports {wb_cti_o[2]}];  # "JC2_N"
+set_property PACKAGE_PIN Y4  [get_ports {wb_cyc_o}];  # "JC2_P"
+set_property PACKAGE_PIN T6  [get_ports {wb_stb_o}];  # "JC3_N"
+set_property PACKAGE_PIN R6  [get_ports {wb_ack_i}];  # "JC3_P"
+set_property PACKAGE_PIN U4  [get_ports {wb_err_i}];  # "JC4_N"
+set_property PACKAGE_PIN T4  [get_ports {wb_we_o}];  # "JC4_P"
 
 # ----------------------------------------------------------------------------
 # JD Pmod - Bank 13
 # ---------------------------------------------------------------------------- 
-#set_property PACKAGE_PIN W7 [get_ports {JD1_N}];  # "JD1_N"
-#set_property PACKAGE_PIN V7 [get_ports {JD1_P}];  # "JD1_P"
-#set_property PACKAGE_PIN V4 [get_ports {JD2_N}];  # "JD2_N"
-#set_property PACKAGE_PIN V5 [get_ports {JD2_P}];  # "JD2_P"
-#set_property PACKAGE_PIN W5 [get_ports {JD3_N}];  # "JD3_N"
-#set_property PACKAGE_PIN W6 [get_ports {JD3_P}];  # "JD3_P"
-#set_property PACKAGE_PIN U5 [get_ports {JD4_N}];  # "JD4_N"
-#set_property PACKAGE_PIN U6 [get_ports {JD4_P}];  # "JD4_P"
+set_property PACKAGE_PIN W7 [get_ports {wb_adr_o[8]}];  # "JD1_N"
+set_property PACKAGE_PIN V7 [get_ports {wb_adr_o[9]}];  # "JD1_P"
+set_property PACKAGE_PIN V4 [get_ports {wb_adr_o[10]}];  # "JD2_N"
+set_property PACKAGE_PIN V5 [get_ports {wb_adr_o[11]}];  # "JD2_P"
+set_property PACKAGE_PIN W5 [get_ports {wb_adr_o[12]}];  # "JD3_N"
+set_property PACKAGE_PIN W6 [get_ports {wb_adr_o[13]}];  # "JD3_P"
+set_property PACKAGE_PIN U5 [get_ports {wb_adr_o[14]}];  # "JD4_N"
+set_property PACKAGE_PIN U6 [get_ports {wb_adr_o[15]}];  # "JD4_P"
 
 # ----------------------------------------------------------------------------
 # OLED Display - Bank 13
@@ -150,26 +150,26 @@ set_property PACKAGE_PIN T4  [get_ports {wb_we_i}];  # "JC4_P"
 # ----------------------------------------------------------------------------
 # User LEDs - Bank 33
 # ---------------------------------------------------------------------------- 
-#set_property PACKAGE_PIN T22 [get_ports {LD0}];  # "LD0"
-#set_property PACKAGE_PIN T21 [get_ports {LD1}];  # "LD1"
-#set_property PACKAGE_PIN U22 [get_ports {LD2}];  # "LD2"
-#set_property PACKAGE_PIN U21 [get_ports {LD3}];  # "LD3"
-#set_property PACKAGE_PIN V22 [get_ports {LD4}];  # "LD4"
-#set_property PACKAGE_PIN W22 [get_ports {LD5}];  # "LD5"
-#set_property PACKAGE_PIN U19 [get_ports {LD6}];  # "LD6"
-#set_property PACKAGE_PIN U14 [get_ports {LD7}];  # "LD7"
+set_property PACKAGE_PIN T22 [get_ports {wb_adr_o[16]}];  # "LD0"
+set_property PACKAGE_PIN T21 [get_ports {wb_adr_o[17]}];  # "LD1"
+set_property PACKAGE_PIN U22 [get_ports {wb_adr_o[18]}];  # "LD2"
+set_property PACKAGE_PIN U21 [get_ports {wb_adr_o[19]}];  # "LD3"
+set_property PACKAGE_PIN V22 [get_ports {wb_adr_o[20]}];  # "LD4"
+set_property PACKAGE_PIN W22 [get_ports {wb_adr_o[21]}];  # "LD5"
+set_property PACKAGE_PIN U19 [get_ports {wb_adr_o[22]}];  # "LD6"
+set_property PACKAGE_PIN U14 [get_ports {wb_adr_o[23]}];  # "LD7"
 
 # ----------------------------------------------------------------------------
 # VGA Output - Bank 33
 # ---------------------------------------------------------------------------- 
-#set_property PACKAGE_PIN Y21  [get_ports {VGA_B1}];  # "VGA-B1"
-#set_property PACKAGE_PIN Y20  [get_ports {VGA_B2}];  # "VGA-B2"
-#set_property PACKAGE_PIN AB20 [get_ports {VGA_B3}];  # "VGA-B3"
-#set_property PACKAGE_PIN AB19 [get_ports {VGA_B4}];  # "VGA-B4"
-#set_property PACKAGE_PIN AB22 [get_ports {VGA_G1}];  # "VGA-G1"
-#set_property PACKAGE_PIN AA22 [get_ports {VGA_G2}];  # "VGA-G2"
-#set_property PACKAGE_PIN AB21 [get_ports {VGA_G3}];  # "VGA-G3"
-#set_property PACKAGE_PIN AA21 [get_ports {VGA_G4}];  # "VGA-G4"
+set_property PACKAGE_PIN Y21  [get_ports {wb_adr_o[24]}];  # "VGA-B1"
+set_property PACKAGE_PIN Y20  [get_ports {wb_adr_o[25]}];  # "VGA-B2"
+set_property PACKAGE_PIN AB20 [get_ports {wb_adr_o[26]}];  # "VGA-B3"
+set_property PACKAGE_PIN AB19 [get_ports {wb_adr_o[27]}];  # "VGA-B4"
+set_property PACKAGE_PIN AB22 [get_ports {wb_adr_o[28]}];  # "VGA-G1"
+set_property PACKAGE_PIN AA22 [get_ports {wb_adr_o[29]}];  # "VGA-G2"
+set_property PACKAGE_PIN AB21 [get_ports {wb_adr_o[30]}];  # "VGA-G3"
+set_property PACKAGE_PIN AA21 [get_ports {wb_adr_o[31]}];  # "VGA-G4"
 #set_property PACKAGE_PIN AA19 [get_ports {VGA_HS}];  # "VGA-HS"
 #set_property PACKAGE_PIN V20  [get_ports {VGA_R1}];  # "VGA-R1"
 #set_property PACKAGE_PIN U20  [get_ports {VGA_R2}];  # "VGA-R2"
@@ -180,7 +180,7 @@ set_property PACKAGE_PIN T4  [get_ports {wb_we_i}];  # "JC4_P"
 # ----------------------------------------------------------------------------
 # User Push Buttons - Bank 34
 # ---------------------------------------------------------------------------- 
-set_property PACKAGE_PIN P16 [get_ports {wb_rst_i}];  # "BTNC"
+#set_property PACKAGE_PIN P16 [get_ports {BTNC}];  # "BTNC"
 #set_property PACKAGE_PIN R16 [get_ports {BTND}];  # "BTND"
 #set_property PACKAGE_PIN N15 [get_ports {BTNL}];  # "BTNL"
 #set_property PACKAGE_PIN R18 [get_ports {BTNR}];  # "BTNR"
