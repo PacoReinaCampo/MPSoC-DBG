@@ -75,6 +75,6 @@ ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/top/peripheral_dbg_
 
 ghdl -a --std=08 ../../../../../bench/soc/vhdl/code/tests/peripheral_dbg_testbench.vhd
 
-ghdl -m --std=08 peripheral_dbg_testbench
-ghdl -r --std=08 peripheral_dbg_testbench --ieee-asserts=disable-at-0 --disp-tree=inst > peripheral_dbg_testbench.tree
+ghdl -e --std=08 peripheral_dbg_testbench
+ghdl -r --std=08 peripheral_dbg_testbench --ieee-asserts=disable-at-0 --vcd=peripheral_dbg_testbench.vcd --wave=system.ghw --stop-time=1ms
 pause
