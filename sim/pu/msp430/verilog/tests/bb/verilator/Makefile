@@ -42,12 +42,17 @@
 ##                                                                               ##
 ###################################################################################
 
-all: build simulate
+all: build
 
 build:
-	verilator -Wno-lint -Wno-COMBDLY --cc -f system.vc --top-module peripheral_dbg_testbench
+	verilator -Wno-lint -Wno-UNOPTFLAT -Wno-COMBDLY --cc -f system.vc --top-module peripheral_dbg_testbench
 
 simulate:
+	make -C obj_dir -j -f Vperipheral_dbg_testbench.mk Vperipheral_dbg_testbench
+	obj_dir/Vperipheral_dbg_testbench
+
+test:
+	gtkwave peripheral_dbg_testbench.vcd
 
 clean:
 	rm -rf obj_dir

@@ -45,5 +45,7 @@
 @echo off
 call ../../../../../../../settings64_verilator.bat
 
-verilator -Wno-lint -Wno-COMBDLY --cc -f system.vc --top-module peripheral_dbg_testbench
+verilator -Wno-lint -Wno-UNOPTFLAT -Wno-COMBDLY --cc -f system.vc --top-module peripheral_dbg_testbench
+make -C obj_dir -j -f Vperipheral_dbg_testbench.mk Vperipheral_dbg_testbench
+obj_dir/Vperipheral_dbg_testbench
 pause
