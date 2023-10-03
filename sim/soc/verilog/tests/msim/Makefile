@@ -46,7 +46,7 @@ all: build simulate
 
 build:
 	if [ ! -e work ]; then vlib work; fi
-	vlog -sv -svinputport=relaxed -f system.vc
+	vlog -sv -svinputport=relaxed -f system.f
 
 simulate:
 	vsim -c -do run.do work.peripheral_dbg_testbench
