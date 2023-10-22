@@ -61,9 +61,9 @@ module peripheral_dbg_soc_debug_ring #(
   input  [PORTS-1:0] dii_out_ready
 );
 
-  dii_flit [      1:0     ][1:0] ext_port;
+  dii_flit [1:0][1:0] ext_port;
 
-  logic      [1:0]   [1:0]       ext_port_ready;
+  logic    [1:0][1:0] ext_port_ready;
 
   peripheral_dbg_soc_debug_ring_expand #(
     .PORTS      (PORTS),

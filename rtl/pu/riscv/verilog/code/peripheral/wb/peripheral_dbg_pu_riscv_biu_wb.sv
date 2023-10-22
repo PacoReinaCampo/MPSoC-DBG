@@ -113,7 +113,7 @@ module peripheral_dbg_pu_riscv_biu_wb #(
   logic [DATA_WIDTH-1:0] swapped_data_in;
   logic [DATA_WIDTH-1:0] swapped_data_out;
 
-  //WB FSM
+  // WB FSM
   logic                  wb_fsm_state;
 
   //////////////////////////////////////////////////////////////////////////////
@@ -214,7 +214,7 @@ module peripheral_dbg_pu_riscv_biu_wb #(
   assign wb_cti_o = 3'h0;
   assign wb_bte_o = 2'h0;
 
-  ///////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////// /
   // Wishbone clock domain
   //
 

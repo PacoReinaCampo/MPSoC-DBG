@@ -93,7 +93,7 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
   // Module body
   //
 
-  //Hookup JSP Debug Core
+  // Hookup JSP Debug Core
   peripheral_dbg_pu_riscv_jsp_module_core #(
     .DBG_JSP_DATAREG_LEN(DBG_JSP_DATAREG_LEN)
   ) jsp_core_inst (
@@ -124,7 +124,7 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
     .biu_wr_strobe      (biu_wr_strobe)         // Indicates BIU should latch input + begin a write operation
   );
 
-  //Hookup JSP Wishbone Interface
+  // Hookup JSP Wishbone Interface
   peripheral_dbg_pu_riscv_jsp_biu_wb jsp_biu_inst (
     // Debug interface signals
     .tck_i            (biu_clk),

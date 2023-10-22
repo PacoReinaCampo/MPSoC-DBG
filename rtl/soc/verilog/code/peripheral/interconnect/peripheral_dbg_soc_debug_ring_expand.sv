@@ -66,9 +66,9 @@ module peripheral_dbg_soc_debug_ring_expand #(
 
   genvar i;
 
-  dii_flit [      1:0         ][PORTS:0] chain;
+  dii_flit [1:0][PORTS:0] chain;
 
-  logic      [1:0]   [PORTS:0]           chain_ready;
+  logic    [1:0][PORTS:0] chain_ready;
 
   generate
     for (i = 0; i < PORTS; i++) begin : gen_router

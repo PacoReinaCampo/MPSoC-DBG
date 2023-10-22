@@ -138,7 +138,7 @@ module peripheral_dbg_pu_or1k_top #(
   // Registers
   reg  [`DBG_TOP_MODULE_DATA_LEN  -1:0] input_shift_reg;  // 1 bit sel/cmd, 4 bit opcode, 32 bit address, 16 bit length = 53 bits
   reg  [`DBG_TOP_MODULE_ID_LENGTH -1:0] module_id_reg;  // Module selection register
-  //reg output_shift_reg;  // Just 1 bit for status (valid module selected)
+  // reg output_shift_reg;  // Just 1 bit for status (valid module selected)
 
   // Control signals
   wire                                  select_cmd;  // True when the command (registered at Update_DR) is for top level/module selection

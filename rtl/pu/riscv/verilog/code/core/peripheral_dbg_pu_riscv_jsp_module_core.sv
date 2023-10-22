@@ -88,7 +88,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   // Constants
   //
 
-  //FSM states
+  // FSM states
   localparam STATE_WR_IDLE = 2'b11;
   localparam STATE_WR_WAIT = 2'b10;
   localparam STATE_WR_COUNTS = 2'b01;
@@ -144,7 +144,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   logic [7:0] count_data_from_biu;  // combined space avail / bytes avail
   logic [7:0] out_reg_data;  // parallel input to the output shift register
 
-  //Statemachine
+  // Statemachine
   logic [1:0] wr_module_state, wr_module_next_state;
   logic [1:0] rd_module_state, rd_module_next_state;
 

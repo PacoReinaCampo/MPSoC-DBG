@@ -65,7 +65,7 @@ module peripheral_dbg_soc_osd_mam_wb #(
   parameter MEM_SIZE7   = 'x,
   parameter BASE_ADDR7  = 'x,
 
-  //Byte select width
+  // Byte select width
   localparam SW = (DATA_WIDTH == 32) ? 4 : (DATA_WIDTH == 16) ? 2 : (DATA_WIDTH == 8) ? 1 : 'hx
 ) (
   input clk_i,

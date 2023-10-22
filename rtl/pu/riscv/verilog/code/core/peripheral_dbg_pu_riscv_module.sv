@@ -88,7 +88,7 @@ module peripheral_dbg_pu_riscv_module #(
   // Constants
   //
 
-  //FSM states
+  // FSM states
   localparam STATE_IDLE = 4'b1011;
   localparam STATE_RBEGIN = 4'b1010;
   localparam STATE_RREADY = 4'b1001;
@@ -181,7 +181,7 @@ module peripheral_dbg_pu_riscv_module #(
 
   logic [                      X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] status_reg_data;
 
-  //FSM states
+  // FSM states
   logic [3:0] module_state, module_next_state;
 
   //////////////////////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ module peripheral_dbg_pu_riscv_module #(
   assign data_to_biu        = {tdi_i, data_register_i[DBG_OR1K_DATAREG_LEN-1-:31]};
 
   assign reg_select_data    = data_register_i[DBG_OR1K_DATAREG_LEN-6-:`DBG_OR1K_REGSELECT_LEN];
-  assign status_reg_data    = data_register_i[DBG_OR1K_DATAREG_LEN - 10 - `DBG_OR1K_REGSELECT_LEN -: X*Y*Z*CORES_PER_TILE];  //data is sent first, then module_cmd, operation, cpu_select
+  assign status_reg_data    = data_register_i[DBG_OR1K_DATAREG_LEN - 10 - `DBG_OR1K_REGSELECT_LEN -: X*Y*Z*CORES_PER_TILE];  // data is sent first, then module_cmd, operation, cpu_select
 
   ////////////////////////////////////////////////
   // Operation decoder

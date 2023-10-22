@@ -58,7 +58,7 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_event_packetization_fixedwidth #(
-  //The maximum length of a DI packet in flits, including the header flits
+  // The maximum length of a DI packet in flits, including the header flits
   parameter MAX_PKT_LEN = 12,
 
   // Width of |data| in bit

@@ -110,7 +110,7 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
   logic                  start_toggle_hold;  // hold start_toggle if AHB bus busy (not-ready)
   logic                  ahb_transfer_ack;  // AHB bus responded to data transfer
 
-  //AHB FSM
+  // AHB FSM
   logic [           1:0] ahb_fsm_state;
 
   //////////////////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
           endcase
         end
       end
-    end else begin  //DATA_WIDTH == 64
+    end else begin  // DATA_WIDTH == 64
       always @(posedge biu_clk) begin
         if (biu_strb && biu_rdy) begin
           case (biu_word_size)
@@ -195,7 +195,7 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
     end
   end
 
-  ///////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////// /
   // AHB clock domain
   //
 
@@ -255,7 +255,7 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
           endcase
         end
       end
-    end else begin  //DATA_WIDTH == 64
+    end else begin  // DATA_WIDTH == 64
 
       always @(posedge HCLK) begin
         if (ahb_transfer_ack) begin
@@ -329,6 +329,6 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
     end
   end
 
-  //Only single accesses; no bursts
+  // Only single accesses; no bursts
   assign HBURST = `HBURST_SINGLE;
 endmodule

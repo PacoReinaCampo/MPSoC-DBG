@@ -72,26 +72,26 @@ module peripheral_dbg_soc_interface #(
   output cpu_rst
 );
 
-  dii_flit             ring_tie;
-  logic                ring_tie_ready;
+  dii_flit       ring_tie;
+  logic          ring_tie_ready;
 
-  dii_flit [      1:0] dii_in;
-  dii_flit [      1:0] dii_out;
+  dii_flit [1:0] dii_in;
+  dii_flit [1:0] dii_out;
 
-  logic      [1:0]     dii_out_ready;
-  logic      [1:0]     dii_in_ready;
+  logic    [1:0] dii_out_ready;
+  logic    [1:0] dii_in_ready;
 
-  dii_flit             him_debug_in;
-  dii_flit             him_debug_out;
+  dii_flit       him_debug_in;
+  dii_flit       him_debug_out;
 
-  logic                him_debug_in_ready;
-  logic                him_debug_out_ready;
+  logic          him_debug_in_ready;
+  logic          him_debug_out_ready;
 
-  dii_flit             scm_debug_in;
-  dii_flit             scm_debug_out;
+  dii_flit       scm_debug_in;
+  dii_flit       scm_debug_out;
 
-  logic                scm_debug_in_ready;
-  logic                scm_debug_out_ready;
+  logic          scm_debug_in_ready;
+  logic          scm_debug_out_ready;
 
   assign ring_tie.valid = 0;
 

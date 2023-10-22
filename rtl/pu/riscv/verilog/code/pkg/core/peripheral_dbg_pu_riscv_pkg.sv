@@ -90,7 +90,7 @@
 
 `define DBG_JSP_DATAREG_LEN 64
 
-//AMBA3 AHB-Lite Interface
+// AMBA3 AHB-Lite Interface
 // The AHB3 debug module requires 53 bits
 `define DBG_AHB_DATAREG_LEN 64
 
@@ -128,7 +128,7 @@
 `define DBG_AHB_CMD_IREG_WR 'h9
 `define DBG_AHB_CMD_IREG_SEL 'hd
 
-//AHB definitions
+// AHB definitions
 `define HTRANS_IDLE 2'b00
 `define HTRANS_BUSY 2'b01
 `define HTRANS_NONSEQ 2'b10
@@ -171,7 +171,7 @@
 `define HRESP_OKAY 1'b0
 `define HRESP_ERR 1'b1
 
-//Wishbone Interface
+// Wishbone Interface
 // The Wishbone debug module requires 53 bits
 `define DBG_WB_DATAREG_LEN 64
 

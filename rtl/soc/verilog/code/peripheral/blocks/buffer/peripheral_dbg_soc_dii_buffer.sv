@@ -64,16 +64,16 @@ module peripheral_dbg_soc_dii_buffer #(
   localparam ID_W = $clog2(BUF_SIZE);
 
   // internal shift register
-  dii_flit [         BUF_SIZE-1:0] data;
+  dii_flit [BUF_SIZE-1:0] data;
 
   // read pointer
-  reg        [ID_W:0]              rp;
+  reg      [      ID_W:0] rp;
 
   // local output valid
-  logic                            reg_out_valid;
+  logic                   reg_out_valid;
 
-  logic                            flit_in_fire;
-  logic                            lit_out_fire;
+  logic                   flit_in_fire;
+  logic                   lit_out_fire;
 
   assign flit_in_ready = (rp != BUF_SIZE - 1) || !reg_out_valid;
   assign flit_in_fire  = flit_in.valid && flit_in_ready;

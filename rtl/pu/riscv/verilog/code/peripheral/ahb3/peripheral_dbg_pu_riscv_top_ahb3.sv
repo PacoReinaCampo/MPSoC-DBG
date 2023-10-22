@@ -61,7 +61,7 @@ module peripheral_dbg_pu_riscv_top_ahb3 #(
   output reg tdo_o,
 
   // TAP states
-  input tlr_i,        //TestLogicReset
+  input tlr_i,        // TestLogicReset
   input shift_dr_i,
   input pause_dr_i,
   input update_dr_i,
@@ -100,7 +100,7 @@ module peripheral_dbg_pu_riscv_top_ahb3 #(
 
   output int_o,
 
-  //CPU/Thread debug ports
+  // CPU/Thread debug ports
   input                                                                cpu_clk_i,
   input                                                                cpu_rstn_i,
   output [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_ADDR_WIDTH-1:0] cpu_addr_o,
@@ -161,7 +161,7 @@ module peripheral_dbg_pu_riscv_top_ahb3 #(
     else if (debug_select_i && shift_dr_i) input_shift_reg <= {tdi_i, input_shift_reg[`DBG_TOP_DATAREG_LEN-1:1]};
   end
 
-  //AHB3 debug module instantiation
+  // AHB3 debug module instantiation
   peripheral_dbg_pu_riscv_module_ahb3 #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
@@ -181,7 +181,7 @@ module peripheral_dbg_pu_riscv_top_ahb3 #(
     .module_select_i(module_selects[`DBG_TOP_BUSIF_DEBUG_MODULE]),
     .top_inhibit_o  (module_inhibit[`DBG_TOP_BUSIF_DEBUG_MODULE]),
 
-    //AHB signals
+    // AHB signals
     .HCLK     (HCLK),
     .HRESETn  (HRESETn),
     .HSEL     (dbg_HSEL),

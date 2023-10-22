@@ -43,14 +43,14 @@
  */
 
 module peripheral_dbg_pu_riscv_bus_module_core #(
-  //parameter such that these can be pushed down from the higher level
-  //higher level will either read these from a package or get them as parameters
+  // parameter such that these can be pushed down from the higher level
+  // higher level will either read these from a package or get them as parameters
 
-  //Data + Address width
+  // Data + Address width
   parameter ADDR_WIDTH = 32,
   parameter DATA_WIDTH = 32,
 
-  //Data register size (function of ADDR_WIDTH)
+  // Data register size (function of ADDR_WIDTH)
   parameter DATAREG_LEN = 64
 ) (
   input      dbg_clk,
@@ -67,11 +67,11 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   input                        module_select,
   output reg                   inhibit,
 
-  //Bus Interface Unit ports
+  // Bus Interface Unit ports
   output                   biu_clk,
-  output                   biu_rst,       //BIU reset
-  output [DATA_WIDTH -1:0] biu_di,        //data towards BIU
-  input  [DATA_WIDTH -1:0] biu_do,        //data from BIU
+  output                   biu_rst,       // BIU reset
+  output [DATA_WIDTH -1:0] biu_di,        // data towards BIU
+  input  [DATA_WIDTH -1:0] biu_do,        // data from BIU
   output [ADDR_WIDTH -1:0] biu_addr,
   output                   biu_strb,
   output                   biu_rw,
@@ -85,7 +85,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   // Constants
   //
 
-  //Instructions
+  // Instructions
   parameter BWRITE8 = 4'h1;
   parameter BWRITE16 = 4'h2;
   parameter BWRITE32 = 4'h3;
@@ -175,7 +175,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   logic [REGSELECT_SIZE-1:0] reg_select_data;  // from data_register_i, input to internal register select register
   logic [    DATA_WIDTH : 0] data_from_internal_reg;  // data from internal reg. MUX to output shift register
 
-  //Statemachine states
+  // Statemachine states
   logic [3:0] module_state, module_next_state;
 
   //////////////////////////////////////////////////////////////////////////////
@@ -286,7 +286,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   always @(posedge dbg_clk, posedge dbg_rst) begin
     if (dbg_rst) internal_reg_error <= 'h0;
     else if (intreg_ld_en && (reg_select_data == INTREG_ERROR)) begin  // do load from data input register
-      if (data_register[46]) internal_reg_error[0] <= 1'b0;  // if write data is 1, reset the error bit  TODO:fix 46
+      if (data_register[46]) internal_reg_error[0] <= 1'b0;  // if write data is 1, reset the error bit  TO-DO:fix 46
     end else if (error_reg_en && !internal_reg_error[0]) begin
       if (biu_err || !biu_rdy) internal_reg_error[0] <= 1'b1;
       else if (biu_strobe) internal_reg_error[DATA_WIDTH:1] <= address_counter;

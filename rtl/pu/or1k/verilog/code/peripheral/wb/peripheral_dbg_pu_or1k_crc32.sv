@@ -115,7 +115,7 @@ module peripheral_dbg_pu_or1k_crc32 (
     else if (shift) crc[31:0] <= {1'b0, crc[31:1]};
   end
 
-  //assign crc_match = (crc == 32'h0);
-  assign crc_out    = crc;  //[31];
+  // assign crc_match = (crc == 32'h0);
+  assign crc_out    = crc;  // [31];
   assign serial_out = crc[0];
 endmodule

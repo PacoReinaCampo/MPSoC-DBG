@@ -75,12 +75,12 @@ module peripheral_dbg_pu_msp430_i2c (
   input        mem_bw              // Burst byte width
 );
 
-  //=============================================================================
+  // =============================================================================
   // 1) I2C RECEIVE LINE SYNCHRONIZTION & FILTERING
-  //=============================================================================
+  // =============================================================================
 
   // Synchronize SCL/SDA inputs
-  //--------------------------------
+  // --------------------------------
 
   wire scl_sync_n;
 
@@ -105,7 +105,7 @@ module peripheral_dbg_pu_msp430_i2c (
   wire       sda_in_sync = ~sda_in_sync_n;
 
   // SCL/SDA input buffers
-  //--------------------------------
+  // --------------------------------
 
   reg  [1:0] scl_buf;
 
@@ -122,14 +122,14 @@ module peripheral_dbg_pu_msp430_i2c (
   end
 
   // SCL/SDA Majority decision
-  //------------------------------
+  // ------------------------------
 
   wire scl = (scl_sync & scl_buf[0]) | (scl_sync & scl_buf[1]) | (scl_buf[0] & scl_buf[1]);
 
   wire sda_in = (sda_in_sync & sda_in_buf[0]) | (sda_in_sync & sda_in_buf[1]) | (sda_in_buf[0] & sda_in_buf[1]);
 
   // SCL/SDA Edge detection
-  //------------------------------
+  // ------------------------------
 
   // SDA Edge detection
   reg  sda_in_dly;
@@ -164,25 +164,25 @@ module peripheral_dbg_pu_msp430_i2c (
 
   wire scl_sample = scl_re_dly[1];
 
-  //=============================================================================
+  // =============================================================================
   // 2) I2C START & STOP CONDITION DETECTION
-  //=============================================================================
+  // =============================================================================
 
-  //-----------------
+  // -----------------
   // Start condition
-  //-----------------
+  // -----------------
 
   wire start_detect = sda_in_fe & scl;
 
-  //-----------------
+  // -----------------
   // Stop condition
-  //-----------------
+  // -----------------
 
   wire stop_detect = sda_in_re & scl;
 
-  //-----------------
+  // -----------------
   // I2C Slave Active
-  //-----------------
+  // -----------------
   // The I2C logic will be activated whenever a start condition
   // is detected and will be disactivated if the slave address
   // doesn't match or if a stop condition is detected.
@@ -200,9 +200,9 @@ module peripheral_dbg_pu_msp430_i2c (
   wire       i2c_active = i2c_active_seq & ~stop_detect;
   wire       i2c_init = ~i2c_active | start_detect;
 
-  //=============================================================================
+  // =============================================================================
   // 3) I2C STATE MACHINE
-  //=============================================================================
+  // =============================================================================
 
   // State register/wires
   reg  [2:0] i2c_state;
@@ -247,9 +247,9 @@ module peripheral_dbg_pu_msp430_i2c (
     else i2c_state <= i2c_state_nxt;
   end
 
-  //=============================================================================
+  // =============================================================================
   // 4) I2C SHIFT REGISTER (FOR RECEIVING & TRANSMITING)
-  //=============================================================================
+  // =============================================================================
 
   wire shift_rx_en = ((i2c_state == RX_ADDR) | (i2c_state == RX_DATA) | (i2c_state == RX_DATA_ACK));
   wire shift_tx_en = (i2c_state == TX_DATA) | (i2c_state == TX_DATA_ACK);
@@ -288,18 +288,18 @@ module peripheral_dbg_pu_msp430_i2c (
   wire shift_rx_data_done = shift_rx_done & (i2c_state == RX_DATA);
   wire shift_tx_data_done = shift_tx_done;
 
-  //=============================================================================
+  // =============================================================================
   // 5) I2C TRANSMIT BUFFER
-  //=============================================================================
+  // =============================================================================
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
     if (dbg_rst) dbg_i2c_sda_out <= 1'b1;
     else if (scl_fe) dbg_i2c_sda_out <= ~((i2c_state_nxt == RX_ADDR_ACK) || (i2c_state_nxt == RX_DATA_ACK) || (shift_buf_tx_en & ~shift_buf[8]));
   end
 
-  //=============================================================================
+  // =============================================================================
   // 6) DEBUG INTERFACE STATE MACHINE
-  //=============================================================================
+  // =============================================================================
 
   // State register/wires
   reg [2:0] dbg_state;
@@ -344,9 +344,9 @@ module peripheral_dbg_pu_msp430_i2c (
   wire rx_lo_valid = (dbg_state == RX_BYTE_LO) & shift_rx_data_done;
   wire rx_hi_valid = (dbg_state == RX_BYTE_HI) & shift_rx_data_done;
 
-  //=============================================================================
+  // =============================================================================
   // 7) REGISTER READ/WRITE ACCESS
-  //=============================================================================
+  // =============================================================================
 
   parameter MEM_DATA = 6'h06;
 

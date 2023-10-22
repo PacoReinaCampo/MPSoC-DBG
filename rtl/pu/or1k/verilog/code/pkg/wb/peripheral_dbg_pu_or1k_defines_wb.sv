@@ -45,7 +45,7 @@
 // Endian-ness of the Wishbone interface.
 // Default is BIG endian, to match the OR1200.
 // If using a LITTLE endian CPU, e.g. an x86, un-comment this line.
-//`define DBG_WB_LITTLE_ENDIAN
+// `define DBG_WB_LITTLE_ENDIAN
 
 // These relate to the number of internal registers, and how
 // many bits are required in the Reg. Select register

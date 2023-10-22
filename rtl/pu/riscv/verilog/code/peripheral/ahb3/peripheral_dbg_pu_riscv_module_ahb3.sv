@@ -108,7 +108,7 @@ module peripheral_dbg_pu_riscv_module_ahb3 #(
     .DATA_WIDTH (DATA_WIDTH),
     .DATAREG_LEN(DBG_AHB_DATAREG_LEN)
   ) bus_module_core_inst (
-    //Debug Module ports
+    // Debug Module ports
     .dbg_rst(tlr_i),
     .dbg_clk(tck_i),
     .dbg_tdi(tdi_i),
@@ -119,15 +119,15 @@ module peripheral_dbg_pu_riscv_module_ahb3 #(
     .shift_dr_i  (shift_dr_i),
     .update_dr_i (update_dr_i),
 
-    .data_register(data_register_i),  //data register from top-level
+    .data_register(data_register_i),  // data register from top-level
     .module_select(module_select_i),
     .inhibit      (top_inhibit_o),
 
-    //Bus Interface Unit ports
+    // Bus Interface Unit ports
     .biu_clk      (biu_clk),
-    .biu_rst      (biu_rst),       //BIU reset
-    .biu_di       (biu_di),        //data towards BIU
-    .biu_do       (biu_do),        //data from BIU
+    .biu_rst      (biu_rst),       // BIU reset
+    .biu_di       (biu_di),        // data towards BIU
+    .biu_do       (biu_do),        // data from BIU
     .biu_addr     (biu_addr),
     .biu_strb     (biu_strb),
     .biu_rw       (biu_rw),

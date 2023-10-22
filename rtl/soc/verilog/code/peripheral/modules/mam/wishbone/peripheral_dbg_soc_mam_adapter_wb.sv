@@ -175,7 +175,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
             fsm_arb_state_next = STATE_ARB_IDLE;
           end
         end
-        //CPU may finish cycle before switching to MAM. May need changes if instant MAM access required
+        // CPU may finish cycle before switching to MAM. May need changes if instant MAM access required
         STATE_ARB_ACCESS_CPU: begin
           grant_access_cpu = 1'b1;
           if (wb_in_cyc_i == 1'b1) begin

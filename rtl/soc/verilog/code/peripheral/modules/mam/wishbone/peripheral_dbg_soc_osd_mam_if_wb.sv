@@ -44,7 +44,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
   parameter DATA_WIDTH = 16,  // in bits, must be multiple of 16
   parameter ADDR_WIDTH = 32,
 
-  //Byte select width
+  // Byte select width
   localparam SW = (DATA_WIDTH == 32) ? 4 : (DATA_WIDTH == 16) ? 2 : (DATA_WIDTH == 8) ? 1 : 'hx
 ) (
   input clk_i,
@@ -104,7 +104,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
   reg   [          12:0] beats;
   logic [          12:0] nxt_beats;
 
-  //registers
+  // registers
   always_ff @(posedge clk_i) begin
     if (rst_i) begin
       state <= STATE_IDLE;
@@ -123,7 +123,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
 
   assign cyc_o = stb_o;
 
-  //state & output logic
+  // state & output logic
   always_comb begin
     nxt_state         = state;
     nxt_we_o          = we_o;
@@ -193,21 +193,21 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
             end
           end
         end
-      end  //STATE_IDLE
+      end  // STATE_IDLE
       STATE_WRITE_LAST_WAIT: begin
         write_ready = 1;
         if (write_valid) begin
           nxt_state     = STATE_WRITE_LAST;
           nxt_dat_o_reg = write_data;
         end
-      end  //STATE_WRITE_LAST_WAIT
+      end  // STATE_WRITE_LAST_WAIT
       STATE_WRITE_LAST: begin
         stb_o = 1;
         if (ack_i) begin
           nxt_state = STATE_IDLE;
           nxt_cti_o = 3'b000;
         end
-      end  //STATE_WRITE_LAST
+      end  // STATE_WRITE_LAST
       STATE_WRITE_WAIT: begin
         write_ready = 1;
         if (write_valid) begin
@@ -215,7 +215,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
           nxt_dat_o_reg = write_data;
           nxt_beats     = beats - 1;
         end
-      end  //STATE_WRITE_WAIT
+      end  // STATE_WRITE_WAIT
       STATE_WRITE: begin
         stb_o = 1;
         if (ack_i) begin
@@ -262,7 +262,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
             nxt_state = STATE_READ;
           end
         end
-      end  //STATE_READ_WAIT
+      end  // STATE_READ_WAIT
     endcase
   end
 endmodule

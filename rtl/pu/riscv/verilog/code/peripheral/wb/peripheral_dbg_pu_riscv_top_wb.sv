@@ -61,7 +61,7 @@ module peripheral_dbg_pu_riscv_top_wb #(
   output reg tdo_o,
 
   // TAP states
-  input tlr_i,        //TestLogicReset
+  input tlr_i,        // TestLogicReset
   input shift_dr_i,
   input pause_dr_i,
   input update_dr_i,
@@ -98,7 +98,7 @@ module peripheral_dbg_pu_riscv_top_wb #(
   output       wb_jsp_err_o,
   output       jsp_int_o,
 
-  //CPU/Thread debug ports
+  // CPU/Thread debug ports
   input                                                                cpu_clk_i,
   input                                                                cpu_rstn_i,
   output [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_ADDR_WIDTH-1:0] cpu_addr_o,
@@ -159,7 +159,7 @@ module peripheral_dbg_pu_riscv_top_wb #(
     else if (debug_select_i && shift_dr_i) input_shift_reg <= {tdi_i, input_shift_reg[`DBG_TOP_DATAREG_LEN-1:1]};
   end
 
-  //Wishbone debug module instantiation
+  // Wishbone debug module instantiation
   peripheral_dbg_pu_riscv_module_wb #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)

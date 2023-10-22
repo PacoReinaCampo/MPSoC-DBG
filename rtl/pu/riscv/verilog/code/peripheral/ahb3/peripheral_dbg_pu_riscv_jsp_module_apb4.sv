@@ -98,7 +98,7 @@ module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
   // Module body
   //
 
-  //Hookup JSP Debug Core
+  // Hookup JSP Debug Core
   peripheral_dbg_pu_riscv_jsp_module_core #(
     .DBG_JSP_DATAREG_LEN(DBG_JSP_DATAREG_LEN)
   ) jsp_core_inst (

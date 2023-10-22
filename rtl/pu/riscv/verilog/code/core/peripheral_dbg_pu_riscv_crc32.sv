@@ -112,7 +112,7 @@ module peripheral_dbg_pu_riscv_crc32 (
     end
   end
 
-  //assign crc_match = (crc == 32'h0);
-  assign crc_out    = crc;  //[31];
+  // assign crc_match = (crc == 32'h0);
+  assign crc_out    = crc;  // [31];
   assign serial_out = crc[0];
 endmodule

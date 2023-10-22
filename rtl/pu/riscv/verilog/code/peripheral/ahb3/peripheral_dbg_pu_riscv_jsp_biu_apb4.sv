@@ -137,7 +137,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_apb4 (
   // fifo_wr : write strobe
   // fifo_ack: fifo has completed operation
 
-  //16550 registers
+  // 16550 registers
   logic [3:0] ier;
   logic [7:0] iir;
   // logic [5:0] fcr;
@@ -217,7 +217,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_apb4 (
     .D_OUT    (ren_sff_out)
   );
 
-  //TODO syncreg.RST should be synchronised to DFF clock domain
+  // TO-DO: syncreg.RST should be synchronised to DFF clock domain
   // 'free space available' syncreg
   peripheral_dbg_pu_riscv_syncreg freespace_syncreg (
     .RST     (rst_i),
@@ -236,7 +236,7 @@ module peripheral_dbg_pu_riscv_jsp_biu_apb4 (
     .DATA_OUT(bytes_available_o)
   );
 
-  //TODO synch. FIFO resets
+  // TO-DO: synch. FIFO resets
   // write FIFO
   peripheral_dbg_pu_riscv_bytefifo wr_fifo (
     .RST        (rst_i | rx_fifo_rst),  // rst_i from JTAG clk domain, rx_fifo_rst from APB, RST is async reset

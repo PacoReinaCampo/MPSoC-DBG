@@ -58,7 +58,7 @@ module peripheral_dbg_soc_osd_fifo #(
 );
 
   // Signals for fifo
-  reg  [WIDTH-1:0] fifo_data      [0:DEPTH-1];  //actual fifo
+  reg  [WIDTH-1:0] fifo_data      [0:DEPTH-1];  // actual fifo
   reg  [WIDTH-1:0] nxt_fifo_data  [0:DEPTH-1];
 
   reg  [  DEPTH:0] fifo_write_ptr;

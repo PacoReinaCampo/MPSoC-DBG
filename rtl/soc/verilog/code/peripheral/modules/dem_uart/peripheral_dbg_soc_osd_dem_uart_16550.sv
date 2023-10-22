@@ -238,12 +238,12 @@ module peripheral_dbg_soc_osd_dem_uart_16550 (
     end
 
     if (fifo_enable & fifo_rx_clear) begin
-      // TODO Clear all data in RXFifo
+      // TO-DO: Clear all data in RXFifo
       nxt_fifo_rx_clear = 0;
     end
 
     if (fifo_enable & fifo_tx_clear) begin
-      // TODO Clear all data in TXFifo
+      // TO-DO: Clear all data in TXFifo
       nxt_fifo_tx_clear = 0;
     end
   end

@@ -112,7 +112,7 @@ module peripheral_dbg_pu_riscv_biu #(
   // Internal signals
   wire                       start_toggle;  // CPU domain, indicates a toggle on the start strobe
 
-  logic                      valid_selection;  //set to 1 if value in input selection signal is < X*Y*Z*CORES_PER_TILE
+  logic                      valid_selection;  // set to 1 if value in input selection signal is < X*Y*Z*CORES_PER_TILE
 
   reg                        cpu_fsm_state;
   reg                        next_fsm_state;

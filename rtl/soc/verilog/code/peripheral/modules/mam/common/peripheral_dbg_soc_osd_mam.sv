@@ -157,7 +157,7 @@ module peripheral_dbg_soc_osd_mam #(
   function logic [DATA_WIDTH-1:0] endian_conv(input logic [DATA_WIDTH-1:0] din);
     int i;
     // should be "static int", but unsupported by Verilator currently, see
-    // https://www.veripool.org/issues/546-Verilator-Support-static-inside-task
+    // https:// www.veripool.org/issues/546-Verilator-Support-static-inside-task
     for (i = 0; i < DATA_WIDTH / 8; i++) endian_conv[i*8+:8] = din[(DATA_WIDTH/8-i-1)*8+:8];
   endfunction  // endian_conv
 
