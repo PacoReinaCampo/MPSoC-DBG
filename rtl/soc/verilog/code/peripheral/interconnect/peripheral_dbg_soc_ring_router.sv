@@ -101,7 +101,7 @@ module peripheral_dbg_soc_ring_router #(
     .out_ring_ready (ring_fwd1_ready)
   );
 
-  peripheral_dbg_soc_peripheral_dbg_soc_ring_router_mux_rr u_mux_local (
+  peripheral_dbg_soc_ring_router_mux_rr u_mux_local (
     .*,
     .in0          (ring_local0),
     .in0_ready    (ring_local0_ready),

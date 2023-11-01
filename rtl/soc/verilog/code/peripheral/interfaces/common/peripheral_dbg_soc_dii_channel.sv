@@ -49,7 +49,11 @@ package peripheral_dbg_soc_dii_channel;
     logic [15:0] data;
   } dii_flit;
 
-  function dii_flit dii_flit_assemble(input logic m_valid, input logic m_last, input logic [15:0] m_data);
+  function dii_flit dii_flit_assemble(
+    input logic m_valid,
+    input logic m_last,
+    input logic [15:0] m_data
+  );
     return dii_flit'{m_valid, m_last, m_data};
   endfunction
 

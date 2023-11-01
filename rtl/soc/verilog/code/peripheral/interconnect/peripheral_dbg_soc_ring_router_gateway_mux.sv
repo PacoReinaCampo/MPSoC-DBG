@@ -43,7 +43,7 @@
 
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
-module peripheral_dbg_soc_peripheral_dbg_soc_ring_router_gateway_mux (
+module peripheral_dbg_soc_ring_router_gateway_mux (
   input clk,
   input rst,
 

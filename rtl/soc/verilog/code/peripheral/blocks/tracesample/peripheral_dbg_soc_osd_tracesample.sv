@@ -70,7 +70,9 @@ module peripheral_dbg_soc_osd_tracesample #(
   assign fifo_data[15:0] = passthrough ? sample_data[15:0] : ov_counter;
 
   generate
-    if (WIDTH > 16) assign fifo_data[WIDTH-1:16] = sample_data[WIDTH-1:16];
+    if (WIDTH > 16) begin
+      assign fifo_data[WIDTH-1:16] = sample_data[WIDTH-1:16];
+    end
   endgenerate
 
   assign fifo_overflow = ~passthrough;
@@ -82,8 +84,12 @@ module peripheral_dbg_soc_osd_tracesample #(
   assign ov_again      = fifo_overflow & fifo_ready & sample_valid;
 
   always_ff @(posedge clk) begin
-    if (rst | ov_complete) ov_counter <= 0;
-    else if (ov_again) ov_counter <= 1;
-    else if (ov_increment & !ov_saturate) ov_counter <= ov_counter + 1;
+    if (rst | ov_complete) begin
+      ov_counter <= 0;
+    end else if (ov_again) begin
+      ov_counter <= 1;
+    end else if (ov_increment & !ov_saturate) begin
+      ov_counter <= ov_counter + 1;
+    end
   end
 endmodule

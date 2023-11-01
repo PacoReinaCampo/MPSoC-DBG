@@ -80,19 +80,29 @@ module peripheral_dbg_soc_dii_buffer #(
   assign flit_out_fire = flit_out.valid && flit_out_ready;
 
   always_ff @(posedge clk) begin
-    if (rst) reg_out_valid <= 0;
-    else if (flit_in.valid) reg_out_valid <= 1;
-    else if (flit_out_fire && rp == 0) reg_out_valid <= 0;
+    if (rst) begin
+      reg_out_valid <= 0;
+    end else if (flit_in.valid) begin
+      reg_out_valid <= 1;
+    end else if (flit_out_fire && rp == 0) begin
+      reg_out_valid <= 0;
+    end
   end
 
   always_ff @(posedge clk) begin
-    if (rst) rp <= 0;
-    else if (flit_in_fire && !flit_out_fire && reg_out_valid) rp <= rp + 1;
-    else if (flit_out_fire && !flit_in_fire && rp != 0) rp <= rp - 1;
+    if (rst) begin
+      rp <= 0;
+    end else if (flit_in_fire && !flit_out_fire && reg_out_valid) begin
+      rp <= rp + 1;
+    end else if (flit_out_fire && !flit_in_fire && rp != 0) begin
+      rp <= rp - 1;
+    end
   end
 
   always @(posedge clk) begin
-    if (flit_in_fire) data <= {data, flit_in};
+    if (flit_in_fire) begin
+      data <= {data, flit_in};
+    end
   end
 
   generate  // SRL does not allow parallel read
@@ -100,16 +110,25 @@ module peripheral_dbg_soc_dii_buffer #(
       logic [BUF_SIZE-1:0] data_last_buf, data_last_shifted;
 
       always_ff @(posedge clk) begin
-        if (rst) data_last_buf <= 0;
-        else if (flit_in_fire) data_last_buf <= {data_last_buf, flit_in.last && flit_in.valid};
+        if (rst) begin
+          data_last_buf <= 0;
+        end else if (flit_in_fire) begin
+          data_last_buf <= {data_last_buf, flit_in.last && flit_in.valid};
+        end
       end
 
       // extra logic to get the packet size in a stable manner
       assign data_last_shifted = data_last_buf << BUF_SIZE - 1 - rp;
 
-      function logic [ID_W:0] find_first_one(input logic [BUF_SIZE-1:0] data);
+      function logic [ID_W:0] find_first_one(
+        input logic [BUF_SIZE-1:0] data
+      );
         automatic int i;
-        for (i = BUF_SIZE - 1; i >= 0; i--) if (data[i]) return i;
+        for (i = BUF_SIZE - 1; i >= 0; i--) begin
+          if (data[i]) begin
+            return i;
+          end
+        end
         return BUF_SIZE;
       endfunction
 

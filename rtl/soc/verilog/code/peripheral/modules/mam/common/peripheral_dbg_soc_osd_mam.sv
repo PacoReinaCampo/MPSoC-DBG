@@ -157,13 +157,14 @@ module peripheral_dbg_soc_osd_mam #(
   function logic [DATA_WIDTH-1:0] endian_conv(input logic [DATA_WIDTH-1:0] din);
     int i;
     // should be "static int", but unsupported by Verilator currently, see
-    // https:// www.veripool.org/issues/546-Verilator-Support-static-inside-task
-    for (i = 0; i < DATA_WIDTH / 8; i++) endian_conv[i*8+:8] = din[(DATA_WIDTH/8-i-1)*8+:8];
+    // https://www.veripool.org/issues/546-Verilator-Support-static-inside-task
+    for (i = 0; i < DATA_WIDTH / 8; i++) begin
+      endian_conv[i*8+:8] = din[(DATA_WIDTH/8-i-1)*8+:8];
+    end
   endfunction  // endian_conv
 
   initial begin
-    assert (DATA_WIDTH[2:0] == 0)
-    else $fatal(1, "datawidth of MAM read/write port must be times of bytes!");
+    assert (DATA_WIDTH[2:0] == 0) else $fatal(1, "datawidth of MAM read/write port must be times of bytes!");
   end
 
   assign read_data_m = ENDIAN ? read_data : endian_conv(read_data);
@@ -211,30 +212,34 @@ module peripheral_dbg_soc_osd_mam #(
     reg_err   = 1'b0;
     reg_rdata = 16'hx;
 
-    if (reg_addr[15:7] == 9'h4)  // 0x200
+    if (reg_addr[15:7] == 9'h4) begin  // 0x200
       case (reg_addr)
         16'h200: reg_rdata = 16'(DATA_WIDTH);
         16'h201: reg_rdata = 16'(ADDR_WIDTH);
         16'h202: reg_rdata = 16'(REGIONS);
         default: reg_err = 1'b1;
       endcase
-    else if (reg_addr[15:7] == 9'h5)  // 0x280-0x300
-      if (reg_addr[3]) reg_err = 1'b1;
-      else if (reg_addr[6:4] > REGIONS) reg_err = 1'b1;
-      else if (reg_addr[2] == 0)  // addr
+    end else if (reg_addr[15:7] == 9'h5) begin  // 0x280-0x300
+      if (reg_addr[3]) begin
+        reg_err = 1'b1;
+      end else if (reg_addr[6:4] > REGIONS) begin
+        reg_err = 1'b1;
+      end else if (reg_addr[2] == 0) begin  // addr
         case (reg_addr[1:0])
           0: reg_rdata = base_addr[reg_addr[6:4]][15:0];
           1: reg_rdata = base_addr[reg_addr[6:4]][31:16];
           2: reg_rdata = base_addr[reg_addr[6:4]][47:32];
           3: reg_rdata = base_addr[reg_addr[6:4]][63:48];
         endcase  // case (reg_addr[1:0])
-      else
+      end else begin
         case (reg_addr[1:0])
           0: reg_rdata = mem_size[reg_addr[6:4]][15:0];
           1: reg_rdata = mem_size[reg_addr[6:4]][31:16];
           2: reg_rdata = mem_size[reg_addr[6:4]][47:32];
           3: reg_rdata = mem_size[reg_addr[6:4]][63:48];
         endcase  // case (reg_addr[1:0])
+      end
+    end
   end
 
   enum {
@@ -329,8 +334,11 @@ module peripheral_dbg_soc_osd_mam #(
         nxt_req_sync   = dp_in.data[13];
 
         nxt_write_strb = dp_in.data[DATA_WIDTH/8-1:0];
-        if (nxt_req_burst) nxt_req_beats = {5'h0, dp_in.data[7:0]};
-        else nxt_req_beats = 13'h1;
+        if (nxt_req_burst) begin
+          nxt_req_beats = {5'h0, dp_in.data[7:0]};
+        end else begin
+          nxt_req_beats = 13'h1;
+        end
 
         if (dp_in.valid) begin
           nxt_state   = STATE_ADDR;

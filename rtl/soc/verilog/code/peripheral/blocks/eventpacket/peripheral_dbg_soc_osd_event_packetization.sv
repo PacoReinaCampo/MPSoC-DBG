@@ -186,7 +186,9 @@ module peripheral_dbg_soc_osd_event_packetization #(
         debug_out.data[9:0] = 10'h0;  // reserved
         debug_out.valid     = 1;
 
-        if (debug_out_ready) nxt_state = overflow ? OVERFLOW : PAYLOAD;
+        if (debug_out_ready) begin
+          nxt_state = overflow ? OVERFLOW : PAYLOAD;
+        end
       end
       OVERFLOW: begin
         debug_out.valid = 1;
@@ -216,7 +218,6 @@ module peripheral_dbg_soc_osd_event_packetization #(
               nxt_state            = PAYLOAD;
               nxt_payload_flit_cnt = payload_flit_cnt + 1;
             end
-
           end
         end else begin
           // last payload word of the transfer
