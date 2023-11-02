@@ -161,18 +161,26 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
 
   // Input bit counter
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) write_bit_count <= 'h0;
-    else if (wr_bit_ct_rst) write_bit_count <= 'h0;
-    else if (wr_bit_ct_en) write_bit_count <= write_bit_count + 'h1;
+    if (rst_i) begin
+      write_bit_count <= 'h0;
+    end else if (wr_bit_ct_rst) begin
+      write_bit_count <= 'h0;
+    end else if (wr_bit_ct_en) begin
+      write_bit_count <= write_bit_count + 'h1;
+    end
   end
 
   assign wr_bit_count_max = write_bit_count == 4'h7;
 
   // Output bit counter
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) read_bit_count <= 'h0;
-    else if (rd_bit_ct_rst) read_bit_count <= 'h0;
-    else if (rd_bit_ct_en) read_bit_count <= read_bit_count + 'h1;
+    if (rst_i) begin
+      read_bit_count <= 'h0;
+    end else if (rd_bit_ct_rst) begin
+      read_bit_count <= 'h0;
+    end else if (rd_bit_ct_en) begin
+      read_bit_count <= read_bit_count + 'h1;
+    end
   end
 
   assign rd_bit_count_max        = read_bit_count == 4'h7;
@@ -181,8 +189,11 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign data_to_in_word_counter = in_word_ct_sel ? input_word_count - 'h1 : biu_space_available;
 
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) input_word_count <= 'h0;
-    else if (in_word_ct_en) input_word_count <= data_to_in_word_counter;
+    if (rst_i) begin
+      input_word_count <= 'h0;
+    end else if (in_word_ct_en) begin
+      input_word_count <= data_to_in_word_counter;
+    end
   end
 
   assign in_word_count_zero       = (input_word_count == 4'h0);
@@ -191,8 +202,11 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign data_to_out_word_counter = out_word_ct_sel ? output_word_count - 'h1 : biu_bytes_available;
 
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) output_word_count <= 'h0;
-    else if (out_word_ct_en) output_word_count <= data_to_out_word_counter;
+    if (rst_i) begin
+      output_word_count <= 'h0;
+    end else if (out_word_ct_en) begin
+      output_word_count <= data_to_out_word_counter;
+    end
   end
 
   assign out_word_count_zero       = ~|output_word_count;
@@ -201,8 +215,11 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign data_to_user_word_counter = user_word_ct_sel ? user_word_count - 'h1 : count_data_in;
 
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) user_word_count <= 'h0;
-    else if (user_word_ct_en) user_word_count <= data_to_user_word_counter;
+    if (rst_i) begin
+      user_word_count <= 'h0;
+    end else if (user_word_ct_en) begin
+      user_word_count <= data_to_user_word_counter;
+    end
   end
 
   assign user_word_count_zero = ~|user_word_count;
@@ -211,9 +228,13 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign out_reg_data         = (out_reg_data_sel) ? count_data_from_biu : data_from_biu;
 
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) data_out_shift_reg <= 'h0;
-    else if (out_reg_ld_en) data_out_shift_reg <= out_reg_data;
-    else if (out_reg_shift_en) data_out_shift_reg <= {1'b0, data_out_shift_reg[$bits(data_out_shift_reg)-1:1]};
+    if (rst_i) begin
+      data_out_shift_reg <= 'h0;
+    end else if (out_reg_ld_en) begin
+      data_out_shift_reg <= out_reg_data;
+    end else if (out_reg_shift_en) begin
+      data_out_shift_reg <= {1'b0, data_out_shift_reg[$bits(data_out_shift_reg)-1:1]};
+    end
   end
 
   assign module_tdo_o  = data_out_shift_reg[0];
@@ -227,66 +248,83 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign biu_di        = data_to_biu;
   assign data_from_biu = biu_do;
 
-  /*
-   peripheral_dbg_jsp_biu jsp_biu_i (
-    // Debug interface signals
-    .tck_i           (tck_i),
-    .rst_i           (rst_i),
-    .data_i          (data_to_biu),
-    .data_o          (data_from_biu),
-    .bytes_available_o (biu_bytes_available),
-    .bytes_free_o    (biu_space_available),
-    .rd_strobe_i     (biu_rd_strobe),
-    .wr_strobe_i     (biu_wr_strobe),
+//   peripheral_dbg_jsp_biu jsp_biu_i (
+//    // Debug interface signals
+//    .tck_i           (tck_i),
+//    .rst_i           (rst_i),
+//    .data_i          (data_to_biu),
+//    .data_o          (data_from_biu),
+//    .bytes_available_o (biu_bytes_available),
+//    .bytes_free_o    (biu_space_available),
+//    .rd_strobe_i     (biu_rd_strobe),
+//    .wr_strobe_i     (biu_wr_strobe),
 
-    // Wishbone slave signals
-    .wb_clk_i        (wb_clk_i),
-    .wb_rst_i        (wb_rst_i),
-    .wb_adr_i        (wb_adr_i),
-    .wb_dat_o        (wb_dat_o),
-    .wb_dat_i        (wb_dat_i),
-    .wb_cyc_i        (wb_cyc_i),
-    .wb_stb_i        (wb_stb_i),
-    .wb_sel_i        (wb_sel_i),
-    .wb_we_i         (wb_we_i),
-    .wb_ack_o        (wb_ack_o),
-    .wb_err_o        (wb_err_o),
-    .wb_cti_i        (wb_cti_i),
-    .wb_bte_i        (wb_bte_i),
-    .int_o           (int_o)
-  );
-*/
+//    // Wishbone slave signals
+//    .wb_clk_i        (wb_clk_i),
+//    .wb_rst_i        (wb_rst_i),
+//    .wb_adr_i        (wb_adr_i),
+//    .wb_dat_o        (wb_dat_o),
+//    .wb_dat_i        (wb_dat_i),
+//    .wb_cyc_i        (wb_cyc_i),
+//    .wb_stb_i        (wb_stb_i),
+//    .wb_sel_i        (wb_sel_i),
+//    .wb_we_i         (wb_we_i),
+//    .wb_ack_o        (wb_ack_o),
+//    .wb_err_o        (wb_err_o),
+//    .wb_cti_i        (wb_cti_i),
+//    .wb_bte_i        (wb_bte_i),
+//    .int_o           (int_o)
+//  );
 
   // Input Control FSM
 
   // sequential part of the FSM
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) wr_module_state <= STATE_WR_IDLE;
-    else wr_module_state <= wr_module_next_state;
+    if (rst_i) begin
+      wr_module_state <= STATE_WR_IDLE;
+    end else begin
+      wr_module_state <= wr_module_next_state;
+    end
   end
 
   // Determination of next state; purely combinatorial
   always @(*) begin
     case (wr_module_state)
       STATE_WR_IDLE: begin
-        if (module_select_i && capture_dr_i) wr_module_next_state = STATE_WR_COUNTS;
-        else wr_module_next_state = STATE_WR_IDLE;
+        if (module_select_i && capture_dr_i) begin
+          wr_module_next_state = STATE_WR_COUNTS;
+        end else begin
+          wr_module_next_state = STATE_WR_IDLE;
+        end
       end
       STATE_WR_WAIT: begin
-        if (update_dr_i) wr_module_next_state = STATE_WR_IDLE;
-        else if (module_select_i && tdi_i) wr_module_next_state = STATE_WR_COUNTS;  // got start bit
-        else wr_module_next_state = STATE_WR_WAIT;
+        if (update_dr_i) begin
+          wr_module_next_state = STATE_WR_IDLE;
+        end else if (module_select_i && tdi_i) begin
+          wr_module_next_state = STATE_WR_COUNTS;  // got start bit
+        end else begin
+          wr_module_next_state = STATE_WR_WAIT;
+        end
       end
       STATE_WR_COUNTS: begin
-        if (update_dr_i) wr_module_next_state = STATE_WR_IDLE;
-        else if (wr_bit_count_max) wr_module_next_state = STATE_WR_XFER;
-        else wr_module_next_state = STATE_WR_COUNTS;
+        if (update_dr_i) begin
+          wr_module_next_state = STATE_WR_IDLE;
+        end else if (wr_bit_count_max) begin
+          wr_module_next_state = STATE_WR_XFER;
+        end else begin
+          wr_module_next_state = STATE_WR_COUNTS;
+        end
       end
       STATE_WR_XFER: begin
-        if (update_dr_i) wr_module_next_state = STATE_WR_IDLE;
-        else wr_module_next_state = STATE_WR_XFER;
+        if (update_dr_i) begin
+          wr_module_next_state = STATE_WR_IDLE;
+        end else begin
+          wr_module_next_state = STATE_WR_XFER;
+        end
       end
-      default: wr_module_next_state = STATE_WR_IDLE;  // shouldn't actually happen...
+      default: begin
+        wr_module_next_state = STATE_WR_IDLE;  // shouldn't actually happen...
+      end
     endcase
   end
 
@@ -343,7 +381,8 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
           end
         end
       end
-      default: ;
+      default: begin
+      end
     endcase
   end
 
@@ -355,32 +394,51 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
 
   // sequential part of the FSM
   always @(posedge tck_i, posedge rst_i) begin
-    if (rst_i) rd_module_state = STATE_RD_IDLE;
-    else rd_module_state = rd_module_next_state;
+    if (rst_i) begin
+      rd_module_state = STATE_RD_IDLE;
+    end else begin
+      rd_module_state = rd_module_next_state;
+    end
   end
 
   // Determination of next state; purely combinatorial
   always @(*) begin
     case (rd_module_state)
       STATE_RD_IDLE: begin
-        if (module_select_i && capture_dr_i) rd_module_next_state = STATE_RD_COUNTS;
-        else rd_module_next_state = STATE_RD_IDLE;
+        if (module_select_i && capture_dr_i) begin
+          rd_module_next_state = STATE_RD_COUNTS;
+        end else begin
+          rd_module_next_state = STATE_RD_IDLE;
+        end
       end
       STATE_RD_COUNTS: begin
-        if (update_dr_i) rd_module_next_state = STATE_RD_IDLE;
-        else if (rd_bit_count_max) rd_module_next_state = STATE_RD_RDACK;
-        else rd_module_next_state = STATE_RD_COUNTS;
+        if (update_dr_i) begin
+          rd_module_next_state = STATE_RD_IDLE;
+        end else if (rd_bit_count_max) begin
+          rd_module_next_state = STATE_RD_RDACK;
+        end else begin
+          rd_module_next_state = STATE_RD_COUNTS;
+        end
       end
       STATE_RD_RDACK: begin
-        if (update_dr_i) rd_module_next_state = STATE_RD_IDLE;
-        else rd_module_next_state = STATE_RD_XFER;
+        if (update_dr_i) begin
+          rd_module_next_state = STATE_RD_IDLE;
+        end else begin
+          rd_module_next_state = STATE_RD_XFER;
+        end
       end
       STATE_RD_XFER: begin
-        if (update_dr_i) rd_module_next_state = STATE_RD_IDLE;
-        else if (rd_bit_count_max) rd_module_next_state = STATE_RD_RDACK;
-        else rd_module_next_state = STATE_RD_XFER;
+        if (update_dr_i) begin
+          rd_module_next_state = STATE_RD_IDLE;
+        end else if (rd_bit_count_max) begin
+          rd_module_next_state = STATE_RD_RDACK;
+        end else begin
+          rd_module_next_state = STATE_RD_XFER;
+        end
       end
-      default: rd_module_next_state = STATE_RD_IDLE;  // shouldn't actually happen...
+      default: begin
+        rd_module_next_state = STATE_RD_IDLE;  // shouldn't actually happen...
+      end
     endcase
   end
 
@@ -432,7 +490,9 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
           out_reg_data_sel = 1'b0;
 
           // Never have to worry about bit_count_max here.
-          if (!out_word_count_zero) biu_rd_strobe = 1'b1;
+          if (!out_word_count_zero) begin
+            biu_rd_strobe = 1'b1;
+          end
         end
       end
       STATE_RD_XFER: begin
@@ -454,7 +514,8 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
           end
         end
       end
-      default: ;
+      default: begin
+      end
     endcase
   end
 endmodule

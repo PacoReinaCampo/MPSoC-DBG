@@ -174,15 +174,20 @@ module peripheral_dbg_pu_riscv_biu_wb #(
       sel_reg  <= be_dec;
       addr_reg <= biu_addr;
       wr_reg   <= ~biu_rw;
-      if (!biu_rw) data_in_reg <= swapped_data_in;
+      if (!biu_rw) begin
+        data_in_reg <= swapped_data_in;
+      end
     end
   end
 
   // Create toggle-active strobe signal for clock sync.  This will start a transaction
   // on the WB once the toggle propagates to the FSM in the WB domain.
   always @(posedge biu_clk, posedge biu_rst) begin
-    if (biu_rst) str_sync <= 1'b0;
-    else if (biu_strb && biu_rdy) str_sync <= ~str_sync;
+    if (biu_rst) begin
+      str_sync <= 1'b0;
+    end else if (biu_strb && biu_rdy) begin
+      str_sync <= ~str_sync;
+    end
   end
 
   // Create biu_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
@@ -197,8 +202,11 @@ module peripheral_dbg_pu_riscv_biu_wb #(
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  // used to detect toggles
 
-      if (biu_strb && biu_rdy) biu_rdy <= 1'b0;
-      else if (rdy_sync_tff2 != rdy_sync_tff2q) biu_rdy <= 1'b1;
+      if (biu_strb && biu_rdy) begin
+        biu_rdy <= 1'b0;
+      end else if (rdy_sync_tff2 != rdy_sync_tff2q) begin
+        biu_rdy <= 1'b1;
+      end
     end
   end
 
@@ -220,8 +228,11 @@ module peripheral_dbg_pu_riscv_biu_wb #(
 
   // synchronize asynchronous active high reset
   always @(posedge wb_clk_i, posedge biu_rst) begin
-    if (biu_rst) wb_rst_sync <= {$bits(wb_rst_sync) {1'b1}};
-    else wb_rst_sync <= {1'b0, wb_rst_sync[$bits(wb_rst_sync)-1:1]};
+    if (biu_rst) begin
+      wb_rst_sync <= {$bits(wb_rst_sync) {1'b1}};
+    end else begin
+      wb_rst_sync <= {1'b0, wb_rst_sync[$bits(wb_rst_sync)-1:1]};
+    end
   end
 
   assign wb_rst = wb_rst_sync[0];
@@ -243,8 +254,11 @@ module peripheral_dbg_pu_riscv_biu_wb #(
 
   // Error indicator register
   always @(posedge wb_clk_i, posedge wb_rst) begin
-    if (wb_rst) err_reg <= 1'b0;
-    else if (wb_resp) err_reg <= wb_err_i;
+    if (wb_rst) begin
+      err_reg <= 1'b0;
+    end else if (wb_resp) begin
+      err_reg <= wb_err_i;
+    end
   end
 
   // Byte- or word-swap the WB->dbg data, as necessary (combinatorial)
@@ -265,14 +279,20 @@ module peripheral_dbg_pu_riscv_biu_wb #(
 
   // WB->dbg data register
   always @(posedge wb_clk_i, posedge wb_rst) begin
-    if (wb_rst) data_out_reg <= 'h0;
-    else if (wb_resp) data_out_reg <= swapped_data_out;
+    if (wb_rst) begin
+      data_out_reg <= 'h0;
+    end else if (wb_resp) begin
+      data_out_reg <= swapped_data_out;
+    end
   end
 
   // Create a toggle-active ready signal to send to the TCK domain
   always @(posedge wb_clk_i, posedge wb_rst) begin
-    if (wb_rst) rdy_sync <= 1'b0;
-    else if (wb_resp) rdy_sync <= ~rdy_sync;
+    if (wb_rst) begin
+      rdy_sync <= 1'b0;
+    end else if (wb_resp) begin
+      rdy_sync <= ~rdy_sync;
+    end
   end
 
   // Small state machine to create WB accesses

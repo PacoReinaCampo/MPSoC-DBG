@@ -86,10 +86,14 @@ module peripheral_dbg_pu_riscv_status_reg #(
         for (k = 0; k < Z; k = k + 1) begin
           for (t = 0; t < CORES_PER_TILE; t = t + 1) begin
             always @(posedge cpu_clk_i, negedge cpu_rstn_i) begin
-              if (!cpu_rstn_i) stall_bp[i][j][k][t] <= 1'b0;
-              else begin
-                if (bp_i[i][j][k][t]) stall_bp[i][j][k][t] <= 1'b1;
-                else if (stall_reg_cpu[i][j][k][t]) stall_bp[i][j][k][t] <= 1'b0;
+              if (!cpu_rstn_i) begin
+                stall_bp[i][j][k][t] <= 1'b0;
+              end else begin
+                if (bp_i[i][j][k][t]) begin
+                  stall_bp[i][j][k][t] <= 1'b1;
+                end else if (stall_reg_cpu[i][j][k][t]) begin
+                  stall_bp[i][j][k][t] <= 1'b0;
+                end
               end
             end
           end
@@ -133,10 +137,14 @@ module peripheral_dbg_pu_riscv_status_reg #(
         for (k = 0; k < Z; k = k + 1) begin
           for (t = 0; t < CORES_PER_TILE; t = t + 1) begin
             always @(posedge tck_i, posedge tlr_i) begin
-              if (tlr_i) stall_reg[i][j][k][t] <= 1'b0;
-              else begin
-                if (stall_bp_tck[i][j][k][t]) stall_reg[i][j][k][t] <= 1'b1;
-                else if (we_i) stall_reg[i][j][k][t] <= data_i[i][j][k][t];
+              if (tlr_i) begin
+                stall_reg[i][j][k][t] <= 1'b0;
+              end else begin
+                if (stall_bp_tck[i][j][k][t]) begin
+                  stall_reg[i][j][k][t] <= 1'b1;
+                end else if (we_i) begin
+                  stall_reg[i][j][k][t] <= data_i[i][j][k][t];
+                end
               end
             end
           end

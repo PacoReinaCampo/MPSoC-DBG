@@ -157,8 +157,11 @@ module peripheral_dbg_pu_riscv_top_ahb3 #(
 
   // Data input shift register
   always @(posedge tck_i, posedge tlr_i) begin
-    if (tlr_i) input_shift_reg <= 'h0;
-    else if (debug_select_i && shift_dr_i) input_shift_reg <= {tdi_i, input_shift_reg[`DBG_TOP_DATAREG_LEN-1:1]};
+    if (tlr_i) begin
+      input_shift_reg <= 'h0;
+    end else if (debug_select_i && shift_dr_i) begin
+      input_shift_reg <= {tdi_i, input_shift_reg[`DBG_TOP_DATAREG_LEN-1:1]};
+    end
   end
 
   // AHB3 debug module instantiation

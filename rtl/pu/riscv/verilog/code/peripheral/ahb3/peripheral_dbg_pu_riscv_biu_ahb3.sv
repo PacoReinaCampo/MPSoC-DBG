@@ -118,7 +118,7 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
   // Module Body
   //
 
-  //////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////
   // TCK clock domain
   //
   // There is no FSM here, just signal latching and clock domain synchronization
@@ -174,8 +174,11 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
   // Create toggle-active strobe signal for clock sync.  This will start a transaction
   // on the AHB once the toggle propagates to the FSM in the AHB domain.
   always @(posedge biu_clk, posedge biu_rst) begin
-    if (biu_rst) str_sync <= 1'b0;
-    else if (biu_strb && biu_rdy) str_sync <= ~str_sync;
+    if (biu_rst) begin
+      str_sync <= 1'b0;
+    end else if (biu_strb && biu_rdy) begin
+      str_sync <= ~str_sync;
+    end
   end
 
   // Create biu_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
@@ -190,19 +193,25 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  // used to detect toggles
 
-      if (biu_strb && biu_rdy) biu_rdy <= 1'b0;
-      else if (rdy_sync_tff2 != rdy_sync_tff2q) biu_rdy <= 1'b1;
+      if (biu_strb && biu_rdy) begin
+        biu_rdy <= 1'b0;
+      end else if (rdy_sync_tff2 != rdy_sync_tff2q) begin
+        biu_rdy <= 1'b1;
+      end
     end
   end
 
-  ////////////////////////////////////////////////////// /
+  //////////////////////////////////////////////////////////////////////////////
   // AHB clock domain
   //
 
   // synchronize asynchronous active high reset
   always @(posedge HCLK, posedge biu_rst) begin
-    if (biu_rst) ahb_rstn_sync <= {$bits(ahb_rstn_sync) {1'b0}};
-    else ahb_rstn_sync <= {1'b1, ahb_rstn_sync[$bits(ahb_rstn_sync)-1:1]};
+    if (biu_rst) begin
+      ahb_rstn_sync <= {$bits(ahb_rstn_sync) {1'b0}};
+    end else begin
+      ahb_rstn_sync <= {1'b1, ahb_rstn_sync[$bits(ahb_rstn_sync)-1:1]};
+    end
   end
 
   assign ahb_rstn = ~(~HRESETn | ~ahb_rstn_sync[0]);
@@ -223,14 +232,20 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
   assign start_toggle = (str_sync_aff2 != str_sync_aff2q);
 
   always @(posedge HCLK, negedge ahb_rstn) begin
-    if (!ahb_rstn) start_toggle_hold <= 1'b0;
-    else start_toggle_hold <= ~ahb_transfer_ack & (start_toggle | start_toggle_hold);
+    if (!ahb_rstn) begin
+      start_toggle_hold <= 1'b0;
+    end else begin
+      start_toggle_hold <= ~ahb_transfer_ack & (start_toggle | start_toggle_hold);
+    end
   end
 
   // Bus Error register
   always @(posedge HCLK, negedge ahb_rstn) begin
-    if (!ahb_rstn) biu_err <= 1'b0;
-    else if (ahb_transfer_ack) biu_err <= HRESP;
+    if (!ahb_rstn) begin
+      biu_err <= 1'b0;
+    end else if (ahb_transfer_ack) begin
+      biu_err <= HRESP;
+    end
   end
 
   // Received data register
@@ -293,8 +308,11 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
 
   // Create a toggle-active ready signal to send to the TCK domain
   always @(posedge HCLK, negedge ahb_rstn) begin
-    if (!ahb_rstn) rdy_sync <= 1'b0;
-    else if (ahb_transfer_ack) rdy_sync <= ~rdy_sync;
+    if (!ahb_rstn) begin
+      rdy_sync <= 1'b0;
+    end else if (ahb_transfer_ack) begin
+      rdy_sync <= ~rdy_sync;
+    end
   end
 
   // State machine to create AHB accesses
