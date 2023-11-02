@@ -65,7 +65,7 @@ module peripheral_dbg_testbench;
   logic                           rst_sys;
   logic                           rst_cpu;
 
-  //GLIP host connection
+  // GLIP host connection
   logic [   XLEN -1:0]            glip_in_data;
   logic                           glip_in_valid;
   logic                           glip_in_ready;
@@ -115,7 +115,7 @@ module peripheral_dbg_testbench;
   // Module Body
   //
 
-  //DUT
+  // DUT
   peripheral_dbg_soc_interface dbg_soc_interface (
     .clk(HCLK),
     .rst(HRESETn),

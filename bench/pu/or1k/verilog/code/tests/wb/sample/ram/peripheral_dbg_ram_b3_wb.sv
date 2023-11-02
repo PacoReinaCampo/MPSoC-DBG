@@ -42,7 +42,7 @@
  */
 
 module peripheral_dbg_ram_b3_wb #(
-  //Wishbone parameters
+  // Wishbone parameters
   parameter DW = 32,
   parameter AW = 32,
 
@@ -221,7 +221,7 @@ module peripheral_dbg_ram_b3_wb #(
   // Ack Logic
   assign wb_ack_o = wb_ack_o_r & wb_stb_i & !(burst_access_wrong_wb_adr | addr_err);
 
-  //Handle wb_ack
+  // Handle wb_ack
   always @(posedge wb_clk_i) begin
     if (wb_rst_i) wb_ack_o_r <= 1'b0;
     else if (wb_cyc_i) begin  // We have bus

@@ -80,7 +80,7 @@ module peripheral_dbg_synthesis #(
   logic wb_tdo_o;
 
   // TAP states
-  logic wb_tlr_i;  //TestLogicReset
+  logic wb_tlr_i;  // TestLogicReset
   logic wb_shift_dr_i;
   logic wb_pause_dr_i;
   logic wb_update_dr_i;
@@ -103,7 +103,7 @@ module peripheral_dbg_synthesis #(
 
   logic jsp_int_o;
 
-  //CPU/Thread debug ports
+  // CPU/Thread debug ports
   logic                                                               wb_cpu_clk_i;
   logic                                                               wb_cpu_rstn_i;
   logic [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_ADDR_WIDTH-1:0] wb_cpu_addr_o;
@@ -180,7 +180,7 @@ module peripheral_dbg_synthesis #(
 
     .jsp_int_o(jsp_int_o),
 
-    //CPU/Thread debug ports
+    // CPU/Thread debug ports
     .cpu_clk_i  (wb_cpu_clk_i),
     .cpu_rstn_i (wb_cpu_rstn_i),
     .cpu_addr_o (wb_cpu_addr_o),

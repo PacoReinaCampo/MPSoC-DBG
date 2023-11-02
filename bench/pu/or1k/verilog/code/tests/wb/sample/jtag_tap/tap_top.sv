@@ -84,7 +84,7 @@ module tap_top #(
   // Constants
   //
 
-  //Internal constants
+  // Internal constants
   localparam EXTEST = 4'b0000;
   localparam SAMPLE_PRELOAD = 4'b0001;
   localparam IDCODE = 4'b0010;

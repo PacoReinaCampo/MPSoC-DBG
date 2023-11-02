@@ -74,7 +74,7 @@ module peripheral_dbg_testbench;
   logic ahb3_tdo_o;
 
   // TAP states
-  logic ahb3_tlr_i;  //TestLogicReset
+  logic ahb3_tlr_i;  // TestLogicReset
   logic ahb3_shift_dr_i;
   logic ahb3_pause_dr_i;
   logic ahb3_update_dr_i;
@@ -130,7 +130,7 @@ module peripheral_dbg_testbench;
   // Module Body
   //
 
-  //DUT AHB3
+  // DUT AHB3
   peripheral_dbg_pu_riscv_top_ahb3 #(
     .X(X),
     .Y(Y),
@@ -191,7 +191,7 @@ module peripheral_dbg_testbench;
 
     .int_o(int_o),
 
-    //CPU/Thread debug ports
+    // CPU/Thread debug ports
     .cpu_clk_i  (ahb3_cpu_clk_i),
     .cpu_rstn_i (ahb3_cpu_rstn_i),
     .cpu_addr_o (ahb3_cpu_addr_o),
