@@ -70,9 +70,9 @@ module peripheral_dbg_pu_msp430_hwbrk (
   input [15:0] pc             // Program counter
 );
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 1)  WIRE & PARAMETER DECLARATION
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   wire range_wr_set;
   wire range_rd_set;
@@ -83,47 +83,45 @@ module peripheral_dbg_pu_msp430_hwbrk (
 
   parameter BRK_CTL = 0, BRK_STAT = 1, BRK_ADDR0 = 2, BRK_ADDR1 = 3;
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 2)  CONFIGURATION REGISTERS
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   // BRK_CTL Register
-  // -----------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////////
   //       7   6   5        4            3          2            1  0
   //        Reserved    RANGE_MODE    INST_EN    BREAK_EN    ACCESS_MODE
-  //
   // ACCESS_MODE: - 00 : Disabled
   //              - 01 : Detect read access
   //              - 10 : Detect write access
   //              - 11 : Detect read/write access
   //              NOTE: '10' & '11' modes are not supported on the instruction flow
-  //
   // BREAK_EN:    -  0 : Watchmode enable
   //              -  1 : Break enable
-  //
   // INST_EN:     -  0 : Checks are done on the execution unit (data flow)
   //              -  1 : Checks are done on the frontend (instruction flow)
-  //
   // RANGE_MODE:  -  0 : Address match on BRK_ADDR0 or BRK_ADDR1
   //              -  1 : Address match on BRK_ADDR0->BRK_ADDR1 range
-  //
-  // -----------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////////
   reg  [4:0] brk_ctl;
 
   wire       brk_ctl_wr = brk_reg_wr[BRK_CTL];
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) brk_ctl <= 5'h00;
-    else if (brk_ctl_wr) brk_ctl <= {`HWBRK_RANGE & dbg_din[4], dbg_din[3:0]};
+    if (dbg_rst) begin
+      brk_ctl <= 5'h00;
+    end else if (brk_ctl_wr) begin
+      brk_ctl <= {`HWBRK_RANGE & dbg_din[4], dbg_din[3:0]};
+    end
   end
 
   wire [7:0] brk_ctl_full = {3'b000, brk_ctl};
 
   // BRK_STAT Register
-  // -----------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////////
   //     7    6       5         4         3         2         1         0
   //    Reserved  RANGE_WR  RANGE_RD  ADDR1_WR  ADDR1_RD  ADDR0_WR  ADDR0_RD
-  // -----------------------------------------------------------------------------
+  //////////////////////////////////////////////////////////////////////////////
   reg  [5:0] brk_stat;
 
   wire       brk_stat_wr = brk_reg_wr[BRK_STAT];
@@ -131,39 +129,47 @@ module peripheral_dbg_pu_msp430_hwbrk (
   wire [5:0] brk_stat_clr = ~dbg_din[5:0];
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) brk_stat <= 6'h00;
-    else if (brk_stat_wr) brk_stat <= ((brk_stat & brk_stat_clr) | brk_stat_set);
-    else brk_stat <= (brk_stat | brk_stat_set);
+    if (dbg_rst) begin
+      brk_stat <= 6'h00;
+    end else if (brk_stat_wr) begin
+      brk_stat <= ((brk_stat & brk_stat_clr) | brk_stat_set);
+    end else begin
+      brk_stat <= (brk_stat | brk_stat_set);
+    end
   end
 
   wire [7:0] brk_stat_full = {2'b00, brk_stat};
   assign brk_pnd = |brk_stat;
 
   // BRK_ADDR0 Register
-  // -----------------------------------------------------------------------------
   reg  [15:0] brk_addr0;
 
   wire        brk_addr0_wr = brk_reg_wr[BRK_ADDR0];
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) brk_addr0 <= 16'h0000;
-    else if (brk_addr0_wr) brk_addr0 <= dbg_din;
+    if (dbg_rst) begin
+      brk_addr0 <= 16'h0000;
+    end else if (brk_addr0_wr) begin
+      brk_addr0 <= dbg_din;
+    end
   end
 
   // BRK_ADDR1/DATA0 Register
-  // -----------------------------------------------------------------------------
   reg  [15:0] brk_addr1;
 
   wire        brk_addr1_wr = brk_reg_wr[BRK_ADDR1];
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) brk_addr1 <= 16'h0000;
-    else if (brk_addr1_wr) brk_addr1 <= dbg_din;
+    if (dbg_rst) begin
+      brk_addr1 <= 16'h0000;
+    end else if (brk_addr1_wr) begin
+      brk_addr1 <= dbg_din;
+    end
   end
 
-  // ============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 3) DATA OUTPUT GENERATION
-  // ============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   wire [15:0] brk_ctl_rd = {8'h00, brk_ctl_full} & {16{brk_reg_rd[BRK_CTL]}};
   wire [15:0] brk_stat_rd = {8'h00, brk_stat_full} & {16{brk_reg_rd[BRK_STAT]}};
@@ -172,12 +178,11 @@ module peripheral_dbg_pu_msp430_hwbrk (
 
   assign brk_dout = brk_ctl_rd | brk_stat_rd | brk_addr0_rd | brk_addr1_rd;
 
-  // ============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 4) BREAKPOINT / WATCHPOINT GENERATION
-  // ============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   // Comparators
-  // ---------------------------
   // Note: here the comparison logic is instanciated several times in order
   //       to improve the timings, at the cost of a bit more area.
 
@@ -190,7 +195,6 @@ module peripheral_dbg_pu_msp430_hwbrk (
   wire equ_i_range = decode_noirq & ((pc >= brk_addr0) & (pc <= brk_addr1)) & brk_ctl[`BRK_RANGE] & `HWBRK_RANGE;
 
   // Detect accesses
-  // ---------------------------
 
   // Detect Instruction read access
   wire i_addr0_rd = equ_i_addr0 & brk_ctl[`BRK_I_EN];

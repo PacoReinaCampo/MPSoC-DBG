@@ -75,12 +75,11 @@ module peripheral_dbg_pu_msp430_i2c (
   input        mem_bw              // Burst byte width
 );
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 1) I2C RECEIVE LINE SYNCHRONIZTION & FILTERING
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   // Synchronize SCL/SDA inputs
-  // --------------------------------
 
   wire scl_sync_n;
 
@@ -105,38 +104,44 @@ module peripheral_dbg_pu_msp430_i2c (
   wire       sda_in_sync = ~sda_in_sync_n;
 
   // SCL/SDA input buffers
-  // --------------------------------
 
   reg  [1:0] scl_buf;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) scl_buf <= 2'h3;
-    else scl_buf <= {scl_buf[0], scl_sync};
+    if (dbg_rst) begin
+      scl_buf <= 2'h3;
+    end else begin
+      scl_buf <= {scl_buf[0], scl_sync};
+    end
   end
 
   reg [1:0] sda_in_buf;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) sda_in_buf <= 2'h3;
-    else sda_in_buf <= {sda_in_buf[0], sda_in_sync};
+    if (dbg_rst) begin
+      sda_in_buf <= 2'h3;
+    end else begin
+      sda_in_buf <= {sda_in_buf[0], sda_in_sync};
+    end
   end
 
   // SCL/SDA Majority decision
-  // ------------------------------
 
   wire scl = (scl_sync & scl_buf[0]) | (scl_sync & scl_buf[1]) | (scl_buf[0] & scl_buf[1]);
 
   wire sda_in = (sda_in_sync & sda_in_buf[0]) | (sda_in_sync & sda_in_buf[1]) | (sda_in_buf[0] & sda_in_buf[1]);
 
   // SCL/SDA Edge detection
-  // ------------------------------
 
   // SDA Edge detection
   reg  sda_in_dly;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) sda_in_dly <= 1'b1;
-    else sda_in_dly <= sda_in;
+    if (dbg_rst) begin
+      sda_in_dly <= 1'b1;
+    end else begin
+      sda_in_dly <= sda_in;
+    end
   end
 
   wire sda_in_fe = sda_in_dly & ~sda_in;
@@ -147,8 +152,11 @@ module peripheral_dbg_pu_msp430_i2c (
   reg  scl_dly;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) scl_dly <= 1'b1;
-    else scl_dly <= scl;
+    if (dbg_rst) begin
+      scl_dly <= 1'b1;
+    end else begin
+      scl_dly <= scl;
+    end
   end
 
   wire       scl_fe = scl_dly & ~scl;
@@ -158,31 +166,28 @@ module peripheral_dbg_pu_msp430_i2c (
   // Delayed SCL Rising-Edge for SDA data sampling
   reg  [1:0] scl_re_dly;
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) scl_re_dly <= 2'b00;
-    else scl_re_dly <= {scl_re_dly[0], scl_re};
+    if (dbg_rst) begin
+      scl_re_dly <= 2'b00;
+    end else begin
+      scl_re_dly <= {scl_re_dly[0], scl_re};
+    end
   end
 
   wire scl_sample = scl_re_dly[1];
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 2) I2C START & STOP CONDITION DETECTION
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
-  // -----------------
   // Start condition
-  // -----------------
 
   wire start_detect = sda_in_fe & scl;
 
-  // -----------------
   // Stop condition
-  // -----------------
 
   wire stop_detect = sda_in_re & scl;
 
-  // -----------------
   // I2C Slave Active
-  // -----------------
   // The I2C logic will be activated whenever a start condition
   // is detected and will be disactivated if the slave address
   // doesn't match or if a stop condition is detected.
@@ -192,17 +197,21 @@ module peripheral_dbg_pu_msp430_i2c (
   reg  i2c_active_seq;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) i2c_active_seq <= 1'b0;
-    else if (start_detect) i2c_active_seq <= 1'b1;
-    else if (stop_detect || i2c_addr_not_valid) i2c_active_seq <= 1'b0;
+    if (dbg_rst) begin
+      i2c_active_seq <= 1'b0;
+    end else if (start_detect) begin
+      i2c_active_seq <= 1'b1;
+    end else if (stop_detect || i2c_addr_not_valid) begin
+      i2c_active_seq <= 1'b0;
+    end
   end
 
   wire       i2c_active = i2c_active_seq & ~stop_detect;
   wire       i2c_init = ~i2c_active | start_detect;
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 3) I2C STATE MACHINE
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   // State register/wires
   reg  [2:0] i2c_state;
@@ -224,32 +233,44 @@ module peripheral_dbg_pu_msp430_i2c (
   // State transition
   always @(i2c_state or i2c_init or shift_rx_done or i2c_addr_not_valid or shift_tx_done or scl_fe or shift_buf or sda_in) begin
     case (i2c_state)
-      RX_ADDR: i2c_state_nxt = i2c_init ? RX_ADDR : ~shift_rx_done ? RX_ADDR : i2c_addr_not_valid ? RX_ADDR : RX_ADDR_ACK;
-
-      RX_ADDR_ACK: i2c_state_nxt = i2c_init ? RX_ADDR : ~scl_fe ? RX_ADDR_ACK : shift_buf[0] ? TX_DATA : RX_DATA;
-
-      RX_DATA: i2c_state_nxt = i2c_init ? RX_ADDR : ~shift_rx_done ? RX_DATA : RX_DATA_ACK;
-
-      RX_DATA_ACK: i2c_state_nxt = i2c_init ? RX_ADDR : ~scl_fe ? RX_DATA_ACK : RX_DATA;
-
-      TX_DATA: i2c_state_nxt = i2c_init ? RX_ADDR : ~shift_tx_done ? TX_DATA : TX_DATA_ACK;
-
-      TX_DATA_ACK: i2c_state_nxt = i2c_init ? RX_ADDR : ~scl_fe ? TX_DATA_ACK : ~sda_in ? TX_DATA : RX_ADDR;
+      RX_ADDR: begin
+        i2c_state_nxt = i2c_init ? RX_ADDR : ~shift_rx_done ? RX_ADDR : i2c_addr_not_valid ? RX_ADDR : RX_ADDR_ACK;
+      end
+      RX_ADDR_ACK: begin
+        i2c_state_nxt = i2c_init ? RX_ADDR : ~scl_fe ? RX_ADDR_ACK : shift_buf[0] ? TX_DATA : RX_DATA;
+      end
+      RX_DATA: begin
+        i2c_state_nxt = i2c_init ? RX_ADDR : ~shift_rx_done ? RX_DATA : RX_DATA_ACK;
+      end
+      RX_DATA_ACK: begin
+        i2c_state_nxt = i2c_init ? RX_ADDR : ~scl_fe ? RX_DATA_ACK : RX_DATA;
+      end
+      TX_DATA: begin
+        i2c_state_nxt = i2c_init ? RX_ADDR : ~shift_tx_done ? TX_DATA : TX_DATA_ACK;
+      end
+      TX_DATA_ACK: begin
+        i2c_state_nxt = i2c_init ? RX_ADDR : ~scl_fe ? TX_DATA_ACK : ~sda_in ? TX_DATA : RX_ADDR;
+      end
       // pragma coverage off
-      default:     i2c_state_nxt = RX_ADDR;
+      default: begin
+        i2c_state_nxt = RX_ADDR;
+      end
       // pragma coverage on
     endcase
   end
 
   // State machine
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) i2c_state <= RX_ADDR;
-    else i2c_state <= i2c_state_nxt;
+    if (dbg_rst) begin
+      i2c_state <= RX_ADDR;
+    end else begin
+      i2c_state <= i2c_state_nxt;
+    end
   end
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 4) I2C SHIFT REGISTER (FOR RECEIVING & TRANSMITING)
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   wire shift_rx_en = ((i2c_state == RX_ADDR) | (i2c_state == RX_DATA) | (i2c_state == RX_DATA_ACK));
   wire shift_tx_en = (i2c_state == TX_DATA) | (i2c_state == TX_DATA_ACK);
@@ -266,15 +287,18 @@ module peripheral_dbg_pu_msp430_i2c (
 
   wire [7:0] shift_tx_val;
 
-  wire [8:0] shift_buf_nxt = shift_buf_rx_init ? 9'h001 :  // RX Init 
-  shift_buf_tx_init ? {shift_tx_val, 1'b1} :  // TX Init 
+  wire [8:0] shift_buf_nxt = shift_buf_rx_init ? 9'h001 :  // RX Init
+  shift_buf_tx_init ? {shift_tx_val, 1'b1} :  // TX Init
   shift_buf_rx_en ? {shift_buf[7:0], sda_in} :  // RX Shift
   shift_buf_tx_en ? {shift_buf[7:0], 1'b0} :  // TX Shift
   shift_buf[8:0];  // Hold
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) shift_buf <= 9'h001;
-    else shift_buf <= shift_buf_nxt;
+    if (dbg_rst) begin
+      shift_buf <= 9'h001;
+    end else begin
+      shift_buf <= shift_buf_nxt;
+    end
   end
 
   // Detect when the received I2C device address is not valid
@@ -288,18 +312,21 @@ module peripheral_dbg_pu_msp430_i2c (
   wire shift_rx_data_done = shift_rx_done & (i2c_state == RX_DATA);
   wire shift_tx_data_done = shift_tx_done;
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 5) I2C TRANSMIT BUFFER
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) dbg_i2c_sda_out <= 1'b1;
-    else if (scl_fe) dbg_i2c_sda_out <= ~((i2c_state_nxt == RX_ADDR_ACK) || (i2c_state_nxt == RX_DATA_ACK) || (shift_buf_tx_en & ~shift_buf[8]));
+    if (dbg_rst) begin
+      dbg_i2c_sda_out <= 1'b1;
+    end else if (scl_fe) begin
+      dbg_i2c_sda_out <= ~((i2c_state_nxt == RX_ADDR_ACK) || (i2c_state_nxt == RX_DATA_ACK) || (shift_buf_tx_en & ~shift_buf[8]));
+    end
   end
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 6) DEBUG INTERFACE STATE MACHINE
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   // State register/wires
   reg [2:0] dbg_state;
@@ -318,25 +345,36 @@ module peripheral_dbg_pu_msp430_i2c (
   // State transition
   always @(dbg_state or shift_rx_data_done or shift_tx_data_done or shift_buf or dbg_bw or mem_burst_wr or mem_burst_rd or mem_burst or mem_burst_end or mem_bw) begin
     case (dbg_state)
-      RX_CMD: dbg_state_nxt = mem_burst_wr ? RX_BYTE_LO : mem_burst_rd ? TX_BYTE_LO : ~shift_rx_data_done ? RX_CMD : shift_buf[7] ? RX_BYTE_LO : TX_BYTE_LO;
-
-      RX_BYTE_LO: dbg_state_nxt = (mem_burst & mem_burst_end) ? RX_CMD : ~shift_rx_data_done ? RX_BYTE_LO : (mem_burst & ~mem_burst_end) ? (mem_bw ? RX_BYTE_LO : RX_BYTE_HI) : dbg_bw ? RX_CMD : RX_BYTE_HI;
-
-      RX_BYTE_HI: dbg_state_nxt = ~shift_rx_data_done ? RX_BYTE_HI : (mem_burst & ~mem_burst_end) ? RX_BYTE_LO : RX_CMD;
-
-      TX_BYTE_LO: dbg_state_nxt = ~shift_tx_data_done ? TX_BYTE_LO : (mem_burst & mem_bw) ? TX_BYTE_LO : (mem_burst & ~mem_bw) ? TX_BYTE_HI : ~dbg_bw ? TX_BYTE_HI : RX_CMD;
-
-      TX_BYTE_HI: dbg_state_nxt = ~shift_tx_data_done ? TX_BYTE_HI : mem_burst ? TX_BYTE_LO : RX_CMD;
+      RX_CMD: begin
+        dbg_state_nxt = mem_burst_wr ? RX_BYTE_LO : mem_burst_rd ? TX_BYTE_LO : ~shift_rx_data_done ? RX_CMD : shift_buf[7] ? RX_BYTE_LO : TX_BYTE_LO;
+      end
+      RX_BYTE_LO: begin
+        dbg_state_nxt = (mem_burst & mem_burst_end) ? RX_CMD : ~shift_rx_data_done ? RX_BYTE_LO : (mem_burst & ~mem_burst_end) ? (mem_bw ? RX_BYTE_LO : RX_BYTE_HI) : dbg_bw ? RX_CMD : RX_BYTE_HI;
+      end
+      RX_BYTE_HI: begin
+        dbg_state_nxt = ~shift_rx_data_done ? RX_BYTE_HI : (mem_burst & ~mem_burst_end) ? RX_BYTE_LO : RX_CMD;
+      end
+      TX_BYTE_LO: begin
+        dbg_state_nxt = ~shift_tx_data_done ? TX_BYTE_LO : (mem_burst & mem_bw) ? TX_BYTE_LO : (mem_burst & ~mem_bw) ? TX_BYTE_HI : ~dbg_bw ? TX_BYTE_HI : RX_CMD;
+      end
+      TX_BYTE_HI: begin
+        dbg_state_nxt = ~shift_tx_data_done ? TX_BYTE_HI : mem_burst ? TX_BYTE_LO : RX_CMD;
+      end
       // pragma coverage off
-      default:    dbg_state_nxt = RX_CMD;
+      default: begin
+        dbg_state_nxt = RX_CMD;
+      end
       // pragma coverage on
     endcase
   end
 
   // State machine
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) dbg_state <= RX_CMD;
-    else dbg_state <= dbg_state_nxt;
+    if (dbg_rst) begin
+      dbg_state <= RX_CMD;
+    end else begin
+      dbg_state <= dbg_state_nxt;
+    end
   end
 
   // Utility signals
@@ -344,9 +382,9 @@ module peripheral_dbg_pu_msp430_i2c (
   wire rx_lo_valid = (dbg_state == RX_BYTE_LO) & shift_rx_data_done;
   wire rx_hi_valid = (dbg_state == RX_BYTE_HI) & shift_rx_data_done;
 
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
   // 7) REGISTER READ/WRITE ACCESS
-  // =============================================================================
+  //////////////////////////////////////////////////////////////////////////////
 
   parameter MEM_DATA = 6'h06;
 
@@ -368,35 +406,49 @@ module peripheral_dbg_pu_msp430_i2c (
   reg [7:0] dbg_din_lo;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) dbg_din_lo <= 8'h00;
-    else if (rx_lo_valid) dbg_din_lo <= shift_buf[7:0];
+    if (dbg_rst) begin
+      dbg_din_lo <= 8'h00;
+    end else if (rx_lo_valid) begin
+      dbg_din_lo <= shift_buf[7:0];
+    end
   end
 
   reg [7:0] dbg_din_hi;
 
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) dbg_din_hi <= 8'h00;
-    else if (rx_lo_valid) dbg_din_hi <= 8'h00;
-    else if (rx_hi_valid) dbg_din_hi <= shift_buf[7:0];
+    if (dbg_rst) begin
+      dbg_din_hi <= 8'h00;
+    end else if (rx_lo_valid) begin
+      dbg_din_hi <= 8'h00;
+    end else if (rx_hi_valid) begin
+      dbg_din_hi <= shift_buf[7:0];
+    end
   end
 
   assign dbg_din = {dbg_din_hi, dbg_din_lo};
 
   // Debug register data write command
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) dbg_wr <= 1'b0;
-    else dbg_wr <= (mem_burst & mem_bw) ? rx_lo_valid : (mem_burst & ~mem_bw) ? rx_hi_valid : dbg_bw ? rx_lo_valid : rx_hi_valid;
+    if (dbg_rst) begin
+      dbg_wr <= 1'b0;
+    end else begin
+      dbg_wr <= (mem_burst & mem_bw) ? rx_lo_valid : (mem_burst & ~mem_bw) ? rx_hi_valid : dbg_bw ? rx_lo_valid : rx_hi_valid;
+    end
   end
 
   // Debug register data read command
   always @(posedge dbg_clk or posedge dbg_rst) begin
-    if (dbg_rst) dbg_rd <= 1'b0;
-    else dbg_rd <= (mem_burst & mem_bw) ? (shift_tx_data_done & (dbg_state == TX_BYTE_LO)) : (mem_burst & ~mem_bw) ? (shift_tx_data_done & (dbg_state == TX_BYTE_HI)) : cmd_valid ? ~shift_buf[7] : 1'b0;
+    if (dbg_rst) begin
+      dbg_rd <= 1'b0;
+    end else begin
+      dbg_rd <= (mem_burst & mem_bw) ? (shift_tx_data_done & (dbg_state == TX_BYTE_LO)) : (mem_burst & ~mem_bw) ? (shift_tx_data_done & (dbg_state == TX_BYTE_HI)) : cmd_valid ? ~shift_buf[7] : 1'b0;
+    end
   end
 
-  // Debug register data read value 
+  // Debug register data read value
   assign shift_tx_val = (dbg_state == TX_BYTE_HI) ? dbg_dout[15:8] : dbg_dout[7:0];
 endmodule
+
 `ifdef OMSP_NO_INCLUDE
 `else
 `include "peripheral_dbg_pu_msp430_undefines.sv"
