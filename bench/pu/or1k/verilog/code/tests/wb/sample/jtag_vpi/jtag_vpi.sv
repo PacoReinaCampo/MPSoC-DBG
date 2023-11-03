@@ -107,32 +107,42 @@ module jtag_vpi #(
         case (cmd)
 
           `CMD_RESET: begin
-            if (DEBUG_INFO) $display("%t ----> CMD_RESET %h\n", $time, length);
+            if (DEBUG_INFO) begin
+              $display("%t ----> CMD_RESET %h\n", $time, length);
+            end
             reset_tap;
             goto_run_test_idle;
           end
 
           `CMD_TMS_SEQ: begin
-            if (DEBUG_INFO) $display("%t ----> CMD_TMS_SEQ\n", $time);
+            if (DEBUG_INFO) begin
+              $display("%t ----> CMD_TMS_SEQ\n", $time);
+            end
             do_tms_seq;
           end
 
           `CMD_SCAN_CHAIN: begin
-            if (DEBUG_INFO) $display("%t ----> CMD_SCAN_CHAIN\n", $time);
+            if (DEBUG_INFO) begin
+              $display("%t ----> CMD_SCAN_CHAIN\n", $time);
+            end
             flip_tms = 0;
             do_scan_chain;
             $send_result_to_server(length, buffer_in);
           end
 
           `CMD_SCAN_CHAIN_FLIP_TMS: begin
-            if (DEBUG_INFO) $display("%t ----> CMD_SCAN_CHAIN\n", $time);
+            if (DEBUG_INFO) begin
+              $display("%t ----> CMD_SCAN_CHAIN\n", $time);
+            end
             flip_tms = 1;
             do_scan_chain;
             $send_result_to_server(length, buffer_in);
           end
 
           `CMD_STOP_SIMU: begin
-            if (DEBUG_INFO) $display("%t ----> End of simulation\n", $time);
+            if (DEBUG_INFO) begin
+              $display("%t ----> End of simulation\n", $time);
+            end
             $finish();
           end
 
@@ -163,7 +173,9 @@ module jtag_vpi #(
   // TAP reset
   task reset_tap;
     begin
-      if (DEBUG_INFO) $display("(%0t) Task reset_tap", $time);
+      if (DEBUG_INFO) begin
+        $display("(%0t) Task reset_tap", $time);
+      end
       tms <= #1 1'b1;
       gen_clk(5);
     end
@@ -172,7 +184,9 @@ module jtag_vpi #(
   // Goes to RunTestIdle state
   task goto_run_test_idle;
     begin
-      if (DEBUG_INFO) $display("(%0t) Task goto_run_test_idle", $time);
+      if (DEBUG_INFO) begin
+        $display("(%0t) Task goto_run_test_idle", $time);
+      end
       tms <= #1 1'b0;
       gen_clk(1);
     end
@@ -186,7 +200,9 @@ module jtag_vpi #(
     integer        nb_bits_in_this_byte;
 
     begin
-      if (DEBUG_INFO) $display("(%0t) Task do_tms_seq", $time);
+      if (DEBUG_INFO) begin
+        $display("(%0t) Task do_tms_seq", $time);
+      end
 
       // Number of bits to send in the last byte
       nb_bits_rem = nb_bits % 8;
@@ -218,7 +234,9 @@ module jtag_vpi #(
     integer index;
 
     begin
-      if (DEBUG_INFO) $display("(%0t) Task do_scan_chain", $time);
+      if (DEBUG_INFO) begin
+        $display("(%0t) Task do_scan_chain", $time);
+      end
 
       // Number of bits to send in the last byte
       nb_bits_rem = nb_bits % 8;

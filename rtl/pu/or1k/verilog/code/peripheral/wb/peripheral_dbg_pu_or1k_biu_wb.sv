@@ -129,17 +129,29 @@ module peripheral_dbg_pu_or1k_biu_wb (
   always @(word_size_i or addr_i) begin
     case (word_size_i)
       3'h1: begin
-        if (addr_i[1:0] == 2'b00) be_dec <= 4'b0001;
-        else if (addr_i[1:0] == 2'b01) be_dec <= 4'b0010;
-        else if (addr_i[1:0] == 2'b10) be_dec <= 4'b0100;
-        else be_dec <= 4'b1000;
+        if (addr_i[1:0] == 2'b00) begin
+          be_dec <= 4'b0001;
+        end else if (addr_i[1:0] == 2'b01) begin
+          be_dec <= 4'b0010;
+        end else if (addr_i[1:0] == 2'b10) begin
+          be_dec <= 4'b0100;
+        end else begin
+          be_dec <= 4'b1000;
+        end
       end
       3'h2: begin
-        if (addr_i[1]) be_dec <= 4'b1100;
-        else be_dec <= 4'b0011;
+        if (addr_i[1]) begin
+          be_dec <= 4'b1100;
+        end else begin
+          be_dec <= 4'b0011;
+        end
       end
-      3'h4:    be_dec <= 4'b1111;
-      default: be_dec <= 4'b1111;  // default to 32-bit access
+      3'h4: begin
+        be_dec <= 4'b1111;
+      end
+      default: begin
+        be_dec <= 4'b1111;  // default to 32-bit access
+      end
     endcase
   end
 `else
@@ -148,17 +160,29 @@ module peripheral_dbg_pu_or1k_biu_wb (
   always @(word_size_i or addr_i) begin
     case (word_size_i)
       3'h1: begin
-        if (addr_i[1:0] == 2'b00) be_dec <= 4'b1000;
-        else if (addr_i[1:0] == 2'b01) be_dec <= 4'b0100;
-        else if (addr_i[1:0] == 2'b10) be_dec <= 4'b0010;
-        else be_dec <= 4'b0001;
+        if (addr_i[1:0] == 2'b00) begin
+          be_dec <= 4'b1000;
+        end else if (addr_i[1:0] == 2'b01) begin
+          be_dec <= 4'b0100;
+        end else if (addr_i[1:0] == 2'b10) begin
+          be_dec <= 4'b0010;
+        end else begin
+          be_dec <= 4'b0001;
+        end
       end
       3'h2: begin
-        if (addr_i[1] == 1'b1) be_dec <= 4'b0011;
-        else be_dec <= 4'b1100;
+        if (addr_i[1] == 1'b1) begin
+          be_dec <= 4'b0011;
+        end else begin
+          be_dec <= 4'b1100;
+        end
       end
-      3'h4:    be_dec <= 4'b1111;
-      default: be_dec <= 4'b1111;  // default to 32-bit access
+      3'h4: begin
+        be_dec <= 4'b1111;
+      end
+      default: begin
+        be_dec <= 4'b1111;  // default to 32-bit access
+      end
     endcase
   end
 `endif
@@ -190,7 +214,9 @@ module peripheral_dbg_pu_or1k_biu_wb (
     end else if (strobe_i && rdy_o) begin
       sel_reg  <= be_dec;
       addr_reg <= addr_i;
-      if (!rd_wrn_i) data_in_reg <= swapped_data_i;
+      if (!rd_wrn_i) begin
+        data_in_reg <= swapped_data_i;
+      end
       wr_reg <= ~rd_wrn_i;
     end
   end
@@ -198,8 +224,11 @@ module peripheral_dbg_pu_or1k_biu_wb (
   // Create toggle-active strobe signal for clock sync.  This will start a transaction
   // on the WB once the toggle propagates to the FSM in the WB domain.
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) str_sync <= 1'b0;
-    else if (strobe_i && rdy_o) str_sync <= ~str_sync;
+    if (rst_i) begin
+      str_sync <= 1'b0;
+    end else if (strobe_i && rdy_o) begin
+      str_sync <= ~str_sync;
+    end
   end
 
   // Create rdy_o output.  Set on reset, clear on strobe (if set), set on input toggle
@@ -214,8 +243,11 @@ module peripheral_dbg_pu_or1k_biu_wb (
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  // used to detect toggles
 
-      if (strobe_i && rdy_o) rdy_o <= 1'b0;
-      else if (rdy_sync_tff2 != rdy_sync_tff2q) rdy_o <= 1'b1;
+      if (strobe_i && rdy_o) begin
+        rdy_o <= 1'b0;
+      end else if (rdy_sync_tff2 != rdy_sync_tff2q) begin
+        rdy_o <= 1'b1;
+      end
     end
   end
 
@@ -251,8 +283,11 @@ module peripheral_dbg_pu_or1k_biu_wb (
 
   // Error indicator register
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) err_reg <= 1'b0;
-    else if (err_en) err_reg <= wb_err_i;
+    if (rst_i) begin
+      err_reg <= 1'b0;
+    end else if (err_en) begin
+      err_reg <= wb_err_i;
+    end
   end
 
   // Byte- or word-swap the WB->dbg data, as necessary (combinatorial)
@@ -273,14 +308,20 @@ module peripheral_dbg_pu_or1k_biu_wb (
 
   // WB->dbg data register
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) data_out_reg <= 32'h0;
-    else if (data_o_en) data_out_reg <= swapped_data_out;
+    if (rst_i) begin
+      data_out_reg <= 32'h0;
+    end else if (data_o_en) begin
+      data_out_reg <= swapped_data_out;
+    end
   end
 
   // Create a toggle-active ready signal to send to the TCK domain
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) rdy_sync <= 1'b0;
-    else if (rdy_sync_en) rdy_sync <= ~rdy_sync;
+    if (rst_i) begin
+      rdy_sync <= 1'b0;
+    end else if (rdy_sync_en) begin
+      rdy_sync <= ~rdy_sync;
+    end
   end
 
   // Small state machine to create WB accesses
@@ -290,20 +331,29 @@ module peripheral_dbg_pu_or1k_biu_wb (
 
   // Sequential bit
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) wb_fsm_state <= `STATE_IDLE;
-    else wb_fsm_state <= next_fsm_state;
+    if (rst_i) begin
+      wb_fsm_state <= `STATE_IDLE;
+    end else begin
+      wb_fsm_state <= next_fsm_state;
+    end
   end
 
   // Determination of next state (combinatorial)
   always @(wb_fsm_state or start_toggle or wb_ack_i or wb_err_i) begin
     case (wb_fsm_state)
       `STATE_IDLE: begin
-        if (start_toggle && !(wb_ack_i || wb_err_i)) next_fsm_state <= `STATE_TRANSFER;  // Don't go to next state for 1-cycle transfer
-        else next_fsm_state <= `STATE_IDLE;
+        if (start_toggle && !(wb_ack_i || wb_err_i)) begin
+          next_fsm_state <= `STATE_TRANSFER;  // Don't go to next state for 1-cycle transfer
+        end else begin
+          next_fsm_state <= `STATE_IDLE;
+        end
       end
       `STATE_TRANSFER: begin
-        if (wb_ack_i || wb_err_i) next_fsm_state <= `STATE_IDLE;
-        else next_fsm_state <= `STATE_TRANSFER;
+        if (wb_ack_i || wb_err_i) begin
+          next_fsm_state <= `STATE_IDLE;
+        end else begin
+          next_fsm_state <= `STATE_TRANSFER;
+        end
       end
     endcase
   end

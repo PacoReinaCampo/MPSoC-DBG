@@ -77,27 +77,39 @@ module peripheral_dbg_pu_or1k_syncreg (
 
   // register A (latches input any time it changes)
   always @(posedge CLKA or posedge RST) begin
-    if (RST) regA <= 4'b0;
-    else if (A_enable) regA <= DATA_IN;
+    if (RST) begin
+      regA <= 4'b0;
+    end else if (A_enable) begin
+      regA <= DATA_IN;
+    end
   end
 
   // register B (latches data from regA when enabled by the strobe SFF)
   always @(posedge CLKB or posedge RST) begin
-    if (RST) regB <= 4'b0;
-    else if (strobe_sff_out) regB <= regA;
+    if (RST) begin
+      regB <= 4'b0;
+    end else if (strobe_sff_out) begin
+      regB <= regA;
+    end
   end
 
   // 'strobe' toggle FF
   always @(posedge CLKA or posedge RST) begin
-    if (RST) strobe_toggle <= 1'b0;
-    else if (A_enable) strobe_toggle <= ~strobe_toggle;
+    if (RST) begin
+      strobe_toggle <= 1'b0;
+    end else if (A_enable) begin
+      strobe_toggle <= ~strobe_toggle;
+    end
   end
 
   // 'ack' toggle FF
   // This is set to '1' at reset, to initialize the unit.
   always @(posedge CLKB or posedge RST) begin
-    if (RST) ack_toggle <= 1'b1;
-    else if (strobe_sff_out) ack_toggle <= ~ack_toggle;
+    if (RST) begin
+      ack_toggle <= 1'b1;
+    end else if (strobe_sff_out) begin
+      ack_toggle <= ~ack_toggle;
+    end
   end
 
   // 'strobe' sync element

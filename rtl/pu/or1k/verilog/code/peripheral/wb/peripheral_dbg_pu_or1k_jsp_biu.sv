@@ -181,20 +181,29 @@ module peripheral_dbg_pu_or1k_jsp_biu (
 
   // Write enable (WEN) toggle FF
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) wen_tff <= 1'b0;
-    else if (wr_strobe_i) wen_tff <= ~wen_tff;
+    if (rst_i) begin
+      wen_tff <= 1'b0;
+    end else if (wr_strobe_i) begin
+      wen_tff <= ~wen_tff;
+    end
   end
 
   // Read enable (REN) toggle FF
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) ren_tff <= 1'b0;
-    else if (rd_strobe_i) ren_tff <= ~ren_tff;
+    if (rst_i) begin
+      ren_tff <= 1'b0;
+    end else if (rd_strobe_i) begin
+      ren_tff <= ~ren_tff;
+    end
   end
 
   // Write data register
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) data_in <= 8'h0;
-    else if (wr_strobe_i) data_in <= data_i;
+    if (rst_i) begin
+      data_in <= 8'h0;
+    end else if (wr_strobe_i) begin
+      data_in <= data_i;
+    end
   end
 
   // Wishbone clock domain
@@ -208,8 +217,11 @@ module peripheral_dbg_pu_or1k_jsp_biu (
 
   // rdata register
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) rdata <= 8'h0;
-    else if (rdata_en) rdata <= rd_fifo_data_out;
+    if (rst_i) begin
+      rdata <= 8'h0;
+    end else if (rdata_en) begin
+      rdata <= rd_fifo_data_out;
+    end
   end
 
   // WEN SFF
@@ -276,30 +288,45 @@ module peripheral_dbg_pu_or1k_jsp_biu (
 
   // Sequential bit
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) rd_fsm_state <= `STATE_RD_IDLE;
-    else rd_fsm_state <= next_rd_fsm_state;
+    if (rst_i) begin
+      rd_fsm_state <= `STATE_RD_IDLE;
+    end else begin
+      rd_fsm_state <= next_rd_fsm_state;
+    end
   end
 
   // Determination of next state (combinatorial)
   always @(rd_fsm_state or wb_wr or pop or rcz) begin
     case (rd_fsm_state)
       `STATE_RD_IDLE: begin
-        if (wb_wr) next_rd_fsm_state <= `STATE_RD_PUSH;
-        else if (pop) next_rd_fsm_state <= `STATE_RD_POP;
-        else next_rd_fsm_state <= `STATE_RD_IDLE;
+        if (wb_wr) begin
+          next_rd_fsm_state <= `STATE_RD_PUSH;
+        end else if (pop) begin
+          next_rd_fsm_state <= `STATE_RD_POP;
+        end else begin
+          next_rd_fsm_state <= `STATE_RD_IDLE;
+        end
       end
       `STATE_RD_PUSH: begin
-        if (rcz) next_rd_fsm_state <= `STATE_RD_LATCH;  // putting first item in fifo, move to rdata in state LATCH
-        else if (pop) next_rd_fsm_state <= `STATE_RD_POP;
-        else next_rd_fsm_state <= `STATE_RD_IDLE;
+        if (rcz) begin
+          next_rd_fsm_state <= `STATE_RD_LATCH;  // putting first item in fifo, move to rdata in state LATCH
+        end else if (pop) begin
+          next_rd_fsm_state <= `STATE_RD_POP;
+        end else begin
+          next_rd_fsm_state <= `STATE_RD_IDLE;
+        end
       end
       `STATE_RD_POP: begin
         next_rd_fsm_state <= `STATE_RD_LATCH;  // new data at FIFO head, move to rdata in state LATCH
       end
       `STATE_RD_LATCH: begin
-        if (wb_wr) next_rd_fsm_state <= `STATE_RD_PUSH;
-        else if (pop) next_rd_fsm_state <= `STATE_RD_POP;
-        else next_rd_fsm_state <= `STATE_RD_IDLE;
+        if (wb_wr) begin
+          next_rd_fsm_state <= `STATE_RD_PUSH;
+        end else if (pop) begin
+          next_rd_fsm_state <= `STATE_RD_POP;
+        end else begin
+          next_rd_fsm_state <= `STATE_RD_IDLE;
+        end
       end
       default: begin
         next_rd_fsm_state <= `STATE_RD_IDLE;
@@ -334,26 +361,38 @@ module peripheral_dbg_pu_or1k_jsp_biu (
 
   // Sequential bit
   always @(posedge wb_clk_i or posedge rst_i) begin
-    if (rst_i) wr_fsm_state <= `STATE_WR_IDLE;
-    else wr_fsm_state <= next_wr_fsm_state;
+    if (rst_i) begin
+      wr_fsm_state <= `STATE_WR_IDLE;
+    end else begin
+      wr_fsm_state <= next_wr_fsm_state;
+    end
   end
 
   // Determination of next state (combinatorial)
   always @(wr_fsm_state or wb_rd or wdata_avail) begin
     case (wr_fsm_state)
-
       `STATE_WR_IDLE: begin
-        if (wb_rd) next_wr_fsm_state <= `STATE_WR_POP;
-        else if (wdata_avail) next_wr_fsm_state <= `STATE_WR_PUSH;
-        else next_wr_fsm_state <= `STATE_WR_IDLE;
+        if (wb_rd) begin
+          next_wr_fsm_state <= `STATE_WR_POP;
+        end else if (wdata_avail) begin
+          next_wr_fsm_state <= `STATE_WR_PUSH;
+        end else begin
+          next_wr_fsm_state <= `STATE_WR_IDLE;
+        end
       end
       `STATE_WR_PUSH: begin
-        if (wb_rd) next_wr_fsm_state <= `STATE_WR_POP;
-        else next_wr_fsm_state <= `STATE_WR_IDLE;
+        if (wb_rd) begin
+          next_wr_fsm_state <= `STATE_WR_POP;
+        end else begin
+          next_wr_fsm_state <= `STATE_WR_IDLE;
+        end
       end
       `STATE_WR_POP: begin
-        if (wdata_avail) next_wr_fsm_state <= `STATE_WR_PUSH;
-        else next_wr_fsm_state <= `STATE_WR_IDLE;
+        if (wdata_avail) begin
+          next_wr_fsm_state <= `STATE_WR_PUSH;
+        end else begin
+          next_wr_fsm_state <= `STATE_WR_IDLE;
+        end
       end
       default: begin
         next_wr_fsm_state <= `STATE_WR_IDLE;
@@ -369,7 +408,8 @@ module peripheral_dbg_pu_or1k_jsp_biu (
     w_wb_ack  <= 1'b0;
 
     case (wr_fsm_state)
-      `STATE_WR_IDLE: ;
+      `STATE_WR_IDLE: begin
+      end
       `STATE_WR_PUSH: begin
         wda_rst   <= 1'b1;
         wpp       <= 1'b1;
@@ -411,29 +451,43 @@ module peripheral_dbg_pu_or1k_jsp_biu (
 
   // Create DLAB bit
   always @(posedge wb_clk_i) begin
-    if (wb_rst_i) reg_dlab_bit <= 1'b0;
-    else if (reg_dlab_bit_wren) reg_dlab_bit <= wb_dat_i[7];
+    if (wb_rst_i) begin
+      reg_dlab_bit <= 1'b0;
+    end else if (reg_dlab_bit_wren) begin
+      reg_dlab_bit <= wb_dat_i[7];
+    end
   end
 
   // Create IER.  We only use the two LS bits...
   always @(posedge wb_clk_i) begin
-    if (wb_rst_i) reg_ier <= 4'h0;
-    else if (reg_ier_wren) reg_ier <= wb_dat_i[19:16];
+    if (wb_rst_i) begin
+      reg_ier <= 4'h0;
+    end else if (reg_ier_wren) begin
+      reg_ier <= wb_dat_i[19:16];
+    end
   end
 
   // Create IIR (and THR INT arm bit)
   assign rd_fifo_becoming_empty = r_fifo_en & (~rpp) & (rd_bytes_avail == 4'h1);  // "rd fifo" is the WB write FIFO...
 
   always @(posedge wb_clk_i) begin
-    if (wb_rst_i) thr_int_arm <= 1'b0;
-    else if (wb_wr | rd_fifo_becoming_empty) thr_int_arm <= 1'b1;  // Set when WB write fifo becomes empty, or on a write to it
-    else if (reg_iir_rden & (~wr_fifo_not_empty)) thr_int_arm <= 1'b0;
+    if (wb_rst_i) begin
+      thr_int_arm <= 1'b0;
+    end else if (wb_wr | rd_fifo_becoming_empty) begin
+      thr_int_arm <= 1'b1;  // Set when WB write fifo becomes empty, or on a write to it
+    end else if (reg_iir_rden & (~wr_fifo_not_empty)) begin
+      thr_int_arm <= 1'b0;
+    end
   end
 
   always @(thr_int_arm or rd_fifo_not_full or wr_fifo_not_empty) begin
-    if (wr_fifo_not_empty) iir_gen <= 3'b100;
-    else if (thr_int_arm & rd_fifo_not_full) iir_gen <= 3'b010;
-    else iir_gen <= 3'b001;
+    if (wr_fifo_not_empty) begin
+      iir_gen <= 3'b100;
+    end else if (thr_int_arm & rd_fifo_not_full) begin
+      iir_gen <= 3'b010;
+    end else begin
+      iir_gen <= 3'b001;
+    end
   end
 
   assign reg_iir      = iir_gen;

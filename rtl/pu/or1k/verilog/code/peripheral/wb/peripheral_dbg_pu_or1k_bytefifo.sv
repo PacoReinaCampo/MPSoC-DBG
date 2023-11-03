@@ -79,59 +79,87 @@ module peripheral_dbg_pu_or1k_bytefifo (
 
   // Reg 0 - takes input from DATA_IN
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg0 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg0 <= DATA_IN;
+    if (RST) begin
+      reg0 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg0 <= DATA_IN;
+    end
   end
 
   // Reg 1 - takes input from reg0
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg1 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg1 <= reg0;
+    if (RST) begin
+      reg1 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg1 <= reg0;
+    end
   end
 
   // Reg 2 - takes input from reg1
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg2 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg2 <= reg1;
+    if (RST) begin
+      reg2 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg2 <= reg1;
+    end
   end
 
   // Reg 3 - takes input from reg2
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg3 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg3 <= reg2;
+    if (RST) begin
+      reg3 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg3 <= reg2;
+    end
   end
 
   // Reg 4 - takes input from reg3
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg4 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg4 <= reg3;
+    if (RST) begin
+      reg4 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg4 <= reg3;
+    end
   end
 
   // Reg 5 - takes input from reg4
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg5 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg5 <= reg4;
+    if (RST) begin
+      reg5 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg5 <= reg4;
+    end
   end
 
   // Reg 6 - takes input from reg5
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg6 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg6 <= reg5;
+    if (RST) begin
+      reg6 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg6 <= reg5;
+    end
   end
 
   // Reg 7 - takes input from reg6
   always @(posedge CLK or posedge RST) begin
-    if (RST) reg7 <= 8'h0;
-    else if (EN & PUSH_POPn & push_ok) reg7 <= reg6;
+    if (RST) begin
+      reg7 <= 8'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      reg7 <= reg6;
+    end
   end
 
   // Read counter
   // This is a 4-bit saturating up/down counter
   // The 'saturating' is done via push_ok and pop_ok
   always @(posedge CLK or posedge RST) begin
-    if (RST) counter <= 4'h0;
-    else if (EN & PUSH_POPn & push_ok) counter <= counter + 4'h1;
-    else if (EN & (~PUSH_POPn) & pop_ok) counter <= counter - 4'h1;
+    if (RST) begin
+      counter <= 4'h0;
+    end else if (EN & PUSH_POPn & push_ok) begin
+      counter <= counter + 4'h1;
+    end else if (EN & (~PUSH_POPn) & pop_ok) begin
+      counter <= counter - 4'h1;
+    end
   end
 
   // Output decoder

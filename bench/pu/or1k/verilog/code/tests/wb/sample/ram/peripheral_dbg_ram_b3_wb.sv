@@ -170,9 +170,13 @@ module peripheral_dbg_ram_b3_wb #(
   // Module body
   //
   always @(posedge wb_clk_i) begin
-    if (wb_rst_i) wb_b3_trans <= 0;
-    else if (wb_b3_trans_start) wb_b3_trans <= 1;
-    else if (wb_b3_trans_stop) wb_b3_trans <= 0;
+    if (wb_rst_i) begin
+      wb_b3_trans <= 0;
+    end else if (wb_b3_trans_start) begin
+      wb_b3_trans <= 1;
+    end else if (wb_b3_trans_stop) begin
+      wb_b3_trans <= 0;
+    end
   end
 
   always @(posedge wb_clk_i) begin
@@ -182,25 +186,30 @@ module peripheral_dbg_ram_b3_wb #(
 
   // Burst address generation logic
   always @(wb_ack_o or wb_b3_trans or wb_b3_trans_start or wb_bte_i_r or wb_cti_i_r or wb_adr_i or adr) begin
-    if (wb_b3_trans_start)
+    if (wb_b3_trans_start) begin
       // Kick off burst_adr_counter, this assumes 4-byte words when getting
       // address off incoming Wishbone bus address! 
       // So if DW is no longer 4 bytes, change this!
       burst_adr_counter = wb_adr_i[MEM_ADR_WIDTH-1:2];
-    else if ((wb_cti_i_r == 3'b010) & wb_ack_o & wb_b3_trans)  // Incrementing burst
+    end else if ((wb_cti_i_r == 3'b010) & wb_ack_o & wb_b3_trans) begin  // Incrementing burst
       case (wb_bte_i_r)
         2'b00: burst_adr_counter = adr + 1;  // Linear burst
         2'b01: burst_adr_counter[1:0] = adr[1:0] + 1;  // 4-beat wrap burst
         2'b10: burst_adr_counter[2:0] = adr[2:0] + 1;  // 8-beat wrap burst
         2'b11: burst_adr_counter[3:0] = adr[3:0] + 1;  // 16-beat wrap burst
       endcase
+    end
   end
 
   // Address registering logic
   always @(posedge wb_clk_i) begin
-    if (wb_rst_i) adr <= 0;
-    else if (using_burst_adr) adr <= burst_adr_counter;
-    else if (wb_cyc_i & wb_stb_i) adr <= wb_adr_i[MEM_ADR_WIDTH-1:2];
+    if (wb_rst_i) begin
+      adr <= 0;
+    end else if (using_burst_adr) begin
+      adr <= burst_adr_counter;
+    end else if (wb_cyc_i & wb_stb_i) begin
+      adr <= wb_adr_i[MEM_ADR_WIDTH-1:2];
+    end
   end
 
   assign wb_rty_o       = 0;
@@ -215,7 +224,9 @@ module peripheral_dbg_ram_b3_wb #(
 
   // Write logic
   always @(posedge wb_clk_i) begin
-    if (ram_we) mem[adr] <= wr_data;
+    if (ram_we) begin
+      mem[adr] <= wr_data;
+    end
   end
 
   // Ack Logic
@@ -223,17 +234,22 @@ module peripheral_dbg_ram_b3_wb #(
 
   // Handle wb_ack
   always @(posedge wb_clk_i) begin
-    if (wb_rst_i) wb_ack_o_r <= 1'b0;
-    else if (wb_cyc_i) begin  // We have bus
-      if (addr_err & wb_stb_i) wb_ack_o_r <= 1;
-      else if (wb_cti_i == 3'b000)  // Classic cycle acks
+    if (wb_rst_i) begin
+      wb_ack_o_r <= 1'b0;
+    end else if (wb_cyc_i) begin  // We have bus
+      if (addr_err & wb_stb_i) begin
+        wb_ack_o_r <= 1;
+      end else if (wb_cti_i == 3'b000) begin  // Classic cycle acks
         wb_ack_o_r <= wb_stb_i ^ wb_ack_o_r;
-      else if ((wb_cti_i == 3'b001) | (wb_cti_i == 3'b010))  // Increment/constant address bursts
+      end else if ((wb_cti_i == 3'b001) | (wb_cti_i == 3'b010)) begin  // Increment/constant address bursts
         wb_ack_o_r <= wb_stb_i;
-      else if (wb_cti_i == 3'b111)  // End of cycle
+      end else if (wb_cti_i == 3'b111) begin  // End of cycle
         wb_ack_o_r <= wb_stb_i & !wb_ack_o_r;
-    end // if (wb_cyc_i)
-    else wb_ack_o_r <= 0;
+      end
+    // if (wb_cyc_i)
+    end else begin
+      wb_ack_o_r <= 0;
+    end
   end
 
   // Error signal generation

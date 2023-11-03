@@ -76,26 +76,39 @@ module peripheral_dbg_pu_or1k_syncflop (
 
   // First DFF (always enabled)
   always @(posedge DEST_CLK or posedge RESET) begin
-    if (RESET) sync1 <= 1'b0;
-    else sync1 <= TOGGLE_IN;
+    if (RESET) begin
+      sync1 <= 1'b0;
+    end else begin
+      sync1 <= TOGGLE_IN;
+    end
   end
 
   // Second DFF (always enabled)
   always @(posedge DEST_CLK or posedge RESET) begin
-    if (RESET) sync2 <= 1'b0;
-    else sync2 <= sync1;
+    if (RESET) begin
+      sync2 <= 1'b0;
+    end else begin
+      sync2 <= sync1;
+    end
   end
 
   // Third DFF (always enabled, used to detect toggles)
   always @(posedge DEST_CLK or posedge RESET) begin
-    if (RESET) syncprev <= 1'b0;
-    else syncprev <= sync2;
+    if (RESET) begin
+      syncprev <= 1'b0;
+    end else begin
+      syncprev <= sync2;
+    end
   end
 
   // Set/Reset FF (holds detected toggles)
   always @(posedge DEST_CLK or posedge RESET) begin
-    if (RESET) srflop <= 1'b0;
-    else if (D_RST) srflop <= 1'b0;
-    else if (srinput) srflop <= 1'b1;
+    if (RESET) begin
+      srflop <= 1'b0;
+    end else if (D_RST) begin
+      srflop <= 1'b0;
+    end else if (srinput) begin
+      srflop <= 1'b1;
+    end
   end
 endmodule

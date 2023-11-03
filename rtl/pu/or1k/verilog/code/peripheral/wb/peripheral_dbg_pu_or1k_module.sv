@@ -177,8 +177,11 @@ module peripheral_dbg_pu_or1k_module #(
   assign reg_select_data = data_register_i[47:(47-(`DBG_OR1K_REGSELECT_SIZE-1))];
 
   generate
-    if (ADBG_USE_HISPEED != "NONE") assign data_to_biu = {tdi_i, data_register_i[52:22]};
-    else assign data_to_biu = data_register_i[52:21];
+    if (ADBG_USE_HISPEED != "NONE") begin
+      assign data_to_biu = {tdi_i, data_register_i[52:22]};
+    end else begin
+      assign data_to_biu = data_register_i[52:21];
+    end
   endgenerate
 
   // Operation decoder
@@ -199,16 +202,23 @@ module peripheral_dbg_pu_or1k_module #(
   // Module-internal register select register (no, that's not redundant.)
   // Also internal register output MUX
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) internal_register_select = 1'h0;
-    else if (regsel_ld_en) internal_register_select = reg_select_data;
+    if (rst_i) begin
+      internal_register_select = 1'h0;
+    end else if (regsel_ld_en) begin
+      internal_register_select = reg_select_data;
+    end
   end
 
   // This is completely unnecessary here, since the module has only 1 internal
   // register.  However, to make the module expandable, it is included anyway.
   always @(internal_register_select or internal_reg_status) begin
     case (internal_register_select)
-      `DBG_OR1K_INTREG_STATUS: data_from_internal_reg = {30'h0, internal_reg_status};
-      default:                 data_from_internal_reg = {30'h0, internal_reg_status};
+      `DBG_OR1K_INTREG_STATUS: begin
+        data_from_internal_reg = {30'h0, internal_reg_status};
+      end
+      default: begin
+        data_from_internal_reg = {30'h0, internal_reg_status};
+      end
     endcase
   end
 
@@ -238,23 +248,31 @@ module peripheral_dbg_pu_or1k_module #(
   // Technically, since this data (sometimes) comes from the input shift reg, we should latch on
   // negedge, per the JTAG spec. But that makes things difficult when incrementing.
   always @(posedge tck_i or posedge rst_i) begin  // JTAG spec specifies latch on negative edge in UPDATE_DR state
-
-    if (rst_i) address_counter <= 32'h0;
-    else if (addr_ct_en) address_counter <= data_to_addr_counter;
+    if (rst_i) begin
+      address_counter <= 32'h0;
+    end else if (addr_ct_en) begin
+      address_counter <= data_to_addr_counter;
+    end
   end
 
   // Opcode latch
   always @(posedge tck_i or posedge rst_i) begin  // JTAG spec specifies latch on negative edge in UPDATE_DR state
-
-    if (rst_i) operation <= 4'h0;
-    else if (op_reg_en) operation <= operation_in;
+    if (rst_i) begin
+      operation <= 4'h0;
+    end else if (op_reg_en) begin
+      operation <= operation_in;
+    end
   end
 
   // Bit counter
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) bit_count <= 6'h0;
-    else if (bit_ct_rst) bit_count <= 6'h0;
-    else if (bit_ct_en) bit_count <= bit_count + 6'h1;
+    if (rst_i) begin
+      bit_count <= 6'h0;
+    end else if (bit_ct_rst) begin
+      bit_count <= 6'h0;
+    end else if (bit_ct_en) begin
+      bit_count <= bit_count + 6'h1;
+    end
   end
 
   assign bit_count_max          = (bit_count == word_size_bits) ? 1'b1 : 1'b0;
@@ -267,8 +285,11 @@ module peripheral_dbg_pu_or1k_module #(
   // Technically, since this data (sometimes) comes from the input shift reg, we should latch on
   // negedge, per the JTAG spec. But that makes things difficult when incrementing.
   always @(posedge tck_i or posedge rst_i) begin  // JTAG spec specifies latch on negative edge in UPDATE_DR state
-    if (rst_i) word_count <= 16'h0;
-    else if (word_ct_en) word_count <= data_to_word_counter;
+    if (rst_i) begin
+      word_count <= 16'h0;
+    end else if (word_ct_en) begin
+      word_count <= data_to_word_counter;
+    end
   end
 
   assign word_count_zero = (word_count == 16'h0);
@@ -277,16 +298,25 @@ module peripheral_dbg_pu_or1k_module #(
   assign out_reg_data    = (out_reg_data_sel) ? data_from_internal_reg : data_from_biu;
 
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) data_out_shift_reg <= 32'h0;
-    else if (out_reg_ld_en) data_out_shift_reg <= out_reg_data;
-    else if (out_reg_shift_en) data_out_shift_reg <= {1'b0, data_out_shift_reg[31:1]};
+    if (rst_i) begin
+      data_out_shift_reg <= 32'h0;
+    end else if (out_reg_ld_en) begin
+      data_out_shift_reg <= out_reg_data;
+    end else if (out_reg_shift_en) begin
+      data_out_shift_reg <= {1'b0, data_out_shift_reg[31:1]};
+    end
   end
 
   always @(tdo_output_sel or data_out_shift_reg[0] or biu_ready or crc_match or crc_serial_out) begin
-    if (tdo_output_sel == 2'h0) module_tdo_o <= biu_ready;
-    else if (tdo_output_sel == 2'h1) module_tdo_o <= data_out_shift_reg[0];
-    else if (tdo_output_sel == 2'h2) module_tdo_o <= crc_match;
-    else module_tdo_o <= crc_serial_out;
+    if (tdo_output_sel == 2'h0) begin
+      module_tdo_o <= biu_ready;
+    end else if (tdo_output_sel == 2'h1) begin
+      module_tdo_o <= data_out_shift_reg[0];
+    end else if (tdo_output_sel == 2'h2) begin
+      module_tdo_o <= crc_match;
+    end else begin
+      module_tdo_o <= crc_serial_out;
+    end
   end
 
   // Bus Interface Unit (to OR1K SPR bus)
@@ -340,8 +370,11 @@ module peripheral_dbg_pu_or1k_module #(
 
   // sequential part of the FSM
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) module_state <= `STATE_idle;
-    else module_state <= module_next_state;
+    if (rst_i) begin
+      module_state <= `STATE_idle;
+    end else begin
+      module_state <= module_next_state;
+    end
   end
 
   // Determination of next state; purely combinatorial
@@ -350,75 +383,123 @@ module peripheral_dbg_pu_or1k_module #(
             or module_cmd or intreg_write or decremented_word_count or burst_instruction) begin
     case (module_state)
       `STATE_idle: begin
-        if (module_cmd && module_select_i && update_dr_i && burst_instruction && operation_in[2]) module_next_state <= `STATE_Rbegin;
-        else if (module_cmd && module_select_i && update_dr_i && burst_instruction) module_next_state <= `STATE_Wready;
-        else module_next_state <= `STATE_idle;
+        if (module_cmd && module_select_i && update_dr_i && burst_instruction && operation_in[2]) begin
+          module_next_state <= `STATE_Rbegin;
+        end else if (module_cmd && module_select_i && update_dr_i && burst_instruction) begin
+          module_next_state <= `STATE_Wready;
+        end else begin
+          module_next_state <= `STATE_idle;
+        end
       end
       `STATE_Rbegin: begin
-        if (word_count_zero) module_next_state <= `STATE_idle;  // set up a burst of size 0, illegal.
-        else module_next_state <= `STATE_Rready;
+        if (word_count_zero) begin
+          module_next_state <= `STATE_idle;  // set up a burst of size 0, illegal.
+        end else begin
+          module_next_state <= `STATE_Rready;
+        end
       end
       `STATE_Rready: begin
-        if (module_select_i && capture_dr_i) module_next_state <= `STATE_Rstatus;
-        else module_next_state <= `STATE_Rready;
+        if (module_select_i && capture_dr_i) begin
+          module_next_state <= `STATE_Rstatus;
+        end else begin
+          module_next_state <= `STATE_Rready;
+        end
       end
       `STATE_Rstatus: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;
-        else if (biu_ready) module_next_state <= `STATE_Rburst;
-        else module_next_state <= `STATE_Rstatus;
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;
+        end else if (biu_ready) begin
+          module_next_state <= `STATE_Rburst;
+        end else begin
+          module_next_state <= `STATE_Rstatus;
+        end
       end
       `STATE_Rburst: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;
-        else if (bit_count_max && word_count_zero) module_next_state <= `STATE_Rcrc;
-        else if (bit_count_max && ADBG_USE_HISPEED == "NONE") module_next_state <= `STATE_Rstatus;
-        else module_next_state <= `STATE_Rburst;
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;
+        end else if (bit_count_max && word_count_zero) begin
+          module_next_state <= `STATE_Rcrc;
+        end else if (bit_count_max && ADBG_USE_HISPEED == "NONE") begin
+          module_next_state <= `STATE_Rstatus;
+        end else begin
+          module_next_state <= `STATE_Rburst;
+        end
       end
       `STATE_Rcrc: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;
-        // This doubles as the 'recovery' state, so stay here until update_dr_i.
-        else
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;
+          // This doubles as the 'recovery' state, so stay here until update_dr_i.
+        end else begin
           module_next_state <= `STATE_Rcrc;
+        end
       end
       `STATE_Wready: begin
-        if (word_count_zero) module_next_state <= `STATE_idle;
-        else if (module_select_i && capture_dr_i) module_next_state <= `STATE_Wwait;
-        else module_next_state <= `STATE_Wready;
+        if (word_count_zero) begin
+          module_next_state <= `STATE_idle;
+        end else if (module_select_i && capture_dr_i) begin
+          module_next_state <= `STATE_Wwait;
+        end else begin
+          module_next_state <= `STATE_Wready;
+        end
       end
       `STATE_Wwait: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;  // client terminated early
-        else if (module_select_i && data_register_i[52]) module_next_state <= `STATE_Wburst;  // Got a start bit
-        else module_next_state <= `STATE_Wwait;
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;  // client terminated early
+        end else if (module_select_i && data_register_i[52]) begin
+          module_next_state <= `STATE_Wburst;  // Got a start bit
+        end else begin
+          module_next_state <= `STATE_Wwait;
+        end
       end
       `STATE_Wburst: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;  // client terminated early    
-        else if (bit_count_max) begin
-          if (ADBG_USE_HISPEED != "NONE")
-            if (word_count_zero) module_next_state <= `STATE_Wcrc;
-            else module_next_state <= `STATE_Wburst;
-          else module_next_state <= `STATE_Wstatus;
-        end else module_next_state <= `STATE_Wburst;
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;  // client terminated early    
+        end else if (bit_count_max) begin
+          if (ADBG_USE_HISPEED != "NONE") begin
+            if (word_count_zero) begin
+              module_next_state <= `STATE_Wcrc;
+            end else begin
+              module_next_state <= `STATE_Wburst;
+            end
+          end else begin
+            module_next_state <= `STATE_Wstatus;
+          end
+        end else begin
+          module_next_state <= `STATE_Wburst;
+        end
       end
       `STATE_Wstatus: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;  // client terminated early    
-        else if (word_count_zero) module_next_state <= `STATE_Wcrc;
-        // can't wait until bus ready if multiple devices in chain...
-        // Would have to read postfix_bits, then send another start bit and push it through
-        // prefix_bits...potentially very inefficient.
-        else
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;  // client terminated early    
+        end else if (word_count_zero) begin
+          module_next_state <= `STATE_Wcrc;
+          // can't wait until bus ready if multiple devices in chain...
+          // Would have to read postfix_bits, then send another start bit and push it through
+          // prefix_bits...potentially very inefficient.
+        end else begin
           module_next_state <= `STATE_Wburst;
+        end
       end
       `STATE_Wcrc: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;  // client terminated early
-        else if (bit_count_32) module_next_state <= `STATE_Wmatch;
-        else module_next_state <= `STATE_Wcrc;
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;  // client terminated early
+        end else if (bit_count_32) begin
+          module_next_state <= `STATE_Wmatch;
+        end else begin
+          module_next_state <= `STATE_Wcrc;
+        end
       end
       `STATE_Wmatch: begin
-        if (update_dr_i) module_next_state <= `STATE_idle;
-        // This doubles as our recovery state, stay here until update_dr_i
-        else
+        if (update_dr_i) begin
+          module_next_state <= `STATE_idle;
+          // This doubles as our recovery state, stay here until update_dr_i
+        end else begin
           module_next_state <= `STATE_Wmatch;
+        end
       end
-      default: module_next_state <= `STATE_idle;  // shouldn't actually happen...
+      default: begin
+        module_next_state <= `STATE_idle;  // shouldn't actually happen...
+      end
     endcase
   end
 
@@ -452,14 +533,20 @@ module peripheral_dbg_pu_or1k_module #(
         addr_sel    <= 1'b0;
         word_ct_sel <= 1'b0;
         // Operations for internal registers - stay in idle state
-        if (module_select_i & shift_dr_i) out_reg_shift_en <= 1'b1;  // For module regs
+        if (module_select_i & shift_dr_i) begin
+          out_reg_shift_en <= 1'b1;  // For module regs
+        end
         if (module_select_i & capture_dr_i) begin
           out_reg_data_sel <= 1'b1;  // select internal register data
           out_reg_ld_en    <= 1'b1;  // For module regs
         end
         if (module_select_i & module_cmd & update_dr_i) begin
-          if (intreg_instruction) regsel_ld_en <= 1'b1;  // For module regs
-          if (intreg_write) intreg_ld_en <= 1'b1;  // For module regs
+          if (intreg_instruction) begin
+            regsel_ld_en <= 1'b1;  // For module regs
+          end
+          if (intreg_write) begin
+            intreg_ld_en <= 1'b1;  // For module regs
+          end
         end
         // Burst operations
         if (module_next_state != `STATE_idle) begin  // Do the same to receive read or write opcode
@@ -477,7 +564,9 @@ module peripheral_dbg_pu_or1k_module #(
           addr_ct_en <= 1'b1;
         end
       end
-      `STATE_Rready: ;  // Just a wait state
+      `STATE_Rready: begin
+        // Just a wait state
+      end
       `STATE_Rstatus: begin
         tdo_output_sel <= 2'h0;
         top_inhibit_o  <= 1'b1;  // in case of early termination
@@ -521,7 +610,9 @@ module peripheral_dbg_pu_or1k_module #(
         crc_shift_en   <= 1'b1;
         top_inhibit_o  <= 1'b1;
       end
-      `STATE_Wready: ;  // Just a wait state
+      `STATE_Wready: begin
+        // Just a wait state
+      end
       `STATE_Wwait: begin
         tdo_output_sel <= 2'h1;
         top_inhibit_o  <= 1'b1;  // in case of early termination
@@ -567,13 +658,16 @@ module peripheral_dbg_pu_or1k_module #(
       `STATE_Wcrc: begin
         bit_ct_en     <= 1'b1;
         top_inhibit_o <= 1'b1;  // in case of early termination
-        if (module_next_state == `STATE_Wmatch) tdo_output_sel <= 2'h2;  // This is when the 'match' bit is actually read
+        if (module_next_state == `STATE_Wmatch) begin
+          tdo_output_sel <= 2'h2;  // This is when the 'match' bit is actually read
+        end
       end
       `STATE_Wmatch: begin
         tdo_output_sel <= 2'h2;
         top_inhibit_o  <= 1'b1;  // in case of early termination
       end
-      default:       ;
+      default: begin
+      end
     endcase
   end
 endmodule

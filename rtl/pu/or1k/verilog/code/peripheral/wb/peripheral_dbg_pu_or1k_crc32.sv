@@ -109,10 +109,15 @@ module peripheral_dbg_pu_or1k_crc32 (
   assign new_crc[31] = data_sim ^ crc[0];
 
   always @(posedge clk or posedge rst) begin
-    if (rst) crc[31:0] <= 32'hffffffff;
-    else if (clr) crc[31:0] <= 32'hffffffff;
-    else if (enable) crc[31:0] <= new_crc;
-    else if (shift) crc[31:0] <= {1'b0, crc[31:1]};
+    if (rst) begin
+      crc[31:0] <= 32'hffffffff;
+    end else if (clr) begin
+      crc[31:0] <= 32'hffffffff;
+    end else if (enable) begin
+      crc[31:0] <= new_crc;
+    end else if (shift) begin
+      crc[31:0] <= {1'b0, crc[31:1]};
+    end
   end
 
   // assign crc_match = (crc == 32'h0);

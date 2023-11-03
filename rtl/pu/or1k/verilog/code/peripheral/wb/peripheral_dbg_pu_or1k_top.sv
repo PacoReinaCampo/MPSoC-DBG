@@ -158,9 +158,11 @@ module peripheral_dbg_pu_or1k_top #(
 
   // Module select register and select signals
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) module_id_reg <= 2'b0;
-    else if (debug_select_i && select_cmd && update_dr_i && !select_inhibit)  // Chain select
+    if (rst_i) begin
+      module_id_reg <= 2'b0;
+    end else if (debug_select_i && select_cmd && update_dr_i && !select_inhibit) begin  // Chain select
       module_id_reg <= module_id_in;
+    end
   end
 
   always @(module_id_reg) begin
@@ -170,8 +172,11 @@ module peripheral_dbg_pu_or1k_top #(
 
   // Data input shift register
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) input_shift_reg <= 53'h0;
-    else if (debug_select_i && shift_dr_i) input_shift_reg <= {tdi_i, input_shift_reg[52:1]};
+    if (rst_i) begin
+      input_shift_reg <= 53'h0;
+    end else if (debug_select_i && shift_dr_i) begin
+      input_shift_reg <= {tdi_i, input_shift_reg[52:1]};
+    end
   end
 
   // Debug module instantiations

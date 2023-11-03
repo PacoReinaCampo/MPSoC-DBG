@@ -82,9 +82,13 @@ module peripheral_dbg_pu_or1k_status_reg (
   // signal, we insure that the CPU will remain in the stalled state until
   // the debug host can read the state.
   always @(posedge cpu_clk_i or posedge rst_i) begin
-    if (rst_i) stall_bp <= 1'b0;
-    else if (bp_i) stall_bp <= 1'b1;
-    else if (stall_reg_cpu) stall_bp <= 1'b0;
+    if (rst_i) begin
+      stall_bp <= 1'b0;
+    end else if (bp_i) begin
+      stall_bp <= 1'b1;
+    end else if (stall_reg_cpu) begin
+      stall_bp <= 1'b0;
+    end
   end
 
   // Synchronizing
@@ -117,15 +121,22 @@ module peripheral_dbg_pu_or1k_status_reg (
   // This can be set either by the debug host, or by
   // a CPU breakpoint.  It can only be cleared by the host.
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) stall_reg <= 1'b0;
-    else if (stall_bp_tck) stall_reg <= 1'b1;
-    else if (we_i) stall_reg <= data_i[0];
+    if (rst_i) begin
+      stall_reg <= 1'b0;
+    end else if (stall_bp_tck) begin
+      stall_reg <= 1'b1;
+    end else if (we_i) begin
+      stall_reg <= data_i[0];
+    end
   end
 
   // Writing data to the control registers (reset)
   always @(posedge tck_i or posedge rst_i) begin
-    if (rst_i) cpu_reset <= 1'b0;
-    else if (we_i) cpu_reset <= data_i[1];
+    if (rst_i) begin
+      cpu_reset <= 1'b0;
+    end else if (we_i) begin
+      cpu_reset <= data_i[1];
+    end
   end
 
   // Synchronizing signals from registers
