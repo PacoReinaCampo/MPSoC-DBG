@@ -126,9 +126,8 @@ module peripheral_dbg_pu_or1k_top #(
 );
 
   //////////////////////////////////////////////////////////////////////////////
-  //
   // Variables
-  //
+  //////////////////////////////////////////////////////////////////////////////
 
   wire                                  tdo_wb;
   wire                                  tdo_cpu0;
@@ -148,9 +147,8 @@ module peripheral_dbg_pu_or1k_top #(
   wire [                           3:0] module_inhibit;  // signals to allow submodules to prevent top level from latching new module ID
 
   //////////////////////////////////////////////////////////////////////////////
-  //
-  // Module body
-  //
+  // Module Body
+  //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments
   assign select_cmd   = input_shift_reg[52];

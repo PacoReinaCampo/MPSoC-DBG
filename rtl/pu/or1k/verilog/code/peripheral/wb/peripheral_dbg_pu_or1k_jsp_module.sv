@@ -82,9 +82,8 @@ module peripheral_dbg_pu_or1k_jsp_module #(
 );
 
   //////////////////////////////////////////////////////////////////////////////
-  //
   // Constants
-  //
+  //////////////////////////////////////////////////////////////////////////////
 
   `define STATE_rd_idle 4'h0
   `define STATE_rd_counts 4'h1
@@ -97,9 +96,8 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   `define STATE_wr_xfer 3'h3
 
   //////////////////////////////////////////////////////////////////////////////
-  //
   // Variables
-  //
+  //////////////////////////////////////////////////////////////////////////////
 
   // NOTE:  For the rest of this file, "input" and the "in" direction refer to bytes being transferred
   // from the PC, through the JTAG, and into the BIU FIFO.  The "output" direction refers to data being
@@ -164,9 +162,8 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   reg  [2:0] rd_module_next_state;  // combinatorial signal, not actually a register
 
   //////////////////////////////////////////////////////////////////////////////
-  //
-  // Module body
-  //
+  // Module Body
+  //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments
   assign count_data_from_biu = {biu_bytes_available, biu_space_available};
