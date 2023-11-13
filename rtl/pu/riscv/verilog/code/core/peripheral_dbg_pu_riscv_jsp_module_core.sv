@@ -15,32 +15,30 @@
 //              WishBone Bus Interface                                        //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
-/* Copyright (c) 2018-2019 by the author(s)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * =============================================================================
- * Author(s):
- *   Nathan Yawn <nathan.yawn@opencores.org>
- *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
- */
+// Copyright (c) 2018-2019 by the author(s)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+////////////////////////////////////////////////////////////////////////////////
+// Author(s):
+//   Nathan Yawn <nathan.yawn@opencores.org>
+//   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 `include "peripheral_dbg_pu_riscv_pkg.sv"
 
@@ -245,33 +243,33 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign biu_di        = data_to_biu;
   assign data_from_biu = biu_do;
 
-//   peripheral_dbg_jsp_biu jsp_biu_i (
-//    // Debug interface signals
-//    .tck_i           (tck_i),
-//    .rst_i           (rst_i),
-//    .data_i          (data_to_biu),
-//    .data_o          (data_from_biu),
-//    .bytes_available_o (biu_bytes_available),
-//    .bytes_free_o    (biu_space_available),
-//    .rd_strobe_i     (biu_rd_strobe),
-//    .wr_strobe_i     (biu_wr_strobe),
+  //   peripheral_dbg_jsp_biu jsp_biu_i (
+  //    // Debug interface signals
+  //    .tck_i           (tck_i),
+  //    .rst_i           (rst_i),
+  //    .data_i          (data_to_biu),
+  //    .data_o          (data_from_biu),
+  //    .bytes_available_o (biu_bytes_available),
+  //    .bytes_free_o    (biu_space_available),
+  //    .rd_strobe_i     (biu_rd_strobe),
+  //    .wr_strobe_i     (biu_wr_strobe),
 
-//    // Wishbone slave signals
-//    .wb_clk_i        (wb_clk_i),
-//    .wb_rst_i        (wb_rst_i),
-//    .wb_adr_i        (wb_adr_i),
-//    .wb_dat_o        (wb_dat_o),
-//    .wb_dat_i        (wb_dat_i),
-//    .wb_cyc_i        (wb_cyc_i),
-//    .wb_stb_i        (wb_stb_i),
-//    .wb_sel_i        (wb_sel_i),
-//    .wb_we_i         (wb_we_i),
-//    .wb_ack_o        (wb_ack_o),
-//    .wb_err_o        (wb_err_o),
-//    .wb_cti_i        (wb_cti_i),
-//    .wb_bte_i        (wb_bte_i),
-//    .int_o           (int_o)
-//  );
+  //    // Wishbone slave signals
+  //    .wb_clk_i        (wb_clk_i),
+  //    .wb_rst_i        (wb_rst_i),
+  //    .wb_adr_i        (wb_adr_i),
+  //    .wb_dat_o        (wb_dat_o),
+  //    .wb_dat_i        (wb_dat_i),
+  //    .wb_cyc_i        (wb_cyc_i),
+  //    .wb_stb_i        (wb_stb_i),
+  //    .wb_sel_i        (wb_sel_i),
+  //    .wb_we_i         (wb_we_i),
+  //    .wb_ack_o        (wb_ack_o),
+  //    .wb_err_o        (wb_err_o),
+  //    .wb_cti_i        (wb_cti_i),
+  //    .wb_bte_i        (wb_bte_i),
+  //    .int_o           (int_o)
+  //  );
 
   // Input Control FSM
 

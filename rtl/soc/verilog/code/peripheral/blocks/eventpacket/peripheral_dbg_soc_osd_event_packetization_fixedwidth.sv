@@ -13,47 +13,44 @@
 //              Debug on Chip Interface                                       //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 2018-2019 by the author(s)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+////////////////////////////////////////////////////////////////////////////////
+// Author(s):
+//   Philipp Wagner <philipp.wagner@tum.de>
+//   Stefan Wallentowitz <stefan@wallentowitz.de>
+//   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-/* Copyright (c) 2018-2019 by the author(s)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * =============================================================================
- * Author(s):
- *   Philipp Wagner <philipp.wagner@tum.de>
- *   Stefan Wallentowitz <stefan@wallentowitz.de>
- *   Paco Reina Campo <pacoreinacampo@queenfield.tech>
- */
-
-/*
- * Module: peripheral_dbg_soc_osd_event_packetization_fixedwidth
- *
- * Package data into one or multiple DI event packet (TYPE == EVENT). If the
- * maximum number of flits (MAX_PKT_LEN) is exceeded two or more packets are
- * generated. The first packet has TYPE_SUB set to 0, the continued packets
- * have TYPE_SUB set to 1.
- *
- * If event_overflow is set an overflow packet is generated. An overflow packet
- * has TYPE_SUB set to 5 and contains the number of overflowed packets in the
- * first payload flit. The number of overflowed packets is passed in
- * event_data[15:0].
- */
+//
+// Module: peripheral_dbg_soc_osd_event_packetization_fixedwidth
+//
+// Package data into one or multiple DI event packet (TYPE == EVENT). If the
+// maximum number of flits (MAX_PKT_LEN) is exceeded two or more packets are
+// generated. The first packet has TYPE_SUB set to 0, the continued packets
+// have TYPE_SUB set to 1.
+//
+// If event_overflow is set an overflow packet is generated. An overflow packet
+// has TYPE_SUB set to 5 and contains the number of overflowed packets in the
+// first payload flit. The number of overflowed packets is passed in
+// event_data[15:0].
 
 import peripheral_dbg_soc_dii_channel::dii_flit;
 

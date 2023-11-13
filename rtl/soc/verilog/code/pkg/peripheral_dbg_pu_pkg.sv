@@ -14,31 +14,29 @@
 //              AMBA3 AHB-Lite Bus Interface                                  //
 //                                                                            //
 ////////////////////////////////////////////////////////////////////////////////
-
-/* Copyright (c) 2017-2018 by the author(s)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- * THE SOFTWARE.
- *
- * =============================================================================
- * Author(s):
- *    Javier Reina Campo <pacoreinacampo@queenfield.tech>
- */
+// Copyright (c) 2017-2018 by the author(s)
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
+////////////////////////////////////////////////////////////////////////////////
+// Author(s):
+//    Javier Reina Campo <pacoreinacampo@queenfield.tech>
 
 // core parameters
 `define XLEN 64
@@ -214,40 +212,36 @@
 
 `define MAX_BREAKPOINTS 8
 
-/*
-  * Debug Unit Memory Map
-  *
-  * addr_bits  Description
-  * ------------------------------
-  * 15-12      Debug bank
-  * 11- 0      Address inside bank
+// Debug Unit Memory Map
+// 
+// addr_bits  Description
+// ------------------------------
+// 15-12      Debug bank
+// 11- 0      Address inside bank
 
-  * Bank0      Control & Status
-  * Bank1      GPRs
-  * Bank2      CSRs
-  * Bank3-15   reserved
-  */
+// Bank0      Control & Status
+// Bank1      GPRs
+// Bank2      CSRs
+// Bank3-15   reserved
 
 `define DBG_INTERNAL 4'h0
 `define DBG_GPRS 4'h1
 `define DBG_CSRS 4'h2
 
-/*
-  * Control registers
-  * 0 00 00 ctrl
-  * 0 00 01
-  * 0 00 10 ie
-  * 0 00 11 cause
-  *  reserved
-  *
-  * 1 0000 BP0 Ctrl
-  * 1 0001 BP0 Data
-  * 1 0010 BP1 Ctrl
-  * 1 0011 BP1 Data
-  * ...
-  * 1 1110 BP7 Ctrl
-  * 1 1111 BP7 Data
-  */
+// Control registers
+// 0 00 00 ctrl
+// 0 00 01
+// 0 00 10 ie
+// 0 00 11 cause
+//  reserved
+// 
+// 1 0000 BP0 Ctrl
+// 1 0001 BP0 Data
+// 1 0010 BP1 Ctrl
+// 1 0011 BP1 Data
+// ...
+// 1 1110 BP7 Ctrl
+// 1 1111 BP7 Data
 
 `define DBG_CTRL 'h00  // debug control
 `define DBG_HIT 'h01  // debug HIT register
@@ -270,7 +264,6 @@
 `define DBG_BPCTRL7 'h1e  // hardware breakpoint7 control
 `define DBG_BPDATA7 'h1f  // hardware breakpoint7 data
 
-
 // Debug Codes
 `define DEBUG_SINGLE_STEP_TRACE 0
 `define DEBUG_BRANCH_TRACE 1
@@ -282,25 +275,21 @@
 `define BP_CTRL_CC_ST_ADR 3'h2
 `define BP_CTRL_CC_LDST_ADR 3'h3
 
-/*
-  * addr         Key  Description
-  * --------------------------------------------
-  * 0x000-0x01f  GPR  General Purpose Registers
-  * 0x100-0x11f  FPR  Floating Point Registers
-  * 0x200        PC   Program Counter
-  * 0x201        PPC  Previous Program Counter
-  */
+// addr         Key  Description
+// --------------------------------------------
+// 0x000-0x01f  GPR  General Purpose Registers
+// 0x100-0x11f  FPR  Floating Point Registers
+// 0x200        PC   Program Counter
+// 0x201        PPC  Previous Program Counter
 
 `define DBG_GPR 12'b0000_0000_0000
 `define DBG_FPR 12'b0001_0000_0000
 `define DBG_NPC 12'h200
 `define DBG_PPC 12'h201
 
-/*
-  * Bank2 - CSRs
-  *
-  * Direct mapping to the 12bit CSR address space
-  */
+// Bank2 - CSRs
+// 
+// Direct mapping to the 12bit CSR address space
 
 // RISCV Opcodes Package
 `define ILEN 64
@@ -396,9 +385,9 @@
 `define HRET 32'b001000000010_00000_000_00000_1110011
 `define SRET 32'b000100000010_00000_000_00000_1110011
 `define URET 32'b000000000010_00000_000_00000_1110011
-// `define MRTS       32'b001100000101_00000_000_00000_1110011
-// `define MRTH       32'b001100000110_00000_000_00000_1110011
-// `define HRTS       32'b001000000101_00000_000_00000_1110011
+// `define MRTS 32'b001100000101_00000_000_00000_1110011
+// `define MRTH 32'b001100000110_00000_000_00000_1110011
+// `define HRTS 32'b001000000101_00000_000_00000_1110011
 `define WFI 32'b000100000101_00000_000_00000_1110011
 
 //                               f7      f3  opcode
@@ -507,21 +496,19 @@
 // Supervisor Protection and Translation
 `define SATP 'h180
 
-/*
-                   // Hypervisor
-                   // Hypervisor trap setup
-  `define HSTATUS       'h200
-  `define HEDELEG       'h202
-  `define HIDELEG       'h203
-  `define HIE           'h204
-  `define HTVEC         'h205
-  `define // Hypervisor Trap Handling
-  `define HSCRATCH      'h240
-  `define HEPC          'h241
-  `define HCAUSE        'h242
-  `define HTVAL         'h243
-  `define HIP           'h244
-*/
+// Hypervisor
+// Hypervisor trap setup
+//  `define HSTATUS       'h200
+//  `define HEDELEG       'h202
+//  `define HIDELEG       'h203
+//  `define HIE           'h204
+//  `define HTVEC         'h205
+//  `define // Hypervisor Trap Handling
+//  `define HSCRATCH      'h240
+//  `define HEPC          'h241
+//  `define HCAUSE        'h242
+//  `define HTVAL         'h243
+//  `define HIP           'h244
 
 // Machine
 // Machine Information
