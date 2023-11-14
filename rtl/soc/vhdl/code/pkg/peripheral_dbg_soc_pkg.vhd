@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/arbiter/peripheral_dbg_soc_pkg.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -68,15 +65,15 @@ package peripheral_dbg_soc_pkg is
 
   constant FULLPACKET : std_logic := '0';
 
-  --Width of memory addresses
+  -- Width of memory addresses
   constant ADDR_WIDTH : integer := 64;
 
-  --System word length
+  -- System word length
   constant DATA_WIDTH : integer := 64;
 
   constant LOG2_BUFFER_SIZE : integer := integer(log2(real(BUFFER_SIZE)));
 
-  --Regaccess
+  -- Regaccess
   constant MOD_VENDOR             : integer := 4;  -- module vendor
   constant MOD_TYPE               : integer := 4;  -- module type
   constant MOD_VERSION            : integer := 4;  -- module version

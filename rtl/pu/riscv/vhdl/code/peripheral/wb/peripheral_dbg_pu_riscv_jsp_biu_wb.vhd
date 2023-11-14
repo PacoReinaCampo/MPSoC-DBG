@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/wb/peripheral_dbg_pu_riscv_jsp_biu_wb.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -181,7 +178,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_biu_wb is
   -- fifo_wr : write strobe
   -- fifo_ack: fifo has completed operation
 
-  --16550 registers
+  -- 16550 registers
   signal ier : std_logic_vector(3 downto 0);
   signal iir : std_logic_vector(7 downto 0);
   -- logic [5:0] fcr;
@@ -290,7 +287,7 @@ begin
       D_OUT     => ren_sff_out
       );
 
-  --TODO syncreg.RST should be synchronised to DFF clock domain
+  -- TODO syncreg.RST should be synchronised to DFF clock domain
   -- 'free space available' syncreg
   freespace_syncreg : peripheral_dbg_pu_riscv_syncreg
     port map (
@@ -311,7 +308,7 @@ begin
       DATA_OUT => bytes_available_o
       );
 
-  --TODO synch. FIFO resets
+  -- TODO synch. FIFO resets
   -- write FIFO
   wr_fifo : peripheral_dbg_pu_riscv_bytefifo
     port map (

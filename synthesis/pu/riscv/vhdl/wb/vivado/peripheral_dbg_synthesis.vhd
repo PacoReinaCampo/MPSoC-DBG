@@ -1,6 +1,3 @@
--- Converted from peripheral_dbg_synthesis.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -41,7 +38,6 @@
 --------------------------------------------------------------------------------
 -- Author(s):
 --   Paco Reina Campo <pacoreinacampo@queenfield.tech>
---
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -109,7 +105,7 @@ architecture rtl of peripheral_dbg_synthesis is
       tdo_o : out std_logic;
 
       -- TAP states
-      tlr_i        : in std_logic;      --TestLogicReset
+      tlr_i        : in std_logic;      -- TestLogicReset
       shift_dr_i   : in std_logic;
       pause_dr_i   : in std_logic;
       update_dr_i  : in std_logic;
@@ -146,7 +142,7 @@ architecture rtl of peripheral_dbg_synthesis is
       wb_jsp_err_o : out std_logic;
       jsp_int_o    : out std_logic;
 
-      --CPU/Thread debug ports
+      -- CPU/Thread debug ports
       cpu_clk_i   : in  std_logic;
       cpu_rstn_i  : in  std_logic;
       cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
@@ -172,7 +168,7 @@ architecture rtl of peripheral_dbg_synthesis is
   signal wb_tdo_o : std_logic;
 
   -- TAP states
-  signal wb_tlr_i        : std_logic;   --TestLogicReset
+  signal wb_tlr_i        : std_logic;   -- TestLogicReset
   signal wb_shift_dr_i   : std_logic;
   signal wb_pause_dr_i   : std_logic;
   signal wb_update_dr_i  : std_logic;
@@ -195,7 +191,7 @@ architecture rtl of peripheral_dbg_synthesis is
 
   signal jsp_int_o : std_logic;
 
-  --CPU/Thread debug ports
+  -- CPU/Thread debug ports
   signal wb_cpu_clk_i   : std_logic;
   signal wb_cpu_rstn_i  : std_logic;
   signal wb_cpu_addr_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
@@ -274,7 +270,7 @@ begin
 
       jsp_int_o => jsp_int_o,
 
-      --CPU/Thread debug ports
+      -- CPU/Thread debug ports
       cpu_clk_i   => wb_cpu_clk_i,
       cpu_rstn_i  => wb_cpu_rstn_i,
       cpu_addr_o  => wb_cpu_addr_o,

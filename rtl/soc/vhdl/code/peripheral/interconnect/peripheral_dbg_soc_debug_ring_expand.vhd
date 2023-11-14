@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/interconnect/peripheral_dbg_soc_debug_ring_expand.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --

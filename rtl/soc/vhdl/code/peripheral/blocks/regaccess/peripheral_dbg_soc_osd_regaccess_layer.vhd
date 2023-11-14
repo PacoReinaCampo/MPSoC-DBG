@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/blocks/regaccess/peripheral_dbg_soc_osd_regaccess_layer.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --

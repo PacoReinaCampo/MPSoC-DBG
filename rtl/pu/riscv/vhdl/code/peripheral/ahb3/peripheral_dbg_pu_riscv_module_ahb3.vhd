@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/ahb3/peripheral_dbg_pu_riscv_module_ahb3.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -98,14 +95,14 @@ architecture rtl of peripheral_dbg_pu_riscv_module_ahb3 is
 
   component peripheral_dbg_pu_riscv_bus_module_core
     generic (
-      --parameter such that these can be pushed down from the higher level
-      --higher level will either read these from a package or get them as parameters
+      -- parameter such that these can be pushed down from the higher level
+      -- higher level will either read these from a package or get them as parameters
 
-      --Data + Address width
+      -- Data + Address width
       ADDR_WIDTH : integer := 32;
       DATA_WIDTH : integer := 32;
 
-      --Data register size (function of ADDR_WIDTH)
+      -- Data register size (function of ADDR_WIDTH)
       DATAREG_LEN : integer := 64
       );
     port (
@@ -123,11 +120,11 @@ architecture rtl of peripheral_dbg_pu_riscv_module_ahb3 is
       module_select : in  std_logic;
       inhibit       : out std_logic;
 
-      --Bus Interface Unit ports
+      -- Bus Interface Unit ports
       biu_clk       : out std_logic;
-      biu_rst       : out std_logic;    --BIU reset
-      biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  --data towards BIU
-      biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  --data from BIU
+      biu_rst       : out std_logic;    -- BIU reset
+      biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  -- data towards BIU
+      biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- data from BIU
       biu_addr      : out std_logic_vector(ADDR_WIDTH-1 downto 0);
       biu_strb      : out std_logic;
       biu_rw        : out std_logic;
@@ -201,7 +198,7 @@ begin
       DATAREG_LEN => DBG_AHB_DATAREG_LEN
       )
     port map (
-      --Debug Module ports
+      -- Debug Module ports
       dbg_rst => tlr_i,
       dbg_clk => tck_i,
       dbg_tdi => tdi_i,
@@ -212,15 +209,15 @@ begin
       shift_dr_i   => shift_dr_i,
       update_dr_i  => update_dr_i,
 
-      data_register => data_register_i,  --data register from top-level
+      data_register => data_register_i,  -- data register from top-level
       module_select => module_select_i,
       inhibit       => top_inhibit_o,
 
-      --Bus Interface Unit ports
+      -- Bus Interface Unit ports
       biu_clk       => biu_clk,
-      biu_rst       => biu_rst,         --BIU reset
-      biu_di        => biu_di,          --data towards BIU
-      biu_do        => biu_do,          --data from BIU
+      biu_rst       => biu_rst,         -- BIU reset
+      biu_di        => biu_di,          -- data towards BIU
+      biu_do        => biu_do,          -- data from BIU
       biu_addr      => biu_addr,
       biu_strb      => biu_strb,
       biu_rw        => biu_rw,

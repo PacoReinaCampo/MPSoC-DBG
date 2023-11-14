@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_status_reg.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --

@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/ahb3/peripheral_dbg_pu_riscv_top_ahb3.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -69,7 +66,7 @@ entity peripheral_dbg_pu_riscv_top_ahb3 is
     tdo_o : out std_logic;
 
     -- TAP states
-    tlr_i        : in std_logic;        --TestLogicReset
+    tlr_i        : in std_logic;        -- TestLogicReset
     shift_dr_i   : in std_logic;
     pause_dr_i   : in std_logic;
     update_dr_i  : in std_logic;
@@ -108,7 +105,7 @@ entity peripheral_dbg_pu_riscv_top_ahb3 is
 
     int_o : out std_logic;
 
-    --CPU/Thread debug ports
+    -- CPU/Thread debug ports
     cpu_clk_i   : in  std_logic;
     cpu_rstn_i  : in  std_logic;
     cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
@@ -315,7 +312,7 @@ begin
     end if;
   end process;
 
-  --AHB3 debug module instantiation
+  -- AHB3 debug module instantiation
   i_dbg_ahb : peripheral_dbg_pu_riscv_module_ahb3
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,
@@ -337,7 +334,7 @@ begin
       module_select_i => module_selects(DBG_TOP_BUSIF_DEBUG_MODULE),
       top_inhibit_o   => module_inhibit(DBG_TOP_BUSIF_DEBUG_MODULE),
 
-      --AHB signals
+      -- AHB signals
       HCLK      => HCLK,
       HRESETn   => HRESETn,
       HSEL      => dbg_HSEL,

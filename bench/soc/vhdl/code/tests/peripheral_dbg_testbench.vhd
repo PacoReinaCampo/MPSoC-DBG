@@ -1,6 +1,3 @@
--- Converted from bench/verilog/regression/peripheral_dbg_testbench.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -169,7 +166,7 @@ architecture rtl of peripheral_dbg_testbench is
   signal rst_sys : std_logic;
   signal rst_cpu : std_logic;
 
-  --GLIP host connection
+  -- GLIP host connection
   signal glip_in_data  : std_logic_vector(XLEN-1 downto 0);
   signal glip_in_valid : std_logic;
   signal glip_in_ready : std_logic;
@@ -225,7 +222,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT
+  -- DUT
   dbg_soc_interface : peripheral_dbg_soc_interface
     generic map (
       XLEN => XLEN,

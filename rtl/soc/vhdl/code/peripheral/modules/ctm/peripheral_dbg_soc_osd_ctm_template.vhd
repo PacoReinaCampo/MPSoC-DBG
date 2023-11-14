@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/modules/template/peripheral_dbg_soc_osd_ctm_template.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --

@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/modules/common/peripheral_dbg_soc_osd_him.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -59,7 +56,7 @@ entity peripheral_dbg_soc_osd_him is
     clk : in std_logic;
     rst : in std_logic;
 
-    --GLIP host connection
+    -- GLIP host connection
     glip_in_data  : in  std_logic_vector(XLEN-1 downto 0);
     glip_in_valid : in  std_logic;
     glip_in_ready : out std_logic;

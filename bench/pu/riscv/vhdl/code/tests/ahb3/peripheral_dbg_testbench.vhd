@@ -1,6 +1,3 @@
--- Converted from bench/verilog/regression/peripheral_dbg_testbench.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -77,7 +74,7 @@ architecture rtl of peripheral_dbg_testbench is
       tdo_o : out std_logic;
 
       -- TAP states
-      tlr_i        : in std_logic;      --TestLogicReset
+      tlr_i        : in std_logic;      -- TestLogicReset
       shift_dr_i   : in std_logic;
       pause_dr_i   : in std_logic;
       update_dr_i  : in std_logic;
@@ -116,7 +113,7 @@ architecture rtl of peripheral_dbg_testbench is
 
       int_o : out std_logic;
 
-      --CPU/Thread debug ports
+      -- CPU/Thread debug ports
       cpu_clk_i   : in  std_logic;
       cpu_rstn_i  : in  std_logic;
       cpu_addr_o  : out xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
@@ -159,7 +156,7 @@ architecture rtl of peripheral_dbg_testbench is
   signal ahb3_tdo_o : std_logic;
 
   -- TAP states
-  signal ahb3_tlr_i        : std_logic;  --TestLogicReset
+  signal ahb3_tlr_i        : std_logic;  -- TestLogicReset
   signal ahb3_shift_dr_i   : std_logic;
   signal ahb3_pause_dr_i   : std_logic;
   signal ahb3_update_dr_i  : std_logic;
@@ -216,7 +213,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --DUT AHB3
+  -- DUT AHB3
   dbg_pu_riscv_top_ahb3 : peripheral_dbg_pu_riscv_top_ahb3
     generic map (
       X              => X,
@@ -277,7 +274,7 @@ begin
       jsp_PSLVERR => jsp_PSLVERR,
       int_o       => int_o,
 
-      --CPU/Thread debug ports
+      -- CPU/Thread debug ports
       cpu_clk_i   => ahb3_cpu_clk_i,
       cpu_rstn_i  => ahb3_cpu_rstn_i,
       cpu_addr_o  => ahb3_cpu_addr_o,

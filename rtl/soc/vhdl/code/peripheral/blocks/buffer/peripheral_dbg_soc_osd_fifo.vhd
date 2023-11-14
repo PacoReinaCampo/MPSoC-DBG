@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/blocks/buffer/peripheral_dbg_soc_osd_fifo.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -74,7 +71,7 @@ architecture rtl of peripheral_dbg_soc_osd_fifo is
   ------------------------------------------------------------------------------
 
   -- Signals for fifo
-  signal fifo_data     : std_logic_matrix(DEPTH-1 downto 0)(WIDTH-1 downto 0);  --actual fifo
+  signal fifo_data     : std_logic_matrix(DEPTH-1 downto 0)(WIDTH-1 downto 0);  -- actual fifo
   signal nxt_fifo_data : std_logic_matrix(DEPTH-1 downto 0)(WIDTH-1 downto 0);
 
   signal fifo_write_ptr : std_ulogic_vector(DEPTH downto 0);

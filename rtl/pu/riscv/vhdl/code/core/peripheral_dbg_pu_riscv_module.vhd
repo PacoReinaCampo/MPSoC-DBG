@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_module.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -168,7 +165,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module is
   -- Constants
   ------------------------------------------------------------------------------
 
-  --FSM states
+  -- FSM states
   constant STATE_IDLE    : std_logic_vector(3 downto 0) := "1011";
   constant STATE_RBEGIN  : std_logic_vector(3 downto 0) := "1010";
   constant STATE_RREADY  : std_logic_vector(3 downto 0) := "1001";
@@ -259,7 +256,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module is
 
   signal status_reg_data : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
-  --FSM states
+  -- FSM states
   signal module_state, module_next_state : std_logic_vector(3 downto 0);
 
   signal not_tlr_i : std_logic;
@@ -281,7 +278,7 @@ begin
 
   reg_select_data <= data_register_i(DBG_OR1K_DATAREG_LEN-6 downto DBG_OR1K_DATAREG_LEN-DBG_OR1K_REGSELECT_LEN-5);
 
-  --data is sent first, then module_cmd, operation, cpu_select
+  -- data is sent first, then module_cmd, operation, cpu_select
   generating_0 : for i in 0 to X - 1 generate
     generating_1 : for j in 0 to Y - 1 generate
       generating_2 : for k in 0 to Z - 1 generate

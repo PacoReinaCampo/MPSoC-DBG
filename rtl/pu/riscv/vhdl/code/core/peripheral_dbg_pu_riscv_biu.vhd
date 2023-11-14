@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_biu.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -120,7 +117,7 @@ architecture rtl of peripheral_dbg_pu_riscv_biu is
   -- Internal signals
   signal start_toggle : std_logic;  -- CPU domain, indicates a toggle on the start strobe
 
-  signal valid_selection : std_logic;  --set to 1 if value in input selection signal is < X*Y*Z*CORES_PER_TILE
+  signal valid_selection : std_logic;  -- set to 1 if value in input selection signal is < X*Y*Z*CORES_PER_TILE
 
   signal cpu_fsm_state  : std_logic;
   signal next_fsm_state : std_logic;

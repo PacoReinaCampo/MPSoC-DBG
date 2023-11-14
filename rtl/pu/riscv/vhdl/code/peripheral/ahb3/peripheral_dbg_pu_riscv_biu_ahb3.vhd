@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/ahb3/peripheral_dbg_pu_riscv_biu_ahb3.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -116,7 +113,7 @@ architecture rtl of peripheral_dbg_pu_riscv_biu_ahb3 is
   signal start_toggle_hold : std_logic;  -- hold start_toggle if AHB bus busy (not-ready)
   signal ahb_transfer_ack  : std_logic;  -- AHB bus responded to data transfer
 
-  --AHB FSM
+  -- AHB FSM
   signal ahb_fsm_state : std_logic_vector(1 downto 0);
 
   signal biu_rdy_sgn : std_logic;
@@ -524,6 +521,6 @@ begin
     end if;
   end process;
 
-  --Only single accesses; no bursts
+  -- Only single accesses; no bursts
   HBURST <= HBURST_SINGLE;
 end rtl;

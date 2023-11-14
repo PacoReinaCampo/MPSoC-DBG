@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_bus_module_core.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -52,14 +49,14 @@ use work.peripheral_dbg_pu_riscv_pkg.all;
 
 entity peripheral_dbg_pu_riscv_bus_module_core is
   generic (
-    --parameter such that these can be pushed down from the higher level
-    --higher level will either read these from a package or get them as parameters
+    -- parameter such that these can be pushed down from the higher level
+    -- higher level will either read these from a package or get them as parameters
 
-    --Data + Address width
+    -- Data + Address width
     ADDR_WIDTH : integer := 32;
     DATA_WIDTH : integer := 32;
 
-    --Data register size (function of ADDR_WIDTH)
+    -- Data register size (function of ADDR_WIDTH)
     DATAREG_LEN : integer := 64
     );
   port (
@@ -77,11 +74,11 @@ entity peripheral_dbg_pu_riscv_bus_module_core is
     module_select : in  std_logic;
     inhibit       : out std_logic;
 
-    --Bus Interface Unit ports
+    -- Bus Interface Unit ports
     biu_clk       : out std_logic;
-    biu_rst       : out std_logic;      --BIU reset
-    biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  --data towards BIU
-    biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  --data from BIU
+    biu_rst       : out std_logic;      -- BIU reset
+    biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  -- data towards BIU
+    biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- data from BIU
     biu_addr      : out std_logic_vector(ADDR_WIDTH-1 downto 0);
     biu_strb      : out std_logic;
     biu_rw        : out std_logic;
@@ -114,7 +111,7 @@ architecture rtl of peripheral_dbg_pu_riscv_bus_module_core is
   -- Constants
   ------------------------------------------------------------------------------
 
-  --Instructions
+  -- Instructions
   constant BWRITE8  : std_logic_vector(3 downto 0) := X"1";
   constant BWRITE16 : std_logic_vector(3 downto 0) := X"2";
   constant BWRITE32 : std_logic_vector(3 downto 0) := X"3";
@@ -203,7 +200,7 @@ architecture rtl of peripheral_dbg_pu_riscv_bus_module_core is
   signal reg_select_data        : std_logic_vector(REGSELECT_SIZE-1 downto 0);  -- from data_register_i, input to internal register select register
   signal data_from_internal_reg : std_logic_vector(DATA_WIDTH downto 0);  -- data from internal reg. MUX to output shift register
 
-  --Statemachine states
+  -- Statemachine states
   signal module_state, module_next_state : std_logic_vector(3 downto 0);
 
   signal not_dbg_rst : std_logic;

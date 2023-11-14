@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/wb/peripheral_dbg_pu_riscv_biu_wb.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -123,7 +120,7 @@ architecture rtl of peripheral_dbg_pu_riscv_biu_wb is
   signal swapped_data_in  : std_logic_vector(DATA_WIDTH-1 downto 0);
   signal swapped_data_out : std_logic_vector(DATA_WIDTH-1 downto 0);
 
-  --WB FSM
+  -- WB FSM
   signal wb_fsm_state : std_logic;
 
   signal biu_rdy_sgn : std_logic;

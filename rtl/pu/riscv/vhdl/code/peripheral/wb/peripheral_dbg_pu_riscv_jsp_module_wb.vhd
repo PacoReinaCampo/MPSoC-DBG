@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/wb/peripheral_dbg_pu_riscv_jsp_module_wb.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -167,7 +164,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --Hookup JSP Debug Core
+  -- Hookup JSP Debug Core
   jsp_core_inst : peripheral_dbg_pu_riscv_jsp_module_core
     generic map (
       DBG_JSP_DATAREG_LEN => DBG_JSP_DATAREG_LEN
@@ -200,7 +197,7 @@ begin
       biu_wr_strobe       => biu_wr_strobe  -- Indicates BIU should latch input + begin a write operation
       );
 
-  --Hookup JSP Wishbone Interface
+  -- Hookup JSP Wishbone Interface
   jsp_biu_inst : peripheral_dbg_pu_riscv_jsp_biu_wb
     port map (
       -- Debug interface signals

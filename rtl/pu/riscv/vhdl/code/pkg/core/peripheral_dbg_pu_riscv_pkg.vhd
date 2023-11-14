@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/pkg/peripheral_dbg_pu_riscv_pkg.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -137,7 +134,7 @@ package peripheral_dbg_pu_riscv_pkg is
   constant DBG_AHB_CMD_IREG_WR  : std_logic_vector(3 downto 0) := X"9";
   constant DBG_AHB_CMD_IREG_SEL : std_logic_vector(3 downto 0) := X"d";
 
---AHB definitions
+-- AHB definitions
   constant HTRANS_IDLE   : std_logic_vector(1 downto 0) := "00";
   constant HTRANS_BUSY   : std_logic_vector(1 downto 0) := "01";
   constant HTRANS_NONSEQ : std_logic_vector(1 downto 0) := "10";

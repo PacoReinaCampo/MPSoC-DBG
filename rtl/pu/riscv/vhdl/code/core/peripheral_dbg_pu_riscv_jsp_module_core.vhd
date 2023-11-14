@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_jsp_module_core.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -96,7 +93,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_module_core is
   -- Constants
   ------------------------------------------------------------------------------
 
-  --FSM states
+  -- FSM states
   constant STATE_WR_IDLE   : std_logic_vector(1 downto 0) := "11";
   constant STATE_WR_WAIT   : std_logic_vector(1 downto 0) := "10";
   constant STATE_WR_COUNTS : std_logic_vector(1 downto 0) := "01";
@@ -151,7 +148,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_module_core is
   signal count_data_from_biu       : std_logic_vector(7 downto 0);  -- combined space avail / bytes avail
   signal out_reg_data              : std_logic_vector(7 downto 0);  -- parallel input to the output shift register
 
-  --Statemachine
+  -- Statemachine
   signal wr_module_state, wr_module_next_state : std_logic_vector(1 downto 0);
   signal rd_module_state, rd_module_next_state : std_logic_vector(1 downto 0);
 

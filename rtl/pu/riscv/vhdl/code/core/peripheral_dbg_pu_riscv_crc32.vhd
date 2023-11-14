@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/core/peripheral_dbg_pu_riscv_crc32.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -123,7 +120,7 @@ begin
     end if;
   end process;
 
-  --assign crc_match = (crc == 32'h0);
+  -- assign crc_match = (crc == 32'h0);
   crc_out    <= crc;                    --[31];
   serial_out <= crc(0);
 end rtl;

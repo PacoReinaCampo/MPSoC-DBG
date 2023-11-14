@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/ahb3/peripheral_dbg_pu_riscv_jsp_module_apb4.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -173,7 +170,7 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  --Hookup JSP Debug Core
+  -- Hookup JSP Debug Core
   jsp_core_inst : peripheral_dbg_pu_riscv_jsp_module_core
     generic map (
       DBG_JSP_DATAREG_LEN => DBG_JSP_DATAREG_LEN

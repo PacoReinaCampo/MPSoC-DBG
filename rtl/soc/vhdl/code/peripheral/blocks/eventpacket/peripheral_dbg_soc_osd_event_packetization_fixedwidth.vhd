@@ -1,6 +1,3 @@
--- Converted from rtl/verilog/blocks/eventpacket/peripheral_dbg_soc_osd_event_packetization_fixedwidth.sv
--- by verilog2vhdl - QueenField
-
 --------------------------------------------------------------------------------
 --                                            __ _      _     _               --
 --                                           / _(_)    | |   | |              --
@@ -138,7 +135,7 @@ begin
   processing_0 : process (data, data_req_idx, fill_last)
   begin
     if (data_req_idx < std_logic_vector(to_unsigned(MAX_DATA_NUM_WORDS-1, LOG2_NUM_WORDS))) then
-    --data_word <= data(XLEN downto (to_integer(unsigned(data_req_idx))+1)*XLEN-1);
+    -- data_word <= data(XLEN downto (to_integer(unsigned(data_req_idx))+1)*XLEN-1);
     elsif (unsigned(data_req_idx) = to_unsigned(MAX_DATA_NUM_WORDS-1, LOG2_NUM_WORDS)) then
       -- last word must be padded with 0s if the data doesn't fill a word
       for i in 0 to XLEN-1 loop
