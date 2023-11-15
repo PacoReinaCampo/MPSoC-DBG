@@ -38,7 +38,6 @@
 -- Author(s):
 --   Olivier Girard <olgirard@gmail.com>
 --   Paco Reina Campo <pacoreinacampo@queenfield.tech>
---
 
 library IEEE;
 use IEEE.STD_LOGIC_1164 .all;
