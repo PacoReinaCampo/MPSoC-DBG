@@ -109,7 +109,6 @@ module peripheral_dbg_soc_interface #(
     .ring_in0_ready(ring_in_ready[0]),
     .ring_in1_ready(ring_in_ready[1]),
 
-
     .ring_out0      (ring_out[0]),
     .ring_out1      (ring_out[1]),
     .ring_out0_ready(ring_out_ready[0]),

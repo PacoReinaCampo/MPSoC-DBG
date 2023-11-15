@@ -80,7 +80,6 @@ module peripheral_dbg_pu_or1k_biu (
   reg         str_sync;  // This is 'active-toggle' rather than -high or -low.
   reg         rdy_sync;  // ditto, active-toggle
 
-
   // Sync registers.  TFF indicates TCK domain, WBFF indicates cpu_clk domain
   reg         rdy_sync_tff1;
   reg         rdy_sync_tff2;

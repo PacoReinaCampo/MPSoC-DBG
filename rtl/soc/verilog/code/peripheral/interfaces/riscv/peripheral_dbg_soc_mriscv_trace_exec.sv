@@ -53,5 +53,4 @@ package opensocdebug;
     logic        wben;
   } peripheral_dbg_soc_mriscv_trace_exec;
 
-
 endpackage  // opensocdebug

@@ -118,7 +118,6 @@ module peripheral_dbg_pu_riscv_module #(
 
   wire  [                      X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] internal_reg_status;  // Holds CPU stall and reset status - signal is output of separate module
 
-
   // Control signals for the various counters / registers / state machines
   reg                                                                   addr_sel;  // Selects data for address_counter. 0 = data_register_i, 1 = incremented address count
   reg                                                                   addr_ct_en;  // Enable signal for address counter register
@@ -139,7 +138,6 @@ module peripheral_dbg_pu_riscv_module #(
   reg                                                                   regsel_ld_en;  // Reg. select register load enable
   reg                                                                   intreg_ld_en;  // load enable for internal registers
   reg                                                                   cpusel_ld_en;
-
 
   // Status signals
   wire                                                                  word_count_zero;  // true when byte counter is zero

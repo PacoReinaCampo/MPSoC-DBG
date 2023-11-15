@@ -91,7 +91,6 @@ module peripheral_dbg_pu_riscv_biu #(
   reg                        str_sync;  // This is 'active-toggle' rather than -high or -low.
   reg                        rdy_sync;  // ditto, active-toggle
 
-
   // Sync registers.  TFF indicates TCK domain, WBFF indicates cpu_clk domain
   reg                        rdy_sync_tff1;
   reg                        rdy_sync_tff2;
@@ -99,7 +98,6 @@ module peripheral_dbg_pu_riscv_biu #(
   reg                        str_sync_wbff1;
   reg                        str_sync_wbff2;
   reg                        str_sync_wbff2q;  // used to detect toggles
-
 
   // Control Signals
   reg                        data_o_en;  // latch wb_data_i

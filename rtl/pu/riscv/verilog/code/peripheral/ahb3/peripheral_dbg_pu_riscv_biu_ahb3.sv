@@ -59,7 +59,6 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
   output reg                  biu_err,
   input      [           3:0] biu_word_size,
 
-
   // AHB Master signals
   input                       HCLK,
   input                       HRESETn,
@@ -299,7 +298,6 @@ module peripheral_dbg_pu_riscv_biu_ahb3 #(
       end
     end
   endgenerate
-
 
   // Create a toggle-active ready signal to send to the TCK domain
   always @(posedge HCLK, negedge ahb_rstn) begin

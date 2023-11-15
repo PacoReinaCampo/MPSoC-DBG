@@ -130,7 +130,6 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   reg        biu_rd_strobe;  // Indicates that the bus unit should ACK the last read operation + start another
   reg        biu_wr_strobe;  // Indicates BIU should latch input + begin a write operation
 
-
   // Status signals
   wire       in_word_count_zero;  // true when input byte counter is zero
   wire       out_word_count_zero;  // true when output byte counter is zero
