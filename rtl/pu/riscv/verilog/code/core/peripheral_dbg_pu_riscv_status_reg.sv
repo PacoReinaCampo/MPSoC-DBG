@@ -61,6 +61,7 @@ module peripheral_dbg_pu_riscv_status_reg #(
   //////////////////////////////////////////////////////////////////////////////
   // Variables
   //////////////////////////////////////////////////////////////////////////////
+
   reg [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] stall_bp, stall_bp_csff, stall_bp_tck;
   reg [X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0] stall_reg, stall_reg_csff, stall_reg_cpu;
 
