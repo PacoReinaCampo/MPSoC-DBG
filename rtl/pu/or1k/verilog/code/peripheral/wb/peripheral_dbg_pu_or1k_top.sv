@@ -145,7 +145,7 @@ module peripheral_dbg_pu_or1k_top #(
   wire [                           3:0] module_inhibit;  // signals to allow submodules to prevent top level from latching new module ID
 
   //////////////////////////////////////////////////////////////////////////////
-  // Module Body
+  // Body
   //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments

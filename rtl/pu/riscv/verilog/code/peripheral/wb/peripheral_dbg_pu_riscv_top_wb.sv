@@ -129,7 +129,7 @@ module peripheral_dbg_pu_riscv_top_wb #(
   wire  [`DBG_TOP_MAX_MODULES     -1:0] module_inhibit;  // signals to allow submodules to prevent top level from latching new module ID
 
   //////////////////////////////////////////////////////////////////////////////
-  // Module Body
+  // Body
   //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments
