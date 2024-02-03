@@ -41,13 +41,13 @@ module peripheral_design (
   input  wire        pclk,
   input  wire        presetn,
 
-  input  wire [15:0] paddr,
+  input  wire [31:0] paddr,
   input  wire [ 1:0] pstrb,
   input  wire        pwrite,
   output reg         pready,
   input  wire        psel,
-  input  wire [ 7:0] pwdata,
-  output reg  [ 7:0] prdata,
+  input  wire [31:0] pwdata,
+  output reg  [31:0] prdata,
   input  wire        penable,
   output reg         pslverr
 );
