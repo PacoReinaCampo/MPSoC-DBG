@@ -44,11 +44,11 @@
 
 +incdir+../../../../../../../rtl/pu/msp430/verilog/code/pkg/bb
 
-../../../../../../../rtl/pu/msp430/verilog/code/peripheral/bb/main/peripheral_dbg_pu_msp430.sv
-../../../../../../../rtl/pu/msp430/verilog/code/peripheral/bb/omsp/peripheral_dbg_pu_msp430_i2c.sv
-../../../../../../../rtl/pu/msp430/verilog/code/peripheral/bb/omsp/peripheral_dbg_pu_msp430_uart.sv
-../../../../../../../rtl/pu/msp430/verilog/code/peripheral/bb/fuse/peripheral_dbg_pu_msp430_sync_cell.sv
-../../../../../../../rtl/pu/msp430/verilog/code/peripheral/bb/omsp/peripheral_dbg_pu_msp430_hwbrk.sv
+../../../../../../../rtl/pu/msp430/verilog/code/peripheral/biu/main/peripheral_dbg_pu_msp430.sv
+../../../../../../../rtl/pu/msp430/verilog/code/peripheral/biu/omsp/peripheral_dbg_pu_msp430_i2c.sv
+../../../../../../../rtl/pu/msp430/verilog/code/peripheral/biu/omsp/peripheral_dbg_pu_msp430_uart.sv
+../../../../../../../rtl/pu/msp430/verilog/code/peripheral/biu/fuse/peripheral_dbg_pu_msp430_sync_cell.sv
+../../../../../../../rtl/pu/msp430/verilog/code/peripheral/biu/omsp/peripheral_dbg_pu_msp430_hwbrk.sv
 
 
-../../../../../../../bench/pu/msp430/verilog/code/tests/bb/peripheral_dbg_testbench.sv
+../../../../../../../bench/pu/msp430/verilog/code/tests/biu/peripheral_dbg_testbench.sv
