@@ -1,5 +1,70 @@
 code
 ├── peripheral
+│   ├── ahb3
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│   │   ├── peripheral_dbg_pu_or1k_crc32.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_status_reg.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncflop.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
+│   │   └── peripheral_dbg_pu_or1k_top.sv
+│   ├── apb4
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│   │   ├── peripheral_dbg_pu_or1k_crc32.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_status_reg.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncflop.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
+│   │   └── peripheral_dbg_pu_or1k_top.sv
+│   ├── axi4
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│   │   ├── peripheral_dbg_pu_or1k_crc32.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_status_reg.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncflop.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
+│   │   └── peripheral_dbg_pu_or1k_top.sv
+│   ├── bb
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│   │   ├── peripheral_dbg_pu_or1k_crc32.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_status_reg.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncflop.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
+│   │   └── peripheral_dbg_pu_or1k_top.sv
+│   ├── biu
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
+│   │   ├── peripheral_dbg_pu_or1k_crc32.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module.sv
+│   │   ├── peripheral_dbg_pu_or1k_module_wb.sv
+│   │   ├── peripheral_dbg_pu_or1k_status_reg.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncflop.sv
+│   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
+│   │   └── peripheral_dbg_pu_or1k_top.sv
 │   └── wb
 │       ├── peripheral_dbg_pu_or1k_biu.sv
 │       ├── peripheral_dbg_pu_or1k_biu_wb.sv
@@ -14,10 +79,35 @@ code
 │       ├── peripheral_dbg_pu_or1k_syncreg.sv
 │       └── peripheral_dbg_pu_or1k_top.sv
 └── pkg
+    ├── ahb3
+    │   ├── peripheral_dbg_pu_or1k_defines.sv
+    │   ├── peripheral_dbg_pu_or1k_defines_wb.sv
+    │   ├── peripheral_dbg_pu_or1k_tap_defines.sv
+    │   └── peripheral_dbg_pu_or1k_timescale.sv
+    ├── apb4
+    │   ├── peripheral_dbg_pu_or1k_defines.sv
+    │   ├── peripheral_dbg_pu_or1k_defines_wb.sv
+    │   ├── peripheral_dbg_pu_or1k_tap_defines.sv
+    │   └── peripheral_dbg_pu_or1k_timescale.sv
+    ├── axi4
+    │   ├── peripheral_dbg_pu_or1k_defines.sv
+    │   ├── peripheral_dbg_pu_or1k_defines_wb.sv
+    │   ├── peripheral_dbg_pu_or1k_tap_defines.sv
+    │   └── peripheral_dbg_pu_or1k_timescale.sv
+    ├── bb
+    │   ├── peripheral_dbg_pu_or1k_defines.sv
+    │   ├── peripheral_dbg_pu_or1k_defines_wb.sv
+    │   ├── peripheral_dbg_pu_or1k_tap_defines.sv
+    │   └── peripheral_dbg_pu_or1k_timescale.sv
+    ├── biu
+    │   ├── peripheral_dbg_pu_or1k_defines.sv
+    │   ├── peripheral_dbg_pu_or1k_defines_wb.sv
+    │   ├── peripheral_dbg_pu_or1k_tap_defines.sv
+    │   └── peripheral_dbg_pu_or1k_timescale.sv
     └── wb
         ├── peripheral_dbg_pu_or1k_defines.sv
         ├── peripheral_dbg_pu_or1k_defines_wb.sv
         ├── peripheral_dbg_pu_or1k_tap_defines.sv
         └── peripheral_dbg_pu_or1k_timescale.sv
 
-4 directories, 16 files
+14 directories, 96 files

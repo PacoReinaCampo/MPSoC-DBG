@@ -2,7 +2,15 @@ code
 └── tests
     ├── ahb3
     │   └── peripheral_dbg_testbench.sv
+    ├── apb4
+    │   └── peripheral_dbg_testbench.sv
+    ├── axi4
+    │   └── peripheral_dbg_testbench.sv
+    ├── bb
+    │   └── peripheral_dbg_testbench.sv
+    ├── biu
+    │   └── peripheral_dbg_testbench.sv
     └── wb
         └── peripheral_dbg_testbench.sv
 
-3 directories, 2 files
+7 directories, 6 files

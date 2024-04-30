@@ -1,6 +1,51 @@
 code
 ├── peripheral
-│   └── bb
+│   ├── ahb3
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.vhd
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
+│   │       └── peripheral_dbg_pu_msp430_uart.vhd
+│   ├── apb4
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.vhd
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
+│   │       └── peripheral_dbg_pu_msp430_uart.vhd
+│   ├── axi4
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.vhd
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
+│   │       └── peripheral_dbg_pu_msp430_uart.vhd
+│   ├── bb
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.vhd
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
+│   │       └── peripheral_dbg_pu_msp430_uart.vhd
+│   ├── biu
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.vhd
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
+│   │       └── peripheral_dbg_pu_msp430_uart.vhd
+│   └── wb
 │       ├── fuse
 │       │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │       ├── main
@@ -10,7 +55,17 @@ code
 │           ├── peripheral_dbg_pu_msp430_i2c.vhd
 │           └── peripheral_dbg_pu_msp430_uart.vhd
 └── pkg
-    └── bb
+    ├── ahb3
+    │   └── peripheral_dbg_pu_msp430_pkg.vhd
+    ├── apb4
+    │   └── peripheral_dbg_pu_msp430_pkg.vhd
+    ├── axi4
+    │   └── peripheral_dbg_pu_msp430_pkg.vhd
+    ├── bb
+    │   └── peripheral_dbg_pu_msp430_pkg.vhd
+    ├── biu
+    │   └── peripheral_dbg_pu_msp430_pkg.vhd
+    └── wb
         └── peripheral_dbg_pu_msp430_pkg.vhd
 
-7 directories, 6 files
+32 directories, 36 files

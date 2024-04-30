@@ -16,6 +16,30 @@ code
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 │   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
 │   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
+│   ├── apb4
+│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
+│   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
+│   ├── axi4
+│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
+│   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
+│   ├── bb
+│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
+│   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
+│   ├── biu
+│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
+│   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
 │   └── wb
 │       ├── peripheral_dbg_pu_riscv_biu_wb.sv
 │       ├── peripheral_dbg_pu_riscv_jsp_biu_wb.sv
@@ -26,4 +50,4 @@ code
     └── core
         └── peripheral_dbg_pu_riscv_pkg.sv
 
-6 directories, 20 files
+10 directories, 40 files

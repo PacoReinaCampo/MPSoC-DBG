@@ -44,7 +44,7 @@
 
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_biu.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_ahb3.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bus_module_core.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bytefifo.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_crc32.vhd
@@ -54,9 +54,9 @@ read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncreg.vhd
 
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_biu_ahb3.vhd
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_ahb3_ahb3.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_ahb3_ahb3.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_jsp_module_ahb3.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_module_ahb3.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/ahb3/peripheral_dbg_pu_riscv_top_ahb3.vhd
 

@@ -1,6 +1,16 @@
 code
 └── tests
-    └── bb
+    ├── ahb3
+    │   └── peripheral_dbg_testbench.vhd
+    ├── apb4
+    │   └── peripheral_dbg_testbench.vhd
+    ├── axi4
+    │   └── peripheral_dbg_testbench.vhd
+    ├── bb
+    │   └── peripheral_dbg_testbench.vhd
+    ├── biu
+    │   └── peripheral_dbg_testbench.vhd
+    └── wb
         └── peripheral_dbg_testbench.vhd
 
-2 directories, 1 file
+7 directories, 6 files

@@ -1,6 +1,51 @@
 code
 ├── peripheral
-│   └── bb
+│   ├── ahb3
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.sv
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_i2c.sv
+│   │       └── peripheral_dbg_pu_msp430_uart.sv
+│   ├── apb4
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.sv
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_i2c.sv
+│   │       └── peripheral_dbg_pu_msp430_uart.sv
+│   ├── axi4
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.sv
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_i2c.sv
+│   │       └── peripheral_dbg_pu_msp430_uart.sv
+│   ├── bb
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.sv
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_i2c.sv
+│   │       └── peripheral_dbg_pu_msp430_uart.sv
+│   ├── biu
+│   │   ├── fuse
+│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
+│   │   ├── main
+│   │   │   └── peripheral_dbg_pu_msp430.sv
+│   │   └── omsp
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_i2c.sv
+│   │       └── peripheral_dbg_pu_msp430_uart.sv
+│   └── wb
 │       ├── fuse
 │       │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │       ├── main
@@ -10,9 +55,29 @@ code
 │           ├── peripheral_dbg_pu_msp430_i2c.sv
 │           └── peripheral_dbg_pu_msp430_uart.sv
 └── pkg
-    └── bb
+    ├── ahb3
+    │   ├── peripheral_dbg_pu_msp430_defines.sv
+    │   ├── peripheral_dbg_pu_msp430_timescale.sv
+    │   └── peripheral_dbg_pu_msp430_undefines.sv
+    ├── apb4
+    │   ├── peripheral_dbg_pu_msp430_defines.sv
+    │   ├── peripheral_dbg_pu_msp430_timescale.sv
+    │   └── peripheral_dbg_pu_msp430_undefines.sv
+    ├── axi4
+    │   ├── peripheral_dbg_pu_msp430_defines.sv
+    │   ├── peripheral_dbg_pu_msp430_timescale.sv
+    │   └── peripheral_dbg_pu_msp430_undefines.sv
+    ├── bb
+    │   ├── peripheral_dbg_pu_msp430_defines.sv
+    │   ├── peripheral_dbg_pu_msp430_timescale.sv
+    │   └── peripheral_dbg_pu_msp430_undefines.sv
+    ├── biu
+    │   ├── peripheral_dbg_pu_msp430_defines.sv
+    │   ├── peripheral_dbg_pu_msp430_timescale.sv
+    │   └── peripheral_dbg_pu_msp430_undefines.sv
+    └── wb
         ├── peripheral_dbg_pu_msp430_defines.sv
         ├── peripheral_dbg_pu_msp430_timescale.sv
         └── peripheral_dbg_pu_msp430_undefines.sv
 
-7 directories, 8 files
+32 directories, 48 files

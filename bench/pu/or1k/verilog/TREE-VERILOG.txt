@@ -1,5 +1,75 @@
 code
 └── tests
+    ├── ahb3
+    │   ├── debug
+    │   │   ├── jtag_tap
+    │   │   │   └── tap_top.sv
+    │   │   └── jtag_vpi
+    │   │       └── jtag_vpi.sv
+    │   └── sample
+    │       ├── jtag_tap
+    │       │   └── tap_top.sv
+    │       ├── jtag_vpi
+    │       │   ├── jtag_vpi.sv
+    │       │   └── jtag_vpi_testbench.sv
+    │       └── ram
+    │           └── peripheral_dbg_ram_b3_wb.sv
+    ├── apb4
+    │   ├── debug
+    │   │   ├── jtag_tap
+    │   │   │   └── tap_top.sv
+    │   │   └── jtag_vpi
+    │   │       └── jtag_vpi.sv
+    │   └── sample
+    │       ├── jtag_tap
+    │       │   └── tap_top.sv
+    │       ├── jtag_vpi
+    │       │   ├── jtag_vpi.sv
+    │       │   └── jtag_vpi_testbench.sv
+    │       └── ram
+    │           └── peripheral_dbg_ram_b3_wb.sv
+    ├── axi4
+    │   ├── debug
+    │   │   ├── jtag_tap
+    │   │   │   └── tap_top.sv
+    │   │   └── jtag_vpi
+    │   │       └── jtag_vpi.sv
+    │   └── sample
+    │       ├── jtag_tap
+    │       │   └── tap_top.sv
+    │       ├── jtag_vpi
+    │       │   ├── jtag_vpi.sv
+    │       │   └── jtag_vpi_testbench.sv
+    │       └── ram
+    │           └── peripheral_dbg_ram_b3_wb.sv
+    ├── bb
+    │   ├── debug
+    │   │   ├── jtag_tap
+    │   │   │   └── tap_top.sv
+    │   │   └── jtag_vpi
+    │   │       └── jtag_vpi.sv
+    │   └── sample
+    │       ├── jtag_tap
+    │       │   └── tap_top.sv
+    │       ├── jtag_vpi
+    │       │   ├── jtag_vpi.sv
+    │       │   └── jtag_vpi_testbench.sv
+    │       └── ram
+    │           └── peripheral_dbg_ram_b3_wb.sv
+    ├── biu
+    │   ├── debug
+    │   │   ├── jtag_tap
+    │   │   │   └── tap_top.sv
+    │   │   └── jtag_vpi
+    │   │       └── jtag_vpi.sv
+    │   └── sample
+    │       ├── jtag_tap
+    │       │   └── tap_top.sv
+    │       ├── jtag_vpi
+    │       │   ├── jtag_vpi.sv
+    │       │   └── jtag_vpi_testbench.sv
+    │       └── ram
+    │           └── peripheral_dbg_ram_b3_wb.sv
     └── wb
         ├── debug
         │   ├── jtag_tap
@@ -15,4 +85,4 @@ code
             └── ram
                 └── peripheral_dbg_ram_b3_wb.sv
 
-9 directories, 6 files
+49 directories, 36 files

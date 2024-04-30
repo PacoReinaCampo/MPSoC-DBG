@@ -58,12 +58,32 @@ code
 │   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
 │   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
 │   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   ├── apb4
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   ├── axi4
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   ├── bb
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   ├── biu
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
 │   │   │   ├── blackbone
 │   │   │   │   ├── peripheral_dbg_soc_mam_adapter_bb.sv
 │   │   │   │   ├── peripheral_dbg_soc_osd_mam_bb.sv
 │   │   │   │   └── peripheral_dbg_soc_osd_mam_if_bb.sv
 │   │   │   ├── common
 │   │   │   │   └── peripheral_dbg_soc_osd_mam.sv
+│   │   │   ├── wb
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
 │   │   │   └── wishbone
 │   │   │       ├── peripheral_dbg_soc_mam_adapter_wb.sv
 │   │   │       ├── peripheral_dbg_soc_osd_mam_if_wb.sv
@@ -88,4 +108,4 @@ code
     ├── peripheral_dbg_pu_pkg.sv
     └── peripheral_dbg_soc_pkg.sv
 
-37 directories, 51 files
+42 directories, 66 files
