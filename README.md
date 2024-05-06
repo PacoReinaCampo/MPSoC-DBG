@@ -1,6 +1,6 @@
 # MPSoC-DBG
 ## QueenField
 
-![QueenField](../master/icon.jpg)
+![QueenField](../main/icon.jpg)
 
 **Debugger on Chip for a Multi-Processor System on Chip**
