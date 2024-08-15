@@ -13,7 +13,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_wb.sv
+    │           └── peripheral_dbg_ram_b3_ahb3.sv
     ├── apb4
     │   ├── debug
     │   │   ├── jtag_tap
@@ -27,7 +27,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_wb.sv
+    │           └── peripheral_dbg_ram_b3_apb4.sv
     ├── axi4
     │   ├── debug
     │   │   ├── jtag_tap
@@ -41,7 +41,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_wb.sv
+    │           └── peripheral_dbg_ram_b3_axi4.sv
     ├── bb
     │   ├── debug
     │   │   ├── jtag_tap
@@ -55,7 +55,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_wb.sv
+    │           └── peripheral_dbg_ram_b3_bb.sv
     ├── biu
     │   ├── debug
     │   │   ├── jtag_tap
@@ -69,7 +69,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_wb.sv
+    │           └── peripheral_dbg_ram_b3_biu.sv
     └── wb
         ├── debug
         │   ├── jtag_tap

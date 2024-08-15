@@ -59,21 +59,21 @@ code
 │   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
 │   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
 │   │   │   ├── apb4
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_apb4.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_apb4.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_apb4.sv
 │   │   │   ├── axi4
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_axi4.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_axi4.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_axi4.sv
 │   │   │   ├── bb
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_bb.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_bb.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_bb.sv
 │   │   │   ├── biu
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_biu.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_biu.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_biu.sv
 │   │   │   ├── blackbone
 │   │   │   │   ├── peripheral_dbg_soc_mam_adapter_bb.sv
 │   │   │   │   ├── peripheral_dbg_soc_osd_mam_bb.sv
@@ -81,9 +81,9 @@ code
 │   │   │   ├── common
 │   │   │   │   └── peripheral_dbg_soc_osd_mam.sv
 │   │   │   ├── wb
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_wb.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_if_wb.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_wb.sv
 │   │   │   └── wishbone
 │   │   │       ├── peripheral_dbg_soc_mam_adapter_wb.sv
 │   │   │       ├── peripheral_dbg_soc_osd_mam_if_wb.sv

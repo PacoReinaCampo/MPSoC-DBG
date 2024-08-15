@@ -11,41 +11,41 @@ code
 │   └── peripheral_dbg_pu_riscv_syncreg.vhd
 ├── peripheral
 │   ├── ahb3
-│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
+│   │   ├── peripheral_dbg_pu_riscv_ahb3_ahb3.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_ahb3_ahb3.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_ahb3.vhd
 │   │   ├── peripheral_dbg_pu_riscv_module_ahb3.vhd
 │   │   └── peripheral_dbg_pu_riscv_top_ahb3.vhd
 │   ├── apb4
-│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
+│   │   ├── peripheral_dbg_pu_riscv_apb4_apb4.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_apb4_apb4.vhd
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.vhd
-│   │   └── peripheral_dbg_pu_riscv_top_ahb3.vhd
+│   │   ├── peripheral_dbg_pu_riscv_module_apb4.vhd
+│   │   └── peripheral_dbg_pu_riscv_top_apb4.vhd
 │   ├── axi4
-│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.vhd
-│   │   └── peripheral_dbg_pu_riscv_top_ahb3.vhd
+│   │   ├── peripheral_dbg_pu_riscv_axi4_axi4.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_axi4_axi4.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_axi4.vhd
+│   │   ├── peripheral_dbg_pu_riscv_module_axi4.vhd
+│   │   └── peripheral_dbg_pu_riscv_top_axi4.vhd
 │   ├── bb
-│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.vhd
-│   │   └── peripheral_dbg_pu_riscv_top_ahb3.vhd
+│   │   ├── peripheral_dbg_pu_riscv_bb_bb.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_bb_bb.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_bb.vhd
+│   │   ├── peripheral_dbg_pu_riscv_module_bb.vhd
+│   │   └── peripheral_dbg_pu_riscv_top_bb.vhd
 │   ├── biu
-│   │   ├── peripheral_dbg_pu_riscv_biu_ahb3.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.vhd
-│   │   └── peripheral_dbg_pu_riscv_top_ahb3.vhd
+│   │   ├── peripheral_dbg_pu_riscv_biu_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_module_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_module_biu.vhd
+│   │   └── peripheral_dbg_pu_riscv_top_biu.vhd
 │   └── wb
-│       ├── peripheral_dbg_pu_riscv_biu_wb.vhd
-│       ├── peripheral_dbg_pu_riscv_jsp_biu_wb.vhd
 │       ├── peripheral_dbg_pu_riscv_jsp_module_wb.vhd
+│       ├── peripheral_dbg_pu_riscv_jsp_wb_wb.vhd
 │       ├── peripheral_dbg_pu_riscv_module_wb.vhd
-│       └── peripheral_dbg_pu_riscv_top_wb.vhd
+│       ├── peripheral_dbg_pu_riscv_top_wb.vhd
+│       └── peripheral_dbg_pu_riscv_wb_wb.vhd
 └── pkg
     └── core
         └── peripheral_dbg_pu_riscv_pkg.vhd

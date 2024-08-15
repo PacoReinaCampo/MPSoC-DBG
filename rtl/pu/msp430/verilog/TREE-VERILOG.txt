@@ -6,7 +6,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_hahb3rk.sv
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── apb4
@@ -15,7 +15,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_hapb4rk.sv
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── axi4
@@ -24,7 +24,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_haxi4rk.sv
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── bb
@@ -33,7 +33,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_hbbrk.sv
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── biu
@@ -42,7 +42,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
+│   │       ├── peripheral_dbg_pu_msp430_hbiurk.sv
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   └── wb
