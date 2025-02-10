@@ -146,8 +146,8 @@ module peripheral_dbg_pu_or1k_module #(
   wire [                        31:0] address_data_in;  // from data_register_i
   wire [                        15:0] count_data_in;  // from data_register_i
   wire [                         3:0] operation_in;  // from data_register_i
-  wire [                        31:0] data_to_biu;  // from data_register_i
-  wire [                        31:0] data_from_biu;  // to data_out_shift_register
+  wire [                        31:0] data_to_axi4;  // from data_register_i
+  wire [                        31:0] data_from_axi4;  // to data_out_shift_register
   wire [                        31:0] crc_data_out;  // output of CRC module, to output shift register
   wire                                crc_data_in;  // input to CRC module, either data_register_i[52] or data_out_shift_reg[0]
   wire                                crc_serial_out;
@@ -173,9 +173,9 @@ module peripheral_dbg_pu_or1k_module #(
 
   generate
     if (ADBG_USE_HISPEED != "NONE") begin
-      assign data_to_biu = {tdi_i, data_register_i[52:22]};
+      assign data_to_axi4 = {tdi_i, data_register_i[52:22]};
     end else begin
-      assign data_to_biu = data_register_i[52:21];
+      assign data_to_axi4 = data_register_i[52:21];
     end
   endgenerate
 
@@ -290,7 +290,7 @@ module peripheral_dbg_pu_or1k_module #(
   assign word_count_zero = (word_count == 16'h0);
 
   // Output register and TDO output MUX
-  assign out_reg_data    = (out_reg_data_sel) ? data_from_internal_reg : data_from_biu;
+  assign out_reg_data    = (out_reg_data_sel) ? data_from_internal_reg : data_from_axi4;
 
   always @(posedge tck_i or posedge rst_i) begin
     if (rst_i) begin
@@ -319,12 +319,12 @@ module peripheral_dbg_pu_or1k_module #(
   // latch address, operation, and write data on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_biu or1k_biu_i (
+  peripheral_dbg_pu_or1k_axi4 or1k_axi4_i (
     // Debug interface signals
     .tck_i   (tck_i),
     .rst_i   (rst_i),
-    .data_i  (data_to_biu),
-    .data_o  (data_from_biu),
+    .data_i  (data_to_axi4),
+    .data_o  (data_from_axi4),
     .addr_i  (address_counter),
     .strobe_i(biu_strobe),
     .rd_wrn_i(rd_op),            // If 0, then write op

@@ -145,11 +145,11 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   wire [3:0] decremented_out_word_count;
   wire [3:0] decremented_user_word_count;
   wire [3:0] count_data_in;  // from data_register_i
-  wire [7:0] data_to_biu;  // from data_register_i
-  wire [7:0] data_from_biu;  // to data_out_shift_register
+  wire [7:0] data_to_wb;  // from data_register_i
+  wire [7:0] data_from_wb;  // to data_out_shift_register
   wire [3:0] biu_space_available;
   wire [3:0] biu_bytes_available;
-  wire [7:0] count_data_from_biu;  // combined space avail / bytes avail
+  wire [7:0] count_data_from_wb;  // combined space avail / bytes avail
   wire [7:0] out_reg_data;  // parallel input to the output shift register
 
   reg  [2:0] wr_module_state;  // FSM state
@@ -163,9 +163,9 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments
-  assign count_data_from_biu = {biu_bytes_available, biu_space_available};
+  assign count_data_from_wb = {biu_bytes_available, biu_space_available};
   assign count_data_in       = {tdi_i, data_register_i[52:50]};  // Second nibble of user data
-  assign data_to_biu         = {tdi_i, data_register_i[52:46]};
+  assign data_to_wb         = {tdi_i, data_register_i[52:46]};
   assign top_inhibit_o       = 1'b0;
 
   // Input bit counter
@@ -237,7 +237,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   assign user_word_count_zero = (user_word_count == 4'h0);
 
   // Output register and TDO output MUX
-  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_biu : data_from_biu;
+  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_wb : data_from_wb;
 
   always @(posedge tck_i or posedge rst_i) begin
     if (rst_i) begin
@@ -256,12 +256,12 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   // latch write data (and ack read data) on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_jsp_biu jsp_biu_i (
+  peripheral_dbg_pu_or1k_jsp_wb jsp_wb_i (
     // Debug interface signals
     .tck_i            (tck_i),
     .rst_i            (rst_i),
-    .data_i           (data_to_biu),
-    .data_o           (data_from_biu),
+    .data_i           (data_to_wb),
+    .data_o           (data_from_wb),
     .bytes_available_o(biu_bytes_available),
     .bytes_free_o     (biu_space_available),
     .rd_strobe_i      (biu_rd_strobe),

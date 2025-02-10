@@ -121,7 +121,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
   reg                               out_reg_shift_en;  // Enable shift of data_out_shift_reg
   reg                               out_reg_data_sel;  // 0 = BIU data, 1 = internal register data
   reg  [                       1:0] tdo_output_sel;  // Selects signal to send to TDO.  0 = ready bit, 1 = output register, 2 = CRC match, 3 = CRC shift reg.
-  reg                               biu_strobe;  // Indicates that the bus unit should latch data and start a transaction
+  reg                               apb4_strobe;  // Indicates that the bus unit should latch data and start a transaction
   reg                               crc_clr;  // resets CRC module
   reg                               crc_en;  // does 1-bit iteration in CRC module
   reg                               crc_in_sel;  // selects incoming write data (=0) or outgoing read data (=1)as input to CRC module
@@ -129,14 +129,14 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
   reg                               regsel_ld_en;  // Reg. select register load enable
   reg                               intreg_ld_en;  // load enable for internal registers
   reg                               error_reg_en;  // Tells the error register to check for and latch a bus error
-  reg                               biu_clr_err;  // Allows FSM to reset BIU, to clear the biu_err bit which may have been set on the last transaction of the last burst.
+  reg                               apb4_clr_err;  // Allows FSM to reset BIU, to clear the apb4_err bit which may have been set on the last transaction of the last burst.
 
   // Status signals
   wire                              word_count_zero;  // true when byte counter is zero
   wire                              bit_count_max;  // true when bit counter is equal to current word size
   wire                              module_cmd;  // inverse of MSB of data_register_i. 1 means current cmd not for top level (but is for us)
-  wire                              biu_ready;  // indicates that the BIU has finished the last command
-  wire                              biu_err;  // indicates wishbone error during BIU transaction
+  wire                              apb4_ready;  // indicates that the BIU has finished the last command
+  wire                              apb4_err;  // indicates wishbone error during BIU transaction
   wire                              burst_instruction;  // True when the input_data_i reg has a valid burst instruction for this module
   wire                              intreg_instruction;  // True when the input_data_i reg has a valid internal register instruction
   wire                              intreg_write;  // True when the input_data_i reg has an internal register write op
@@ -161,7 +161,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
   wire                              crc_serial_out;
   wire [                      32:0] out_reg_data;  // parallel input to the output shift register
   reg  [                      32:0] data_from_internal_reg;  // data from internal reg. MUX to output shift register
-  wire                              biu_rst;  // logical OR of rst_i and biu_clr_err
+  wire                              apb4_rst;  // logical OR of rst_i and apb4_clr_err
 
   wire [`DBG_WB_REGSELECT_SIZE-1:0] reg_select_data;  // from data_register_i, input to internal register select register
 
@@ -279,15 +279,15 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
       end
     end else if (error_reg_en && !internal_reg_error[0]) begin
       if (ADBG_USE_HISPEED != "NONE") begin
-        if (biu_err || (!biu_ready)) begin
+        if (apb4_err || (!apb4_ready)) begin
           internal_reg_error[0] = 1'b1;
-        end else if (biu_err) begin
+        end else if (apb4_err) begin
           internal_reg_error[0] = 1'b1;
-        end else if (biu_strobe) begin
+        end else if (apb4_strobe) begin
           internal_reg_error[32:1] = address_counter;
         end
       end
-    end else if (biu_strobe && !internal_reg_error[0]) begin
+    end else if (apb4_strobe && !internal_reg_error[0]) begin
       internal_reg_error[32:1] = address_counter;  // When no error, latch this whether error_reg_en or not
     end
   end
@@ -358,9 +358,9 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
     end
   end
 
-  always @(tdo_output_sel or data_out_shift_reg[0] or biu_ready or crc_match or crc_serial_out) begin
+  always @(tdo_output_sel or data_out_shift_reg[0] or apb4_ready or crc_match or crc_serial_out) begin
     if (tdo_output_sel == 2'h0) begin
-      module_tdo_o <= biu_ready;
+      module_tdo_o <= apb4_ready;
     end else if (tdo_output_sel == 2'h1) begin
       module_tdo_o <= data_out_shift_reg[0];
     end else if (tdo_output_sel == 2'h2) begin
@@ -375,19 +375,19 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
   // latch address, operation, and write data on rising clock edge 
   // when strobe is asserted
 
-  assign biu_rst = rst_i | biu_clr_err;
+  assign apb4_rst = rst_i | apb4_clr_err;
 
-  peripheral_dbg_pu_or1k_biu_apb4 apb4_biu_i (
+  peripheral_dbg_pu_or1k_apb4_apb4 apb4_apb4_i (
     // Debug interface signals
     .tck_i      (tck_i),
-    .rst_i      (biu_rst),
+    .rst_i      (apb4_rst),
     .data_i     (data_to_biu),
     .data_o     (data_from_biu),
     .addr_i     (address_counter),
-    .strobe_i   (biu_strobe),
+    .strobe_i   (apb4_strobe),
     .rd_wrn_i   (rd_op),            // If 0, then write op
-    .rdy_o      (biu_ready),
-    .err_o      (biu_err),
+    .rdy_o      (apb4_ready),
+    .err_o      (apb4_err),
     .word_size_i(word_size_bytes),
 
     // Wishbone signals
@@ -438,7 +438,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
   end
 
   // Determination of next state; purely combinatorial
-  always @(module_state or module_select_i or module_cmd or update_dr_i or capture_dr_i or operation_in[2] or word_count_zero or bit_count_max or data_register_i[52] or bit_count_32 or biu_ready or burst_instruction) begin
+  always @(module_state or module_select_i or module_cmd or update_dr_i or capture_dr_i or operation_in[2] or word_count_zero or bit_count_max or data_register_i[52] or bit_count_32 or apb4_ready or burst_instruction) begin
     case (module_state)
       `STATE_idle: begin
         if (module_cmd && module_select_i && update_dr_i && burst_instruction && operation_in[2]) begin
@@ -466,7 +466,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
       `STATE_Rstatus: begin
         if (update_dr_i) begin
           module_next_state <= `STATE_idle;
-        end else if (biu_ready) begin
+        end else if (apb4_ready) begin
           module_next_state <= `STATE_Rburst;
         end else begin
           module_next_state <= `STATE_Rstatus;
@@ -563,7 +563,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
 
   // Outputs of state machine, pure combinatorial
   always @ (module_state or module_next_state or module_select_i or update_dr_i or capture_dr_i or shift_dr_i or operation_in[2]
-            or word_count_zero or bit_count_max or data_register_i[52] or biu_ready or intreg_instruction or module_cmd 
+            or word_count_zero or bit_count_max or data_register_i[52] or apb4_ready or intreg_instruction or module_cmd 
             or intreg_write or decremented_word_count) begin
     // Default everything to 0, keeps the case statement simple
     addr_sel         <= 1'b1;  // Selects data for address_counter. 0 = data_register_i, 1 = incremented address count
@@ -575,8 +575,8 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
     word_ct_en       <= 1'b0;  // Enable byte counter register
     out_reg_ld_en    <= 1'b0;  // Enable parallel load of data_out_shift_reg
     out_reg_shift_en <= 1'b0;  // Enable shift of data_out_shift_reg
-    tdo_output_sel   <= 2'b1;  // 1 = data reg, 0 = biu_ready, 2 = crc_match, 3 = CRC data
-    biu_strobe       <= 1'b0;
+    tdo_output_sel   <= 2'b1;  // 1 = data reg, 0 = apb4_ready, 2 = crc_match, 3 = CRC data
+    apb4_strobe       <= 1'b0;
     crc_clr          <= 1'b0;
     crc_en           <= 1'b0;  // add the input bit to the CRC calculation
     crc_in_sel       <= 1'b0;  // 0 = tdo, 1 = tdi
@@ -585,7 +585,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
     regsel_ld_en     <= 1'b0;
     intreg_ld_en     <= 1'b0;
     error_reg_en     <= 1'b0;
-    biu_clr_err      <= 1'b0;  // Set this to reset the BIU, clearing the biu_err bit
+    apb4_clr_err      <= 1'b0;  // Set this to reset the BIU, clearing the apb4_err bit
     top_inhibit_o    <= 1'b0;  // Don't disable the top-level module in the default case
     case (module_state)
       `STATE_idle: begin
@@ -618,7 +618,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
       end
       `STATE_Rbegin: begin
         if (!word_count_zero) begin  // Start a biu read transaction
-          biu_strobe <= 1'b1;
+          apb4_strobe <= 1'b1;
           addr_sel   <= 1'b1;
           addr_ct_en <= 1'b1;
         end
@@ -635,7 +635,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
           word_ct_sel      <= 1'b1;
           word_ct_en       <= 1'b1;
           if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
-            biu_strobe <= 1'b1;
+            apb4_strobe <= 1'b1;
             addr_sel   <= 1'b1;
             addr_ct_en <= 1'b1;
           end
@@ -656,7 +656,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
           word_ct_sel      <= 1'b1;
           word_ct_en       <= 1'b1;
           if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
-            biu_strobe <= 1'b1;
+            apb4_strobe <= 1'b1;
             addr_sel   <= 1'b1;
             addr_ct_en <= 1'b1;
           end
@@ -673,7 +673,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
         tdo_output_sel <= 2'h1;
         top_inhibit_o  <= 1'b1;  // in case of early termination
         if (module_next_state == `STATE_Wburst) begin
-          biu_clr_err <= 1'b1;  // If error occurred on last transaction of last burst, biu_err is still set.  Clear it.
+          apb4_clr_err <= 1'b1;  // If error occurred on last transaction of last burst, apb4_err is still set.  Clear it.
           bit_ct_en   <= 1'b1;
           word_ct_sel <= 1'b1;  // Pre-decrement the byte count
           word_ct_en  <= 1'b1;
@@ -692,9 +692,9 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
         if (ADBG_USE_HISPEED != "NONE" && bit_count_max) begin
           error_reg_en <= 1'b1;  // Check the apb4_error bit
           bit_ct_rst   <= 1'b1;  // Zero the bit count
-          // start transaction. Can't do this here if not hispeed, biu_ready
+          // start transaction. Can't do this here if not hispeed, apb4_ready
           // is the status bit, and it's 0 if we start a transaction here.
-          biu_strobe   <= 1'b1;  // Start a BIU transaction
+          apb4_strobe   <= 1'b1;  // Start a BIU transaction
           addr_ct_en   <= 1'b1;  // Increment thte address counter
           // Also can't dec the byte count yet unless hispeed,
           // that would skip the last word.
@@ -706,7 +706,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
         tdo_output_sel <= 2'h0;  // Send the status bit to TDO
         error_reg_en   <= 1'b1;  // Check the apb4_error bit
         // start transaction
-        biu_strobe     <= 1'b1;  // Start a BIU transaction
+        apb4_strobe     <= 1'b1;  // Start a BIU transaction
         word_ct_sel    <= 1'b1;  // Decrement the byte count
         word_ct_en     <= 1'b1;
         bit_ct_rst     <= 1'b1;  // Zero the bit count
