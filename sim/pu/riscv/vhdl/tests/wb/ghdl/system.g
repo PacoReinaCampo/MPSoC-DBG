@@ -13,4 +13,4 @@ ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_status_reg.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncreg.vhd
-ghdl -a --std=08 ../../../../../../../bench/pu/riscv/vhdl/code/tests/wb/peripheral_dbg_testbench.vhd
+ghdl -a --std=08 ../../../../../../../verification/tasks/pu/riscv/vhdl/code/tests/wb/peripheral_dbg_testbench.vhd

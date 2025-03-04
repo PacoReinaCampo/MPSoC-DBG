@@ -24,4 +24,4 @@ ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/modules/scm/periphe
 ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/modules/stm/peripheral_dbg_soc_osd_stm_template.vhd
 ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/modules/stm/peripheral_dbg_soc_osd_stm.vhd
 ghdl -a --std=08 ../../../../../rtl/soc/vhdl/code/peripheral/top/peripheral_dbg_soc_interface.vhd
-ghdl -a --std=08 ../../../../../bench/soc/vhdl/code/tests/peripheral_dbg_testbench.vhd
+ghdl -a --std=08 ../../../../../verification/tasks/soc/vhdl/code/tests/peripheral_dbg_testbench.vhd

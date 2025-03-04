@@ -60,4 +60,4 @@
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncflop.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncreg.sv
 
-../../../../../../../bench/pu/riscv/verilog/code/tests/bb/peripheral_dbg_testbench.sv
+../../../../../../../verification/tasks/pu/riscv/verilog/code/tests/bb/peripheral_dbg_testbench.sv

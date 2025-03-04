@@ -4,4 +4,4 @@ ghdl -a --std=08 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/omsp
 ghdl -a --std=08 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_uart.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/fuse/peripheral_dbg_pu_msp430_sync_cell.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_hwbrk.vhd
-ghdl -a --std=08 ../../../../../../../bench/pu/msp430/vhdl/code/tests/wb/peripheral_dbg_testbench.vhd
+ghdl -a --std=08 ../../../../../../../verification/tasks/pu/msp430/vhdl/code/tests/wb/peripheral_dbg_testbench.vhd

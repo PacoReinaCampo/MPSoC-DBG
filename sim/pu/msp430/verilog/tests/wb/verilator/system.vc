@@ -51,4 +51,4 @@
 ../../../../../../../rtl/pu/msp430/verilog/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_hwbrk.sv
 
 
-../../../../../../../bench/pu/msp430/verilog/code/tests/wb/peripheral_dbg_testbench.sv
+../../../../../../../verification/tasks/pu/msp430/verilog/code/tests/wb/peripheral_dbg_testbench.sv

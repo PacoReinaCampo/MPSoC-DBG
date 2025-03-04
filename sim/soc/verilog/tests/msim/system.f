@@ -67,4 +67,4 @@
 ../../../../../rtl/soc/verilog/code/peripheral/modules/scm/peripheral_dbg_soc_osd_scm.sv
 ../../../../../rtl/soc/verilog/code/peripheral/top/peripheral_dbg_soc_interface.sv
 
-../../../../../bench/soc/verilog/code/tests/peripheral_dbg_testbench.sv
+../../../../../verification/tasks/soc/verilog/code/tests/peripheral_dbg_testbench.sv

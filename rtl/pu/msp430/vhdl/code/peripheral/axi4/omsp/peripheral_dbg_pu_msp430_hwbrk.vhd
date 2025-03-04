@@ -44,7 +44,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 use work.peripheral_dbg_pu_msp430_pkg.all;
 
-entity peripheral_dbg_pu_msp430_hbiurk is
+entity peripheral_dbg_pu_msp430_hwbrk is
   port (
     brk_halt : out std_logic;
     brk_pnd  : out std_logic;
@@ -60,9 +60,9 @@ entity peripheral_dbg_pu_msp430_hbiurk is
     dbg_din      : in std_logic_vector (15 downto 0);
     eu_mab       : in std_logic_vector (15 downto 0);
     pc           : in std_logic_vector (15 downto 0));
-end peripheral_dbg_pu_msp430_hbiurk;
+end peripheral_dbg_pu_msp430_hwbrk;
 
-architecture rtl of peripheral_dbg_pu_msp430_hbiurk is
+architecture rtl of peripheral_dbg_pu_msp430_hwbrk is
 
   -- 0. WIRE & PARAMETER DECLARATION
   signal range_wr_set : std_logic;

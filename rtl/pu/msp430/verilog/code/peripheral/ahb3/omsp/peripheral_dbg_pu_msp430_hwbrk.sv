@@ -49,7 +49,7 @@
 `include "peripheral_dbg_pu_msp430_defines.sv"
 `endif
 
-module peripheral_dbg_pu_msp430_hbiurk (
+module peripheral_dbg_pu_msp430_hwbrk (
   // OUTPUTs
   output        brk_halt,  // Hardware breakpoint command
   output        brk_pnd,   // Hardware break/watch-point pending
@@ -219,7 +219,7 @@ module peripheral_dbg_pu_msp430_hbiurk (
 
   // Break CPU
   assign brk_halt     = brk_ctl[`BRK_EN] & |brk_stat_set;
-endmodule  // peripheral_dbg_pu_msp430_hbiurk
+endmodule  // peripheral_dbg_pu_msp430_hwbrk
 
 `ifdef OMSP_NO_INCLUDE
 `else

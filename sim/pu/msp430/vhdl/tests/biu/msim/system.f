@@ -50,4 +50,4 @@
 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/biu/fuse/peripheral_dbg_pu_msp430_sync_cell.vhd
 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/biu/omsp/peripheral_dbg_pu_msp430_hwbrk.vhd
 
-../../../../../../../bench/pu/msp430/vhdl/code/tests/biu/peripheral_dbg_testbench.vhd
+../../../../../../../verification/tasks/pu/msp430/vhdl/code/tests/biu/peripheral_dbg_testbench.vhd

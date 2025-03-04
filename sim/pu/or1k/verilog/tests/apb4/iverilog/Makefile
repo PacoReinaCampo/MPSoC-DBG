@@ -43,7 +43,7 @@
 ###################################################################################
 
 SOURCE_DIR=../../../../../../..
-BENCH_DIR=$(SOURCE_DIR)/bench/pu/or1k/verilog/code/tests/wb/sample
+BENCH_DIR=$(SOURCE_DIR)/verification/tasks/pu/or1k/verilog/code/tests/wb/sample
 INCLUDE_DIR=$(SOURCE_DIR)/rtl/pu/or1k/verilog/code/pkg/wb
 
 # Set V=1 when calling make to enable verbose output
