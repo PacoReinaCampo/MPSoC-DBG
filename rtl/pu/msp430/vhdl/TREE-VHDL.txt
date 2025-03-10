@@ -6,7 +6,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hahb3rk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── apb4
@@ -15,7 +15,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hapb4rk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── axi4
@@ -24,7 +24,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_haxi4rk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── bb
@@ -33,7 +33,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hbbrk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── biu
@@ -42,7 +42,7 @@ code
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
-│   │       ├── peripheral_dbg_pu_msp430_hbiurk.vhd
+│   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   └── wb
