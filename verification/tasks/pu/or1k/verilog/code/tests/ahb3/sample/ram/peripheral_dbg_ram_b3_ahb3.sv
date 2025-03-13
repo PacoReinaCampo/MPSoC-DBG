@@ -49,22 +49,22 @@ module peripheral_dbg_ram_b3_ahb3 #(
   parameter MEM_SIZE_BYTES = 32'h0000_5000,  // 20KBytes
   parameter MEM_ADR_WIDTH  = 15
 ) (
-  input ahb3_clk_i,
-  input ahb3_rst_i,
+  input wb_clk_i,
+  input wb_rst_i,
 
-  input [AW-1:0] ahb3_adr_i,
-  input [DW-1:0] ahb3_dat_i,
-  input [   3:0] ahb3_sel_i,
-  input          ahb3_we_i,
-  input [   1:0] ahb3_bte_i,
-  input [   2:0] ahb3_cti_i,
-  input          ahb3_cyc_i,
-  input          ahb3_stb_i,
+  input [AW-1:0] wb_adr_i,
+  input [DW-1:0] wb_dat_i,
+  input [   3:0] wb_sel_i,
+  input          wb_we_i,
+  input [   1:0] wb_bte_i,
+  input [   2:0] wb_cti_i,
+  input          wb_cyc_i,
+  input          wb_stb_i,
 
-  output          ahb3_ack_o,
-  output          ahb3_err_o,
-  output          ahb3_rty_o,
-  output [DW-1:0] ahb3_dat_o
+  output          wb_ack_o,
+  output          wb_err_o,
+  output          wb_rty_o,
+  output [DW-1:0] wb_dat_o
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -80,40 +80,40 @@ module peripheral_dbg_ram_b3_ahb3 #(
   //////////////////////////////////////////////////////////////////////////////
 
   // synthesis attribute ram_style of mem is block
-  reg  [                                          DW-1:0] mem                                                                                                    [0 : MEM_WORDS-1];
+  reg [DW-1:0] mem [0 : MEM_WORDS-1];
 
   // Register to address internal memory array
-  reg  [(MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES)-1:0] adr;
+  reg [(MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES)-1:0] adr;
 
   // Register to indicate if the cycle is a Wishbone B3-registered feedback 
   // type access
-  reg                                                     ahb3_b3_trans;
+  reg wb_b3_trans;
 
   // Register to use for counting the addresses when doing burst accesses
-  reg  [  MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES-1:0] burst_adr_counter;
+  reg [MEM_ADR_WIDTH-ADR_WIDTH_FOR_NUM_WORD_BYTES-1:0] burst_adr_counter;
 
   // Logic to detect if there's a burst access going on
-  wire                                                    ahb3_b3_trans_start = ((ahb3_cti_i == 3'b001) | (ahb3_cti_i == 3'b010)) & ahb3_stb_i & !ahb3_b3_trans & ahb3_cyc_i;
+  wire wb_b3_trans_start = ((wb_cti_i == 3'b001) | (wb_cti_i == 3'b010)) & wb_stb_i & !wb_b3_trans & wb_cyc_i;
 
-  wire                                                    ahb3_b3_trans_stop = ((ahb3_cti_i == 3'b111) & ahb3_stb_i & ahb3_b3_trans & ahb3_ack_o) | ahb3_err_o;
+  wire wb_b3_trans_stop = ((wb_cti_i == 3'b111) & wb_stb_i & wb_b3_trans & wb_ack_o) | wb_err_o;
 
   // Register it locally
-  reg  [                                             1:0] ahb3_bte_i_r;
-  reg  [                                             2:0] ahb3_cti_i_r;
+  reg [1:0] wb_bte_i_r;
+  reg [2:0] wb_cti_i_r;
 
-  wire                                                    using_burst_adr = ahb3_b3_trans;
+  wire using_burst_adr = wb_b3_trans;
 
-  wire                                                    burst_access_wrong_ahb3_adr = (using_burst_adr & (adr != ahb3_adr_i[MEM_ADR_WIDTH-1:2]));
+  wire burst_access_wrong_wb_adr = (using_burst_adr & (adr != wb_adr_i[MEM_ADR_WIDTH-1:2]));
 
-  wire [                                            31:0] wr_data;
+  wire [31:0] wr_data;
 
-  wire                                                    ram_we = ahb3_we_i & ahb3_ack_o;
+  wire ram_we = wb_we_i & wb_ack_o;
 
   // Error when out of bounds of memory - skip top nibble of address in case
   // this is mapped somewhere other than 0x0.
-  wire                                                    addr_err = ahb3_cyc_i & ahb3_stb_i & (|ahb3_adr_i[AW-1-4:MEM_ADR_WIDTH]);
+  wire addr_err = wb_cyc_i & wb_stb_i & (|wb_adr_i[AW-1-4:MEM_ADR_WIDTH]);
 
-  reg                                                     ahb3_ack_o_r;
+  reg wb_ack_o_r;
 
   //////////////////////////////////////////////////////////////////////////////
   // Tasks
@@ -164,30 +164,30 @@ module peripheral_dbg_ram_b3_ahb3 #(
   // Body
   //////////////////////////////////////////////////////////////////////////////
 
-  always @(posedge ahb3_clk_i) begin
-    if (ahb3_rst_i) begin
-      ahb3_b3_trans <= 0;
-    end else if (ahb3_b3_trans_start) begin
-      ahb3_b3_trans <= 1;
-    end else if (ahb3_b3_trans_stop) begin
-      ahb3_b3_trans <= 0;
+  always @(posedge wb_clk_i) begin
+    if (wb_rst_i) begin
+      wb_b3_trans <= 0;
+    end else if (wb_b3_trans_start) begin
+      wb_b3_trans <= 1;
+    end else if (wb_b3_trans_stop) begin
+      wb_b3_trans <= 0;
     end
   end
 
-  always @(posedge ahb3_clk_i) begin
-    ahb3_bte_i_r <= ahb3_bte_i;
-    ahb3_cti_i_r <= ahb3_cti_i;
+  always @(posedge wb_clk_i) begin
+    wb_bte_i_r <= wb_bte_i;
+    wb_cti_i_r <= wb_cti_i;
   end
 
   // Burst address generation logic
-  always @(ahb3_ack_o or ahb3_b3_trans or ahb3_b3_trans_start or ahb3_bte_i_r or ahb3_cti_i_r or ahb3_adr_i or adr) begin
-    if (ahb3_b3_trans_start) begin
+  always @(wb_ack_o or wb_b3_trans or wb_b3_trans_start or wb_bte_i_r or wb_cti_i_r or wb_adr_i or adr) begin
+    if (wb_b3_trans_start) begin
       // Kick off burst_adr_counter, this assumes 4-byte words when getting
       // address off incoming Wishbone bus address! 
       // So if DW is no longer 4 bytes, change this!
-      burst_adr_counter = ahb3_adr_i[MEM_ADR_WIDTH-1:2];
-    end else if ((ahb3_cti_i_r == 3'b010) & ahb3_ack_o & ahb3_b3_trans) begin  // Incrementing burst
-      case (ahb3_bte_i_r)
+      burst_adr_counter = wb_adr_i[MEM_ADR_WIDTH-1:2];
+    end else if ((wb_cti_i_r == 3'b010) & wb_ack_o & wb_b3_trans) begin  // Incrementing burst
+      case (wb_bte_i_r)
         2'b00: burst_adr_counter = adr + 1;  // Linear burst
         2'b01: burst_adr_counter[1:0] = adr[1:0] + 1;  // 4-beat wrap burst
         2'b10: burst_adr_counter[2:0] = adr[2:0] + 1;  // 8-beat wrap burst
@@ -197,58 +197,58 @@ module peripheral_dbg_ram_b3_ahb3 #(
   end
 
   // Address registering logic
-  always @(posedge ahb3_clk_i) begin
-    if (ahb3_rst_i) begin
+  always @(posedge wb_clk_i) begin
+    if (wb_rst_i) begin
       adr <= 0;
     end else if (using_burst_adr) begin
       adr <= burst_adr_counter;
-    end else if (ahb3_cyc_i & ahb3_stb_i) begin
-      adr <= ahb3_adr_i[MEM_ADR_WIDTH-1:2];
+    end else if (wb_cyc_i & wb_stb_i) begin
+      adr <= wb_adr_i[MEM_ADR_WIDTH-1:2];
     end
   end
 
-  assign ahb3_rty_o       = 0;
+  assign wb_rty_o       = 0;
 
   // mux for data to ram, RMW on part sel != 4'hf
-  assign wr_data[31:24] = ahb3_sel_i[3] ? ahb3_dat_i[31:24] : ahb3_dat_o[31:24];
-  assign wr_data[23:16] = ahb3_sel_i[2] ? ahb3_dat_i[23:16] : ahb3_dat_o[23:16];
-  assign wr_data[15:8]  = ahb3_sel_i[1] ? ahb3_dat_i[15:8] : ahb3_dat_o[15:8];
-  assign wr_data[7:0]   = ahb3_sel_i[0] ? ahb3_dat_i[7:0] : ahb3_dat_o[7:0];
+  assign wr_data[31:24] = wb_sel_i[3] ? wb_dat_i[31:24] : wb_dat_o[31:24];
+  assign wr_data[23:16] = wb_sel_i[2] ? wb_dat_i[23:16] : wb_dat_o[23:16];
+  assign wr_data[15:8]  = wb_sel_i[1] ? wb_dat_i[15:8] : wb_dat_o[15:8];
+  assign wr_data[7:0]   = wb_sel_i[0] ? wb_dat_i[7:0] : wb_dat_o[7:0];
 
-  assign ahb3_dat_o       = mem[adr];
+  assign wb_dat_o       = mem[adr];
 
   // Write logic
-  always @(posedge ahb3_clk_i) begin
+  always @(posedge wb_clk_i) begin
     if (ram_we) begin
       mem[adr] <= wr_data;
     end
   end
 
   // Ack Logic
-  assign ahb3_ack_o = ahb3_ack_o_r & ahb3_stb_i & !(burst_access_wrong_ahb3_adr | addr_err);
+  assign wb_ack_o = wb_ack_o_r & wb_stb_i & !(burst_access_wrong_wb_adr | addr_err);
 
-  // Handle ahb3_ack
-  always @(posedge ahb3_clk_i) begin
-    if (ahb3_rst_i) begin
-      ahb3_ack_o_r <= 1'b0;
-    end else if (ahb3_cyc_i) begin  // We have bus
-      if (addr_err & ahb3_stb_i) begin
-        ahb3_ack_o_r <= 1;
-      end else if (ahb3_cti_i == 3'b000) begin  // Classic cycle acks
-        ahb3_ack_o_r <= ahb3_stb_i ^ ahb3_ack_o_r;
-      end else if ((ahb3_cti_i == 3'b001) | (ahb3_cti_i == 3'b010)) begin  // Increment/constant address bursts
-        ahb3_ack_o_r <= ahb3_stb_i;
-      end else if (ahb3_cti_i == 3'b111) begin  // End of cycle
-        ahb3_ack_o_r <= ahb3_stb_i & !ahb3_ack_o_r;
+  // Handle wb_ack
+  always @(posedge wb_clk_i) begin
+    if (wb_rst_i) begin
+      wb_ack_o_r <= 1'b0;
+    end else if (wb_cyc_i) begin  // We have bus
+      if (addr_err & wb_stb_i) begin
+        wb_ack_o_r <= 1;
+      end else if (wb_cti_i == 3'b000) begin  // Classic cycle acks
+        wb_ack_o_r <= wb_stb_i ^ wb_ack_o_r;
+      end else if ((wb_cti_i == 3'b001) | (wb_cti_i == 3'b010)) begin  // Increment/constant address bursts
+        wb_ack_o_r <= wb_stb_i;
+      end else if (wb_cti_i == 3'b111) begin  // End of cycle
+        wb_ack_o_r <= wb_stb_i & !wb_ack_o_r;
       end
-      // if (ahb3_cyc_i)
+      // if (wb_cyc_i)
     end else begin
-      ahb3_ack_o_r <= 0;
+      wb_ack_o_r <= 0;
     end
   end
 
   // Error signal generation
 
   // OR in other errors here...
-  assign ahb3_err_o = ahb3_ack_o_r & ahb3_stb_i & (burst_access_wrong_ahb3_adr | addr_err);
+  assign wb_err_o = wb_ack_o_r & wb_stb_i & (burst_access_wrong_wb_adr | addr_err);
 endmodule

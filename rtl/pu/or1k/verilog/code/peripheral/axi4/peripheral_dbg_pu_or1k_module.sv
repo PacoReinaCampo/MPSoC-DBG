@@ -39,6 +39,7 @@
 // Author(s):
 //   Nathan Yawn <nathan.yawn@opencores.org>
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
+
 `include "peripheral_dbg_pu_or1k_defines.sv"
 
 // Module interface

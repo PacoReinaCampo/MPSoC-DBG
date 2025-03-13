@@ -56,19 +56,19 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   input      [ 2:0] word_size_i,
 
   // Wishbone signals
-  input             ahb3_clk_i,
-  output     [31:0] ahb3_adr_o,
-  output     [31:0] ahb3_dat_o,
-  input      [31:0] ahb3_dat_i,
-  output reg        ahb3_cyc_o,
-  output reg        ahb3_stb_o,
-  output     [ 3:0] ahb3_sel_o,
-  output            ahb3_we_o,
-  input             ahb3_ack_i,
-  output            ahb3_cab_o,
-  input             ahb3_err_i,
-  output     [ 2:0] ahb3_cti_o,
-  output     [ 1:0] ahb3_bte_o
+  input             wb_clk_i,
+  output     [31:0] wb_adr_o,
+  output     [31:0] wb_dat_o,
+  input      [31:0] wb_dat_i,
+  output reg        wb_cyc_o,
+  output reg        wb_stb_o,
+  output     [ 3:0] wb_sel_o,
+  output            wb_we_o,
+  input             wb_ack_i,
+  output            wb_cab_o,
+  input             wb_err_i,
+  output     [ 2:0] wb_cti_o,
+  output     [ 1:0] wb_bte_o
 );
 
   //////////////////////////////////////////////////////////////////////////////
@@ -92,18 +92,18 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   reg         rdy_sync;  // ditto, active-toggle
   reg         err_reg;
 
-  // Sync registers. TFF indicates TCK domain, WBFF indicates ahb3_clk domain
+  // Sync registers. TFF indicates TCK domain, WBFF indicates wb_clk domain
   reg         rdy_sync_tff1;
   reg         rdy_sync_tff2;
   reg         rdy_sync_tff2q;  // used to detect toggles
-  reg         str_sync_ahb3ff1;
-  reg         str_sync_ahb3ff2;
-  reg         str_sync_ahb3ff2q;  // used to detect toggles
+  reg         str_sync_wbff1;
+  reg         str_sync_wbff2;
+  reg         str_sync_wbff2q;  // used to detect toggles
 
   // Control Signals
-  reg         data_o_en;  // latch ahb3_data_i
+  reg         data_o_en;  // latch wb_data_i
   reg         rdy_sync_en;  // toggle the rdy_sync signal, indicate ready to TCK domain
-  reg         err_en;  // latch the ahb3_err_i signal
+  reg         err_en;  // latch the wb_err_i signal
 
   // Internal signals
   reg  [ 3:0] be_dec;  // word_size and low-order address bits decoded to SEL bits
@@ -111,7 +111,7 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   reg  [31:0] swapped_data_i;
   reg  [31:0] swapped_data_out;
 
-  reg         ahb3_fsm_state;
+  reg         wb_fsm_state;
   reg         next_fsm_state;
 
   // TCK clock domain
@@ -248,62 +248,62 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   end
 
   // Direct assignments, unsynchronized
-  assign ahb3_dat_o = data_in_reg;
-  assign ahb3_we_o  = wr_reg;
-  assign ahb3_adr_o = addr_reg;
-  assign ahb3_sel_o = sel_reg;
+  assign wb_dat_o = data_in_reg;
+  assign wb_we_o  = wr_reg;
+  assign wb_adr_o = addr_reg;
+  assign wb_sel_o = sel_reg;
 
   assign data_o   = data_out_reg;
   assign err_o    = err_reg;
 
-  assign ahb3_cti_o = 3'h0;
-  assign ahb3_bte_o = 2'h0;
-  assign ahb3_cab_o = 1'b0;
+  assign wb_cti_o = 3'h0;
+  assign wb_bte_o = 2'h0;
+  assign wb_cab_o = 1'b0;
 
   // Wishbone clock domain
 
   // synchronize the start strobe
-  always @(posedge ahb3_clk_i or posedge rst_i) begin
+  always @(posedge wb_clk_i or posedge rst_i) begin
     if (rst_i) begin
-      str_sync_ahb3ff1  <= 1'b0;
-      str_sync_ahb3ff2  <= 1'b0;
-      str_sync_ahb3ff2q <= 1'b0;
+      str_sync_wbff1  <= 1'b0;
+      str_sync_wbff2  <= 1'b0;
+      str_sync_wbff2q <= 1'b0;
     end else begin
-      str_sync_ahb3ff1  <= str_sync;
-      str_sync_ahb3ff2  <= str_sync_ahb3ff1;
-      str_sync_ahb3ff2q <= str_sync_ahb3ff2;  // used to detect toggles
+      str_sync_wbff1  <= str_sync;
+      str_sync_wbff2  <= str_sync_wbff1;
+      str_sync_wbff2q <= str_sync_wbff2;  // used to detect toggles
     end
   end
 
-  assign start_toggle = (str_sync_ahb3ff2 != str_sync_ahb3ff2q);
+  assign start_toggle = (str_sync_wbff2 != str_sync_wbff2q);
 
   // Error indicator register
-  always @(posedge ahb3_clk_i or posedge rst_i) begin
+  always @(posedge wb_clk_i or posedge rst_i) begin
     if (rst_i) begin
       err_reg <= 1'b0;
     end else if (err_en) begin
-      err_reg <= ahb3_err_i;
+      err_reg <= wb_err_i;
     end
   end
 
   // Byte- or word-swap the WB->dbg data, as necessary (combinatorial)
   // We assume bits not required by SEL are don't care.  We reuse assignments
   // where possible to keep the MUX smaller.  (combinatorial)
-  always @(sel_reg or ahb3_dat_i) begin
+  always @(sel_reg or wb_dat_i) begin
     case (sel_reg)
-      4'b1111: swapped_data_out <= ahb3_dat_i;
-      4'b0011: swapped_data_out <= ahb3_dat_i;
-      4'b1100: swapped_data_out <= {16'h0, ahb3_dat_i[31:16]};
-      4'b0001: swapped_data_out <= ahb3_dat_i;
-      4'b0010: swapped_data_out <= {24'h0, ahb3_dat_i[15:8]};
-      4'b0100: swapped_data_out <= {16'h0, ahb3_dat_i[31:16]};
-      4'b1000: swapped_data_out <= {24'h0, ahb3_dat_i[31:24]};
-      default: swapped_data_out <= ahb3_dat_i;  // Shouldn't be possible
+      4'b1111: swapped_data_out <= wb_dat_i;
+      4'b0011: swapped_data_out <= wb_dat_i;
+      4'b1100: swapped_data_out <= {16'h0, wb_dat_i[31:16]};
+      4'b0001: swapped_data_out <= wb_dat_i;
+      4'b0010: swapped_data_out <= {24'h0, wb_dat_i[15:8]};
+      4'b0100: swapped_data_out <= {16'h0, wb_dat_i[31:16]};
+      4'b1000: swapped_data_out <= {24'h0, wb_dat_i[31:24]};
+      default: swapped_data_out <= wb_dat_i;  // Shouldn't be possible
     endcase
   end
 
   // WB->dbg data register
-  always @(posedge ahb3_clk_i or posedge rst_i) begin
+  always @(posedge wb_clk_i or posedge rst_i) begin
     if (rst_i) begin
       data_out_reg <= 32'h0;
     end else if (data_o_en) begin
@@ -312,7 +312,7 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   end
 
   // Create a toggle-active ready signal to send to the TCK domain
-  always @(posedge ahb3_clk_i or posedge rst_i) begin
+  always @(posedge wb_clk_i or posedge rst_i) begin
     if (rst_i) begin
       rdy_sync <= 1'b0;
     end else if (rdy_sync_en) begin
@@ -326,26 +326,26 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   // accesses.
 
   // Sequential bit
-  always @(posedge ahb3_clk_i or posedge rst_i) begin
+  always @(posedge wb_clk_i or posedge rst_i) begin
     if (rst_i) begin
-      ahb3_fsm_state <= `STATE_IDLE;
+      wb_fsm_state <= `STATE_IDLE;
     end else begin
-      ahb3_fsm_state <= next_fsm_state;
+      wb_fsm_state <= next_fsm_state;
     end
   end
 
   // Determination of next state (combinatorial)
-  always @(ahb3_fsm_state or start_toggle or ahb3_ack_i or ahb3_err_i) begin
-    case (ahb3_fsm_state)
+  always @(wb_fsm_state or start_toggle or wb_ack_i or wb_err_i) begin
+    case (wb_fsm_state)
       `STATE_IDLE: begin
-        if (start_toggle && !(ahb3_ack_i || ahb3_err_i)) begin
+        if (start_toggle && !(wb_ack_i || wb_err_i)) begin
           next_fsm_state <= `STATE_TRANSFER;  // Don't go to next state for 1-cycle transfer
         end else begin
           next_fsm_state <= `STATE_IDLE;
         end
       end
       `STATE_TRANSFER: begin
-        if (ahb3_ack_i || ahb3_err_i) begin
+        if (wb_ack_i || wb_err_i) begin
           next_fsm_state <= `STATE_IDLE;
         end else begin
           next_fsm_state <= `STATE_TRANSFER;
@@ -355,35 +355,35 @@ module peripheral_dbg_pu_or1k_ahb3_ahb3 (
   end
 
   // Outputs of state machine (combinatorial)
-  always @(ahb3_fsm_state or start_toggle or ahb3_ack_i or ahb3_err_i or wr_reg) begin
+  always @(wb_fsm_state or start_toggle or wb_ack_i or wb_err_i or wr_reg) begin
     rdy_sync_en <= 1'b0;
     err_en      <= 1'b0;
     data_o_en   <= 1'b0;
-    ahb3_cyc_o    <= 1'b0;
-    ahb3_stb_o    <= 1'b0;
+    wb_cyc_o    <= 1'b0;
+    wb_stb_o    <= 1'b0;
 
-    case (ahb3_fsm_state)
+    case (wb_fsm_state)
       `STATE_IDLE: begin
         if (start_toggle) begin
-          ahb3_cyc_o <= 1'b1;
-          ahb3_stb_o <= 1'b1;
-          if (ahb3_ack_i || ahb3_err_i) begin
+          wb_cyc_o <= 1'b1;
+          wb_stb_o <= 1'b1;
+          if (wb_ack_i || wb_err_i) begin
             err_en      <= 1'b1;
             rdy_sync_en <= 1'b1;
           end
-          if (ahb3_ack_i && !wr_reg) begin
+          if (wb_ack_i && !wr_reg) begin
             data_o_en <= 1'b1;
           end
         end
       end
       `STATE_TRANSFER: begin
-        ahb3_cyc_o <= 1'b1;
-        ahb3_stb_o <= 1'b1;
-        if (ahb3_ack_i) begin
+        wb_cyc_o <= 1'b1;
+        wb_stb_o <= 1'b1;
+        if (wb_ack_i) begin
           err_en      <= 1'b1;
           data_o_en   <= 1'b1;
           rdy_sync_en <= 1'b1;
-        end else if (ahb3_err_i) begin
+        end else if (wb_err_i) begin
           err_en      <= 1'b1;
           rdy_sync_en <= 1'b1;
         end

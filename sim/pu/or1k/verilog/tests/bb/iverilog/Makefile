@@ -43,8 +43,8 @@
 ###################################################################################
 
 SOURCE_DIR=../../../../../../..
-BENCH_DIR=$(SOURCE_DIR)/verification/tasks/pu/or1k/verilog/code/tests/wb/sample
-INCLUDE_DIR=$(SOURCE_DIR)/rtl/pu/or1k/verilog/code/pkg/wb
+BENCH_DIR=$(SOURCE_DIR)/verification/tasks/pu/or1k/verilog/code/tests/bb/sample
+INCLUDE_DIR=$(SOURCE_DIR)/rtl/pu/or1k/verilog/code/pkg/bb
 
 # Set V=1 when calling make to enable verbose output
 # mainly for debugging purposes.
@@ -58,12 +58,12 @@ endif
 
 IVERILOG_VPI_SRC = $(SOURCE_DIR)/software/or1k/sample/jtag_vpi.c
 
-ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/pu/or1k/verilog/code/peripheral/wb/*.sv)
+ADV_DEBUG_SRC = $(shell ls $(SOURCE_DIR)/rtl/pu/or1k/verilog/code/peripheral/bb/*.sv)
 
 IVERILOG_SRC = $(BENCH_DIR)/jtag_vpi/jtag_vpi.sv \
                $(BENCH_DIR)/jtag_vpi/jtag_vpi_testbench.sv \
                $(BENCH_DIR)/jtag_tap/tap_top.sv \
-               $(BENCH_DIR)/ram/peripheral_dbg_ram_b3_wb.sv \
+               $(BENCH_DIR)/ram/peripheral_dbg_ram_b3_bb.sv \
                $(ADV_DEBUG_SRC)
 
 all: sim

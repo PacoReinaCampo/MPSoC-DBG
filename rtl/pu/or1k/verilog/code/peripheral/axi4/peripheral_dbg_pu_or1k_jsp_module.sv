@@ -127,8 +127,8 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   reg        out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   reg        out_reg_shift_en;  // Enable shift of data_out_shift_reg
   reg        out_reg_data_sel;  // 0 = BIU data, 1 = byte count data (also from BIU)
-  reg        axi4_rd_strobe;  // Indicates that the bus unit should ACK the last read operation + start another
-  reg        axi4_wr_strobe;  // Indicates BIU should latch input + begin a write operation
+  reg        biu_rd_strobe;  // Indicates that the bus unit should ACK the last read operation + start another
+  reg        biu_wr_strobe;  // Indicates BIU should latch input + begin a write operation
 
   // Status signals
   wire       in_word_count_zero;  // true when input byte counter is zero
@@ -145,11 +145,11 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   wire [3:0] decremented_out_word_count;
   wire [3:0] decremented_user_word_count;
   wire [3:0] count_data_in;  // from data_register_i
-  wire [7:0] data_to_biu;  // from data_register_i
-  wire [7:0] data_from_biu;  // to data_out_shift_register
-  wire [3:0] axi4_space_available;
-  wire [3:0] axi4_bytes_available;
-  wire [7:0] count_data_from_biu;  // combined space avail / bytes avail
+  wire [7:0] data_to_wb;  // from data_register_i
+  wire [7:0] data_from_wb;  // to data_out_shift_register
+  wire [3:0] biu_space_available;
+  wire [3:0] biu_bytes_available;
+  wire [7:0] count_data_from_wb;  // combined space avail / bytes avail
   wire [7:0] out_reg_data;  // parallel input to the output shift register
 
   reg  [2:0] wr_module_state;  // FSM state
@@ -163,9 +163,9 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments
-  assign count_data_from_biu = {axi4_bytes_available, axi4_space_available};
+  assign count_data_from_wb = {biu_bytes_available, biu_space_available};
   assign count_data_in       = {tdi_i, data_register_i[52:50]};  // Second nibble of user data
-  assign data_to_biu         = {tdi_i, data_register_i[52:46]};
+  assign data_to_wb         = {tdi_i, data_register_i[52:46]};
   assign top_inhibit_o       = 1'b0;
 
   // Input bit counter
@@ -195,7 +195,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   assign rd_bit_count_max          = (read_bit_count == 4'h7) ? 1'b1 : 1'b0;
 
   // Input word counter
-  assign data_to_in_word_counter   = (in_word_ct_sel) ? decremented_in_word_count : axi4_space_available;
+  assign data_to_in_word_counter   = (in_word_ct_sel) ? decremented_in_word_count : biu_space_available;
   assign decremented_in_word_count = input_word_count - 4'h1;
 
   always @(posedge tck_i or posedge rst_i) begin
@@ -209,7 +209,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   assign in_word_count_zero         = (input_word_count == 4'h0);
 
   // Output word counter
-  assign data_to_out_word_counter   = (out_word_ct_sel) ? decremented_out_word_count : axi4_bytes_available;
+  assign data_to_out_word_counter   = (out_word_ct_sel) ? decremented_out_word_count : biu_bytes_available;
   assign decremented_out_word_count = output_word_count - 4'h1;
 
   always @(posedge tck_i or posedge rst_i) begin
@@ -237,7 +237,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   assign user_word_count_zero = (user_word_count == 4'h0);
 
   // Output register and TDO output MUX
-  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_biu : data_from_biu;
+  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_wb : data_from_wb;
 
   always @(posedge tck_i or posedge rst_i) begin
     if (rst_i) begin
@@ -256,16 +256,16 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   // latch write data (and ack read data) on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_jsp_biu jsp_axi4_i (
+  peripheral_dbg_pu_or1k_jsp_axi4 jsp_axi4_i (
     // Debug interface signals
     .tck_i            (tck_i),
     .rst_i            (rst_i),
-    .data_i           (data_to_biu),
-    .data_o           (data_from_biu),
-    .bytes_available_o(axi4_bytes_available),
-    .bytes_free_o     (axi4_space_available),
-    .rd_strobe_i      (axi4_rd_strobe),
-    .wr_strobe_i      (axi4_wr_strobe),
+    .data_i           (data_to_wb),
+    .data_o           (data_from_wb),
+    .bytes_available_o(biu_bytes_available),
+    .bytes_free_o     (biu_space_available),
+    .rd_strobe_i      (biu_rd_strobe),
+    .wr_strobe_i      (biu_wr_strobe),
 
     .debug_select_i(debug_select_i),
 
@@ -358,7 +358,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
     user_word_ct_sel <= 1'b0;  // selects data for user byte counter, 0 = user data, 1 = decremented count
     in_word_ct_en    <= 1'b0;  // Enable input byte counter register
     user_word_ct_en  <= 1'b0;  // enable user byte count register
-    axi4_wr_strobe    <= 1'b0;  // Indicates BIU should latch input + begin a write operation
+    biu_wr_strobe    <= 1'b0;  // Indicates BIU should latch input + begin a write operation
 
     case (wr_module_state)
       `STATE_wr_idle: begin
@@ -391,7 +391,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
           if (wr_bit_count_max) begin  // Start biu transactions, if word counts allow
             wr_bit_ct_rst <= 1'b1;
             if (!(in_word_count_zero || user_word_count_zero)) begin
-              axi4_wr_strobe   <= 1'b1;
+              biu_wr_strobe   <= 1'b1;
               in_word_ct_en   <= 1'b1;
               user_word_ct_en <= 1'b1;
             end
@@ -473,7 +473,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
     out_reg_ld_en    <= 1'b0;  // Enable parallel load of data_out_shift_reg
     out_reg_shift_en <= 1'b0;  // Enable shift of data_out_shift_reg
     out_reg_data_sel <= 1'b0;  // 0 = BIU data, 1 = byte count data (also from BIU)
-    axi4_rd_strobe    <= 1'b0;  // Indicates that the bus unit should ACK the last read operation + start another
+    biu_rd_strobe    <= 1'b0;  // Indicates that the bus unit should ACK the last read operation + start another
 
     case (rd_module_state)
       `STATE_rd_idle: begin
@@ -508,7 +508,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
           out_reg_data_sel <= 1'b0;
           // Never have to worry about bit_count_max here.
           if (!out_word_count_zero) begin
-            axi4_rd_strobe <= 1'b1;
+            biu_rd_strobe <= 1'b1;
           end
         end
       end

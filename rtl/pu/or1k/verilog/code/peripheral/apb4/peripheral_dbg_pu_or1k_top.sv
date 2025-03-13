@@ -179,7 +179,7 @@ module peripheral_dbg_pu_or1k_top #(
   generate
     if (DBG_WISHBONE_SUPPORTED != "NONE") begin : wb
       // Connecting wishbone module
-      peripheral_dbg_pu_or1k_module_wb i_dbg_wb (
+      peripheral_dbg_pu_or1k_module_apb4 i_dbg_apb4 (
         // JTAG signals
         .tck_i       (tck_i),
         .module_tdo_o(tdo_wb),

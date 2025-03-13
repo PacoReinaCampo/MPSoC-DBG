@@ -167,7 +167,7 @@ module jtag_vpi_testbench;
     .wb_bte_o(wb_bte)
   );
 
-  peripheral_dbg_ram_b3_wb ram (
+  peripheral_dbg_ram_b3_bb ram (
     .wb_clk_i(sys_clock),
     .wb_rst_i(sys_reset),
 
