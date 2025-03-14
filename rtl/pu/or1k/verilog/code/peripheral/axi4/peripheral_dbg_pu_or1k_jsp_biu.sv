@@ -40,7 +40,7 @@
 //   Nathan Yawn <nathan.yawn@opencores.org>
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-module peripheral_dbg_pu_or1k_jsp_apb4 (
+module peripheral_dbg_pu_or1k_jsp_biu (
   // Debug interface signals
   input        tck_i,
   input        rst_i,

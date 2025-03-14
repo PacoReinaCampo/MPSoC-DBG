@@ -40,9 +40,9 @@
 //   Nathan Yawn <nathan.yawn@opencores.org>
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-`include "peripheral_dbg_pu_or1k_defines_axi4.sv"
+`include "peripheral_dbg_pu_or1k_defines_ahb3.sv"
 
-module peripheral_dbg_pu_or1k_axi4_axi4 (
+module peripheral_dbg_pu_or1k_ahb3_biu (
   // Debug interface signals
   input             tck_i,
   input             rst_i,

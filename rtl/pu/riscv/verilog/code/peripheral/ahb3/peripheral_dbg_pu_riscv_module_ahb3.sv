@@ -134,7 +134,7 @@ module peripheral_dbg_pu_riscv_module_ahb3 #(
   );
 
   // Hookup AHB Bus Interface
-  peripheral_dbg_pu_riscv_biu_ahb3 #(
+  peripheral_dbg_pu_riscv_ahb3_biu #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
   ) ahb3lite_biu_i (

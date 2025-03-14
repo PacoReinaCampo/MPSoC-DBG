@@ -134,7 +134,7 @@ module peripheral_dbg_pu_riscv_module_apb4 #(
   );
 
   // Hookup AHB Bus Interface
-  peripheral_dbg_pu_riscv_biu_apb4 #(
+  peripheral_dbg_pu_riscv_apb4_biu #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
   ) apb4lite_biu_i (

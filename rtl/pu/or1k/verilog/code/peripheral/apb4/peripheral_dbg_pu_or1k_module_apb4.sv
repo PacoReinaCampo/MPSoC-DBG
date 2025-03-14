@@ -377,7 +377,7 @@ module peripheral_dbg_pu_or1k_module_apb4 #(
 
   assign wb_rst = rst_i | wb_clr_err;
 
-  peripheral_dbg_pu_or1k_apb4_apb4 apb4_apb4_i (
+  peripheral_dbg_pu_or1k_apb4_biu apb4_apb4_i (
     // Debug interface signals
     .tck_i      (tck_i),
     .rst_i      (wb_rst),

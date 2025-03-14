@@ -131,7 +131,7 @@ module peripheral_dbg_pu_riscv_module_wb #(
   );
 
   // Hookup Bus Wishbone Interface
-  peripheral_dbg_pu_riscv_biu_wb #(
+  peripheral_dbg_pu_riscv_wb_biu #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
   ) wb_biu_i (

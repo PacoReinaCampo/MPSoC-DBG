@@ -377,7 +377,7 @@ module peripheral_dbg_pu_or1k_module_ahb3 #(
 
   assign wb_rst = rst_i | wb_clr_err;
 
-  peripheral_dbg_pu_or1k_ahb3_ahb3 ahb3_ahb3_i (
+  peripheral_dbg_pu_or1k_ahb3_biu ahb3_ahb3_i (
     // Debug interface signals
     .tck_i      (tck_i),
     .rst_i      (wb_rst),

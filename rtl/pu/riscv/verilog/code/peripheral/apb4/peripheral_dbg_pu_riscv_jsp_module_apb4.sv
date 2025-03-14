@@ -127,7 +127,7 @@ module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
   );
 
   // Hookup JSP APB Interface
-  peripheral_dbg_pu_riscv_jsp_biu_apb4 jsp_biu_inst (
+  peripheral_dbg_pu_riscv_jsp_apb4_biu jsp_biu_inst (
     // Debug interface signals
     .tck_i            (biu_clk),
     .rst_i            (biu_rst),

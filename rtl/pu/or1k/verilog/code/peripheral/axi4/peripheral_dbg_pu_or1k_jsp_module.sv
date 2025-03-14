@@ -256,7 +256,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   // latch write data (and ack read data) on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_jsp_axi4 jsp_axi4_i (
+  peripheral_dbg_pu_or1k_jsp_biu jsp_axi4_i (
     // Debug interface signals
     .tck_i            (tck_i),
     .rst_i            (rst_i),

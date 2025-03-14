@@ -320,7 +320,7 @@ module peripheral_dbg_pu_or1k_module #(
   // latch address, operation, and write data on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_apb4 or1k_apb4_i (
+  peripheral_dbg_pu_or1k_biu or1k_biu_i (
     // Debug interface signals
     .tck_i   (tck_i),
     .rst_i   (rst_i),

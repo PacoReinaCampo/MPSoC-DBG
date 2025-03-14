@@ -122,7 +122,7 @@ module peripheral_dbg_pu_riscv_jsp_module_wb #(
   );
 
   // Hookup JSP Wishbone Interface
-  peripheral_dbg_pu_riscv_jsp_biu_wb jsp_biu_inst (
+  peripheral_dbg_pu_riscv_jsp_wb_biu jsp_biu_inst (
     // Debug interface signals
     .tck_i            (biu_clk),
     .rst_i            (biu_rst),

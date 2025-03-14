@@ -40,9 +40,9 @@
 //   Nathan Yawn <nathan.yawn@opencores.org>
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
-`include "peripheral_dbg_pu_or1k_defines_wb.sv"
+`include "peripheral_dbg_pu_or1k_defines_bb.sv"
 
-module peripheral_dbg_pu_or1k_wb_wb (
+module peripheral_dbg_pu_or1k_bb_biu (
   // Debug interface signals
   input             tck_i,
   input             rst_i,
