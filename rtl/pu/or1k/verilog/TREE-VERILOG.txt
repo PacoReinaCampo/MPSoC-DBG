@@ -1,11 +1,11 @@
 code
 ├── peripheral
 │   ├── ahb3
-│   │   ├── peripheral_dbg_pu_or1k_ahb3_ahb3.sv
-│   │   ├── peripheral_dbg_pu_or1k_ahb3.sv
+│   │   ├── peripheral_dbg_pu_or1k_ahb3_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
 │   │   ├── peripheral_dbg_pu_or1k_crc32.sv
-│   │   ├── peripheral_dbg_pu_or1k_jsp_ahb3.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
 │   │   ├── peripheral_dbg_pu_or1k_module_ahb3.sv
 │   │   ├── peripheral_dbg_pu_or1k_module.sv
@@ -14,11 +14,11 @@ code
 │   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
 │   │   └── peripheral_dbg_pu_or1k_top.sv
 │   ├── apb4
-│   │   ├── peripheral_dbg_pu_or1k_apb4_apb4.sv
-│   │   ├── peripheral_dbg_pu_or1k_apb4.sv
+│   │   ├── peripheral_dbg_pu_or1k_apb4_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
 │   │   ├── peripheral_dbg_pu_or1k_crc32.sv
-│   │   ├── peripheral_dbg_pu_or1k_jsp_apb4.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
 │   │   ├── peripheral_dbg_pu_or1k_module_apb4.sv
 │   │   ├── peripheral_dbg_pu_or1k_module.sv
@@ -27,11 +27,11 @@ code
 │   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
 │   │   └── peripheral_dbg_pu_or1k_top.sv
 │   ├── axi4
-│   │   ├── peripheral_dbg_pu_or1k_axi4_axi4.sv
-│   │   ├── peripheral_dbg_pu_or1k_axi4.sv
+│   │   ├── peripheral_dbg_pu_or1k_axi4_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
 │   │   ├── peripheral_dbg_pu_or1k_crc32.sv
-│   │   ├── peripheral_dbg_pu_or1k_jsp_axi4.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
 │   │   ├── peripheral_dbg_pu_or1k_module_axi4.sv
 │   │   ├── peripheral_dbg_pu_or1k_module.sv
@@ -40,11 +40,11 @@ code
 │   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
 │   │   └── peripheral_dbg_pu_or1k_top.sv
 │   ├── bb
-│   │   ├── peripheral_dbg_pu_or1k_bb_bb.sv
-│   │   ├── peripheral_dbg_pu_or1k_bb.sv
+│   │   ├── peripheral_dbg_pu_or1k_bb_biu.sv
+│   │   ├── peripheral_dbg_pu_or1k_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
 │   │   ├── peripheral_dbg_pu_or1k_crc32.sv
-│   │   ├── peripheral_dbg_pu_or1k_jsp_bb.sv
+│   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
 │   │   ├── peripheral_dbg_pu_or1k_module_bb.sv
 │   │   ├── peripheral_dbg_pu_or1k_module.sv
@@ -66,18 +66,18 @@ code
 │   │   ├── peripheral_dbg_pu_or1k_syncreg.sv
 │   │   └── peripheral_dbg_pu_or1k_top.sv
 │   └── wb
+│       ├── peripheral_dbg_pu_or1k_biu.sv
 │       ├── peripheral_dbg_pu_or1k_bytefifo.sv
 │       ├── peripheral_dbg_pu_or1k_crc32.sv
+│       ├── peripheral_dbg_pu_or1k_jsp_biu.sv
 │       ├── peripheral_dbg_pu_or1k_jsp_module.sv
-│       ├── peripheral_dbg_pu_or1k_jsp_wb.sv
 │       ├── peripheral_dbg_pu_or1k_module.sv
 │       ├── peripheral_dbg_pu_or1k_module_wb.sv
 │       ├── peripheral_dbg_pu_or1k_status_reg.sv
 │       ├── peripheral_dbg_pu_or1k_syncflop.sv
 │       ├── peripheral_dbg_pu_or1k_syncreg.sv
 │       ├── peripheral_dbg_pu_or1k_top.sv
-│       ├── peripheral_dbg_pu_or1k_wb.sv
-│       └── peripheral_dbg_pu_or1k_wb_wb.sv
+│       └── peripheral_dbg_pu_or1k_wb_biu.sv
 └── pkg
     ├── ahb3
     │   ├── peripheral_dbg_pu_or1k_defines_ahb3.sv
