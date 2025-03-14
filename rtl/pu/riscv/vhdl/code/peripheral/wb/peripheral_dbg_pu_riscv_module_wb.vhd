@@ -131,7 +131,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module_wb is
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_biu_wb
+  component peripheral_dbg_pu_riscv_wb_biu
     generic (
       LITTLE_ENDIAN : std_logic := '1';
       ADDR_WIDTH    : integer   := 32;
@@ -222,7 +222,7 @@ begin
       );
 
   -- Hookup Bus Wishbone Interface
-  wb_biu_i : peripheral_dbg_pu_riscv_biu_wb
+  wb_biu_i : peripheral_dbg_pu_riscv_wb_biu
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,
       DATA_WIDTH => DATA_WIDTH

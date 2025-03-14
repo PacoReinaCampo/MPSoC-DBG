@@ -44,9 +44,9 @@
 
 ../../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_apb4_apb4.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_apb4_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_module_apb4.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_jsp_apb4_apb4.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_jsp_apb4_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_top_apb4.vhd
 
@@ -54,12 +54,10 @@
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bytefifo.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_crc32.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_jsp_module_core.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_apb4.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_module.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_status_reg.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncreg.vhd
 
 ../../../../../../../verification/tasks/pu/riscv/vhdl/code/tests/apb4/peripheral_dbg_testbench.vhd
-
-

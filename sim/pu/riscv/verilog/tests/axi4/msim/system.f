@@ -44,17 +44,17 @@
 
 +incdir+../../../../../../../rtl/pu/riscv/verilog/code/pkg/core
 
-../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_axi4.sv
+../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_biu.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_module_axi4.sv
-../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_axi4.sv
-../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_axi4.sv
+../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_top_axi4.sv
 
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bus_module_core.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bytefifo.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_crc32.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_jsp_module_core.sv
-../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_axi4.sv
+../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_biu.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_module.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_status_reg.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncflop.sv

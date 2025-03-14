@@ -63,22 +63,22 @@ module peripheral_dbg_testbench;
   // Variables
   //////////////////////////////////////////////////////////////////////////////
 
-  // AHB3
+  // BB
 
   // JTAG signals
-  logic                                                                          ahb3_tck_i;
-  logic                                                                          ahb3_tdi_i;
-  logic                                                                          ahb3_tdo_o;
+  logic                                                                          bb_tck_i;
+  logic                                                                          bb_tdi_i;
+  logic                                                                          bb_tdo_o;
 
   // TAP states
-  logic                                                                          ahb3_tlr_i;  // TestLogicReset
-  logic                                                                          ahb3_shift_dr_i;
-  logic                                                                          ahb3_pause_dr_i;
-  logic                                                                          ahb3_update_dr_i;
-  logic                                                                          ahb3_capture_dr_i;
+  logic                                                                          bb_tlr_i;  // TestLogicReset
+  logic                                                                          bb_shift_dr_i;
+  logic                                                                          bb_pause_dr_i;
+  logic                                                                          bb_update_dr_i;
+  logic                                                                          bb_capture_dr_i;
 
   // Instructions
-  logic                                                                          ahb3_debug_select_i;
+  logic                                                                          bb_debug_select_i;
 
   // AHB Master Interface Signals
   logic                                                                          HCLK;
@@ -111,23 +111,23 @@ module peripheral_dbg_testbench;
   logic                                                                          int_o;
 
   // CPU/Thread debug ports
-  logic                                                                          ahb3_cpu_clk_i;
-  logic                                                                          ahb3_cpu_rstn_i;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_ADDR_WIDTH-1:0] ahb3_cpu_addr_o;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_DATA_WIDTH-1:0] ahb3_cpu_data_i;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_DATA_WIDTH-1:0] ahb3_cpu_data_o;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     ahb3_cpu_bp_i;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     ahb3_cpu_stall_o;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     ahb3_cpu_stb_o;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     ahb3_cpu_we_o;
-  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     ahb3_cpu_ack_i;
+  logic                                                                          bb_cpu_clk_i;
+  logic                                                                          bb_cpu_rstn_i;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_ADDR_WIDTH-1:0] bb_cpu_addr_o;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_DATA_WIDTH-1:0] bb_cpu_data_i;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0][CPU_DATA_WIDTH-1:0] bb_cpu_data_o;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     bb_cpu_bp_i;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     bb_cpu_stall_o;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     bb_cpu_stb_o;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     bb_cpu_we_o;
+  logic [           X-1:0][Y-1:0][Z-1:0][CORES_PER_TILE-1:0]                     bb_cpu_ack_i;
 
   //////////////////////////////////////////////////////////////////////////////
   // Body
   //////////////////////////////////////////////////////////////////////////////
 
-  // DUT AHB3
-  peripheral_dbg_pu_riscv_top_ahb3 #(
+  // DUT BB
+  peripheral_dbg_pu_riscv_top_bb #(
     .X(X),
     .Y(Y),
     .Z(Z),
@@ -141,21 +141,21 @@ module peripheral_dbg_testbench;
     .CPU_DATA_WIDTH(CPU_DATA_WIDTH),
 
     .DATAREG_LEN(DATAREG_LEN)
-  ) dbg_pu_riscv_top_ahb3 (
+  ) dbg_pu_riscv_top_bb (
     // JTAG signals
-    .tck_i(ahb3_tck_i),
-    .tdi_i(ahb3_tdi_i),
-    .tdo_o(ahb3_tdo_i),
+    .tck_i(bb_tck_i),
+    .tdi_i(bb_tdi_i),
+    .tdo_o(bb_tdo_i),
 
     // TAP states
-    .tlr_i       (ahb3_tlr_i),
-    .shift_dr_i  (ahb3_shift_dr_i),
-    .pause_dr_i  (ahb3_pause_dr_i),
-    .update_dr_i (ahb3_update_dr_i),
-    .capture_dr_i(ahb3_capture_dr_i),
+    .tlr_i       (bb_tlr_i),
+    .shift_dr_i  (bb_shift_dr_i),
+    .pause_dr_i  (bb_pause_dr_i),
+    .update_dr_i (bb_update_dr_i),
+    .capture_dr_i(bb_capture_dr_i),
 
     // Instructions
-    .debug_select_i(ahb3_debug_select_i),
+    .debug_select_i(bb_debug_select_i),
 
     // AHB Master Interface Signals
     .HCLK         (HCLK),
@@ -188,15 +188,15 @@ module peripheral_dbg_testbench;
     .int_o(int_o),
 
     // CPU/Thread debug ports
-    .cpu_clk_i  (ahb3_cpu_clk_i),
-    .cpu_rstn_i (ahb3_cpu_rstn_i),
-    .cpu_addr_o (ahb3_cpu_addr_o),
-    .cpu_data_i (ahb3_cpu_data_i),
-    .cpu_data_o (ahb3_cpu_data_o),
-    .cpu_bp_i   (ahb3_cpu_bp_i),
-    .cpu_stall_o(ahb3_cpu_stall_o),
-    .cpu_stb_o  (ahb3_cpu_stb_o),
-    .cpu_we_o   (ahb3_cpu_we_o),
-    .cpu_ack_i  (ahb3_cpu_ack_i)
+    .cpu_clk_i  (bb_cpu_clk_i),
+    .cpu_rstn_i (bb_cpu_rstn_i),
+    .cpu_addr_o (bb_cpu_addr_o),
+    .cpu_data_i (bb_cpu_data_i),
+    .cpu_data_o (bb_cpu_data_o),
+    .cpu_bp_i   (bb_cpu_bp_i),
+    .cpu_stall_o(bb_cpu_stall_o),
+    .cpu_stb_o  (bb_cpu_stb_o),
+    .cpu_we_o   (bb_cpu_we_o),
+    .cpu_ack_i  (bb_cpu_ack_i)
   );
 endmodule

@@ -84,16 +84,16 @@ module peripheral_dbg_pu_riscv_module_axi4 #(
   // Variables
   //////////////////////////////////////////////////////////////////////////////
 
-  logic                  axi4_clk;
-  logic                  axi4_rst;
-  logic [DATA_WIDTH-1:0] axi4_do;
-  logic [DATA_WIDTH-1:0] axi4_di;
-  logic [ADDR_WIDTH-1:0] axi4_addr;
-  logic                  axi4_strb;
-  logic                  axi4_rw;
-  logic                  axi4_rdy;
-  logic                  axi4_err;
-  logic [           3:0] axi4_word_size;
+  logic                  biu_clk;
+  logic                  biu_rst;
+  logic [DATA_WIDTH-1:0] biu_do;
+  logic [DATA_WIDTH-1:0] biu_di;
+  logic [ADDR_WIDTH-1:0] biu_addr;
+  logic                  biu_strb;
+  logic                  biu_rw;
+  logic                  biu_rdy;
+  logic                  biu_err;
+  logic [           3:0] biu_word_size;
 
   //////////////////////////////////////////////////////////////////////////////
   // Body
@@ -121,34 +121,34 @@ module peripheral_dbg_pu_riscv_module_axi4 #(
     .inhibit      (top_inhibit_o),
 
     // Bus Interface Unit ports
-    .axi4_clk      (axi4_clk),
-    .axi4_rst      (axi4_rst),       // BIU reset
-    .axi4_di       (axi4_di),        // data towards BIU
-    .axi4_do       (axi4_do),        // data from BIU
-    .axi4_addr     (axi4_addr),
-    .axi4_strb     (axi4_strb),
-    .axi4_rw       (axi4_rw),
-    .axi4_rdy      (axi4_rdy),
-    .axi4_err      (axi4_err),
-    .axi4_word_size(axi4_word_size)
+    .biu_clk      (biu_clk),
+    .biu_rst      (biu_rst),       // BIU reset
+    .biu_di       (biu_di),        // data towards BIU
+    .biu_do       (biu_do),        // data from BIU
+    .biu_addr     (biu_addr),
+    .biu_strb     (biu_strb),
+    .biu_rw       (biu_rw),
+    .biu_rdy      (biu_rdy),
+    .biu_err      (biu_err),
+    .biu_word_size(biu_word_size)
   );
 
   // Hookup AHB Bus Interface
-  peripheral_dbg_pu_riscv_axi4_axi4 #(
+  peripheral_dbg_pu_riscv_axi4_biu #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
   ) axi4lite_axi4_i (
     // Debug interface signals
-    .axi4_clk      (axi4_clk),
-    .axi4_rst      (axi4_rst),
-    .axi4_di       (axi4_di),
-    .axi4_do       (axi4_do),
-    .axi4_addr     (axi4_addr),
-    .axi4_strb     (axi4_strb),
-    .axi4_rw       (axi4_rw),
-    .axi4_rdy      (axi4_rdy),
-    .axi4_err      (axi4_err),
-    .axi4_word_size(axi4_word_size),
+    .biu_clk      (biu_clk),
+    .biu_rst      (biu_rst),
+    .biu_di       (biu_di),
+    .biu_do       (biu_do),
+    .biu_addr     (biu_addr),
+    .biu_strb     (biu_strb),
+    .biu_rw       (biu_rw),
+    .biu_rdy      (biu_rdy),
+    .biu_err      (biu_err),
+    .biu_word_size(biu_word_size),
 
     // AHB Master signals
     .HCLK     (HCLK),

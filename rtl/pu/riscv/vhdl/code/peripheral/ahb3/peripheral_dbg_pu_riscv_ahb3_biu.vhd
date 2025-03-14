@@ -46,7 +46,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_axi4_axi4 is
+entity peripheral_dbg_pu_riscv_ahb3_biu is
   generic (
     LITTLE_ENDIAN : std_logic := '1';
     ADDR_WIDTH    : integer   := 32;
@@ -54,16 +54,16 @@ entity peripheral_dbg_pu_riscv_axi4_axi4 is
     );
   port (
     -- Debug interface signals
-    axi4_clk       : in  std_logic;
-    axi4_rst       : in  std_logic;
-    axi4_di        : in  std_logic_vector(DATA_WIDTH-1 downto 0);
-    axi4_do        : out std_logic_vector(DATA_WIDTH-1 downto 0);
-    axi4_addr      : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
-    axi4_strb      : in  std_logic;
-    axi4_rw        : in  std_logic;
-    axi4_rdy       : out std_logic;
-    axi4_err       : out std_logic;
-    axi4_word_size : in  std_logic_vector(3 downto 0);
+    biu_clk       : in  std_logic;
+    biu_rst       : in  std_logic;
+    biu_di        : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+    biu_do        : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    biu_addr      : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
+    biu_strb      : in  std_logic;
+    biu_rw        : in  std_logic;
+    biu_rdy       : out std_logic;
+    biu_err       : out std_logic;
+    biu_word_size : in  std_logic_vector(3 downto 0);
 
     -- AHB Master signals
     HCLK      : in  std_logic;
@@ -81,9 +81,9 @@ entity peripheral_dbg_pu_riscv_axi4_axi4 is
     HREADY    : in  std_logic;
     HRESP     : in  std_logic
     );
-end peripheral_dbg_pu_riscv_axi4_axi4;
+end peripheral_dbg_pu_riscv_ahb3_biu;
 
-architecture rtl of peripheral_dbg_pu_riscv_axi4_axi4 is
+architecture rtl of peripheral_dbg_pu_riscv_ahb3_biu is
   ------------------------------------------------------------------------------
   -- Constants
   ------------------------------------------------------------------------------
@@ -116,7 +116,7 @@ architecture rtl of peripheral_dbg_pu_riscv_axi4_axi4 is
   -- AHB FSM
   signal ahb_fsm_state : std_logic_vector(1 downto 0);
 
-  signal axi4_rdy_sgn : std_logic;
+  signal biu_rdy_sgn : std_logic;
 
   signal HADDR_SGN : std_logic_vector(ADDR_WIDTH-1 downto 0);
 
@@ -130,11 +130,11 @@ begin
   -- There is no FSM here, just signal latching and clock domain synchronization
 
   -- Create byte enable signals from word_size and address
-  processing_0 : process (axi4_clk)
+  processing_0 : process (biu_clk)
   begin
-    if (rising_edge(axi4_clk)) then
-      if (axi4_strb = '1' and axi4_rdy_sgn = '1') then
-        case ((axi4_word_size)) is
+    if (rising_edge(biu_clk)) then
+      if (biu_strb = '1' and biu_rdy_sgn = '1') then
+        case ((biu_word_size)) is
           when X"1" =>
             HSIZE <= HSIZE_BYTE;
           when X"2" =>
@@ -149,40 +149,40 @@ begin
   end process;
 
   generating_0 : if (DATA_WIDTH = 32) generate
-    processing_1 : process (axi4_clk)
+    processing_1 : process (biu_clk)
     begin
-      if (rising_edge(axi4_clk)) then
-        if (axi4_strb = '1' and axi4_rdy_sgn = '1') then
-          case ((axi4_word_size)) is
+      if (rising_edge(biu_clk)) then
+        if (biu_strb = '1' and biu_rdy_sgn = '1') then
+          case ((biu_word_size)) is
             when X"1" =>
-              HWDATA <= (axi4_di(31 downto 31-8+1) & axi4_di(31 downto 31-8+1) &
-                         axi4_di(31 downto 31-8+1) & axi4_di(31 downto 31-8+1));
+              HWDATA <= (biu_di(31 downto 31-8+1) & biu_di(31 downto 31-8+1) &
+                         biu_di(31 downto 31-8+1) & biu_di(31 downto 31-8+1));
             when X"2" =>
-              HWDATA <= (axi4_di(31 downto 31-16+1) & axi4_di(31 downto 31-16+1));
+              HWDATA <= (biu_di(31 downto 31-16+1) & biu_di(31 downto 31-16+1));
             when others =>
-              HWDATA <= axi4_di;
+              HWDATA <= biu_di;
           end case;
         end if;
       end if;
     end process;
   elsif (DATA_WIDTH = 64) generate
-    processing_2 : process (axi4_clk)
+    processing_2 : process (biu_clk)
     begin
-      if (rising_edge(axi4_clk)) then
-        if (axi4_strb = '1' and axi4_rdy_sgn = '1') then
-          case ((axi4_word_size)) is
+      if (rising_edge(biu_clk)) then
+        if (biu_strb = '1' and biu_rdy_sgn = '1') then
+          case ((biu_word_size)) is
             when X"1" =>
-              HWDATA <= (axi4_di(63 downto 63-8+1) & axi4_di(63 downto 63-8+1) &
-                         axi4_di(63 downto 63-8+1) & axi4_di(63 downto 63-8+1) &
-                         axi4_di(63 downto 63-8+1) & axi4_di(63 downto 63-8+1) &
-                         axi4_di(63 downto 63-8+1) & axi4_di(63 downto 63-8+1));
+              HWDATA <= (biu_di(63 downto 63-8+1) & biu_di(63 downto 63-8+1) &
+                         biu_di(63 downto 63-8+1) & biu_di(63 downto 63-8+1) &
+                         biu_di(63 downto 63-8+1) & biu_di(63 downto 63-8+1) &
+                         biu_di(63 downto 63-8+1) & biu_di(63 downto 63-8+1));
             when X"2" =>
-              HWDATA <= (axi4_di(63 downto 63-16+1) & axi4_di(63 downto 63-16+1) &
-                         axi4_di(63 downto 63-16+1) & axi4_di(63 downto 63-16+1));
+              HWDATA <= (biu_di(63 downto 63-16+1) & biu_di(63 downto 63-16+1) &
+                         biu_di(63 downto 63-16+1) & biu_di(63 downto 63-16+1));
             when X"4" =>
-              HWDATA <= (axi4_di(63 downto 63-32+1) & axi4_di(63 downto 63-32+1));
+              HWDATA <= (biu_di(63 downto 63-32+1) & biu_di(63 downto 63-32+1));
             when others =>
-              HWDATA <= axi4_di;
+              HWDATA <= biu_di;
           end case;
         end if;
       end if;
@@ -190,15 +190,15 @@ begin
   end generate;
 
   -- Latch input data on 'start' strobe, if ready.
-  processing_3 : process (axi4_clk, axi4_rst)
+  processing_3 : process (biu_clk, biu_rst)
   begin
-    if (axi4_rst = '1') then
+    if (biu_rst = '1') then
       HADDR_SGN <= X"0";
       HWRITE    <= '0';
-    elsif (rising_edge(axi4_clk)) then
-      if (axi4_strb = '1' and axi4_rdy_sgn = '1') then
-        HADDR_SGN <= axi4_addr;
-        HWRITE    <= not axi4_rw;
+    elsif (rising_edge(biu_clk)) then
+      if (biu_strb = '1' and biu_rdy_sgn = '1') then
+        HADDR_SGN <= biu_addr;
+        HWRITE    <= not biu_rw;
       end if;
     end if;
   end process;
@@ -206,46 +206,46 @@ begin
   HADDR <= HADDR_SGN;
   -- Create toggle-active strobe signal for clock sync.  This will start a transaction
   -- on the AHB once the toggle propagates to the FSM in the AHB domain.
-  processing_4 : process (axi4_clk, axi4_rst)
+  processing_4 : process (biu_clk, biu_rst)
   begin
-    if (axi4_rst = '1') then
+    if (biu_rst = '1') then
       str_sync <= '0';
-    elsif (rising_edge(axi4_clk)) then
-      if (axi4_strb = '1' and axi4_rdy_sgn = '1') then
+    elsif (rising_edge(biu_clk)) then
+      if (biu_strb = '1' and biu_rdy_sgn = '1') then
         str_sync <= not str_sync;
       end if;
     end if;
   end process;
 
-  -- Create axi4_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
-  processing_5 : process (axi4_clk, axi4_rst)
+  -- Create biu_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
+  processing_5 : process (biu_clk, biu_rst)
   begin
-    if (axi4_rst = '1') then
+    if (biu_rst = '1') then
       rdy_sync_tff1  <= '0';
       rdy_sync_tff2  <= '0';
       rdy_sync_tff2q <= '0';
-      axi4_rdy_sgn    <= '1';
-    elsif (rising_edge(axi4_clk)) then
+      biu_rdy_sgn    <= '1';
+    elsif (rising_edge(biu_clk)) then
       rdy_sync_tff1  <= rdy_sync;  -- Synchronize the ready signal across clock domains
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  -- used to detect toggles
 
-      if (axi4_strb = '1' and axi4_rdy_sgn = '1') then
-        axi4_rdy_sgn <= '0';
+      if (biu_strb = '1' and biu_rdy_sgn = '1') then
+        biu_rdy_sgn <= '0';
       elsif (rdy_sync_tff2 /= rdy_sync_tff2q) then
-        axi4_rdy_sgn <= '1';
+        biu_rdy_sgn <= '1';
       end if;
     end if;
   end process;
 
-  axi4_rdy <= axi4_rdy_sgn;
+  biu_rdy <= biu_rdy_sgn;
 
   -- AHB clock domain
 
   -- synchronize asynchronous active high reset
-  processing_6 : process (HCLK, axi4_rst)
+  processing_6 : process (HCLK, biu_rst)
   begin
-    if (axi4_rst = '1') then
+    if (biu_rst = '1') then
       ahb_rstn_sync <= (others => '0');
     elsif (rising_edge(HCLK)) then
       ahb_rstn_sync <= ('1' & ahb_rstn_sync(1));
@@ -283,10 +283,10 @@ begin
   processing_9 : process (HCLK, ahb_rstn)
   begin
     if (ahb_rstn = '0') then
-      axi4_err <= '0';
+      biu_err <= '0';
     elsif (rising_edge(HCLK)) then
       if (ahb_transfer_ack = '1') then
-        axi4_err <= HRESP;
+        biu_err <= HRESP;
       end if;
     end if;
   end process;
@@ -299,32 +299,32 @@ begin
     begin
       if (rising_edge(HCLK)) then
         if (ahb_transfer_ack = '1') then
-          case ((axi4_word_size)) is
+          case ((biu_word_size)) is
             when X"1" =>
               case (state_haddr_b) is
                 when "00" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000" & HRDATA(7 downto 7-8+1));
+                    biu_do <= (X"000000" & HRDATA(7 downto 7-8+1));
                   else
-                    axi4_do <= (X"000000" & HRDATA(31 downto 31-8+1));
+                    biu_do <= (X"000000" & HRDATA(31 downto 31-8+1));
                   end if;
                 when "01" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000" & HRDATA(15 downto 15-8+1));
+                    biu_do <= (X"000000" & HRDATA(15 downto 15-8+1));
                   else
-                    axi4_do <= (X"000000" & HRDATA(23 downto 23-8+1));
+                    biu_do <= (X"000000" & HRDATA(23 downto 23-8+1));
                   end if;
                 when "10" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000" & HRDATA(23 downto 23-8+1));
+                    biu_do <= (X"000000" & HRDATA(23 downto 23-8+1));
                   else
-                    axi4_do <= (X"000000" & HRDATA(15 downto 15-8+1));
+                    biu_do <= (X"000000" & HRDATA(15 downto 15-8+1));
                   end if;
                 when "11" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000" & HRDATA(31 downto 31-8+1));
+                    biu_do <= (X"000000" & HRDATA(31 downto 31-8+1));
                   else
-                    axi4_do <= (X"000000" & HRDATA(7 downto 7-8+1));
+                    biu_do <= (X"000000" & HRDATA(7 downto 7-8+1));
                   end if;
                 when others =>
                   null;
@@ -333,21 +333,21 @@ begin
               case (state_haddr_d) is
                 when '0' =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000" & HRDATA(15 downto 15-16+1));
+                    biu_do <= (X"00000000" & HRDATA(15 downto 15-16+1));
                   else
-                    axi4_do <= (X"00000000" & HRDATA(31 downto 31-16+1));
+                    biu_do <= (X"00000000" & HRDATA(31 downto 31-16+1));
                   end if;
                 when '1' =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000" & HRDATA(31 downto 31-16+1));
+                    biu_do <= (X"00000000" & HRDATA(31 downto 31-16+1));
                   else
-                    axi4_do <= (X"00000000" & HRDATA(15 downto 15-16+1));
+                    biu_do <= (X"00000000" & HRDATA(15 downto 15-16+1));
                   end if;
                 when others =>
                   null;
               end case;
             when others =>
-              axi4_do <= HRDATA;
+              biu_do <= HRDATA;
           end case;
         end if;
       end if;
@@ -363,56 +363,56 @@ begin
     begin
       if (rising_edge(HCLK)) then
         if (ahb_transfer_ack = '1') then
-          case ((axi4_word_size)) is
+          case ((biu_word_size)) is
             when X"1" =>
               case (state_haddr_a) is
                 when "000" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(7 downto 7-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(7 downto 7-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(63 downto 63-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(63 downto 63-8+1));
                   end if;
                 when "001" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(15 downto 15-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(15 downto 15-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(55 downto 55-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(55 downto 55-8+1));
                   end if;
                 when "010" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(23 downto 23-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(23 downto 23-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(47 downto 47-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(47 downto 47-8+1));
                   end if;
                 when "011" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(31 downto 31-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(31 downto 31-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(39 downto 39-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(39 downto 39-8+1));
                   end if;
                 when "100" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(39 downto 39-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(39 downto 39-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(31 downto 31-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(31 downto 31-8+1));
                   end if;
                 when "101" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(47 downto 47-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(47 downto 47-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(23 downto 23-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(23 downto 23-8+1));
                   end if;
                 when "110" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(55 downto 55-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(55 downto 55-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(15 downto 15-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(15 downto 15-8+1));
                   end if;
                 when "111" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000000000" & HRDATA(63 downto 63-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(63 downto 63-8+1));
                   else
-                    axi4_do <= (X"00000000000000" & HRDATA(7 downto 7-8+1));
+                    biu_do <= (X"00000000000000" & HRDATA(7 downto 7-8+1));
                   end if;
                 when others =>
                   null;
@@ -421,27 +421,27 @@ begin
               case (state_haddr_c) is
                 when "00" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000000000" & HRDATA(15 downto 15-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(15 downto 15-16+1));
                   else
-                    axi4_do <= (X"000000000000" & HRDATA(63 downto 63-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(63 downto 63-16+1));
                   end if;
                 when "01" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000000000" & HRDATA(31 downto 31-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(31 downto 31-16+1));
                   else
-                    axi4_do <= (X"000000000000" & HRDATA(47 downto 47-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(47 downto 47-16+1));
                   end if;
                 when "10" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000000000" & HRDATA(47 downto 47-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(47 downto 47-16+1));
                   else
-                    axi4_do <= (X"000000000000" & HRDATA(31 downto 31-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(31 downto 31-16+1));
                   end if;
                 when "11" =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"000000000000" & HRDATA(63 downto 63-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(63 downto 63-16+1));
                   else
-                    axi4_do <= (X"000000000000" & HRDATA(15 downto 15-16+1));
+                    biu_do <= (X"000000000000" & HRDATA(15 downto 15-16+1));
                   end if;
                 when others =>
                   null;
@@ -450,21 +450,21 @@ begin
               case (state_haddr_e) is
                 when '0' =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000" & HRDATA(31 downto 31-32+1));
+                    biu_do <= (X"00000000" & HRDATA(31 downto 31-32+1));
                   else
-                    axi4_do <= (X"0000" & HRDATA(63 downto 63-32+1));
+                    biu_do <= (X"0000" & HRDATA(63 downto 63-32+1));
                   end if;
                 when '1' =>
                   if (LITTLE_ENDIAN = '1') then
-                    axi4_do <= (X"00000000" & HRDATA(63 downto 63-32+1));
+                    biu_do <= (X"00000000" & HRDATA(63 downto 63-32+1));
                   else
-                    axi4_do <= (X"0000" & HRDATA(31 downto 31-32+1));
+                    biu_do <= (X"0000" & HRDATA(31 downto 31-32+1));
                   end if;
                 when others =>
                   null;
               end case;
             when others =>
-              axi4_do <= HRDATA;
+              biu_do <= HRDATA;
           end case;
         end if;
       end if;

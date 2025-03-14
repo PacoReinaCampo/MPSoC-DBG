@@ -55,7 +55,7 @@ architecture rtl of peripheral_dbg_testbench is
   -- Components
   ------------------------------------------------------------------------------
 
-  component peripheral_dbg_pu_riscv_top_ahb3
+  component peripheral_dbg_pu_riscv_top_axi4
     generic (
       X              : integer := 2;
       Y              : integer := 2;
@@ -148,22 +148,22 @@ architecture rtl of peripheral_dbg_testbench is
   -- Variables
   ------------------------------------------------------------------------------
 
-  -- AHB3
+  -- AXI4
 
   -- JTAG signals
-  signal ahb3_tck_i : std_logic;
-  signal ahb3_tdi_i : std_logic;
-  signal ahb3_tdo_o : std_logic;
+  signal axi4_tck_i : std_logic;
+  signal axi4_tdi_i : std_logic;
+  signal axi4_tdo_o : std_logic;
 
   -- TAP states
-  signal ahb3_tlr_i        : std_logic;  -- TestLogicReset
-  signal ahb3_shift_dr_i   : std_logic;
-  signal ahb3_pause_dr_i   : std_logic;
-  signal ahb3_update_dr_i  : std_logic;
-  signal ahb3_capture_dr_i : std_logic;
+  signal axi4_tlr_i        : std_logic;  -- TestLogicReset
+  signal axi4_shift_dr_i   : std_logic;
+  signal axi4_pause_dr_i   : std_logic;
+  signal axi4_update_dr_i  : std_logic;
+  signal axi4_capture_dr_i : std_logic;
 
   -- Instructions
-  signal ahb3_debug_select_i : std_logic;
+  signal axi4_debug_select_i : std_logic;
 
   -- AHB Master Interface Signals
   signal HCLK          : std_logic;
@@ -196,16 +196,16 @@ architecture rtl of peripheral_dbg_testbench is
   signal int_o : std_logic;
 
   -- CPU/Thread debug ports
-  signal ahb3_cpu_clk_i   : std_logic;
-  signal ahb3_cpu_rstn_i  : std_logic;
-  signal ahb3_cpu_addr_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
-  signal ahb3_cpu_data_i  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
-  signal ahb3_cpu_data_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
-  signal ahb3_cpu_bp_i    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
-  signal ahb3_cpu_stall_o : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
-  signal ahb3_cpu_stb_o   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
-  signal ahb3_cpu_we_o    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
-  signal ahb3_cpu_ack_i   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal axi4_cpu_clk_i   : std_logic;
+  signal axi4_cpu_rstn_i  : std_logic;
+  signal axi4_cpu_addr_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_ADDR_WIDTH-1 downto 0);
+  signal axi4_cpu_data_i  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+  signal axi4_cpu_data_o  : xyz_std_logic_matrix(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0)(CPU_DATA_WIDTH-1 downto 0);
+  signal axi4_cpu_bp_i    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal axi4_cpu_stall_o : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal axi4_cpu_stb_o   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal axi4_cpu_we_o    : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
+  signal axi4_cpu_ack_i   : xyz_std_logic_vector(X-1 downto 0, Y-1 downto 0, Z-1 downto 0)(CORES_PER_TILE-1 downto 0);
 
 begin
 
@@ -213,8 +213,8 @@ begin
   -- Module Body
   ------------------------------------------------------------------------------
 
-  -- DUT AHB3
-  dbg_pu_riscv_top_ahb3 : peripheral_dbg_pu_riscv_top_ahb3
+  -- DUT AXI4
+  dbg_pu_riscv_top_axi4 : peripheral_dbg_pu_riscv_top_axi4
     generic map (
       X              => X,
       Y              => Y,
@@ -231,19 +231,19 @@ begin
       )
     port map (
       -- JTAG signals
-      tck_i => ahb3_tck_i,
-      tdi_i => ahb3_tck_i,
-      tdo_o => ahb3_tck_i,
+      tck_i => axi4_tck_i,
+      tdi_i => axi4_tck_i,
+      tdo_o => axi4_tck_i,
 
       -- TAP states
-      tlr_i        => ahb3_tlr_i,
-      shift_dr_i   => ahb3_shift_dr_i,
-      pause_dr_i   => ahb3_pause_dr_i,
-      update_dr_i  => ahb3_update_dr_i,
-      capture_dr_i => ahb3_capture_dr_i,
+      tlr_i        => axi4_tlr_i,
+      shift_dr_i   => axi4_shift_dr_i,
+      pause_dr_i   => axi4_pause_dr_i,
+      update_dr_i  => axi4_update_dr_i,
+      capture_dr_i => axi4_capture_dr_i,
 
       -- Instructions
-      debug_select_i => ahb3_debug_select_i,
+      debug_select_i => axi4_debug_select_i,
 
       -- AHB Master Interface Signals
       HCLK          => HCLK,
@@ -275,15 +275,15 @@ begin
       int_o       => int_o,
 
       -- CPU/Thread debug ports
-      cpu_clk_i   => ahb3_cpu_clk_i,
-      cpu_rstn_i  => ahb3_cpu_rstn_i,
-      cpu_addr_o  => ahb3_cpu_addr_o,
-      cpu_data_i  => ahb3_cpu_data_i,
-      cpu_data_o  => ahb3_cpu_data_o,
-      cpu_bp_i    => ahb3_cpu_bp_i,
-      cpu_stall_o => ahb3_cpu_stall_o,
-      cpu_stb_o   => ahb3_cpu_stb_o,
-      cpu_we_o    => ahb3_cpu_we_o,
-      cpu_ack_i   => ahb3_cpu_ack_i
+      cpu_clk_i   => axi4_cpu_clk_i,
+      cpu_rstn_i  => axi4_cpu_rstn_i,
+      cpu_addr_o  => axi4_cpu_addr_o,
+      cpu_data_i  => axi4_cpu_data_i,
+      cpu_data_o  => axi4_cpu_data_o,
+      cpu_bp_i    => axi4_cpu_bp_i,
+      cpu_stall_o => axi4_cpu_stall_o,
+      cpu_stb_o   => axi4_cpu_stb_o,
+      cpu_we_o    => axi4_cpu_we_o,
+      cpu_ack_i   => axi4_cpu_ack_i
     );
 end rtl;

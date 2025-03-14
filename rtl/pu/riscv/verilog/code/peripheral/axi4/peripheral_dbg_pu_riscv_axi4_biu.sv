@@ -42,22 +42,22 @@
 `include "peripheral_dbg_pu_riscv_pkg.sv"
 
 // Top module
-module peripheral_dbg_pu_riscv_apb4_apb4 #(
+module peripheral_dbg_pu_riscv_axi4_biu #(
   parameter LITTLE_ENDIAN = 1,
   parameter ADDR_WIDTH    = 32,
   parameter DATA_WIDTH    = 32
 ) (
   // Debug interface signals
-  input                       apb4_clk,
-  input                       apb4_rst,
-  input      [DATA_WIDTH-1:0] apb4_di,
-  output reg [DATA_WIDTH-1:0] apb4_do,
-  input      [ADDR_WIDTH-1:0] apb4_addr,
-  input                       apb4_strb,
-  input                       apb4_rw,
-  output reg                  apb4_rdy,
-  output reg                  apb4_err,
-  input      [           3:0] apb4_word_size,
+  input                       biu_clk,
+  input                       biu_rst,
+  input      [DATA_WIDTH-1:0] biu_di,
+  output reg [DATA_WIDTH-1:0] biu_do,
+  input      [ADDR_WIDTH-1:0] biu_addr,
+  input                       biu_strb,
+  input                       biu_rw,
+  output reg                  biu_rdy,
+  output reg                  biu_err,
+  input      [           3:0] biu_word_size,
 
   // AHB Master signals
   input                       HCLK,
@@ -120,9 +120,9 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
   // There is no FSM here, just signal latching and clock domain synchronization
 
   // Create byte enable signals from word_size and address
-  always @(posedge apb4_clk) begin
-    if (apb4_strb && apb4_rdy) begin
-      case (apb4_word_size)
+  always @(posedge biu_clk) begin
+    if (biu_strb && biu_rdy) begin
+      case (biu_word_size)
         'h1:     HSIZE <= `HSIZE_BYTE;
         'h2:     HSIZE <= `HSIZE_HWORD;
         'h4:     HSIZE <= `HSIZE_WORD;
@@ -133,23 +133,23 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
 
   generate
     if (DATA_WIDTH == 32) begin
-      always @(posedge apb4_clk) begin
-        if (apb4_strb && apb4_rdy) begin
-          case (apb4_word_size)
-            'h1:     HWDATA <= {4{apb4_di[31-:8]}};
-            'h2:     HWDATA <= {2{apb4_di[31-:16]}};
-            default: HWDATA <= apb4_di;
+      always @(posedge biu_clk) begin
+        if (biu_strb && biu_rdy) begin
+          case (biu_word_size)
+            'h1:     HWDATA <= {4{biu_di[31-:8]}};
+            'h2:     HWDATA <= {2{biu_di[31-:16]}};
+            default: HWDATA <= biu_di;
           endcase
         end
       end
     end else begin  // DATA_WIDTH == 64
-      always @(posedge apb4_clk) begin
-        if (apb4_strb && apb4_rdy) begin
-          case (apb4_word_size)
-            'h1:     HWDATA <= {8{apb4_di[63-:8]}};
-            'h2:     HWDATA <= {4{apb4_di[63-:16]}};
-            'h4:     HWDATA <= {2{apb4_di[63-:32]}};
-            default: HWDATA <= apb4_di;
+      always @(posedge biu_clk) begin
+        if (biu_strb && biu_rdy) begin
+          case (biu_word_size)
+            'h1:     HWDATA <= {8{biu_di[63-:8]}};
+            'h2:     HWDATA <= {4{biu_di[63-:16]}};
+            'h4:     HWDATA <= {2{biu_di[63-:32]}};
+            default: HWDATA <= biu_di;
           endcase
         end
       end
@@ -157,42 +157,42 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
   endgenerate
 
   // Latch input data on 'start' strobe, if ready.
-  always @(posedge apb4_clk, posedge apb4_rst) begin
-    if (apb4_rst) begin
+  always @(posedge biu_clk, posedge biu_rst) begin
+    if (biu_rst) begin
       HADDR  <= 'h0;
       HWRITE <= 'b0;
-    end else if (apb4_strb && apb4_rdy) begin
-      HADDR  <= apb4_addr;
-      HWRITE <= ~apb4_rw;
+    end else if (biu_strb && biu_rdy) begin
+      HADDR  <= biu_addr;
+      HWRITE <= ~biu_rw;
     end
   end
 
   // Create toggle-active strobe signal for clock sync.  This will start a transaction
   // on the AHB once the toggle propagates to the FSM in the AHB domain.
-  always @(posedge apb4_clk, posedge apb4_rst) begin
-    if (apb4_rst) begin
+  always @(posedge biu_clk, posedge biu_rst) begin
+    if (biu_rst) begin
       str_sync <= 1'b0;
-    end else if (apb4_strb && apb4_rdy) begin
+    end else if (biu_strb && biu_rdy) begin
       str_sync <= ~str_sync;
     end
   end
 
-  // Create apb4_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
-  always @(posedge apb4_clk, posedge apb4_rst) begin
-    if (apb4_rst) begin
+  // Create biu_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
+  always @(posedge biu_clk, posedge biu_rst) begin
+    if (biu_rst) begin
       rdy_sync_tff1  <= 1'b0;
       rdy_sync_tff2  <= 1'b0;
       rdy_sync_tff2q <= 1'b0;
-      apb4_rdy        <= 1'b1;
+      biu_rdy        <= 1'b1;
     end else begin
       rdy_sync_tff1  <= rdy_sync;  // Synchronize the ready signal across clock domains
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  // used to detect toggles
 
-      if (apb4_strb && apb4_rdy) begin
-        apb4_rdy <= 1'b0;
+      if (biu_strb && biu_rdy) begin
+        biu_rdy <= 1'b0;
       end else if (rdy_sync_tff2 != rdy_sync_tff2q) begin
-        apb4_rdy <= 1'b1;
+        biu_rdy <= 1'b1;
       end
     end
   end
@@ -202,8 +202,8 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
   //
 
   // synchronize asynchronous active high reset
-  always @(posedge HCLK, posedge apb4_rst) begin
-    if (apb4_rst) begin
+  always @(posedge HCLK, posedge biu_rst) begin
+    if (biu_rst) begin
       ahb_rstn_sync <= {$bits(ahb_rstn_sync) {1'b0}};
     end else begin
       ahb_rstn_sync <= {1'b1, ahb_rstn_sync[$bits(ahb_rstn_sync)-1:1]};
@@ -238,9 +238,9 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
   // Bus Error register
   always @(posedge HCLK, negedge ahb_rstn) begin
     if (!ahb_rstn) begin
-      apb4_err <= 1'b0;
+      biu_err <= 1'b0;
     end else if (ahb_transfer_ack) begin
-      apb4_err <= HRESP;
+      biu_err <= HRESP;
     end
   end
 
@@ -249,20 +249,20 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
     if (DATA_WIDTH == 32) begin
       always @(posedge HCLK) begin
         if (ahb_transfer_ack) begin
-          case (apb4_word_size)
+          case (biu_word_size)
             'h1:
             case (HADDR[1:0])
-              2'b00: apb4_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[7-:8]} : {24'h0, HRDATA[31-:8]};
-              2'b01: apb4_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[15-:8]} : {24'h0, HRDATA[23-:8]};
-              2'b10: apb4_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[23-:8]} : {24'h0, HRDATA[15-:8]};
-              2'b11: apb4_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[31-:8]} : {24'h0, HRDATA[7-:8]};
+              2'b00: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[7-:8]} : {24'h0, HRDATA[31-:8]};
+              2'b01: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[15-:8]} : {24'h0, HRDATA[23-:8]};
+              2'b10: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[23-:8]} : {24'h0, HRDATA[15-:8]};
+              2'b11: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[31-:8]} : {24'h0, HRDATA[7-:8]};
             endcase
             'h2:
             case (HADDR[1])
-              1'b0: apb4_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[15-:16]} : {16'h0, HRDATA[31-:16]};
-              2'b1: apb4_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[31-:16]} : {16'h0, HRDATA[15-:16]};
+              1'b0: biu_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[15-:16]} : {16'h0, HRDATA[31-:16]};
+              2'b1: biu_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[31-:16]} : {16'h0, HRDATA[15-:16]};
             endcase
-            default: apb4_do <= HRDATA;
+            default: biu_do <= HRDATA;
           endcase
         end
       end
@@ -270,31 +270,31 @@ module peripheral_dbg_pu_riscv_apb4_apb4 #(
 
       always @(posedge HCLK) begin
         if (ahb_transfer_ack) begin
-          case (apb4_word_size)
+          case (biu_word_size)
             'h1:
             case (HADDR[2:0])
-              3'b000: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[7-:8]} : {56'h0, HRDATA[63-:8]};
-              3'b001: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[15-:8]} : {56'h0, HRDATA[55-:8]};
-              3'b010: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[23-:8]} : {56'h0, HRDATA[47-:8]};
-              3'b011: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[31-:8]} : {56'h0, HRDATA[39-:8]};
-              3'b100: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[39-:8]} : {56'h0, HRDATA[31-:8]};
-              3'b101: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[47-:8]} : {56'h0, HRDATA[23-:8]};
-              3'b110: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[55-:8]} : {56'h0, HRDATA[15-:8]};
-              3'b111: apb4_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[63-:8]} : {56'h0, HRDATA[7-:8]};
+              3'b000: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[7-:8]} : {56'h0, HRDATA[63-:8]};
+              3'b001: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[15-:8]} : {56'h0, HRDATA[55-:8]};
+              3'b010: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[23-:8]} : {56'h0, HRDATA[47-:8]};
+              3'b011: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[31-:8]} : {56'h0, HRDATA[39-:8]};
+              3'b100: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[39-:8]} : {56'h0, HRDATA[31-:8]};
+              3'b101: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[47-:8]} : {56'h0, HRDATA[23-:8]};
+              3'b110: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[55-:8]} : {56'h0, HRDATA[15-:8]};
+              3'b111: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[63-:8]} : {56'h0, HRDATA[7-:8]};
             endcase
             'h2:
             case (HADDR[2:1])
-              2'b00: apb4_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[15-:16]} : {48'h0, HRDATA[63-:16]};
-              2'b01: apb4_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[31-:16]} : {48'h0, HRDATA[47-:16]};
-              2'b10: apb4_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[47-:16]} : {48'h0, HRDATA[31-:16]};
-              2'b11: apb4_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[63-:16]} : {48'h0, HRDATA[15-:16]};
+              2'b00: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[15-:16]} : {48'h0, HRDATA[63-:16]};
+              2'b01: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[31-:16]} : {48'h0, HRDATA[47-:16]};
+              2'b10: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[47-:16]} : {48'h0, HRDATA[31-:16]};
+              2'b11: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[63-:16]} : {48'h0, HRDATA[15-:16]};
             endcase
             'h4:
             case (HADDR[2])
-              1'b0: apb4_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[31-:32]} : {16'h0, HRDATA[63-:32]};
-              2'b1: apb4_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[63-:32]} : {16'h0, HRDATA[31-:32]};
+              1'b0: biu_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[31-:32]} : {16'h0, HRDATA[63-:32]};
+              2'b1: biu_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[63-:32]} : {16'h0, HRDATA[31-:32]};
             endcase
-            default: apb4_do <= HRDATA;
+            default: biu_do <= HRDATA;
           endcase
         end
       end

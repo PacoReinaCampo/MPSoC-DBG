@@ -47,7 +47,7 @@
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/biu/peripheral_dbg_pu_riscv_biu_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/biu/peripheral_dbg_pu_riscv_module_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/biu/peripheral_dbg_pu_riscv_jsp_biu_biu.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/biu/peripheral_dbg_pu_riscv_jsp_module_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/biu/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/biu/peripheral_dbg_pu_riscv_top_biu.vhd
 
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bus_module_core.vhd

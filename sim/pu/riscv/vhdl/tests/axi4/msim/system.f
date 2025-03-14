@@ -44,17 +44,17 @@
 
 ../../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_axi4.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_module_axi4.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_axi4.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_axi4.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_top_axi4.vhd
 
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bus_module_core.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bytefifo.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_crc32.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_jsp_module_core.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_axi4.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_biu.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_module.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_status_reg.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd

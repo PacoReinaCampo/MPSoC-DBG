@@ -121,20 +121,20 @@ architecture rtl of peripheral_dbg_pu_riscv_module_axi4 is
       inhibit       : out std_logic;
 
       -- Bus Interface Unit ports
-      axi4_clk       : out std_logic;
-      axi4_rst       : out std_logic;    -- BIU reset
-      axi4_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  -- data towards BIU
-      axi4_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- data from BIU
-      axi4_addr      : out std_logic_vector(ADDR_WIDTH-1 downto 0);
-      axi4_strb      : out std_logic;
-      axi4_rw        : out std_logic;
-      axi4_rdy       : in  std_logic;
-      axi4_err       : in  std_logic;
-      axi4_word_size : out std_logic_vector(3 downto 0)
+      biu_clk       : out std_logic;
+      biu_rst       : out std_logic;    -- BIU reset
+      biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  -- data towards BIU
+      biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- data from BIU
+      biu_addr      : out std_logic_vector(ADDR_WIDTH-1 downto 0);
+      biu_strb      : out std_logic;
+      biu_rw        : out std_logic;
+      biu_rdy       : in  std_logic;
+      biu_err       : in  std_logic;
+      biu_word_size : out std_logic_vector(3 downto 0)
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_axi4_axi4
+  component peripheral_dbg_pu_riscv_axi4_biu
     generic (
       LITTLE_ENDIAN : std_logic := '1';
       ADDR_WIDTH    : integer   := 32;
@@ -142,16 +142,16 @@ architecture rtl of peripheral_dbg_pu_riscv_module_axi4 is
       );
     port (
       -- Debug interface signals
-      axi4_clk       : in  std_logic;
-      axi4_rst       : in  std_logic;
-      axi4_di        : in  std_logic_vector(DATA_WIDTH-1 downto 0);
-      axi4_do        : out std_logic_vector(DATA_WIDTH-1 downto 0);
-      axi4_addr      : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
-      axi4_strb      : in  std_logic;
-      axi4_rw        : in  std_logic;
-      axi4_rdy       : out std_logic;
-      axi4_err       : out std_logic;
-      axi4_word_size : in  std_logic_vector(3 downto 0);
+      biu_clk       : in  std_logic;
+      biu_rst       : in  std_logic;
+      biu_di        : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+      biu_do        : out std_logic_vector(DATA_WIDTH-1 downto 0);
+      biu_addr      : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
+      biu_strb      : in  std_logic;
+      biu_rw        : in  std_logic;
+      biu_rdy       : out std_logic;
+      biu_err       : out std_logic;
+      biu_word_size : in  std_logic_vector(3 downto 0);
 
       -- AHB Master signals
       HCLK      : in  std_logic;
@@ -174,16 +174,16 @@ architecture rtl of peripheral_dbg_pu_riscv_module_axi4 is
   ------------------------------------------------------------------------------
   -- Variables
   ------------------------------------------------------------------------------
-  signal axi4_clk       : std_logic;
-  signal axi4_rst       : std_logic;
-  signal axi4_do        : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal axi4_di        : std_logic_vector(DATA_WIDTH-1 downto 0);
-  signal axi4_addr      : std_logic_vector(ADDR_WIDTH-1 downto 0);
-  signal axi4_strb      : std_logic;
-  signal axi4_rw        : std_logic;
-  signal axi4_rdy       : std_logic;
-  signal axi4_err       : std_logic;
-  signal axi4_word_size : std_logic_vector(3 downto 0);
+  signal biu_clk       : std_logic;
+  signal biu_rst       : std_logic;
+  signal biu_do        : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal biu_di        : std_logic_vector(DATA_WIDTH-1 downto 0);
+  signal biu_addr      : std_logic_vector(ADDR_WIDTH-1 downto 0);
+  signal biu_strb      : std_logic;
+  signal biu_rw        : std_logic;
+  signal biu_rdy       : std_logic;
+  signal biu_err       : std_logic;
+  signal biu_word_size : std_logic_vector(3 downto 0);
 
 begin
   ------------------------------------------------------------------------------
@@ -214,36 +214,36 @@ begin
       inhibit       => top_inhibit_o,
 
       -- Bus Interface Unit ports
-      axi4_clk       => axi4_clk,
-      axi4_rst       => axi4_rst,         -- BIU reset
-      axi4_di        => axi4_di,          -- data towards BIU
-      axi4_do        => axi4_do,          -- data from BIU
-      axi4_addr      => axi4_addr,
-      axi4_strb      => axi4_strb,
-      axi4_rw        => axi4_rw,
-      axi4_rdy       => axi4_rdy,
-      axi4_err       => axi4_err,
-      axi4_word_size => axi4_word_size
+      biu_clk       => biu_clk,
+      biu_rst       => biu_rst,         -- BIU reset
+      biu_di        => biu_di,          -- data towards BIU
+      biu_do        => biu_do,          -- data from BIU
+      biu_addr      => biu_addr,
+      biu_strb      => biu_strb,
+      biu_rw        => biu_rw,
+      biu_rdy       => biu_rdy,
+      biu_err       => biu_err,
+      biu_word_size => biu_word_size
       );
 
   -- Hookup AHB Bus Interface
-  axi4lite_axi4_i : peripheral_dbg_pu_riscv_axi4_axi4
+  axi4lite_axi4_i : peripheral_dbg_pu_riscv_axi4_biu
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,
       DATA_WIDTH => DATA_WIDTH
       )
     port map (
       -- Debug interface signals
-      axi4_clk       => axi4_clk,
-      axi4_rst       => axi4_rst,
-      axi4_di        => axi4_di,
-      axi4_do        => axi4_do,
-      axi4_addr      => axi4_addr,
-      axi4_strb      => axi4_strb,
-      axi4_rw        => axi4_rw,
-      axi4_rdy       => axi4_rdy,
-      axi4_err       => axi4_err,
-      axi4_word_size => axi4_word_size,
+      biu_clk       => biu_clk,
+      biu_rst       => biu_rst,
+      biu_di        => biu_di,
+      biu_do        => biu_do,
+      biu_addr      => biu_addr,
+      biu_strb      => biu_strb,
+      biu_rw        => biu_rw,
+      biu_rdy       => biu_rdy,
+      biu_err       => biu_err,
+      biu_word_size => biu_word_size,
 
       -- AHB Master signals
       HCLK      => HCLK,

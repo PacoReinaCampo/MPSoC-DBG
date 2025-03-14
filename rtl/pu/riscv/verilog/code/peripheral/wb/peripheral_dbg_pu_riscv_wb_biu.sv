@@ -40,22 +40,22 @@
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 // Top module
-module peripheral_dbg_pu_riscv_wb_wb #(
+module peripheral_dbg_pu_riscv_wb_biu #(
   parameter LITTLE_ENDIAN = 1,
   parameter ADDR_WIDTH    = 32,
   parameter DATA_WIDTH    = 32
 ) (
   // Debug interface signals
-  input                       wb_clk,
-  input                       wb_rst,
-  input      [DATA_WIDTH-1:0] wb_di,
-  output     [DATA_WIDTH-1:0] wb_do,
-  input      [ADDR_WIDTH-1:0] wb_addr,
-  input                       wb_strb,
-  input                       wb_rw,
-  output reg                  wb_rdy,
-  output                      wb_err,
-  input      [           3:0] wb_word_size,
+  input                       biu_clk,
+  input                       biu_rst,
+  input      [DATA_WIDTH-1:0] biu_di,
+  output     [DATA_WIDTH-1:0] biu_do,
+  input      [ADDR_WIDTH-1:0] biu_addr,
+  input                       biu_strb,
+  input                       biu_rw,
+  output reg                  biu_rdy,
+  output                      biu_err,
+  input      [           3:0] biu_word_size,
 
   // Wishbone signals
   input                         wb_clk_i,
@@ -126,16 +126,16 @@ module peripheral_dbg_pu_riscv_wb_wb #(
 
   // Create byte enable signals from word_size and address (combinatorial)
   always @(*) begin
-    case (wb_word_size)
+    case (biu_word_size)
       3'h1:
-      case (wb_addr[1:0])
+      case (biu_addr[1:0])
         2'b00: be_dec = LITTLE_ENDIAN ? 4'b0001 : 4'b1000;
         2'b01: be_dec = LITTLE_ENDIAN ? 4'b0010 : 4'b0100;
         2'b10: be_dec = LITTLE_ENDIAN ? 4'b0100 : 4'b0010;
         2'b11: be_dec = LITTLE_ENDIAN ? 4'b1000 : 4'b0001;
       endcase
       3'h2:
-      case (wb_addr[1])
+      case (biu_addr[1])
         1'b0: be_dec = LITTLE_ENDIAN ? 4'b0011 : 4'b1100;
         1'b1: be_dec = LITTLE_ENDIAN ? 4'b1100 : 4'b0011;
       endcase
@@ -149,29 +149,29 @@ module peripheral_dbg_pu_riscv_wb_wb #(
   // will be in the high-order bits. (combinatorial)
   always @(*) begin
     case (be_dec)
-      4'b1111: swapped_data_in = wb_di;
-      4'b0011: swapped_data_in = {16'h0, wb_di[31:16]};
-      4'b1100: swapped_data_in = wb_di;
-      4'b0001: swapped_data_in = {24'h0, wb_di[31:24]};
-      4'b0010: swapped_data_in = {16'h0, wb_di[31:24], 8'h0};
-      4'b0100: swapped_data_in = {8'h0, wb_di[31:24], 16'h0};
-      4'b1000: swapped_data_in = {wb_di[31:24], 24'h0};
-      default: swapped_data_in = wb_di;  // Shouldn't be possible
+      4'b1111: swapped_data_in = biu_di;
+      4'b0011: swapped_data_in = {16'h0, biu_di[31:16]};
+      4'b1100: swapped_data_in = biu_di;
+      4'b0001: swapped_data_in = {24'h0, biu_di[31:24]};
+      4'b0010: swapped_data_in = {16'h0, biu_di[31:24], 8'h0};
+      4'b0100: swapped_data_in = {8'h0, biu_di[31:24], 16'h0};
+      4'b1000: swapped_data_in = {biu_di[31:24], 24'h0};
+      default: swapped_data_in = biu_di;  // Shouldn't be possible
     endcase
   end
 
   // Latch input data on 'start' strobe, if ready.
-  always @(posedge wb_clk, posedge wb_rst) begin
-    if (wb_rst) begin
+  always @(posedge biu_clk, posedge biu_rst) begin
+    if (biu_rst) begin
       sel_reg     <= 'h0;
       addr_reg    <= 'h0;
       data_in_reg <= 'h0;
       wr_reg      <= 'b0;
-    end else if (wb_strb && wb_rdy) begin
+    end else if (biu_strb && biu_rdy) begin
       sel_reg  <= be_dec;
-      addr_reg <= wb_addr;
-      wr_reg   <= ~wb_rw;
-      if (!wb_rw) begin
+      addr_reg <= biu_addr;
+      wr_reg   <= ~biu_rw;
+      if (!biu_rw) begin
         data_in_reg <= swapped_data_in;
       end
     end
@@ -179,30 +179,30 @@ module peripheral_dbg_pu_riscv_wb_wb #(
 
   // Create toggle-active strobe signal for clock sync.  This will start a transaction
   // on the WB once the toggle propagates to the FSM in the WB domain.
-  always @(posedge wb_clk, posedge wb_rst) begin
-    if (wb_rst) begin
+  always @(posedge biu_clk, posedge biu_rst) begin
+    if (biu_rst) begin
       str_sync <= 1'b0;
-    end else if (wb_strb && wb_rdy) begin
+    end else if (biu_strb && biu_rdy) begin
       str_sync <= ~str_sync;
     end
   end
 
-  // Create wb_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
-  always @(posedge wb_clk, posedge wb_rst) begin
-    if (wb_rst) begin
+  // Create biu_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
+  always @(posedge biu_clk, posedge biu_rst) begin
+    if (biu_rst) begin
       rdy_sync_tff1  <= 1'b0;
       rdy_sync_tff2  <= 1'b0;
       rdy_sync_tff2q <= 1'b0;
-      wb_rdy        <= 1'b1;
+      biu_rdy        <= 1'b1;
     end else begin
       rdy_sync_tff1  <= rdy_sync;  // Synchronize the ready signal across clock domains
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  // used to detect toggles
 
-      if (wb_strb && wb_rdy) begin
-        wb_rdy <= 1'b0;
+      if (biu_strb && biu_rdy) begin
+        biu_rdy <= 1'b0;
       end else if (rdy_sync_tff2 != rdy_sync_tff2q) begin
-        wb_rdy <= 1'b1;
+        biu_rdy <= 1'b1;
       end
     end
   end
@@ -213,19 +213,19 @@ module peripheral_dbg_pu_riscv_wb_wb #(
   assign wb_adr_o = addr_reg;
   assign wb_sel_o = sel_reg;
 
-  assign wb_do   = data_out_reg;
-  assign wb_err  = err_reg;
+  assign biu_do   = data_out_reg;
+  assign biu_err  = err_reg;
 
   assign wb_cti_o = 3'h0;
   assign wb_bte_o = 2'h0;
 
-  ////////////////////////////////////////////////////// /
+  //////////////////////////////////////////////////////
   // Wishbone clock domain
   //
 
   // synchronize asynchronous active high reset
-  always @(posedge wb_clk_i, posedge wb_rst) begin
-    if (wb_rst) begin
+  always @(posedge wb_clk_i, posedge biu_rst) begin
+    if (biu_rst) begin
       wb_rst_sync <= {$bits(wb_rst_sync) {1'b1}};
     end else begin
       wb_rst_sync <= {1'b0, wb_rst_sync[$bits(wb_rst_sync)-1:1]};

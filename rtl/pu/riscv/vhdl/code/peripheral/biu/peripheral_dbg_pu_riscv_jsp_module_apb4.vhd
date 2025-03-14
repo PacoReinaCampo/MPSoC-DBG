@@ -46,7 +46,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_jsp_module_axi4 is
+entity peripheral_dbg_pu_riscv_jsp_module_apb4 is
   generic (
     DBG_JSP_DATAREG_LEN : integer := 64
     );
@@ -83,9 +83,9 @@ entity peripheral_dbg_pu_riscv_jsp_module_axi4 is
 
     int_o : out std_logic
     );
-end peripheral_dbg_pu_riscv_jsp_module_axi4;
+end peripheral_dbg_pu_riscv_jsp_module_apb4;
 
-architecture rtl of peripheral_dbg_pu_riscv_jsp_module_axi4 is
+architecture rtl of peripheral_dbg_pu_riscv_jsp_module_apb4 is
 
   ------------------------------------------------------------------------------
   -- Components
@@ -124,7 +124,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_module_axi4 is
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_jsp_biu_axi4
+  component peripheral_dbg_pu_riscv_jsp_biu_biu
     port (
       -- Debug interface signals
       tck_i             : in  std_logic;
@@ -204,7 +204,7 @@ begin
       );
 
   -- Hookup JSP APB Interface
-  jsp_biu_inst : peripheral_dbg_pu_riscv_jsp_biu_axi4
+  jsp_biu_inst : peripheral_dbg_pu_riscv_jsp_biu_biu
     port map (
       -- Debug interface signals
       tck_i             => biu_clk,

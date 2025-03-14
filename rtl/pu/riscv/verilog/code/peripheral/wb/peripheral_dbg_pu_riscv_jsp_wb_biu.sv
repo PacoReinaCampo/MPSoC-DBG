@@ -40,7 +40,7 @@
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 // Top module
-module peripheral_dbg_pu_riscv_jsp_wb_wb (
+module peripheral_dbg_pu_riscv_jsp_wb_biu (
   // Debug interface signals
   input        tck_i,
   input        rst_i,

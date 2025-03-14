@@ -11,7 +11,7 @@
 --                                                                            --
 --              MPSoC-RISCV CPU                                               --
 --              Degub Interface                                               --
---              AMBA3 AHB-Lite Bus Interface                                  --
+--              WishBone Bus Interface                                        --
 --                                                                            --
 --------------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
+entity peripheral_dbg_pu_riscv_jsp_wb_biu is
   port (
     -- Debug interface signals
     tck_i             : in  std_logic;
@@ -58,24 +58,23 @@ entity peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
     rd_strobe_i       : in  std_logic;
     wr_strobe_i       : in  std_logic;
 
-    -- APB signals
-    PRESETn : in std_logic;
-    PCLK    : in std_logic;
-
-    PSEL    : in  std_logic;
-    PENABLE : in  std_logic;
-    PWRITE  : in  std_logic;
-    PADDR   : in  std_logic_vector(2 downto 0);
-    PWDATA  : in  std_logic_vector(7 downto 0);
-    PRDATA  : out std_logic_vector(7 downto 0);
-    PREADY  : out std_logic;
-    PSLVERR : out std_logic;
+    -- Wishbone signals
+    wb_clk_i : in  std_logic;
+    wb_rst_i : in  std_logic;
+    wb_cyc_i : in  std_logic;
+    wb_stb_i : in  std_logic;
+    wb_we_i  : in  std_logic;
+    wb_adr_i : in  std_logic_vector(2 downto 0);
+    wb_dat_i : in  std_logic_vector(7 downto 0);
+    wb_dat_o : out std_logic_vector(7 downto 0);
+    wb_ack_o : out std_logic;
+    wb_err_o : out std_logic;
 
     int_o : out std_logic
     );
-end peripheral_dbg_pu_riscv_jsp_axi4_axi4;
+end peripheral_dbg_pu_riscv_jsp_wb_biu;
 
-architecture rtl of peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
+architecture rtl of peripheral_dbg_pu_riscv_jsp_wb_biu is
 
   ------------------------------------------------------------------------------
   -- Components
@@ -117,31 +116,6 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
   end component;
 
   ------------------------------------------------------------------------------
-  -- Functions
-  ------------------------------------------------------------------------------
-  function reduce_or (
-    reduce_or_in : std_logic_vector
-    ) return std_logic is
-    variable reduce_or_out : std_logic := '0';
-  begin
-    for i in reduce_or_in'range loop
-      reduce_or_out := reduce_or_out or reduce_or_in(i);
-    end loop;
-    return reduce_or_out;
-  end reduce_or;
-
-  function to_stdlogic (
-    input : boolean
-    ) return std_logic is
-  begin
-    if input then
-      return('1');
-    else
-      return('0');
-    end if;
-  end function to_stdlogic;
-
-  ------------------------------------------------------------------------------
   -- Constants
   ------------------------------------------------------------------------------
   constant RD_IDLE  : std_logic_vector(1 downto 0) := "11";
@@ -174,7 +148,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
   signal data_to_extbus          : std_logic_vector(7 downto 0);
   signal data_from_extbus        : std_logic_vector(7 downto 0);
   signal wr_fifo_not_empty       : std_logic;  -- this is for the WishBone interface LSR register
-  signal rx_fifo_rst             : std_logic;  -- rcvr in the APB sense, opposite most of the rest of this file
+  signal rx_fifo_rst             : std_logic;  -- rcvr in the WB sense, opposite most of the rest of this file
   signal tx_fifo_rst             : std_logic;  -- ditto
 
   -- Control Signals (FSM outputs)
@@ -185,8 +159,8 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
   signal rdata_en  : std_logic;         -- enable 'rdata' register
   signal rpp       : std_logic;         -- read FIFO PUSH (1) or POP (0)
   signal r_fifo_en : std_logic;         -- enable read FIFO    
-  signal r_wb_ack  : std_logic;         -- read FSM acks APB transaction
-  signal w_wb_ack  : std_logic;         -- write FSM acks APB transaction
+  signal r_wb_ack  : std_logic;         -- read FSM acks WB transaction
+  signal w_wb_ack  : std_logic;         -- write FSM acks WB transaction
 
   -- Indicators to FSMs
   signal wdata_avail : std_logic;       -- JTAG side has data available
@@ -215,7 +189,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_axi4_axi4 is
   signal scr : std_logic_vector(7 downto 0);
 
   signal reg_ack                : std_logic;
-  signal rd_fifo_not_full       : std_logic;  -- "rd fifo" is the one the APB writes to
+  signal rd_fifo_not_full       : std_logic;  -- "rd fifo" is the one the WB writes to
   signal rd_fifo_becoming_empty : std_logic;
   signal thr_int_arm            : std_logic;  -- used so that an IIR read can clear a transmit interrupt
   signal iir_read               : std_logic;
@@ -270,7 +244,7 @@ begin
     end if;
   end process;
 
-  -- APB clock domain
+  -- Wishbone clock domain
 
   -- Combinatorial assignments
   rd_bytes_avail_not_zero <= reduce_or(rd_bytes_avail);
@@ -280,11 +254,11 @@ begin
   wr_fifo_not_empty       <= reduce_or(wr_bytes_avail);
 
   -- rdata register
-  processing_3 : process (PCLK, PRESETn)
+  processing_3 : process (wb_clk_i, rst_i)
   begin
-    if (PRESETn = '0') then
+    if (rst_i = '1') then
       rdata <= X"00";
-    elsif (rising_edge(PCLK)) then
+    elsif (rising_edge(wb_clk_i)) then
       if (rdata_en = '1') then
         rdata <= rd_fifo_data_out;
       end if;
@@ -295,7 +269,7 @@ begin
   wen_sff : peripheral_dbg_pu_riscv_syncflop
     port map (
       RESET     => rst_i,
-      DEST_CLK  => PCLK,
+      DEST_CLK  => wb_clk_i,
       D_SET     => '0',
       D_RST     => wda_rst,
       TOGGLE_IN => wen_tff,
@@ -306,7 +280,7 @@ begin
   ren_sff : peripheral_dbg_pu_riscv_syncflop
     port map (
       RESET     => rst_i,
-      DEST_CLK  => PCLK,
+      DEST_CLK  => wb_clk_i,
       D_SET     => '0',
       D_RST     => ren_rst,
       TOGGLE_IN => ren_tff,
@@ -318,7 +292,7 @@ begin
   freespace_syncreg : peripheral_dbg_pu_riscv_syncreg
     port map (
       RST      => rst_i,
-      CLKA     => PCLK,
+      CLKA     => wb_clk_i,
       CLKB     => tck_i,
       DATA_IN  => wr_bytes_free,
       DATA_OUT => bytes_free_o
@@ -328,7 +302,7 @@ begin
   bytesavail_syncreg : peripheral_dbg_pu_riscv_syncreg
     port map (
       RST      => rst_i,
-      CLKA     => PCLK,
+      CLKA     => wb_clk_i,
       CLKB     => tck_i,
       DATA_IN  => rd_bytes_avail,
       DATA_OUT => bytes_available_o
@@ -338,8 +312,8 @@ begin
   -- write FIFO
   wr_fifo : peripheral_dbg_pu_riscv_bytefifo
     port map (
-      RST         => rst_wr,  -- rst_i from JTAG clk domain, rx_fifo_rst from APB, RST is async reset
-      CLK         => PCLK,
+      RST         => rst_wr,  -- rst_i from JTAG clk domain, rx_fifo_rst from WB, RST is async reset
+      CLK         => wb_clk_i,
       DATA_IN     => data_in,
       DATA_OUT    => data_to_extbus,
       PUSH_POPn   => wpp,
@@ -353,8 +327,8 @@ begin
   -- read FIFO
   rd_fifo : peripheral_dbg_pu_riscv_bytefifo
     port map (
-      RST         => rst_rd,  -- rst_i from JTAG clk domain, tx_fifo_rst from APB, RST is async reset
-      CLK         => PCLK,
+      RST         => rst_rd,  -- rst_i from JTAG clk domain, tx_fifo_rst from WB, RST is async reset
+      CLK         => wb_clk_i,
       DATA_IN     => data_from_extbus,
       DATA_OUT    => rd_fifo_data_out,
       PUSH_POPn   => rpp,
@@ -368,11 +342,11 @@ begin
   -- State machine for the read FIFO
 
   -- Sequential bit
-  processing_4 : process (PCLK, PRESETn)
+  processing_4 : process (wb_clk_i, rst_i)
   begin
-    if (PRESETn = '0') then
+    if (rst_i = '1') then
       rd_fsm_state <= RD_IDLE;
-    elsif (rising_edge(PCLK)) then
+    elsif (rising_edge(wb_clk_i)) then
       rd_fsm_state <= next_rd_fsm_state;
     end if;
   end process;
@@ -440,11 +414,11 @@ begin
   -- State machine for the write FIFO
 
   -- Sequential bit
-  processing_7 : process (PCLK, PRESETn)
+  processing_7 : process (wb_clk_i, rst_i)
   begin
-    if (PRESETn = '0') then
+    if (rst_i = '1') then
       wr_fsm_state <= WR_IDLE;
-    elsif (rising_edge(PCLK)) then
+    elsif (rising_edge(wb_clk_i)) then
       wr_fsm_state <= next_wr_fsm_state;
     end if;
   end process;
@@ -485,7 +459,6 @@ begin
     wpp       <= '0';
     w_fifo_en <= '0';
     w_wb_ack  <= '0';
-
     case (wr_fsm_state) is
       when WR_PUSH =>
         wda_rst   <= '1';
@@ -508,23 +481,23 @@ begin
   lsr              <= ('0' & rd_fifo_not_full & rd_fifo_not_full & X"0" & wr_fifo_not_empty);
 
   -- Create writeable registers
-  processing_10 : process (PCLK, PRESETn)
+  processing_10 : process (wb_clk_i)
   begin
-    if (PRESETn = '0') then
-      ier <= X"0";
-      lcr <= X"00";
-      scr <= X"00";
-    elsif (rising_edge(PCLK)) then
-      if (PSEL = '1' and PWRITE = '1' and PENABLE = '1') then
-        case (PADDR) is
+    if (rising_edge(wb_clk_i)) then
+      if (wb_rst_i = '1') then
+        ier <= X"0";
+        lcr <= X"00";
+        scr <= X"00";
+      elsif (wb_cyc_i = '1' and wb_stb_i = '1' and wb_we_i = '1') then
+        case ((wb_adr_i)) is
           when "001" =>
             if (lcr(7) = '0') then
-              ier <= PWDATA(3 downto 0);
+              ier <= wb_dat_i(3 downto 0);
             end if;
           when "011" =>
-            lcr <= PWDATA;
+            lcr <= wb_dat_i;
           when "111" =>
-            scr <= PWDATA;
+            scr <= wb_dat_i;
           when others =>
             null;
         end case;
@@ -533,38 +506,31 @@ begin
   end process;
 
   -- Create handshake signals to/from the FIFOs
-  -- Access FIFO during APB-Setup Phase, so we acknowledge during APB-Access phase
-  fifo_rd <= PSEL and not PENABLE and not PWRITE and to_stdlogic(PADDR = "000") and not lcr(7);
-  fifo_wr <= PSEL and not PENABLE and PWRITE and to_stdlogic(PADDR = "000") and not lcr(7);
+  fifo_rd <= wb_cyc_i and wb_stb_i and not wb_we_i and to_stdlogic(wb_adr_i = "000") and not lcr(7);
+  fifo_wr <= wb_cyc_i and wb_stb_i and wb_we_i and to_stdlogic(wb_adr_i = "000") and not lcr(7);
 
-  -- APB responses
-  PREADY  <= fifo_ack or reg_ack;
-  PSLVERR <= '0';
+  -- Wishbone responses
+  wb_ack_o <= fifo_ack or reg_ack;
+  wb_err_o <= '0';
 
   -- acknowledge all accesses, except to FIFOs
-  processing_11 : process (PCLK)
-  begin
-    if (rising_edge(PCLK)) then
-      reg_ack <= PSEL and not PENABLE and (lcr(7) or to_stdlogic(PADDR /= "000"));
-    end if;
-  end process;
+  reg_ack <= wb_cyc_i and wb_stb_i and (lcr(7) or to_stdlogic(wb_adr_i /= "000"));
 
   -- Create FIFO reset signals
-  rx_fifo_rst <= PSEL and PENABLE and PWRITE and to_stdlogic(PADDR = "010") and PWDATA(1);
-  tx_fifo_rst <= PSEL and PENABLE and PWRITE and to_stdlogic(PADDR = "010") and PWDATA(2);
+  rx_fifo_rst <= wb_cyc_i and wb_stb_i and wb_we_i and to_stdlogic(wb_adr_i = "010") and wb_dat_i(1);
+  tx_fifo_rst <= wb_cyc_i and wb_stb_i and wb_we_i and to_stdlogic(wb_adr_i = "010") and wb_dat_i(2);
 
   -- Create IIR (and THR INT arm bit)
-  -- "rd fifo" is the ext.bus write FIFO...
-  rd_fifo_becoming_empty <= r_fifo_en and (not rpp) and to_stdlogic(rd_bytes_avail = X"1");
+  rd_fifo_becoming_empty <= r_fifo_en and (not rpp) and to_stdlogic(rd_bytes_avail = X"1");  -- "rd fifo" is the ext.bus write FIFO...
 
-  iir_read <= PSEL and PENABLE and not PWRITE and to_stdlogic(PADDR = "010");
+  iir_read <= wb_cyc_i and wb_stb_i and not wb_we_i and to_stdlogic(wb_adr_i = "010");
 
-  processing_12 : process (PCLK, PRESETn)
+  processing_11 : process (wb_clk_i)
   begin
-    if (PRESETn = '0') then
-      thr_int_arm <= '0';
-    elsif (rising_edge(PCLK)) then
-      if (fifo_wr = '1' or rd_fifo_becoming_empty = '1') then  -- Set when APB write fifo becomes empty, or on a write to it
+    if (rising_edge(wb_clk_i)) then
+      if (wb_rst_i = '1') then
+        thr_int_arm <= '0';
+      elsif (fifo_wr = '1' or rd_fifo_becoming_empty = '1') then  -- Set when WB write fifo becomes empty, or on a write to it
         thr_int_arm <= '1';
       elsif (iir_read = '1' and wr_fifo_not_empty = '0') then
         thr_int_arm <= '0';
@@ -572,7 +538,7 @@ begin
     end if;
   end process;
 
-  processing_13 : process (wr_fifo_not_empty)
+  processing_12 : process (wr_fifo_not_empty)
   begin
     if (wr_fifo_not_empty = '1') then
       iir <= "00000100";
@@ -584,32 +550,31 @@ begin
   end process;
 
   -- Create ext.bus Data Out
-  processing_14 : process (PADDR)
+  processing_13 : process (wb_adr_i)
   begin
-    case (PADDR) is
+    case (wb_adr_i) is
       when "000" =>
-        PRDATA <= data_to_extbus;
+        wb_dat_o <= data_to_extbus;
       when "001" =>
-        PRDATA <= (X"0" & ier);
+        wb_dat_o <= (X"0" & ier);
       when "010" =>
-        PRDATA <= iir;
+        wb_dat_o <= iir;
       when "011" =>
-        PRDATA <= lcr;
+        wb_dat_o <= lcr;
       when "100" =>
-        PRDATA <= mcr;
+        wb_dat_o <= mcr;
       when "101" =>
-        PRDATA <= lsr;
+        wb_dat_o <= lsr;
       when "110" =>
-        PRDATA <= msr;
+        wb_dat_o <= msr;
       when "111" =>
-        PRDATA <= scr;
+        wb_dat_o <= scr;
       when others =>
-        PRDATA <= X"00";
+        wb_dat_o <= X"00";
     end case;
   end process;
 
-  -- Data to the FIFO
-  data_from_extbus <= PWDATA;
+  data_from_extbus <= wb_dat_i;         -- Data to the FIFO
 
   -- Generate interrupt output
   int_o <= (rd_fifo_not_full and thr_int_arm and ier(1)) or (wr_fifo_not_empty and ier(0));

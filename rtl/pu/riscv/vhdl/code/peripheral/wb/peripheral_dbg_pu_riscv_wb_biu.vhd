@@ -47,7 +47,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_wb_wb is
+entity peripheral_dbg_pu_riscv_wb_biu is
   generic (
     LITTLE_ENDIAN : std_logic := '1';
     ADDR_WIDTH    : integer   := 32;
@@ -55,16 +55,16 @@ entity peripheral_dbg_pu_riscv_wb_wb is
     );
   port (
     -- Debug interface signals
-    wb_clk       : in  std_logic;
-    wb_rst       : in  std_logic;
-    wb_di        : in  std_logic_vector(DATA_WIDTH-1 downto 0);
-    wb_do        : out std_logic_vector(DATA_WIDTH-1 downto 0);
-    wb_addr      : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
-    wb_strb      : in  std_logic;
-    wb_rw        : in  std_logic;
-    wb_rdy       : out std_logic;
-    wb_err       : out std_logic;
-    wb_word_size : in  std_logic_vector(3 downto 0);
+    biu_clk       : in  std_logic;
+    biu_rst       : in  std_logic;
+    biu_di        : in  std_logic_vector(DATA_WIDTH-1 downto 0);
+    biu_do        : out std_logic_vector(DATA_WIDTH-1 downto 0);
+    biu_addr      : in  std_logic_vector(ADDR_WIDTH-1 downto 0);
+    biu_strb      : in  std_logic;
+    biu_rw        : in  std_logic;
+    biu_rdy       : out std_logic;
+    biu_err       : out std_logic;
+    biu_word_size : in  std_logic_vector(3 downto 0);
 
     -- Wishbone signals
     wb_clk_i : in  std_logic;
@@ -80,9 +80,9 @@ entity peripheral_dbg_pu_riscv_wb_wb is
     wb_ack_i : in  std_logic;
     wb_err_i : in  std_logic
     );
-end peripheral_dbg_pu_riscv_wb_wb;
+end peripheral_dbg_pu_riscv_wb_biu;
 
-architecture rtl of peripheral_dbg_pu_riscv_wb_wb is
+architecture rtl of peripheral_dbg_pu_riscv_wb_biu is
   ------------------------------------------------------------------------------
   -- Constants
   ------------------------------------------------------------------------------
@@ -101,7 +101,7 @@ architecture rtl of peripheral_dbg_pu_riscv_wb_wb is
   signal rdy_sync     : std_logic;      -- ditto, active-toggle
   signal err_reg      : std_logic;
 
-  -- Sync registers.  TFF indicates TCK domain, WBFF indicates wb_clk domain
+  -- Sync registers.  TFF indicates TCK domain, WBFF indicates biu_clk domain
   signal wb_rst_sync     : std_logic_vector(1 downto 0);
   signal wb_rst          : std_logic;
   signal rdy_sync_tff1   : std_logic;
@@ -135,11 +135,11 @@ begin
   -- There is no FSM here, just signal latching and clock domain synchronization
 
   -- Create byte enable signals from word_size and address (combinatorial)
-  processing_0 : process (wb_word_size)
+  processing_0 : process (biu_word_size)
     variable state_addr_a : std_logic_vector(1 downto 0);
     variable state_addr_b : std_logic;
   begin
-    case (wb_word_size) is
+    case (biu_word_size) is
       when X"1" =>
         case (state_addr_a) is
           when "00" =>
@@ -190,8 +190,8 @@ begin
         -- default to 32-bit access
         be_dec <= "1111";
     end case;
-    state_addr_a := wb_addr(1 downto 0);
-    state_addr_b := wb_addr(1);
+    state_addr_a := biu_addr(1 downto 0);
+    state_addr_b := biu_addr(1);
   end process;
 
   -- Byte- or word-swap data as necessary.  Use the non-latched be_dec signal,
@@ -202,39 +202,39 @@ begin
   begin
     case (be_dec) is
       when "1111" =>
-        swapped_data_in <= wb_di;
+        swapped_data_in <= biu_di;
       when "0011" =>
-        swapped_data_in <= (X"0" & wb_di(31 downto 16));
+        swapped_data_in <= (X"0" & biu_di(31 downto 16));
       when "1100" =>
-        swapped_data_in <= wb_di;
+        swapped_data_in <= biu_di;
       when "0001" =>
-        swapped_data_in <= (X"0" & wb_di(31 downto 24));
+        swapped_data_in <= (X"0" & biu_di(31 downto 24));
       when "0010" =>
-        swapped_data_in <= (X"0" & wb_di(31 downto 24) & X"0");
+        swapped_data_in <= (X"0" & biu_di(31 downto 24) & X"0");
       when "0100" =>
-        swapped_data_in <= (X"0" & wb_di(31 downto 24) & X"0");
+        swapped_data_in <= (X"0" & biu_di(31 downto 24) & X"0");
       when "1000" =>
-        swapped_data_in <= (wb_di(31 downto 24) & X"0");
+        swapped_data_in <= (biu_di(31 downto 24) & X"0");
       when others =>
         -- Shouldn't be possible
-        swapped_data_in <= wb_di;
+        swapped_data_in <= biu_di;
     end case;
   end process;
 
   -- Latch input data on 'start' strobe, if ready.
-  processing_2 : process (wb_clk, wb_rst)
+  processing_2 : process (biu_clk, biu_rst)
   begin
-    if (wb_rst = '1') then
+    if (biu_rst = '1') then
       sel_reg     <= X"0";
       addr_reg    <= X"0";
       data_in_reg <= X"0";
       wr_reg      <= '0';
-    elsif (rising_edge(wb_clk)) then
-      if (wb_strb = '1' and wb_rdy_sgn = '1') then
+    elsif (rising_edge(biu_clk)) then
+      if (biu_strb = '1' and wb_rdy_sgn = '1') then
         sel_reg  <= be_dec;
-        addr_reg <= wb_addr;
-        wr_reg   <= not wb_rw;
-        if (wb_rw = '0') then
+        addr_reg <= biu_addr;
+        wr_reg   <= not biu_rw;
+        if (biu_rw = '0') then
           data_in_reg <= swapped_data_in;
         end if;
       end if;
@@ -243,31 +243,31 @@ begin
 
   -- Create toggle-active strobe signal for clock sync.  This will start a transaction
   -- on the WB once the toggle propagates to the FSM in the WB domain.
-  processing_3 : process (wb_clk, wb_rst)
+  processing_3 : process (biu_clk, biu_rst)
   begin
-    if (wb_rst = '1') then
+    if (biu_rst = '1') then
       str_sync <= '0';
-    elsif (rising_edge(wb_clk)) then
-      if (wb_strb = '1' and wb_rdy_sgn = '1') then
+    elsif (rising_edge(biu_clk)) then
+      if (biu_strb = '1' and wb_rdy_sgn = '1') then
         str_sync <= not str_sync;
       end if;
     end if;
   end process;
 
-  -- Create wb_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
-  processing_4 : process (wb_clk, wb_rst)
+  -- Create biu_rdy output.  Set on reset, clear on strobe (if set), set on input toggle
+  processing_4 : process (biu_clk, biu_rst)
   begin
-    if (wb_rst = '1') then
+    if (biu_rst = '1') then
       rdy_sync_tff1  <= '0';
       rdy_sync_tff2  <= '0';
       rdy_sync_tff2q <= '0';
       wb_rdy_sgn    <= '1';
-    elsif (rising_edge(wb_clk)) then
+    elsif (rising_edge(biu_clk)) then
       rdy_sync_tff1  <= rdy_sync;  -- Synchronize the ready signal across clock domains
       rdy_sync_tff2  <= rdy_sync_tff1;
       rdy_sync_tff2q <= rdy_sync_tff2;  -- used to detect toggles
 
-      if (wb_strb = '1' and wb_rdy_sgn = '1') then
+      if (biu_strb = '1' and wb_rdy_sgn = '1') then
         wb_rdy_sgn <= '0';
       elsif (rdy_sync_tff2 /= rdy_sync_tff2q) then
         wb_rdy_sgn <= '1';
@@ -275,7 +275,7 @@ begin
     end if;
   end process;
 
-  wb_rdy <= wb_rdy_sgn;
+  biu_rdy <= wb_rdy_sgn;
 
   -- Direct assignments, unsynchronized
   wb_dat_o <= data_in_reg;
@@ -283,8 +283,8 @@ begin
   wb_adr_o <= addr_reg;
   wb_sel_o <= sel_reg;
 
-  wb_do  <= data_out_reg;
-  wb_err <= err_reg;
+  biu_do  <= data_out_reg;
+  biu_err <= err_reg;
 
   wb_cti_o <= (others => '0');
   wb_bte_o <= (others => '0');
@@ -292,9 +292,9 @@ begin
   -- Wishbone clock domain
 
   -- synchronize asynchronous active high reset
-  processing_5 : process (wb_clk_i, wb_rst)
+  processing_5 : process (wb_clk_i, biu_rst)
   begin
-    if (wb_rst = '1') then
+    if (biu_rst = '1') then
       wb_rst_sync <= "11";
     elsif (rising_edge(wb_clk_i)) then
       wb_rst_sync <= "01";

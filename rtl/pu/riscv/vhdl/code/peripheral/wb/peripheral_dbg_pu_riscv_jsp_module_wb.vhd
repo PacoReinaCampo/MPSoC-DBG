@@ -119,7 +119,7 @@ architecture rtl of peripheral_dbg_pu_riscv_jsp_module_wb is
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_jsp_biu_wb
+  component peripheral_dbg_pu_riscv_jsp_wb_biu
     port (
       -- Debug interface signals
       tck_i             : in  std_logic;
@@ -198,7 +198,7 @@ begin
       );
 
   -- Hookup JSP Wishbone Interface
-  jsp_biu_inst : peripheral_dbg_pu_riscv_jsp_biu_wb
+  jsp_biu_inst : peripheral_dbg_pu_riscv_jsp_wb_biu
     port map (
       -- Debug interface signals
       tck_i             => biu_clk,

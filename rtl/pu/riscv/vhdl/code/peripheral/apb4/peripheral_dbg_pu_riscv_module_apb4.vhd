@@ -134,7 +134,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module_apb4 is
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_biu_apb4
+  component peripheral_dbg_pu_riscv_axi4_biu
     generic (
       LITTLE_ENDIAN : std_logic := '1';
       ADDR_WIDTH    : integer   := 32;
@@ -227,7 +227,7 @@ begin
       );
 
   -- Hookup AHB Bus Interface
-  apb4lite_biu_i : peripheral_dbg_pu_riscv_biu_apb4
+  apb4lite_biu_i : peripheral_dbg_pu_riscv_axi4_biu
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,
       DATA_WIDTH => DATA_WIDTH

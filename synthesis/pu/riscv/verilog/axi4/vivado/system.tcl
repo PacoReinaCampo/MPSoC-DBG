@@ -42,7 +42,7 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_axi4.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_biu.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bus_module_core.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bytefifo.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_crc32.sv
@@ -52,8 +52,8 @@ read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncflop.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_syncreg.sv
 
-read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_axi4.sv
-read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_axi4.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_biu.sv
+read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_biu.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_axi4.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_module_axi4.sv
 read_verilog -sv ../../../../../../rtl/pu/riscv/verilog/code/peripheral/axi4/peripheral_dbg_pu_riscv_top_axi4.sv

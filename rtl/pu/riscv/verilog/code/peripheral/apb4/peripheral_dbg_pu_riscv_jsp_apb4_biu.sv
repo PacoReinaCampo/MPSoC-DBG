@@ -42,7 +42,7 @@
 `include "peripheral_dbg_pu_riscv_pkg.sv"
 
 // Top module
-module peripheral_dbg_pu_riscv_jsp_apb4_apb4 (
+module peripheral_dbg_pu_riscv_jsp_apb4_biu (
   // Debug interface signals
   input        tck_i,
   input        rst_i,
