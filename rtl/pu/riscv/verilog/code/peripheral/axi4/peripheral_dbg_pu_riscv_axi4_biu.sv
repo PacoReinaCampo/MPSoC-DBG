@@ -250,19 +250,23 @@ module peripheral_dbg_pu_riscv_axi4_biu #(
       always @(posedge HCLK) begin
         if (ahb_transfer_ack) begin
           case (biu_word_size)
-            'h1:
-            case (HADDR[1:0])
-              2'b00: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[7-:8]} : {24'h0, HRDATA[31-:8]};
-              2'b01: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[15-:8]} : {24'h0, HRDATA[23-:8]};
-              2'b10: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[23-:8]} : {24'h0, HRDATA[15-:8]};
-              2'b11: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[31-:8]} : {24'h0, HRDATA[7-:8]};
-            endcase
-            'h2:
-            case (HADDR[1])
-              1'b0: biu_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[15-:16]} : {16'h0, HRDATA[31-:16]};
-              2'b1: biu_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[31-:16]} : {16'h0, HRDATA[15-:16]};
-            endcase
-            default: biu_do <= HRDATA;
+            'h1: begin
+              case (HADDR[1:0])
+                2'b00: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[7-:8]} : {24'h0, HRDATA[31-:8]};
+                2'b01: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[15-:8]} : {24'h0, HRDATA[23-:8]};
+                2'b10: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[23-:8]} : {24'h0, HRDATA[15-:8]};
+                2'b11: biu_do <= LITTLE_ENDIAN ? {24'h0, HRDATA[31-:8]} : {24'h0, HRDATA[7-:8]};
+              endcase
+            end
+            'h2: begin
+              case (HADDR[1])
+                1'b0: biu_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[15-:16]} : {16'h0, HRDATA[31-:16]};
+                2'b1: biu_do <= LITTLE_ENDIAN ? {16'h0, HRDATA[31-:16]} : {16'h0, HRDATA[15-:16]};
+              endcase
+            end
+            default: begin
+              biu_do <= HRDATA;
+            end
           endcase
         end
       end
@@ -271,30 +275,35 @@ module peripheral_dbg_pu_riscv_axi4_biu #(
       always @(posedge HCLK) begin
         if (ahb_transfer_ack) begin
           case (biu_word_size)
-            'h1:
-            case (HADDR[2:0])
-              3'b000: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[7-:8]} : {56'h0, HRDATA[63-:8]};
-              3'b001: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[15-:8]} : {56'h0, HRDATA[55-:8]};
-              3'b010: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[23-:8]} : {56'h0, HRDATA[47-:8]};
-              3'b011: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[31-:8]} : {56'h0, HRDATA[39-:8]};
-              3'b100: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[39-:8]} : {56'h0, HRDATA[31-:8]};
-              3'b101: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[47-:8]} : {56'h0, HRDATA[23-:8]};
-              3'b110: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[55-:8]} : {56'h0, HRDATA[15-:8]};
-              3'b111: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[63-:8]} : {56'h0, HRDATA[7-:8]};
-            endcase
-            'h2:
-            case (HADDR[2:1])
-              2'b00: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[15-:16]} : {48'h0, HRDATA[63-:16]};
-              2'b01: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[31-:16]} : {48'h0, HRDATA[47-:16]};
-              2'b10: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[47-:16]} : {48'h0, HRDATA[31-:16]};
-              2'b11: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[63-:16]} : {48'h0, HRDATA[15-:16]};
-            endcase
-            'h4:
-            case (HADDR[2])
-              1'b0: biu_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[31-:32]} : {16'h0, HRDATA[63-:32]};
-              2'b1: biu_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[63-:32]} : {16'h0, HRDATA[31-:32]};
-            endcase
-            default: biu_do <= HRDATA;
+            'h1: begin
+              case (HADDR[2:0])
+                3'b000: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[7-:8]} : {56'h0, HRDATA[63-:8]};
+                3'b001: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[15-:8]} : {56'h0, HRDATA[55-:8]};
+                3'b010: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[23-:8]} : {56'h0, HRDATA[47-:8]};
+                3'b011: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[31-:8]} : {56'h0, HRDATA[39-:8]};
+                3'b100: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[39-:8]} : {56'h0, HRDATA[31-:8]};
+                3'b101: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[47-:8]} : {56'h0, HRDATA[23-:8]};
+                3'b110: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[55-:8]} : {56'h0, HRDATA[15-:8]};
+                3'b111: biu_do <= LITTLE_ENDIAN ? {56'h0, HRDATA[63-:8]} : {56'h0, HRDATA[7-:8]};
+              endcase
+            end
+            'h2: begin
+              case (HADDR[2:1])
+                2'b00: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[15-:16]} : {48'h0, HRDATA[63-:16]};
+                2'b01: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[31-:16]} : {48'h0, HRDATA[47-:16]};
+                2'b10: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[47-:16]} : {48'h0, HRDATA[31-:16]};
+                2'b11: biu_do <= LITTLE_ENDIAN ? {48'h0, HRDATA[63-:16]} : {48'h0, HRDATA[15-:16]};
+              endcase
+            end
+            'h4: begin
+              case (HADDR[2])
+                1'b0: biu_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[31-:32]} : {16'h0, HRDATA[63-:32]};
+                2'b1: biu_do <= LITTLE_ENDIAN ? {32'h0, HRDATA[63-:32]} : {16'h0, HRDATA[31-:32]};
+              endcase
+            end
+            default: begin
+              biu_do <= HRDATA;
+            end
           endcase
         end
       end
