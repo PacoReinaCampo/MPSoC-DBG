@@ -61,7 +61,7 @@ module peripheral_dbg_soc_mam_adapter_biu #(
   localparam BYTE_AW = SW >> 1,
   localparam WORD_AW = PLEN - BYTE_AW
 ) (
-  // AHB3 SLAVE interface: input side (to the CPU etc.)
+  // AHB4 SLAVE interface: input side (to the CPU etc.)
   input            biu_in_hsel_i,
   input [PLEN-1:0] biu_in_haddr_i,
   input [XLEN-1:0] biu_in_hwdata_i,
@@ -79,7 +79,7 @@ module peripheral_dbg_soc_mam_adapter_biu #(
   input biu_in_clk_i,
   input biu_in_rst_i,
 
-  // AHB3 SLAVE interface: output side (to the memory)
+  // AHB4 SLAVE interface: output side (to the memory)
   output            biu_out_hsel_i,
   output [PLEN-1:0] biu_out_haddr_i,
   output [XLEN-1:0] biu_out_hwdata_i,
@@ -97,7 +97,7 @@ module peripheral_dbg_soc_mam_adapter_biu #(
   output biu_out_clk_i,
   output biu_out_rst_i,
 
-  // MAM AHB3 MASTER interface (incoming)
+  // MAM AHB4 MASTER interface (incoming)
   input            biu_mam_hsel_o,
   input [PLEN-1:0] biu_mam_haddr_o,
   input [XLEN-1:0] biu_mam_hwdata_o,

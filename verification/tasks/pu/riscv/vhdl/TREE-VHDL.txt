@@ -1,6 +1,6 @@
 code
 └── tests
-    ├── ahb3
+    ├── ahb4
     │   └── peripheral_dbg_testbench.vhd
     ├── apb4
     │   └── peripheral_dbg_testbench.vhd

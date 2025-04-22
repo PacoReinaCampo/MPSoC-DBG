@@ -97,7 +97,7 @@ package peripheral_dbg_pu_riscv_pkg is
   constant DBG_JSP_DATAREG_LEN : integer := 64;
 
   -- AMBA3 AHB-Lite Interface
-  -- The AHB3 debug module requires 53 bits
+  -- The AHB4 debug module requires 53 bits
   constant DBG_AHB_DATAREG_LEN : integer := 64;
 
   -- These relate to the number of internal registers, and how

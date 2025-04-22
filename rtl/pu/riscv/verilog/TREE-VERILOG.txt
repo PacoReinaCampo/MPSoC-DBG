@@ -10,12 +10,12 @@ code
 │   ├── peripheral_dbg_pu_riscv_syncflop.sv
 │   └── peripheral_dbg_pu_riscv_syncreg.sv
 ├── peripheral
-│   ├── ahb3
-│   │   ├── peripheral_dbg_pu_riscv_ahb3_biu.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_ahb3_biu.sv
+│   ├── ahb4
+│   │   ├── peripheral_dbg_pu_riscv_ahb4_biu.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_ahb4_biu.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
-│   │   ├── peripheral_dbg_pu_riscv_module_ahb3.sv
-│   │   └── peripheral_dbg_pu_riscv_top_ahb3.sv
+│   │   ├── peripheral_dbg_pu_riscv_module_ahb4.sv
+│   │   └── peripheral_dbg_pu_riscv_top_ahb4.sv
 │   ├── apb4
 │   │   ├── peripheral_dbg_pu_riscv_apb4_biu.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_apb4_biu.sv

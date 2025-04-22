@@ -1,6 +1,6 @@
 code
 ├── peripheral
-│   ├── ahb3
+│   ├── ahb4
 │   │   ├── fuse
 │   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
@@ -55,7 +55,7 @@ code
 │           ├── peripheral_dbg_pu_msp430_i2c.sv
 │           └── peripheral_dbg_pu_msp430_uart.sv
 └── pkg
-    ├── ahb3
+    ├── ahb4
     │   ├── peripheral_dbg_pu_msp430_defines.sv
     │   ├── peripheral_dbg_pu_msp430_timescale.sv
     │   └── peripheral_dbg_pu_msp430_undefines.sv

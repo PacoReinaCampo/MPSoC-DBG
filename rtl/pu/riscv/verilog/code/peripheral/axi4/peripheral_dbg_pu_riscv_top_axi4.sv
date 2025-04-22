@@ -161,7 +161,7 @@ module peripheral_dbg_pu_riscv_top_axi4 #(
     end
   end
 
-  // AHB3 debug module instantiation
+  // AHB4 debug module instantiation
   peripheral_dbg_pu_riscv_module_axi4 #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)

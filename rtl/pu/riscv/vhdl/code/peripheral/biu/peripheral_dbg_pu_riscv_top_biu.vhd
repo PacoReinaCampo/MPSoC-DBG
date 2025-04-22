@@ -148,7 +148,7 @@ architecture rtl of peripheral_dbg_pu_riscv_top_biu is
       module_select_i : in  std_logic;
       top_inhibit_o   : out std_logic;
 
-      -- AHB3 master interface
+      -- AHB4 master interface
       HCLK      : in  std_logic;
       HRESETn   : in  std_logic;
       HSEL      : out std_logic;
@@ -312,7 +312,7 @@ begin
     end if;
   end process;
 
-  -- AHB3 debug module instantiation
+  -- AHB4 debug module instantiation
   i_dbg_ahb : peripheral_dbg_pu_riscv_module_biu
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,

@@ -1,13 +1,13 @@
 code
 ├── peripheral
-│   ├── ahb3
-│   │   ├── peripheral_dbg_pu_or1k_ahb3_biu.sv
+│   ├── ahb4
+│   │   ├── peripheral_dbg_pu_or1k_ahb4_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_bytefifo.sv
 │   │   ├── peripheral_dbg_pu_or1k_crc32.sv
 │   │   ├── peripheral_dbg_pu_or1k_jsp_biu.sv
 │   │   ├── peripheral_dbg_pu_or1k_jsp_module.sv
-│   │   ├── peripheral_dbg_pu_or1k_module_ahb3.sv
+│   │   ├── peripheral_dbg_pu_or1k_module_ahb4.sv
 │   │   ├── peripheral_dbg_pu_or1k_module.sv
 │   │   ├── peripheral_dbg_pu_or1k_status_reg.sv
 │   │   ├── peripheral_dbg_pu_or1k_syncflop.sv
@@ -79,8 +79,8 @@ code
 │       ├── peripheral_dbg_pu_or1k_top.sv
 │       └── peripheral_dbg_pu_or1k_wb_biu.sv
 └── pkg
-    ├── ahb3
-    │   ├── peripheral_dbg_pu_or1k_defines_ahb3.sv
+    ├── ahb4
+    │   ├── peripheral_dbg_pu_or1k_defines_ahb4.sv
     │   ├── peripheral_dbg_pu_or1k_defines.sv
     │   ├── peripheral_dbg_pu_or1k_tap_defines.sv
     │   └── peripheral_dbg_pu_or1k_timescale.sv

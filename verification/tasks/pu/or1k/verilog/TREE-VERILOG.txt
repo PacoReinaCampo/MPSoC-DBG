@@ -1,6 +1,6 @@
 code
 └── tests
-    ├── ahb3
+    ├── ahb4
     │   ├── debug
     │   │   ├── jtag_tap
     │   │   │   └── tap_top.sv
@@ -13,7 +13,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_ahb3.sv
+    │           └── peripheral_dbg_ram_b3_ahb4.sv
     ├── apb4
     │   ├── debug
     │   │   ├── jtag_tap

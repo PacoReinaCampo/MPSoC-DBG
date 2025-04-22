@@ -69,7 +69,7 @@ entity peripheral_dbg_pu_riscv_module_axi4 is
     module_select_i : in  std_logic;
     top_inhibit_o   : out std_logic;
 
-    -- AHB3 master interface
+    -- AHB4 master interface
     HCLK      : in  std_logic;
     HRESETn   : in  std_logic;
     HSEL      : out std_logic;

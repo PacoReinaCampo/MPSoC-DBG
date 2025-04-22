@@ -47,17 +47,17 @@ code
 │   │   │       └── peripheral_dbg_soc_osd_ctm_mriscv.sv
 │   │   ├── dem_uart
 │   │   │   ├── peripheral_dbg_soc_osd_dem_uart_16550.sv
-│   │   │   ├── peripheral_dbg_soc_osd_dem_uart_ahb3.sv
+│   │   │   ├── peripheral_dbg_soc_osd_dem_uart_ahb4.sv
 │   │   │   ├── peripheral_dbg_soc_osd_dem_uart_bb.sv
 │   │   │   ├── peripheral_dbg_soc_osd_dem_uart.sv
 │   │   │   └── peripheral_dbg_soc_osd_dem_uart_wb.sv
 │   │   ├── him
 │   │   │   └── peripheral_dbg_soc_osd_him.sv
 │   │   ├── mam
-│   │   │   ├── ahb3
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb3.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb3.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb3.sv
+│   │   │   ├── ahb4
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_ahb4.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_ahb4.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_ahb4.sv
 │   │   │   ├── apb4
 │   │   │   │   ├── peripheral_dbg_soc_mam_adapter_apb4.sv
 │   │   │   │   ├── peripheral_dbg_soc_osd_mam_apb4.sv

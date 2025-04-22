@@ -63,7 +63,7 @@ module peripheral_dbg_pu_riscv_module_biu #(
   input                            module_select_i,
   output                           top_inhibit_o,
 
-  // AHB3 master interface
+  // AHB4 master interface
   input                     HCLK,
   input                     HRESETn,
   output                    HSEL,
