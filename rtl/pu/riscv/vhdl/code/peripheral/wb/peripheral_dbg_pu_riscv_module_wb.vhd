@@ -119,9 +119,9 @@ architecture rtl of peripheral_dbg_pu_riscv_module_wb is
 
       -- Bus Interface Unit ports
       biu_clk       : out std_logic;
-      biu_rst       : out std_logic;    -- BIU reset
-      biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  -- data towards BIU
-      biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- data from BIU
+      biu_rst       : out std_logic;    -- TILELINK reset
+      biu_di        : out std_logic_vector(DATA_WIDTH-1 downto 0);  -- data towards TILELINK
+      biu_do        : in  std_logic_vector(DATA_WIDTH-1 downto 0);  -- data from TILELINK
       biu_addr      : out std_logic_vector(ADDR_WIDTH-1 downto 0);
       biu_strb      : out std_logic;
       biu_rw        : out std_logic;
@@ -131,7 +131,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module_wb is
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_wb_biu
+  component peripheral_dbg_pu_riscv_wb_tl
     generic (
       LITTLE_ENDIAN : std_logic := '1';
       ADDR_WIDTH    : integer   := 32;
@@ -210,9 +210,9 @@ begin
 
       -- Bus Interface Unit ports
       biu_clk       => biu_clk,
-      biu_rst       => biu_rst,         -- BIU reset
-      biu_di        => biu_di,          -- data towards BIU
-      biu_do        => biu_do,          -- data from BIU
+      biu_rst       => biu_rst,         -- TILELINK reset
+      biu_di        => biu_di,          -- data towards TILELINK
+      biu_do        => biu_do,          -- data from TILELINK
       biu_addr      => biu_addr,
       biu_strb      => biu_strb,
       biu_rw        => biu_rw,
@@ -222,7 +222,7 @@ begin
       );
 
   -- Hookup Bus Wishbone Interface
-  wb_biu_i : peripheral_dbg_pu_riscv_wb_biu
+  wb_tl_i : peripheral_dbg_pu_riscv_wb_tl
     generic map (
       ADDR_WIDTH => ADDR_WIDTH,
       DATA_WIDTH => DATA_WIDTH

@@ -115,19 +115,19 @@ module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
     .module_select_i(module_select_i),
     .top_inhibit_o  (top_inhibit_o),
 
-    // JSP BIU interface
+    // JSP TILELINK interface
     .biu_clk            (biu_clk),
     .biu_rst            (biu_rst),
-    .biu_di             (biu_di),               // data towards BIU
-    .biu_do             (biu_do),               // data from BIU
+    .biu_di             (biu_di),               // data towards TILELINK
+    .biu_do             (biu_do),               // data from TILELINK
     .biu_space_available(biu_space_available),
     .biu_bytes_available(biu_bytes_available),
-    .biu_rd_strobe      (biu_rd_strobe),        // Indicates that the BIU should ACK last read operation + start another
-    .biu_wr_strobe      (biu_wr_strobe)         // Indicates BIU should latch input + begin a write operation
+    .biu_rd_strobe      (biu_rd_strobe),        // Indicates that the TILELINK should ACK last read operation + start another
+    .biu_wr_strobe      (biu_wr_strobe)         // Indicates TILELINK should latch input + begin a write operation
   );
 
   // Hookup JSP APB Interface
-  peripheral_dbg_pu_riscv_jsp_bb_biu jsp_biu_inst (
+  peripheral_dbg_pu_riscv_jsp_bb_tl jsp_tl_inst (
     // Debug interface signals
     .tck_i            (biu_clk),
     .rst_i            (biu_rst),

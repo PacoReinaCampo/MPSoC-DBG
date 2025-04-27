@@ -17,35 +17,35 @@ code
 │   │   ├── peripheral_dbg_pu_riscv_module_ahb4.vhd
 │   │   └── peripheral_dbg_pu_riscv_top_ahb4.vhd
 │   ├── apb4
-│   │   ├── peripheral_dbg_pu_riscv_apb4_biu.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_apb4_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_apb4_tl.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_apb4_tl.vhd
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 │   │   ├── peripheral_dbg_pu_riscv_module_apb4.vhd
 │   │   └── peripheral_dbg_pu_riscv_top_apb4.vhd
 │   ├── axi4
-│   │   ├── peripheral_dbg_pu_riscv_axi4_biu.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_axi4_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_axi4_tl.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_axi4_tl.vhd
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 │   │   ├── peripheral_dbg_pu_riscv_module_axi4.vhd
 │   │   └── peripheral_dbg_pu_riscv_top_axi4.vhd
 │   ├── bb
-│   │   ├── peripheral_dbg_pu_riscv_bb_biu.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_bb_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_bb_tl.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_bb_tl.vhd
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 │   │   ├── peripheral_dbg_pu_riscv_module_bb.vhd
 │   │   └── peripheral_dbg_pu_riscv_top_bb.vhd
-│   ├── biu
-│   │   ├── peripheral_dbg_pu_riscv_biu_biu.vhd
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_biu.vhd
+│   ├── tl
+│   │   ├── peripheral_dbg_pu_riscv_biu_tl.vhd
+│   │   ├── peripheral_dbg_pu_riscv_jsp_tl_tl.vhd
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
-│   │   ├── peripheral_dbg_pu_riscv_module_biu.vhd
-│   │   └── peripheral_dbg_pu_riscv_top_biu.vhd
+│   │   ├── peripheral_dbg_pu_riscv_module_tl.vhd
+│   │   └── peripheral_dbg_pu_riscv_top_tl.vhd
 │   └── wb
 │       ├── peripheral_dbg_pu_riscv_jsp_module_wb.vhd
-│       ├── peripheral_dbg_pu_riscv_jsp_wb_biu.vhd
+│       ├── peripheral_dbg_pu_riscv_jsp_wb_tl.vhd
 │       ├── peripheral_dbg_pu_riscv_module_wb.vhd
 │       ├── peripheral_dbg_pu_riscv_top_wb.vhd
-│       └── peripheral_dbg_pu_riscv_wb_biu.vhd
+│       └── peripheral_dbg_pu_riscv_wb_tl.vhd
 └── pkg
     └── core
         └── peripheral_dbg_pu_riscv_pkg.vhd

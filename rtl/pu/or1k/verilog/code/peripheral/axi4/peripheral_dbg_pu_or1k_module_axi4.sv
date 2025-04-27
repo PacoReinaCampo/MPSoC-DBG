@@ -119,7 +119,7 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
   reg                               word_ct_en;  // Enable byte counter register
   reg                               out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   reg                               out_reg_shift_en;  // Enable shift of data_out_shift_reg
-  reg                               out_reg_data_sel;  // 0 = BIU data, 1 = internal register data
+  reg                               out_reg_data_sel;  // 0 = TILELINK data, 1 = internal register data
   reg  [                       1:0] tdo_output_sel;  // Selects signal to send to TDO.  0 = ready bit, 1 = output register, 2 = CRC match, 3 = CRC shift reg.
   reg                               wb_strobe;  // Indicates that the bus unit should latch data and start a transaction
   reg                               crc_clr;  // resets CRC module
@@ -129,14 +129,14 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
   reg                               regsel_ld_en;  // Reg. select register load enable
   reg                               intreg_ld_en;  // load enable for internal registers
   reg                               error_reg_en;  // Tells the error register to check for and latch a bus error
-  reg                               wb_clr_err;  // Allows FSM to reset BIU, to clear the wb_err bit which may have been set on the last transaction of the last burst.
+  reg                               wb_clr_err;  // Allows FSM to reset TILELINK, to clear the wb_err bit which may have been set on the last transaction of the last burst.
 
   // Status signals
   wire                              word_count_zero;  // true when byte counter is zero
   wire                              bit_count_max;  // true when bit counter is equal to current word size
   wire                              module_cmd;  // inverse of MSB of data_register_i. 1 means current cmd not for top level (but is for us)
-  wire                              wb_ready;  // indicates that the BIU has finished the last command
-  wire                              wb_err;  // indicates wishbone error during BIU transaction
+  wire                              wb_ready;  // indicates that the TILELINK has finished the last command
+  wire                              wb_err;  // indicates wishbone error during TILELINK transaction
   wire                              burst_instruction;  // True when the input_data_i reg has a valid burst instruction for this module
   wire                              intreg_instruction;  // True when the input_data_i reg has a valid internal register instruction
   wire                              intreg_write;  // True when the input_data_i reg has an internal register write op
@@ -154,8 +154,8 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
   wire [                      31:0] address_data_in;  // from data_register_i
   wire [                      15:0] count_data_in;  // from data_register_i
   wire [                       3:0] operation_in;  // from data_register_i
-  wire [                      31:0] data_to_biu;  // from data_register_i
-  wire [                      31:0] data_from_biu;  // to data_out_shift_register
+  wire [                      31:0] data_to_tl;  // from data_register_i
+  wire [                      31:0] data_from_tl;  // to data_out_shift_register
   wire [                      31:0] crc_data_out;  // output of CRC module, to output shift register
   wire                              crc_data_in;  // input to CRC module, either data_register_i[52] or data_out_shift_reg[0]
   wire                              crc_serial_out;
@@ -181,9 +181,9 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
 
   generate
     if (ADBG_USE_HISPEED != "NONE") begin
-      assign data_to_biu = {tdi_i, data_register_i[52:22]};
+      assign data_to_tl = {tdi_i, data_register_i[52:22]};
     end else begin
-      assign data_to_biu = data_register_i[52:21];
+      assign data_to_tl = data_register_i[52:21];
     end
   endgenerate
 
@@ -263,7 +263,7 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
   // individual registers may have special behavior, defined here.
 
   // This is the bus error register, which traps WB errors
-  // We latch every new BIU address in the upper 32 bits, so we always have the address for the transaction which
+  // We latch every new TILELINK address in the upper 32 bits, so we always have the address for the transaction which
   // generated the error (the address counter might increment, esp. for writes)
   // We stop latching addresses when the error bit (bit 0) is set. Keep the error bit set until it is 
   // manually cleared by a module internal register write.
@@ -346,7 +346,7 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
   assign word_count_zero = (word_count == 16'h0);
 
   // Output register and TDO output MUX
-  assign out_reg_data    = (out_reg_data_sel) ? data_from_internal_reg : {1'b0, data_from_biu};
+  assign out_reg_data    = (out_reg_data_sel) ? data_from_internal_reg : {1'b0, data_from_tl};
 
   always @(posedge tck_i or posedge rst_i) begin
     if (rst_i) begin
@@ -371,18 +371,18 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
   end
 
   // Bus Interface Unit
-  // It is assumed that the BIU has internal registers, and will
+  // It is assumed that the TILELINK has internal registers, and will
   // latch address, operation, and write data on rising clock edge 
   // when strobe is asserted
 
   assign wb_rst = rst_i | wb_clr_err;
 
-  peripheral_dbg_pu_or1k_axi4_biu axi4_axi4_i (
+  peripheral_dbg_pu_or1k_axi4_tl axi4_axi4_i (
     // Debug interface signals
     .tck_i      (tck_i),
     .rst_i      (wb_rst),
-    .data_i     (data_to_biu),
-    .data_o     (data_from_biu),
+    .data_i     (data_to_tl),
+    .data_o     (data_from_tl),
     .addr_i     (address_counter),
     .strobe_i   (wb_strobe),
     .rd_wrn_i   (rd_op),            // If 0, then write op
@@ -581,11 +581,11 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
     crc_en           <= 1'b0;  // add the input bit to the CRC calculation
     crc_in_sel       <= 1'b0;  // 0 = tdo, 1 = tdi
     crc_shift_en     <= 1'b0;
-    out_reg_data_sel <= 1'b1;  // 0 = BIU data, 1 = internal register data
+    out_reg_data_sel <= 1'b1;  // 0 = TILELINK data, 1 = internal register data
     regsel_ld_en     <= 1'b0;
     intreg_ld_en     <= 1'b0;
     error_reg_en     <= 1'b0;
-    wb_clr_err      <= 1'b0;  // Set this to reset the BIU, clearing the wb_err bit
+    wb_clr_err      <= 1'b0;  // Set this to reset the TILELINK, clearing the wb_err bit
     top_inhibit_o    <= 1'b0;  // Don't disable the top-level module in the default case
     case (module_state)
       `STATE_idle: begin
@@ -617,7 +617,7 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
         end
       end
       `STATE_Rbegin: begin
-        if (!word_count_zero) begin  // Start a biu read transaction
+        if (!word_count_zero) begin  // Start a tl read transaction
           wb_strobe <= 1'b1;
           addr_sel   <= 1'b1;
           addr_ct_en <= 1'b1;
@@ -629,12 +629,12 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
         top_inhibit_o  <= 1'b1;  // in case of early termination
         if (module_next_state == `STATE_Rburst) begin
           error_reg_en     <= 1'b1;  // Check the wb_error bit
-          out_reg_data_sel <= 1'b0;  // select BIU data
+          out_reg_data_sel <= 1'b0;  // select TILELINK data
           out_reg_ld_en    <= 1'b1;
           bit_ct_rst       <= 1'b1;
           word_ct_sel      <= 1'b1;
           word_ct_en       <= 1'b1;
-          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
+          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a tl read transaction
             wb_strobe <= 1'b1;
             addr_sel   <= 1'b1;
             addr_ct_en <= 1'b1;
@@ -650,12 +650,12 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
         top_inhibit_o    <= 1'b1;  // in case of early termination
         if (ADBG_USE_HISPEED != "NONE" && bit_count_max) begin
           error_reg_en     <= 1'b1;  // Check the wb_error bit
-          out_reg_data_sel <= 1'b0;  // select BIU data
+          out_reg_data_sel <= 1'b0;  // select TILELINK data
           out_reg_ld_en    <= 1'b1;
           bit_ct_rst       <= 1'b1;
           word_ct_sel      <= 1'b1;
           word_ct_en       <= 1'b1;
-          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
+          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a tl read transaction
             wb_strobe <= 1'b1;
             addr_sel   <= 1'b1;
             addr_ct_en <= 1'b1;
@@ -694,7 +694,7 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
           bit_ct_rst   <= 1'b1;  // Zero the bit count
           // start transaction. Can't do this here if not hispeed, wb_ready
           // is the status bit, and it's 0 if we start a transaction here.
-          wb_strobe   <= 1'b1;  // Start a BIU transaction
+          wb_strobe   <= 1'b1;  // Start a TILELINK transaction
           addr_ct_en   <= 1'b1;  // Increment thte address counter
           // Also can't dec the byte count yet unless hispeed,
           // that would skip the last word.
@@ -706,7 +706,7 @@ module peripheral_dbg_pu_or1k_module_axi4 #(
         tdo_output_sel <= 2'h0;  // Send the status bit to TDO
         error_reg_en   <= 1'b1;  // Check the wb_error bit
         // start transaction
-        wb_strobe     <= 1'b1;  // Start a BIU transaction
+        wb_strobe     <= 1'b1;  // Start a TILELINK transaction
         word_ct_sel    <= 1'b1;  // Decrement the byte count
         word_ct_en     <= 1'b1;
         bit_ct_rst     <= 1'b1;  // Zero the bit count

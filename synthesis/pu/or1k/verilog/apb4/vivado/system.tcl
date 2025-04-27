@@ -42,11 +42,11 @@
 ##                                                                               ##
 ###################################################################################
 
-read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_biu.sv
-read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_apb4_biu.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_tl.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_apb4_tl.sv
 read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_bytefifo.sv
 read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_crc32.sv
-read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_jsp_biu.sv
+read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_jsp_tl.sv
 read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_jsp_module.sv
 read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_module.sv
 read_verilog -sv ../../../../../../rtl/pu/or1k/verilog/code/peripheral/apb4/peripheral_dbg_pu_or1k_module_apb4.sv

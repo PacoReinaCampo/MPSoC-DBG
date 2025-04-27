@@ -44,9 +44,9 @@
 
 +incdir+../../../../../../../rtl/pu/riscv/verilog/code/pkg/core
 
-../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_bb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_bb_tl.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_module_bb.sv
-../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_bb_biu.sv
+../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_bb_tl.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/bb/peripheral_dbg_pu_riscv_top_bb.sv
 

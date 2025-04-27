@@ -62,20 +62,20 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   input                            module_select_i,
   output                           top_inhibit_o,
 
-  // JSP BIU interface
+  // JSP TILELINK interface
   output             biu_clk,
   output             biu_rst,
-  output       [7:0] biu_di,               // data towards BIU
-  input        [7:0] biu_do,               // data from BIU
+  output       [7:0] biu_di,               // data towards TILELINK
+  input        [7:0] biu_do,               // data from TILELINK
   input        [3:0] biu_space_available,
   input        [3:0] biu_bytes_available,
-  output logic       biu_rd_strobe,        // Indicates that the BIU should ACK last read operation + start another
-  output logic       biu_wr_strobe         // Indicates BIU should latch input + begin a write operation
+  output logic       biu_rd_strobe,        // Indicates that the TILELINK should ACK last read operation + start another
+  output logic       biu_wr_strobe         // Indicates TILELINK should latch input + begin a write operation
 );
 
   // NOTE:  For the rest of this file, "input" and the "in" direction refer to bytes being transferred
-  // from the PC, through the JTAG, and into the BIU FIFO.  The "output" direction refers to data being
-  // transferred from the BIU FIFO, through the JTAG to the PC.
+  // from the PC, through the JTAG, and into the TILELINK FIFO.  The "output" direction refers to data being
+  // transferred from the TILELINK FIFO, through the JTAG to the PC.
 
   // The read and write bit counts are separated to allow for JTAG chains with multiple devices.
   // The read bit count starts right away (after a single throwaway bit), but the write count
@@ -121,7 +121,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   logic       user_word_ct_sel;  // selects data for user byte counter.  0 = user data, 1 = decremented byte count
   logic       out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   logic       out_reg_shift_en;  // Enable shift of data_out_shift_reg
-  logic       out_reg_data_sel;  // 0 = BIU data, 1 = byte count data (also from BIU)
+  logic       out_reg_data_sel;  // 0 = TILELINK data, 1 = byte count data (also from TILELINK)
 
   // Status signals
   logic       in_word_count_zero;  // true when input byte counter is zero
@@ -135,9 +135,9 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   logic [3:0] data_to_out_word_counter;  // output of the mux in front of the output byte counter reg
   logic [3:0] data_to_user_word_counter;  // output of mux in front of user word counter
   logic [3:0] count_data_in;  // from data_register_i
-  logic [7:0] data_to_biu;  // from data_register_i
-  logic [7:0] data_from_biu;  // to data_out_shift_register
-  logic [7:0] count_data_from_biu;  // combined space avail / bytes avail
+  logic [7:0] data_to_tl;  // from data_register_i
+  logic [7:0] data_from_tl;  // to data_out_shift_register
+  logic [7:0] count_data_from_tl;  // combined space avail / bytes avail
   logic [7:0] out_reg_data;  // parallel input to the output shift register
 
   // Statemachine
@@ -149,9 +149,9 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   //////////////////////////////////////////////////////////////////////////////
 
   // Combinatorial assignments
-  assign count_data_from_biu = {biu_bytes_available, biu_space_available};
+  assign count_data_from_tl = {biu_bytes_available, biu_space_available};
   assign count_data_in       = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1-:3]};  // Second nibble of user data
-  assign data_to_biu         = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1-:7]};
+  assign data_to_tl         = {tdi_i, data_register_i[DBG_JSP_DATAREG_LEN-1-:7]};
   assign top_inhibit_o       = 1'b0;
 
   // Input bit counter
@@ -220,7 +220,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign user_word_count_zero = ~|user_word_count;
 
   // Output register and TDO output MUX
-  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_biu : data_from_biu;
+  assign out_reg_data         = (out_reg_data_sel) ? count_data_from_tl : data_from_tl;
 
   always @(posedge tck_i or posedge rst_i) begin
     if (rst_i) begin
@@ -235,20 +235,20 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
   assign module_tdo_o  = data_out_shift_reg[0];
 
   // Bus Interface Unit (to JTAG / WB UART)
-  // It is assumed that the BIU has internal registers, and will
+  // It is assumed that the TILELINK has internal registers, and will
   // latch write data (and ack read data) on rising clock edge 
   // when strobe is asserted
   assign biu_clk       = tck_i;
   assign biu_rst       = rst_i;
-  assign biu_di        = data_to_biu;
-  assign data_from_biu = biu_do;
+  assign biu_di        = data_to_tl;
+  assign data_from_tl = biu_do;
 
-  //   peripheral_dbg_jsp_biu jsp_biu_i (
+  //   peripheral_dbg_jsp_tl jsp_tl_i (
   //    // Debug interface signals
   //    .tck_i           (tck_i),
   //    .rst_i           (rst_i),
-  //    .data_i          (data_to_biu),
-  //    .data_o          (data_from_biu),
+  //    .data_i          (data_to_tl),
+  //    .data_o          (data_from_tl),
   //    .bytes_available_o (biu_bytes_available),
   //    .bytes_free_o    (biu_space_available),
   //    .rd_strobe_i     (biu_rd_strobe),
@@ -332,7 +332,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
     user_word_ct_sel = 1'b0;  // selects data for user byte counter, 0 = user data, 1 = decremented count
     in_word_ct_en    = 1'b0;  // Enable input byte counter register
     user_word_ct_en  = 1'b0;  // enable user byte count register
-    biu_wr_strobe    = 1'b0;  // Indicates BIU should latch input + begin a write operation
+    biu_wr_strobe    = 1'b0;  // Indicates TILELINK should latch input + begin a write operation
 
     case (wr_module_state)
       STATE_WR_IDLE: begin
@@ -365,7 +365,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
           in_word_ct_sel   = 1'b1;
           user_word_ct_sel = 1'b1;
 
-          if (wr_bit_count_max) begin  // Start biu transactions, if word counts allow
+          if (wr_bit_count_max) begin  // Start tl transactions, if word counts allow
             wr_bit_ct_rst = 1'b1;
 
             if (!(in_word_count_zero || user_word_count_zero)) begin
@@ -446,7 +446,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
     out_word_ct_en   = 1'b0;  // Enable output byte count register
     out_reg_ld_en    = 1'b0;  // Enable parallel load of data_out_shift_reg
     out_reg_shift_en = 1'b0;  // Enable shift of data_out_shift_reg
-    out_reg_data_sel = 1'b0;  // 0 = BIU data, 1 = byte count data (also from BIU)
+    out_reg_data_sel = 1'b0;  // 0 = TILELINK data, 1 = byte count data (also from TILELINK)
     biu_rd_strobe    = 1'b0;  // Indicates that the bus unit should ACK the last read operation + start another
 
     case (rd_module_state)
@@ -497,7 +497,7 @@ module peripheral_dbg_pu_riscv_jsp_module_core #(
           out_reg_shift_en = 1'b1;
           out_reg_data_sel = 1'b0;
 
-          if (rd_bit_count_max) begin  // Start biu transaction, if word count allows
+          if (rd_bit_count_max) begin  // Start tl transaction, if word count allows
             rd_bit_ct_rst = 1'b1;
 
             // Don't ack the read byte here, we do it in STATE_RDACK

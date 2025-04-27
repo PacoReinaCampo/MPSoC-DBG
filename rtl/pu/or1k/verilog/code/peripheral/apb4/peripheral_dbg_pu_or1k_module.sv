@@ -115,7 +115,7 @@ module peripheral_dbg_pu_or1k_module #(
   reg                                 word_ct_en;  // Enable byte counter register
   reg                                 out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   reg                                 out_reg_shift_en;  // Enable shift of data_out_shift_reg
-  reg                                 out_reg_data_sel;  // 0 = BIU data, 1 = internal register data
+  reg                                 out_reg_data_sel;  // 0 = TILELINK data, 1 = internal register data
   reg  [                         1:0] tdo_output_sel;  // Selects signal to send to TDO.  0 = ready bit, 1 = output register, 2 = CRC match, 3 = CRC shift reg.
   reg                                 biu_strobe;  // Indicates that the bus unit should latch data and start a transaction
   reg                                 crc_clr;  // resets CRC module
@@ -129,7 +129,7 @@ module peripheral_dbg_pu_or1k_module #(
   wire                                word_count_zero;  // true when byte counter is zero
   wire                                bit_count_max;  // true when bit counter is equal to current word size
   wire                                module_cmd;  // inverse of MSB of data_register_i. 1 means current cmd not for top level (but is for us)
-  wire                                biu_ready;  // indicates that the BIU has finished the last command
+  wire                                biu_ready;  // indicates that the TILELINK has finished the last command
   wire                                burst_instruction;  // True when the input_data_i reg has a valid burst instruction for this module
   wire                                intreg_instruction;  // True when the input_data_i reg has a valid internal register instruction
   wire                                intreg_write;  // True when the input_data_i reg has an internal register write op
@@ -192,7 +192,7 @@ module peripheral_dbg_pu_or1k_module #(
   assign address_increment  = 3'd1;  // This is only used to increment the address.  SPRs are word-addressed.
 
   // This is the only thing that actually needs to be saved and 'decoded' from the latched opcode
-  // It goes to the BIU each time a transaction is started.
+  // It goes to the TILELINK each time a transaction is started.
   assign rd_op              = operation[2];
 
   // Module-internal register select register (no, that's not redundant.)
@@ -316,11 +316,11 @@ module peripheral_dbg_pu_or1k_module #(
   end
 
   // Bus Interface Unit (to OR1K SPR bus)
-  // It is assumed that the BIU has internal registers, and will
+  // It is assumed that the TILELINK has internal registers, and will
   // latch address, operation, and write data on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_biu or1k_biu_i (
+  peripheral_dbg_pu_or1k_tl or1k_tl_i (
     // Debug interface signals
     .tck_i   (tck_i),
     .rst_i   (rst_i),
@@ -519,7 +519,7 @@ module peripheral_dbg_pu_or1k_module #(
     crc_en           <= 1'b0;  // add the input bit to the CRC calculation
     crc_in_sel       <= 1'b0;  // 0 = tdo, 1 = tdi
     crc_shift_en     <= 1'b0;
-    out_reg_data_sel <= 1'b1;  // 0 = BIU data, 1 = internal register data
+    out_reg_data_sel <= 1'b1;  // 0 = TILELINK data, 1 = internal register data
     regsel_ld_en     <= 1'b0;
     intreg_ld_en     <= 1'b0;
     top_inhibit_o    <= 1'b0;  // Don't disable the top-level module in the default case
@@ -554,7 +554,7 @@ module peripheral_dbg_pu_or1k_module #(
         end
       end
       `STATE_Rbegin: begin
-        if (!word_count_zero) begin  // Start a biu read transaction
+        if (!word_count_zero) begin  // Start a tl read transaction
           biu_strobe <= 1'b1;
           addr_sel   <= 1'b1;
           addr_ct_en <= 1'b1;
@@ -567,12 +567,12 @@ module peripheral_dbg_pu_or1k_module #(
         tdo_output_sel <= 2'h0;
         top_inhibit_o  <= 1'b1;  // in case of early termination
         if (module_next_state == `STATE_Rburst) begin
-          out_reg_data_sel <= 1'b0;  // select BIU data
+          out_reg_data_sel <= 1'b0;  // select TILELINK data
           out_reg_ld_en    <= 1'b1;
           bit_ct_rst       <= 1'b1;
           word_ct_sel      <= 1'b1;
           word_ct_en       <= 1'b1;
-          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
+          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a tl read transaction
             biu_strobe <= 1'b1;
             addr_sel   <= 1'b1;
             addr_ct_en <= 1'b1;
@@ -588,12 +588,12 @@ module peripheral_dbg_pu_or1k_module #(
         top_inhibit_o    <= 1'b1;  // in case of early termination
 
         if (bit_count_max && ADBG_USE_HISPEED != "NONE") begin
-          out_reg_data_sel <= 1'b0;  // select BIU data
+          out_reg_data_sel <= 1'b0;  // select TILELINK data
           out_reg_ld_en    <= 1'b1;
           bit_ct_rst       <= 1'b1;
           word_ct_sel      <= 1'b1;
           word_ct_en       <= 1'b1;
-          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
+          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a tl read transaction
             biu_strobe <= 1'b1;
             addr_sel   <= 1'b1;
             addr_ct_en <= 1'b1;
@@ -633,7 +633,7 @@ module peripheral_dbg_pu_or1k_module #(
           bit_ct_rst  <= 1'b1;  // Zero the bit count
           // start transaction. Can't do this here if not hispeed, biu_ready
           // is the status bit, and it's 0 if we start a transaction here.
-          biu_strobe  <= 1'b1;  // Start a BIU transaction
+          biu_strobe  <= 1'b1;  // Start a TILELINK transaction
           addr_ct_en  <= 1'b1;  // Increment thte address counter
           // Also can't dec the byte count yet unless hispeed,
           // that would skip the last word.
@@ -644,7 +644,7 @@ module peripheral_dbg_pu_or1k_module #(
       `STATE_Wstatus: begin
         tdo_output_sel <= 2'h0;  // Send the status bit to TDO
         // start transaction
-        biu_strobe     <= 1'b1;  // Start a BIU transaction
+        biu_strobe     <= 1'b1;  // Start a TILELINK transaction
         word_ct_sel    <= 1'b1;  // Decrement the byte count
         word_ct_en     <= 1'b1;
         bit_ct_rst     <= 1'b1;  // Zero the bit count

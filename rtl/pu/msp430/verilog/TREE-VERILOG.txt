@@ -36,7 +36,7 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_hwbrk.sv
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
-│   ├── biu
+│   ├── tl
 │   │   ├── fuse
 │   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
@@ -71,7 +71,7 @@ code
     │   ├── peripheral_dbg_pu_msp430_defines.sv
     │   ├── peripheral_dbg_pu_msp430_timescale.sv
     │   └── peripheral_dbg_pu_msp430_undefines.sv
-    ├── biu
+    ├── tl
     │   ├── peripheral_dbg_pu_msp430_defines.sv
     │   ├── peripheral_dbg_pu_msp430_timescale.sv
     │   └── peripheral_dbg_pu_msp430_undefines.sv

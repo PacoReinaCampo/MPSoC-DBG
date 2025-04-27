@@ -44,9 +44,9 @@
 
 ../../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_apb4_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_apb4_tl.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_module_apb4.vhd
-../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_jsp_apb4_biu.vhd
+../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_jsp_apb4_tl.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/apb4/peripheral_dbg_pu_riscv_top_apb4.vhd
 

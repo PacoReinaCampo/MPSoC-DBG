@@ -8,7 +8,7 @@ code
     │   └── peripheral_dbg_testbench.sv
     ├── bb
     │   └── peripheral_dbg_testbench.sv
-    ├── biu
+    ├── tl
     │   └── peripheral_dbg_testbench.sv
     └── wb
         └── peripheral_dbg_testbench.sv

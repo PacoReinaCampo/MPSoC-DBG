@@ -54,8 +54,8 @@ read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncflop.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_syncreg.vhd
 
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_biu.vhd
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_biu.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_tl.vhd
+read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_tl.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_axi4.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_module_axi4.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_top_axi4.vhd

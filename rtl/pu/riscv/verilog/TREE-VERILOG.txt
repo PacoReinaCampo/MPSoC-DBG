@@ -17,35 +17,35 @@ code
 │   │   ├── peripheral_dbg_pu_riscv_module_ahb4.sv
 │   │   └── peripheral_dbg_pu_riscv_top_ahb4.sv
 │   ├── apb4
-│   │   ├── peripheral_dbg_pu_riscv_apb4_biu.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_apb4_biu.sv
+│   │   ├── peripheral_dbg_pu_riscv_apb4_tl.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_apb4_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 │   │   ├── peripheral_dbg_pu_riscv_module_apb4.sv
 │   │   └── peripheral_dbg_pu_riscv_top_apb4.sv
 │   ├── axi4
-│   │   ├── peripheral_dbg_pu_riscv_axi4_biu.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_axi4_biu.sv
+│   │   ├── peripheral_dbg_pu_riscv_axi4_tl.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_axi4_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 │   │   ├── peripheral_dbg_pu_riscv_module_axi4.sv
 │   │   └── peripheral_dbg_pu_riscv_top_axi4.sv
 │   ├── bb
-│   │   ├── peripheral_dbg_pu_riscv_bb_biu.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_bb_biu.sv
+│   │   ├── peripheral_dbg_pu_riscv_bb_tl.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_bb_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 │   │   ├── peripheral_dbg_pu_riscv_module_bb.sv
 │   │   └── peripheral_dbg_pu_riscv_top_bb.sv
-│   ├── biu
-│   │   ├── peripheral_dbg_pu_riscv_biu_biu.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_biu_biu.sv
+│   ├── tl
+│   │   ├── peripheral_dbg_pu_riscv_biu_tl.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_tl_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
-│   │   ├── peripheral_dbg_pu_riscv_module_biu.sv
-│   │   └── peripheral_dbg_pu_riscv_top_biu.sv
+│   │   ├── peripheral_dbg_pu_riscv_module_tl.sv
+│   │   └── peripheral_dbg_pu_riscv_top_tl.sv
 │   └── wb
 │       ├── peripheral_dbg_pu_riscv_jsp_module_wb.sv
-│       ├── peripheral_dbg_pu_riscv_jsp_wb_biu.sv
+│       ├── peripheral_dbg_pu_riscv_jsp_wb_tl.sv
 │       ├── peripheral_dbg_pu_riscv_module_wb.sv
 │       ├── peripheral_dbg_pu_riscv_top_wb.sv
-│       └── peripheral_dbg_pu_riscv_wb_biu.sv
+│       └── peripheral_dbg_pu_riscv_wb_tl.sv
 └── pkg
     └── core
         └── peripheral_dbg_pu_riscv_pkg.sv

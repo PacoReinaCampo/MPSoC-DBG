@@ -98,8 +98,8 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   //////////////////////////////////////////////////////////////////////////////
 
   // NOTE:  For the rest of this file, "input" and the "in" direction refer to bytes being transferred
-  // from the PC, through the JTAG, and into the BIU FIFO.  The "output" direction refers to data being
-  // transferred from the BIU FIFO, through the JTAG to the PC.
+  // from the PC, through the JTAG, and into the TILELINK FIFO.  The "output" direction refers to data being
+  // transferred from the TILELINK FIFO, through the JTAG to the PC.
 
   // The read and write bit counts are separated to allow for JTAG chains with multiple devices.
   // The read bit count starts right away (after a single throwaway bit), but the write count
@@ -126,9 +126,9 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   reg        user_word_ct_sel;  // selects data for user byte counter.  0 = user data, 1 = decremented byte count
   reg        out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   reg        out_reg_shift_en;  // Enable shift of data_out_shift_reg
-  reg        out_reg_data_sel;  // 0 = BIU data, 1 = byte count data (also from BIU)
+  reg        out_reg_data_sel;  // 0 = TILELINK data, 1 = byte count data (also from TILELINK)
   reg        biu_rd_strobe;  // Indicates that the bus unit should ACK the last read operation + start another
-  reg        biu_wr_strobe;  // Indicates BIU should latch input + begin a write operation
+  reg        biu_wr_strobe;  // Indicates TILELINK should latch input + begin a write operation
 
   // Status signals
   wire       in_word_count_zero;  // true when input byte counter is zero
@@ -252,11 +252,11 @@ module peripheral_dbg_pu_or1k_jsp_module #(
   assign module_tdo_o = data_out_shift_reg[0];
 
   // Bus Interface Unit (to JTAG / WB UART)
-  // It is assumed that the BIU has internal registers, and will
+  // It is assumed that the TILELINK has internal registers, and will
   // latch write data (and ack read data) on rising clock edge 
   // when strobe is asserted
 
-  peripheral_dbg_pu_or1k_jsp_biu jsp_axi4_i (
+  peripheral_dbg_pu_or1k_jsp_tl jsp_axi4_i (
     // Debug interface signals
     .tck_i            (tck_i),
     .rst_i            (rst_i),
@@ -358,7 +358,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
     user_word_ct_sel <= 1'b0;  // selects data for user byte counter, 0 = user data, 1 = decremented count
     in_word_ct_en    <= 1'b0;  // Enable input byte counter register
     user_word_ct_en  <= 1'b0;  // enable user byte count register
-    biu_wr_strobe    <= 1'b0;  // Indicates BIU should latch input + begin a write operation
+    biu_wr_strobe    <= 1'b0;  // Indicates TILELINK should latch input + begin a write operation
 
     case (wr_module_state)
       `STATE_wr_idle: begin
@@ -388,7 +388,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
           wr_bit_ct_en     <= 1'b1;
           in_word_ct_sel   <= 1'b1;
           user_word_ct_sel <= 1'b1;
-          if (wr_bit_count_max) begin  // Start biu transactions, if word counts allow
+          if (wr_bit_count_max) begin  // Start tl transactions, if word counts allow
             wr_bit_ct_rst <= 1'b1;
             if (!(in_word_count_zero || user_word_count_zero)) begin
               biu_wr_strobe   <= 1'b1;
@@ -472,7 +472,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
     out_word_ct_en   <= 1'b0;  // Enable output byte count register
     out_reg_ld_en    <= 1'b0;  // Enable parallel load of data_out_shift_reg
     out_reg_shift_en <= 1'b0;  // Enable shift of data_out_shift_reg
-    out_reg_data_sel <= 1'b0;  // 0 = BIU data, 1 = byte count data (also from BIU)
+    out_reg_data_sel <= 1'b0;  // 0 = TILELINK data, 1 = byte count data (also from TILELINK)
     biu_rd_strobe    <= 1'b0;  // Indicates that the bus unit should ACK the last read operation + start another
 
     case (rd_module_state)
@@ -518,7 +518,7 @@ module peripheral_dbg_pu_or1k_jsp_module #(
           out_word_ct_sel  <= 1'b1;
           out_reg_shift_en <= 1'b1;
           out_reg_data_sel <= 1'b0;
-          if (rd_bit_count_max) begin  // Start biu transaction, if word count allows
+          if (rd_bit_count_max) begin  // Start tl transaction, if word count allows
             rd_bit_ct_rst <= 1'b1;
             // Don't ack the read byte here, we do it in STATE_rdack
             if (!out_word_count_zero) begin

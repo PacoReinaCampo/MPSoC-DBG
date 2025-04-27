@@ -56,7 +56,7 @@ code
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
     │           └── peripheral_dbg_ram_b3_bb.sv
-    ├── biu
+    ├── tl
     │   ├── debug
     │   │   ├── jtag_tap
     │   │   │   └── tap_top.sv
@@ -69,7 +69,7 @@ code
     │       │   ├── jtag_vpi.sv
     │       │   └── jtag_vpi_testbench.sv
     │       └── ram
-    │           └── peripheral_dbg_ram_b3_biu.sv
+    │           └── peripheral_dbg_ram_b3_tl.sv
     └── wb
         ├── debug
         │   ├── jtag_tap

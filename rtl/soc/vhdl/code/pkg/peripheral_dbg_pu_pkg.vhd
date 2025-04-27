@@ -196,7 +196,7 @@ package peripheral_dbg_pu_pkg is
   constant REVUSR_MAJOR : integer := 2;
   constant REVUSR_MINOR : integer := 2;
 
-  -- BIU Constants Package
+  -- TILELINK Constants Package
   constant BYTE       : std_logic_vector(2 downto 0) := "000";
   constant HWORD      : std_logic_vector(2 downto 0) := "001";
   constant WORD       : std_logic_vector(2 downto 0) := "010";

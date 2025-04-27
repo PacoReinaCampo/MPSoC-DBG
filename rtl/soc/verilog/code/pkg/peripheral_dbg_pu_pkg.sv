@@ -171,7 +171,7 @@
 `define REVUSR_MAJOR 2
 `define REVUSR_MINOR 2
 
-// BIU Constants Package
+// TILELINK Constants Package
 `define BYTE 3'b000
 `define HWORD 3'b001
 `define WORD 3'b010

@@ -36,7 +36,7 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_hwbrk.vhd
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
-│   ├── biu
+│   ├── tl
 │   │   ├── fuse
 │   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │   │   ├── main
@@ -63,7 +63,7 @@ code
     │   └── peripheral_dbg_pu_msp430_pkg.vhd
     ├── bb
     │   └── peripheral_dbg_pu_msp430_pkg.vhd
-    ├── biu
+    ├── tl
     │   └── peripheral_dbg_pu_msp430_pkg.vhd
     └── wb
         └── peripheral_dbg_pu_msp430_pkg.vhd

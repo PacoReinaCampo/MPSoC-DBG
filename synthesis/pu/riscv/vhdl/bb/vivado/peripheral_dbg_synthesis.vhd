@@ -168,7 +168,7 @@ architecture rtl of peripheral_dbg_synthesis is
   signal ahb4_tdo_o : std_logic;
 
   -- TAP states
-  signal ahb4_tlr_i        : std_logic;  -- TestLogicReset
+  signal ahb4_biur_i        : std_logic;  -- TestLogicReset
   signal ahb4_shift_dr_i   : std_logic;
   signal ahb4_pause_dr_i   : std_logic;
   signal ahb4_update_dr_i  : std_logic;
@@ -232,7 +232,7 @@ begin
       tdo_o => ahb4_tck_i,
 
       -- TAP states
-      tlr_i        => ahb4_tlr_i,
+      tlr_i        => ahb4_biur_i,
       shift_dr_i   => ahb4_shift_dr_i,
       pause_dr_i   => ahb4_pause_dr_i,
       update_dr_i  => ahb4_update_dr_i,

@@ -79,7 +79,7 @@ module peripheral_dbg_synthesis #(
   logic ahb4_tdo_o;
 
   // TAP states
-  logic ahb4_tlr_i;  // TestLogicReset
+  logic ahb4_biur_i;  // TestLogicReset
   logic ahb4_shift_dr_i;
   logic ahb4_pause_dr_i;
   logic ahb4_update_dr_i;
@@ -140,7 +140,7 @@ module peripheral_dbg_synthesis #(
     .tdo_o(ahb4_tdo_i),
 
     // TAP states
-    .tlr_i       (ahb4_tlr_i),
+    .tlr_i       (ahb4_biur_i),
     .shift_dr_i  (ahb4_shift_dr_i),
     .pause_dr_i  (ahb4_pause_dr_i),
     .update_dr_i (ahb4_update_dr_i),

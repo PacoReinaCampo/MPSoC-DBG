@@ -128,7 +128,7 @@ module peripheral_dbg_pu_riscv_module #(
   reg                                                                   word_ct_en;  // Enable byte counter register
   reg                                                                   out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   reg                                                                   out_reg_shift_en;  // Enable shift of data_out_shift_reg
-  reg                                                                   out_reg_data_sel;  // 0 = BIU data, 1 = internal register data
+  reg                                                                   out_reg_data_sel;  // 0 = TILELINK data, 1 = internal register data
   logic [                        1:0]                                   tdo_output_sel;  // Selects signal to send to TDO.  0 = ready bit, 1 = output register, 2 = CRC match, 3 = CRC shift reg.
   reg                                                                   biu_strobe;  // Indicates that the bus unit should latch data and start a transaction
   reg                                                                   crc_clr;  // resets CRC module
@@ -143,7 +143,7 @@ module peripheral_dbg_pu_riscv_module #(
   wire                                                                  word_count_zero;  // true when byte counter is zero
   wire                                                                  bit_count_max;  // true when bit counter is equal to current word size
   wire                                                                  module_cmd;  // inverse of MSB of data_register_i. 1 means current cmd not for top level (but is for us)
-  wire                                                                  biu_ready;  // indicates that the BIU has finished the last command
+  wire                                                                  biu_ready;  // indicates that the TILELINK has finished the last command
   wire                                                                  burst_instruction;  // True when the input_data_i reg has a valid burst instruction for this module
   wire                                                                  intreg_instruction;  // True when the input_data_i reg has a valid internal register instruction
   wire                                                                  intreg_write;  // True when the input_data_i reg has an internal register write op
@@ -160,8 +160,8 @@ module peripheral_dbg_pu_riscv_module #(
   wire  [                       31:0]                                   address_data_in;  // from data_register_i
   wire  [                       15:0]                                   count_data_in;  // from data_register_i
   wire  [                        3:0]                                   operation_in;  // from data_register_i
-  wire  [                       31:0]                                   data_to_biu;  // from data_register_i
-  wire  [                       31:0]                                   data_from_biu;  // to data_out_shift_register
+  wire  [                       31:0]                                   data_to_tl;  // from data_register_i
+  wire  [                       31:0]                                   data_from_tl;  // to data_out_shift_register
   wire  [                       31:0]                                   crc_data_out;  // output of CRC module, to output shift register
   wire                                                                  crc_data_in;  // input to CRC module, either data_register_i[52] or data_out_shift_reg[0]
   wire                                                                  crc_serial_out;
@@ -189,7 +189,7 @@ module peripheral_dbg_pu_riscv_module #(
   assign address_data_in    = data_register_i[DBG_OR1K_DATAREG_LEN-10-:32];
   assign count_data_in      = data_register_i[DBG_OR1K_DATAREG_LEN-42-:16];
 
-  assign data_to_biu        = {tdi_i, data_register_i[DBG_OR1K_DATAREG_LEN-1-:31]};
+  assign data_to_tl        = {tdi_i, data_register_i[DBG_OR1K_DATAREG_LEN-1-:31]};
 
   assign reg_select_data    = data_register_i[DBG_OR1K_DATAREG_LEN-6-:`DBG_OR1K_REGSELECT_LEN];
   assign status_reg_data    = data_register_i[DBG_OR1K_DATAREG_LEN - 10 - `DBG_OR1K_REGSELECT_LEN -: X*Y*Z*CORES_PER_TILE];  // data is sent first, then module_cmd, operation, cpu_select
@@ -207,7 +207,7 @@ module peripheral_dbg_pu_riscv_module #(
   assign address_increment  = 'd1;  // This is only used to increment the address.  SPRs are word-addressed.
 
   // This is the only thing that actually needs to be saved and 'decoded' from the latched opcode
-  // It goes to the BIU each time a transaction is started.
+  // It goes to the TILELINK each time a transaction is started.
   assign rd_op              = operation[2];
 
   // Module-internal register select register (no, that's not redundant.)
@@ -321,7 +321,7 @@ module peripheral_dbg_pu_riscv_module #(
   assign word_count_zero = ~|word_count;
 
   // Output register and TDO output MUX
-  assign out_reg_data    = out_reg_data_sel ? data_from_internal_reg : data_from_biu;
+  assign out_reg_data    = out_reg_data_sel ? data_from_internal_reg : data_from_tl;
 
   always @(posedge tck_i or posedge tlr_i) begin
     if (tlr_i) begin
@@ -343,7 +343,7 @@ module peripheral_dbg_pu_riscv_module #(
   end
 
   // Bus Interface Unit (to OR1K SPR bus)
-  // It is assumed that the BIU has internal registers, and will
+  // It is assumed that the TILELINK has internal registers, and will
   // latch address, operation, and write data on rising clock edge
   // when strobe is asserted
   peripheral_dbg_pu_riscv_biu #(
@@ -353,13 +353,13 @@ module peripheral_dbg_pu_riscv_module #(
     .CORES_PER_TILE(CORES_PER_TILE),
     .CPU_ADDR_WIDTH(CPU_ADDR_WIDTH),
     .CPU_DATA_WIDTH(CPU_DATA_WIDTH)
-  ) or1k_biu_i (
+  ) or1k_tl_i (
     // Debug interface signals
     .tck_i       (tck_i),
     .tlr_i       (tlr_i),
     .cpu_select_i(cpu_select),
-    .data_i      (data_to_biu),
-    .data_o      (data_from_biu),
+    .data_i      (data_to_tl),
+    .data_o      (data_from_tl),
     .addr_i      (address_counter),
     .strobe_i    (biu_strobe),
     .rd_wrn_i    (rd_op),            // If 0, then write op
@@ -537,7 +537,7 @@ module peripheral_dbg_pu_riscv_module #(
     crc_en           = 1'b0;  // add the input bit to the CRC calculation
     crc_in_sel       = 1'b0;  // 0 = tdo, 1 = tdi
     crc_shift_en     = 1'b0;
-    out_reg_data_sel = 1'b1;  // 0 = BIU data, 1 = internal register data
+    out_reg_data_sel = 1'b1;  // 0 = TILELINK data, 1 = internal register data
     regsel_ld_en     = 1'b0;
     cpusel_ld_en     = 1'b0;
     intreg_ld_en     = 1'b0;
@@ -579,7 +579,7 @@ module peripheral_dbg_pu_riscv_module #(
       end
 
       STATE_RBEGIN: begin
-        if (!word_count_zero) begin  // Start a biu read transaction
+        if (!word_count_zero) begin  // Start a tl read transaction
           biu_strobe = 1'b1;
           addr_sel   = 1'b1;
           addr_ct_en = 1'b1;
@@ -593,12 +593,12 @@ module peripheral_dbg_pu_riscv_module #(
         top_inhibit_o  = 1'b1;  // in case of early termination
 
         if (module_next_state == STATE_RBURST) begin
-          out_reg_data_sel = 1'b0;  // select BIU data
+          out_reg_data_sel = 1'b0;  // select TILELINK data
           out_reg_ld_en    = 1'b1;
           bit_ct_rst       = 1'b1;
           word_ct_sel      = 1'b1;
           word_ct_en       = 1'b1;
-          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
+          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a tl read transaction
             biu_strobe = 1'b1;
             addr_sel   = 1'b1;
             addr_ct_en = 1'b1;
@@ -615,12 +615,12 @@ module peripheral_dbg_pu_riscv_module #(
         top_inhibit_o    = 1'b1;  // in case of early termination
 
         if (bit_count_max) begin
-          out_reg_data_sel = 1'b0;  // select BIU data
+          out_reg_data_sel = 1'b0;  // select TILELINK data
           out_reg_ld_en    = 1'b1;
           bit_ct_rst       = 1'b1;
           word_ct_sel      = 1'b1;
           word_ct_en       = 1'b1;
-          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a biu read transaction
+          if (!(decremented_word_count == 0) && !word_count_zero) begin  // Start a tl read transaction
             biu_strobe = 1'b1;
             addr_sel   = 1'b1;
             addr_ct_en = 1'b1;
@@ -663,7 +663,7 @@ module peripheral_dbg_pu_riscv_module #(
 
           // start transaction. Can't do this here if not hispeed, biu_ready
           // is the status bit, and it's 0 if we start a transaction here.
-          biu_strobe  = 1'b1;  // Start a BIU transaction
+          biu_strobe  = 1'b1;  // Start a TILELINK transaction
           addr_ct_en  = 1'b1;  // Increment thte address counter
 
           // Also can't dec the byte count yet unless hispeed,
@@ -677,7 +677,7 @@ module peripheral_dbg_pu_riscv_module #(
         tdo_output_sel = BIU_READY;  // Send the status bit to TDO
 
         // start transaction
-        biu_strobe     = 1'b1;  // Start a BIU transaction
+        biu_strobe     = 1'b1;  // Start a TILELINK transaction
         word_ct_sel    = 1'b1;  // Decrement the byte count
         word_ct_en     = 1'b1;
         bit_ct_rst     = 1'b1;  // Zero the bit count

@@ -208,7 +208,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module is
   signal word_ct_en       : std_logic;  -- Enable byte counter register
   signal out_reg_ld_en    : std_logic;  -- Enable parallel load of data_out_shift_reg
   signal out_reg_shift_en : std_logic;  -- Enable shift of data_out_shift_reg
-  signal out_reg_data_sel : std_logic;  -- 0 = BIU data, 1 = internal register data
+  signal out_reg_data_sel : std_logic;  -- 0 = TILELINK data, 1 = internal register data
   signal tdo_output_sel   : std_logic_vector(1 downto 0);  -- Selects signal to send to TDO.  0 = ready bit, 1 = output register, 2 = CRC match, 3 = CRC shift reg.
   signal biu_strobe       : std_logic;  -- Indicates that the bus unit should latch data and start a transaction
   signal crc_clr          : std_logic;  -- resets CRC module
@@ -224,7 +224,7 @@ architecture rtl of peripheral_dbg_pu_riscv_module is
   signal word_count_zero    : std_logic;  -- true when byte counter is zero
   signal bit_count_max      : std_logic;  -- true when bit counter is equal to current word size
   signal module_cmd         : std_logic;  -- inverse of MSB of data_register_i. 1 means current cmd not for top level (but is for us)
-  signal biu_ready_s        : std_logic;  -- indicates that the BIU has finished the last command
+  signal biu_ready_s        : std_logic;  -- indicates that the TILELINK has finished the last command
   signal burst_instruction  : std_logic;  -- True when the input_data_i reg has a valid burst instruction for this module
   signal intreg_instruction : std_logic;  -- True when the input_data_i reg has a valid internal register instruction
   signal intreg_write       : std_logic;  -- True when the input_data_i reg has an internal register write op
@@ -241,8 +241,8 @@ architecture rtl of peripheral_dbg_pu_riscv_module is
   signal address_data_in        : std_logic_vector(31 downto 0);  -- from data_register_i
   signal count_data_in          : std_logic_vector(15 downto 0);  -- from data_register_i
   signal operation_in           : std_logic_vector(3 downto 0);  -- from data_register_i
-  signal data_to_biu            : std_logic_vector(31 downto 0);  -- from data_register_i
-  signal data_from_biu          : std_logic_vector(31 downto 0);  -- to data_out_shift_register
+  signal data_to_tl            : std_logic_vector(31 downto 0);  -- from data_register_i
+  signal data_from_tl          : std_logic_vector(31 downto 0);  -- to data_out_shift_register
   signal crc_data_out           : std_logic_vector(31 downto 0);  -- output of CRC module, to output shift register
   signal crc_data_in            : std_logic;  -- input to CRC module, either data_register_i[52] or data_out_shift_reg[0]
   signal crc_serial_out         : std_logic;
@@ -273,8 +273,8 @@ begin
   address_data_in <= data_register_i(DBG_OR1K_DATAREG_LEN-10 downto DBG_OR1K_DATAREG_LEN-41);
   count_data_in   <= data_register_i(DBG_OR1K_DATAREG_LEN-42 downto DBG_OR1K_DATAREG_LEN-57);
 
-  data_to_biu(31)          <= tdi_i;
-  data_to_biu(30 downto 1) <= data_register_i(DBG_OR1K_DATAREG_LEN-1 downto DBG_OR1K_DATAREG_LEN-30);
+  data_to_tl(31)          <= tdi_i;
+  data_to_tl(30 downto 1) <= data_register_i(DBG_OR1K_DATAREG_LEN-1 downto DBG_OR1K_DATAREG_LEN-30);
 
   reg_select_data <= data_register_i(DBG_OR1K_DATAREG_LEN-6 downto DBG_OR1K_DATAREG_LEN-DBG_OR1K_REGSELECT_LEN-5);
 
@@ -301,7 +301,7 @@ begin
   address_increment <= "001";  -- This is only used to increment the address.  SPRs are word-addressed.
 
   -- This is the only thing that actually needs to be saved and 'decoded' from the latched opcode
-  -- It goes to the BIU each time a transaction is started.
+  -- It goes to the TILELINK each time a transaction is started.
   rd_op <= operation(2);
 
   -- Module-internal register select register (no, that's not redundant.)
@@ -451,7 +451,7 @@ begin
 
   -- Output register and TDO output MUX
   out_reg_data <= data_from_internal_reg
-                  when out_reg_data_sel = '1' else data_from_biu;
+                  when out_reg_data_sel = '1' else data_from_tl;
 
   processing_7 : process (tck_i, tlr_i)
   begin
@@ -481,10 +481,10 @@ begin
   end process;
 
   -- Bus Interface Unit (to OR1K SPR bus)
-  -- It is assumed that the BIU has internal registers, and will
+  -- It is assumed that the TILELINK has internal registers, and will
   -- latch address, operation, and write data on rising clock edge
   -- when strobe is asserted
-  or1k_biu_i : peripheral_dbg_pu_riscv_biu
+  or1k_tl_i : peripheral_dbg_pu_riscv_biu
     generic map (
       X              => X,
       Y              => Y,
@@ -498,8 +498,8 @@ begin
       tck_i        => tck_i,
       tlr_i        => tlr_i,
       cpu_select_i => cpu_select,
-      data_i       => data_to_biu,
-      data_o       => data_from_biu,
+      data_i       => data_to_tl,
+      data_o       => data_from_tl,
       addr_i       => address_counter,
       strobe_i     => biu_strobe,
       rd_wrn_i     => rd_op,            -- If 0, then write op
@@ -674,7 +674,7 @@ begin
     crc_en           <= '0';  -- add the input bit to the CRC calculation
     crc_in_sel       <= '0';            -- 0 = tdo, 1 = tdi
     crc_shift_en     <= '0';
-    out_reg_data_sel <= '1';  -- 0 = BIU data, 1 = internal register data
+    out_reg_data_sel <= '1';  -- 0 = TILELINK data, 1 = internal register data
     regsel_ld_en     <= '0';
     cpusel_ld_en     <= '0';
     intreg_ld_en     <= '0';
@@ -712,7 +712,7 @@ begin
         end if;
       when STATE_RBEGIN =>
         if (word_count_zero = '0') then
-          -- Start a biu read transaction
+          -- Start a tl read transaction
           biu_strobe <= '1';
           addr_sel   <= '1';
           addr_ct_en <= '1';
@@ -724,12 +724,12 @@ begin
         tdo_output_sel <= BIU_READY;
         top_inhibit_o  <= '1';          -- in case of early termination
         if (module_next_state = STATE_RBURST) then
-          out_reg_data_sel <= '0';      -- select BIU data
+          out_reg_data_sel <= '0';      -- select TILELINK data
           out_reg_ld_en    <= '1';
           bit_ct_rst       <= '1';
           word_ct_sel      <= '1';
           word_ct_en       <= '1';
-          if ((decremented_word_count /= X"0000") and (word_count_zero = '0')) then  -- Start a biu read transaction
+          if ((decremented_word_count /= X"0000") and (word_count_zero = '0')) then  -- Start a tl read transaction
             biu_strobe <= '1';
             addr_sel   <= '1';
             addr_ct_en <= '1';
@@ -743,12 +743,12 @@ begin
         crc_in_sel       <= '0';  -- read data in output shift register LSB (tdo)
         top_inhibit_o    <= '1';        -- in case of early termination
         if (bit_count_max = '1') then
-          out_reg_data_sel <= '0';      -- select BIU data
+          out_reg_data_sel <= '0';      -- select TILELINK data
           out_reg_ld_en    <= '1';
           bit_ct_rst       <= '1';
           word_ct_sel      <= '1';
           word_ct_en       <= '1';
-          if ((decremented_word_count /= X"0000") and (word_count_zero = '0')) then  -- Start a biu read transaction
+          if ((decremented_word_count /= X"0000") and (word_count_zero = '0')) then  -- Start a tl read transaction
             biu_strobe <= '1';
             addr_sel   <= '1';
             addr_ct_en <= '1';
@@ -784,7 +784,7 @@ begin
           bit_ct_rst  <= '1';           -- Zero the bit count
           -- start transaction. Can't do this here if not hispeed, biu_ready
           -- is the status bit, and it's 0 if we start a transaction here.
-          biu_strobe  <= '1';           -- Start a BIU transaction
+          biu_strobe  <= '1';           -- Start a TILELINK transaction
           addr_ct_en  <= '1';           -- Increment thte address counter
           -- Also can't dec the byte count yet unless hispeed,
           -- that would skip the last word.
@@ -795,7 +795,7 @@ begin
         -- Send the status bit to TDO
         tdo_output_sel <= BIU_READY;
         -- start transaction
-        biu_strobe     <= '1';          -- Start a BIU transaction
+        biu_strobe     <= '1';          -- Start a TILELINK transaction
         word_ct_sel    <= '1';          -- Decrement the byte count
         word_ct_en     <= '1';
         bit_ct_rst     <= '1';          -- Zero the bit count

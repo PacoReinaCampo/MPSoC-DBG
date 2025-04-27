@@ -67,9 +67,9 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
 
   // Bus Interface Unit ports
   output                   biu_clk,
-  output                   biu_rst,       // BIU reset
-  output [DATA_WIDTH -1:0] biu_di,        // data towards BIU
-  input  [DATA_WIDTH -1:0] biu_do,        // data from BIU
+  output                   biu_rst,       // TILELINK reset
+  output [DATA_WIDTH -1:0] biu_di,        // data towards TILELINK
+  input  [DATA_WIDTH -1:0] biu_do,        // data from TILELINK
   output [ADDR_WIDTH -1:0] biu_addr,
   output                   biu_strb,
   output                   biu_rw,
@@ -133,7 +133,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   logic                      word_ct_en;  // Enable byte counter register
   logic                      out_reg_ld_en;  // Enable parallel load of data_out_shift_reg
   logic                      out_reg_shift_en;  // Enable shift of data_out_shift_reg
-  logic                      out_reg_data_sel;  // 0 = BIU data, 1 = internal register data
+  logic                      out_reg_data_sel;  // 0 = TILELINK data, 1 = internal register data
   reg   [               1:0] tdo_output_sel;  // Selects signal to send to TDO. 0=ready bit, 1=output register, 2=CRC match, 3=CRC shift reg.
   logic                      biu_strobe;  // Indicates that the bus unit should latch data and start a transaction
   logic                      crc_clr;  // resets CRC module
@@ -143,7 +143,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   logic                      regsel_ld_en;  // Reg. select register load enable
   logic                      intreg_ld_en;  // load enable for internal registers
   logic                      error_reg_en;  // Tells the error register to check for and latch a bus error
-  logic                      biu_clr_err;  // Allows FSM to reset BIU, to clear the biu_err bit which may have been set on the last transaction of the last burst.
+  logic                      biu_clr_err;  // Allows FSM to reset TILELINK, to clear the biu_err bit which may have been set on the last transaction of the last burst.
 
   // Status signals
   wire                       word_count_zero;  // true when byte counter is zero
@@ -164,7 +164,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   logic [ADDR_WIDTH    -1:0] address_data_in;  // from data_register_i
   logic [              15:0] count_data_in;  // from data_register_i
   logic [               3:0] operation_in;  // from data_register_i
-  logic [DATA_WIDTH    -1:0] data_to_biu;  // from data_register_i
+  logic [DATA_WIDTH    -1:0] data_to_tl;  // from data_register_i
   logic [              31:0] crc_data_out;  // output of CRC module, to output shift register
   logic                      crc_data_in;  // input to CRC module, either data_register[52] or data_out_shift_reg[0]
   logic                      crc_serial_out;
@@ -184,7 +184,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   assign address_data_in    = data_register[DATAREG_LEN-6-:ADDR_WIDTH];
   assign count_data_in      = data_register[DATAREG_LEN-6-ADDR_WIDTH-:16];
 
-  assign data_to_biu        = {dbg_tdi, data_register[DATAREG_LEN-1-:DATA_WIDTH-1]};
+  assign data_to_tl        = {dbg_tdi, data_register[DATAREG_LEN-1-:DATA_WIDTH-1]};
 
   assign reg_select_data    = data_register[DATAREG_LEN-6-:REGSELECT_SIZE];
 
@@ -275,7 +275,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   // individual registers may have special behavior, defined here.
 
   // This is the bus error register, which traps WB errors
-  // We latch every new BIU address in the upper 32 bits, so we always have the address for the transaction which
+  // We latch every new TILELINK address in the upper 32 bits, so we always have the address for the transaction which
   // generated the error (the address counter might increment, esp. for writes)
   // We stop latching addresses when the error bit (bit 0) is set. Keep the error bit set until it is 
   // manually cleared by a module internal register write.
@@ -361,12 +361,12 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
   end
 
   // Bus Interface Unit
-  // It is assumed that the BIU has internal registers, and will
+  // It is assumed that the TILELINK has internal registers, and will
   // latch address, operation, and write data on rising clock edge 
   // when strobe is asserted
   assign biu_clk       = dbg_clk;
   assign biu_rst       = dbg_rst | biu_clr_err;
-  assign biu_di        = data_to_biu;
+  assign biu_di        = data_to_tl;
   assign biu_addr      = address_counter;
   assign biu_strb      = biu_strobe;
   assign biu_rw        = rd_op;
@@ -536,11 +536,11 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
     crc_en           = 1'b0;  // add the input bit to the CRC calculation
     crc_in_sel       = 1'b0;  // 0 = tdo, 1 = tdi
     crc_shift_en     = 1'b0;
-    out_reg_data_sel = 1'b1;  // 0 = BIU data, 1 = internal register data
+    out_reg_data_sel = 1'b1;  // 0 = TILELINK data, 1 = internal register data
     regsel_ld_en     = 1'b0;
     intreg_ld_en     = 1'b0;
     error_reg_en     = 1'b0;
-    biu_clr_err      = 1'b0;  // Set this to reset the BIU, clearing the biu_err bit
+    biu_clr_err      = 1'b0;  // Set this to reset the TILELINK, clearing the biu_err bit
     inhibit          = 1'b0;  // Don't disable the top-level module in the default case
 
     case (module_state)
@@ -578,7 +578,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
       end
 
       STATE_RBEGIN:
-      if (!word_count_zero) begin  // Start a biu read transaction
+      if (!word_count_zero) begin  // Start a tl read transaction
         biu_strobe = 1'b1;
         addr_sel   = 1'b1;
         addr_ct_en = 1'b1;
@@ -592,13 +592,13 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
 
         if (module_next_state == STATE_RBURST) begin
           error_reg_en     = 1'b1;  // Check the wb_error bit
-          out_reg_data_sel = 1'b0;  // select BIU data
+          out_reg_data_sel = 1'b0;  // select TILELINK data
           out_reg_ld_en    = 1'b1;
           bit_ct_rst       = 1'b1;
           word_ct_sel      = 1'b1;
           word_ct_en       = 1'b1;
 
-          if (decremented_word_count != 0 && !word_count_zero) begin  // Start a biu read transaction
+          if (decremented_word_count != 0 && !word_count_zero) begin  // Start a tl read transaction
             biu_strobe = 1'b1;
             addr_sel   = 1'b1;
             addr_ct_en = 1'b1;
@@ -616,13 +616,13 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
 
         if (bit_count_max) begin
           error_reg_en     = 1'b1;  // Check the wb_error bit
-          out_reg_data_sel = 1'b0;  // select BIU data
+          out_reg_data_sel = 1'b0;  // select TILELINK data
           out_reg_ld_en    = 1'b1;
           bit_ct_rst       = 1'b1;
           word_ct_sel      = 1'b1;
           word_ct_en       = 1'b1;
 
-          if (decremented_word_count != 0 && !word_count_zero) begin  // Start a biu read transaction
+          if (decremented_word_count != 0 && !word_count_zero) begin  // Start a tl read transaction
             biu_strobe = 1'b1;
             addr_sel   = 1'b1;
             addr_ct_en = 1'b1;
@@ -666,7 +666,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
 
           // start transaction. Can't do this here if not hispeed, biu_rdy
           // is the status bit, and it's 0 if we start a transaction here.
-          biu_strobe   = 1'b1;  // Start a BIU transaction
+          biu_strobe   = 1'b1;  // Start a TILELINK transaction
           addr_ct_en   = 1'b1;  // Increment thte address counter
 
           // Also can't dec the byte count yet unless hispeed,
@@ -681,7 +681,7 @@ module peripheral_dbg_pu_riscv_bus_module_core #(
         error_reg_en   = 1'b1;  // Check the wb_error bit
 
         // start transaction
-        biu_strobe     = 1'b1;  // Start a BIU transaction
+        biu_strobe     = 1'b1;  // Start a TILELINK transaction
         word_ct_sel    = 1'b1;  // Decrement the byte count
         word_ct_en     = 1'b1;
         bit_ct_rst     = 1'b1;  // Zero the bit count

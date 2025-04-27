@@ -1,8 +1,8 @@
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_biu.vhd
+ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_axi4_tl.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_module_axi4.vhd
-ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_biu.vhd
+ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_axi4_tl.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/axi4/peripheral_dbg_pu_riscv_top_axi4.vhd
 

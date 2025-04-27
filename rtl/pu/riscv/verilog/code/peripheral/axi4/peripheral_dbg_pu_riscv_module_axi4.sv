@@ -122,9 +122,9 @@ module peripheral_dbg_pu_riscv_module_axi4 #(
 
     // Bus Interface Unit ports
     .biu_clk      (biu_clk),
-    .biu_rst      (biu_rst),       // BIU reset
-    .biu_di       (biu_di),        // data towards BIU
-    .biu_do       (biu_do),        // data from BIU
+    .biu_rst      (biu_rst),       // TILELINK reset
+    .biu_di       (biu_di),        // data towards TILELINK
+    .biu_do       (biu_do),        // data from TILELINK
     .biu_addr     (biu_addr),
     .biu_strb     (biu_strb),
     .biu_rw       (biu_rw),
@@ -134,7 +134,7 @@ module peripheral_dbg_pu_riscv_module_axi4 #(
   );
 
   // Hookup AHB Bus Interface
-  peripheral_dbg_pu_riscv_axi4_biu #(
+  peripheral_dbg_pu_riscv_axi4_tl #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
   ) axi4lite_axi4_i (
