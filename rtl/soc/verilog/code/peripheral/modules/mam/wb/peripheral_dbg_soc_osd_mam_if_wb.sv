@@ -39,44 +39,41 @@
 //   Paco Reina Campo <pacoreinacampo@queenfield.tech>
 
 module peripheral_dbg_soc_osd_mam_if_wb #(
-  parameter XLEN = 16,  // in bits, must be multiple of 16
-  parameter PLEN = 32,
+  parameter DATA_WIDTH = 16,  // in bits, must be multiple of 16
+  parameter ADDR_WIDTH = 32,
 
   // Byte select width
-  localparam SW = (XLEN == 32) ? 4 : (XLEN == 16) ? 2 : (XLEN == 8) ? 1 : 'hx
+  localparam SW = (DATA_WIDTH == 32) ? 4 : (DATA_WIDTH == 16) ? 2 : (DATA_WIDTH == 8) ? 1 : 'hx
 ) (
   input clk_i,
   input rst_i,
 
-  input                   req_valid,  // Start a new memory access request
-  output reg              req_ready,  // Acknowledge the new memory access request
-  input                   req_we,     // 0: Read, 1: Write
-  input      [PLEN  -1:0] req_addr,   // Request base address
-  input                   req_burst,  // 0 for single beat access, 1 for incremental burst
-  input      [      12:0] req_beats,  // Burst length in number of words
+  input                         req_valid,  // Start a new memory access request
+  output reg                    req_ready,  // Acknowledge the new memory access request
+  input                         req_we,     // 0: Read, 1: Write
+  input      [ADDR_WIDTH  -1:0] req_addr,   // Request base address
+  input                         req_burst,  // 0 for single beat access, 1 for incremental burst
+  input      [            12:0] req_beats,  // Burst length in number of words
 
-  input                   write_valid,  // Next write data is valid
-  input      [XLEN  -1:0] write_data,   // Write data
-  input      [XLEN/8-1:0] write_strb,   // Byte strobe if req_burst==0
-  output reg              write_ready,  // Acknowledge this data item
+  input                         write_valid,  // Next write data is valid
+  input      [DATA_WIDTH  -1:0] write_data,   // Write data
+  input      [DATA_WIDTH/8-1:0] write_strb,   // Byte strobe if req_burst==0
+  output reg                    write_ready,  // Acknowledge this data item
 
-  output reg              read_valid,  // Next read data is valid
-  output reg [XLEN  -1:0] read_data,   // Read data
-  input                   read_ready,  // Acknowledge this data item
+  output reg                  read_valid,  // Next read data is valid
+  output reg [DATA_WIDTH-1:0] read_data,   // Read data
+  input                       read_ready,  // Acknowledge this data item
 
-  output reg            wb_hsel_o,
-  output reg [PLEN-1:0] wb_haddr_o,
-  output reg [XLEN-1:0] wb_hwdata_o,
-  output reg            wb_hwrite_o,
-  output     [     2:0] wb_hsize_o,
-  output reg [     2:0] wb_hburst_o,
-  output reg [     3:0] wb_hprot_o,
-  output reg [     1:0] wb_htrans_o,
-  output                wb_hmastlock_o,
-
-  input [XLEN-1:0] wb_hrdata_i,
-  input            wb_hready_i,
-  input            wb_hresp_i
+  output reg                  stb_o,
+  output                      cyc_o,
+  input                       ack_i,
+  output reg                  we_o,
+  output reg [ADDR_WIDTH-1:0] addr_o,
+  output reg [DATA_WIDTH-1:0] dat_o,
+  input      [DATA_WIDTH-1:0] dat_i,
+  output reg [           2:0] cti_o,
+  output reg [           1:0] bte_o,
+  output reg [SW        -1:0] sel_o
 );
 
   enum {
@@ -90,20 +87,20 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
   }
     state, nxt_state;
 
-  logic            nxt_we_o;
-  logic [     2:0] nxt_cti_o;
-  logic [     1:0] nxt_bte_o;
+  logic                  nxt_we_o;
+  logic [           2:0] nxt_cti_o;
+  logic [           1:0] nxt_bte_o;
 
-  reg   [XLEN-1:0] read_data_reg;
-  logic [XLEN-1:0] nxt_read_data_reg;
+  reg   [DATA_WIDTH-1:0] read_data_reg;
+  logic [DATA_WIDTH-1:0] nxt_read_data_reg;
 
-  reg   [XLEN-1:0] dat_o_reg;
-  logic [XLEN-1:0] nxt_dat_o_reg;
+  reg   [DATA_WIDTH-1:0] dat_o_reg;
+  logic [DATA_WIDTH-1:0] nxt_dat_o_reg;
 
-  logic [PLEN-1:0] nxt_addr_o;
+  logic [ADDR_WIDTH-1:0] nxt_addr_o;
 
-  reg   [    12:0] beats;
-  logic [    12:0] nxt_beats;
+  reg   [          12:0] beats;
+  logic [          12:0] nxt_beats;
 
   // registers
   always_ff @(posedge clk_i) begin
@@ -113,35 +110,35 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
       state <= nxt_state;
     end
 
-    wb_hwrite_o <= nxt_we_o;
-    wb_hburst_o <= nxt_cti_o;
-    wb_htrans_o <= nxt_bte_o;
+    we_o          <= nxt_we_o;
+    cti_o         <= nxt_cti_o;
+    bte_o         <= nxt_bte_o;
     read_data_reg <= nxt_read_data_reg;
     dat_o_reg     <= nxt_dat_o_reg;
-    wb_haddr_o  <= nxt_addr_o;
+    addr_o        <= nxt_addr_o;
     beats         <= nxt_beats;
   end
 
-  assign wb_hmastlock_o = wb_hsel_o;
+  assign cyc_o = stb_o;
 
   // state & output logic
   always_comb begin
     nxt_state         = state;
-    nxt_we_o          = wb_hwrite_o;
-    nxt_cti_o         = wb_hburst_o;
+    nxt_we_o          = we_o;
+    nxt_cti_o         = cti_o;
     nxt_bte_o         = 2'b0;
     nxt_read_data_reg = read_data_reg;
     nxt_dat_o_reg     = dat_o_reg;
-    nxt_addr_o        = wb_haddr_o;
+    nxt_addr_o        = addr_o;
     nxt_beats         = beats;
-    wb_hprot_o      = '{default: '1};
+    sel_o             = '{default: '1};
 
-    wb_hsel_o       = 0;
+    stb_o             = 0;
     req_ready         = 0;
     write_ready       = 0;
     read_valid        = 0;
 
-    wb_hwdata_o     = dat_o_reg;
+    dat_o             = dat_o_reg;
     read_data         = read_data_reg;
 
     case (state)
@@ -203,8 +200,8 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
         end
       end  // STATE_WRITE_LAST_WAIT
       STATE_WRITE_LAST: begin
-        wb_hsel_o = 1;
-        if (wb_hready_i) begin
+        stb_o = 1;
+        if (ack_i) begin
           nxt_state = STATE_IDLE;
           nxt_cti_o = 3'b000;
         end
@@ -218,10 +215,10 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
         end
       end  // STATE_WRITE_WAIT
       STATE_WRITE: begin
-        wb_hsel_o = 1;
-        if (wb_hready_i) begin
+        stb_o = 1;
+        if (ack_i) begin
           write_ready = 1;
-          nxt_addr_o  = wb_haddr_o + XLEN / 8;
+          nxt_addr_o  = addr_o + DATA_WIDTH / 8;
           if (beats == 1) begin
             nxt_cti_o = 3'b111;
             if (write_valid) begin
@@ -240,13 +237,13 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
             end
           end
         end
-      end
+      end  // STATE_WRITE
       STATE_READ: begin
-        wb_hsel_o = 1;
-        if (wb_hready_i) begin
-          nxt_read_data_reg = wb_hrdata_i;
+        stb_o = 1;
+        if (ack_i) begin
+          nxt_read_data_reg = dat_i;
           nxt_beats         = beats - 1;
-          nxt_addr_o        = wb_haddr_o + XLEN / 8;
+          nxt_addr_o        = addr_o + DATA_WIDTH / 8;
           nxt_state         = STATE_READ_WAIT;
         end
       end
@@ -263,7 +260,7 @@ module peripheral_dbg_soc_osd_mam_if_wb #(
             nxt_state = STATE_READ;
           end
         end
-      end
+      end  // STATE_READ_WAIT
     endcase
   end
 endmodule

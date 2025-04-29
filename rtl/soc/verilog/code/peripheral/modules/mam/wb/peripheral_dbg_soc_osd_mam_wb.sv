@@ -41,8 +41,8 @@
 import peripheral_dbg_soc_dii_channel::dii_flit;
 
 module peripheral_dbg_soc_osd_mam_wb #(
-  parameter XLEN = 16,  // in bits, must be multiple of 16
-  parameter PLEN = 32,
+  parameter DATA_WIDTH = 16,  // in bits, must be multiple of 16
+  parameter ADDR_WIDTH = 32,
 
   parameter MAX_PKT_LEN = 'x,
   parameter REGIONS     = 1,
@@ -64,7 +64,7 @@ module peripheral_dbg_soc_osd_mam_wb #(
   parameter BASE_ADDR7  = 'x,
 
   // Byte select width
-  localparam SW = (XLEN == 32) ? 4 : (XLEN == 16) ? 2 : (XLEN == 8) ? 1 : 'hx
+  localparam SW = (DATA_WIDTH == 32) ? 4 : (DATA_WIDTH == 16) ? 2 : (DATA_WIDTH == 8) ? 1 : 'hx
 ) (
   input clk_i,
   input rst_i,
@@ -76,42 +76,39 @@ module peripheral_dbg_soc_osd_mam_wb #(
 
   input [15:0] id,
 
-  output            wb_hsel_o,
-  output [    15:0] wb_haddr_o,
-  output [XLEN-1:0] wb_hwdata_o,
-  output            wb_hwrite_o,
-  output [     2:0] wb_hsize_o,
-  output [     2:0] wb_hburst_o,
-  output [     3:0] wb_hprot_o,
-  output [     1:0] wb_htrans_o,
-  output            wb_hmastlock_o,
-
-  input [XLEN-1:0] wb_hrdata_i,
-  input            wb_hready_i,
-  input            wb_hresp_i
+  output                  stb_o,
+  output                  cyc_o,
+  input                   ack_i,
+  output                  we_o,
+  output [ADDR_WIDTH-1:0] addr_o,
+  output [DATA_WIDTH-1:0] dat_o,
+  input  [DATA_WIDTH-1:0] dat_i,
+  output [           2:0] cti_o,
+  output [           1:0] bte_o,
+  output [SW        -1:0] sel_o
 );
 
-  logic              req_valid;
-  logic              req_ready;
-  logic              req_we;
-  logic [PLEN  -1:0] req_addr;
-  logic              req_burst;
-  logic [      12:0] req_beats;
-  logic              req_sync;
+  logic                    req_valid;
+  logic                    req_ready;
+  logic                    req_we;
+  logic [ADDR_WIDTH  -1:0] req_addr;
+  logic                    req_burst;
+  logic [            12:0] req_beats;
+  logic                    req_sync;
 
-  logic              write_valid;
-  logic [XLEN  -1:0] write_data;
-  logic [XLEN/8-1:0] write_strb;
-  logic              write_ready;
-  logic              write_complete;
+  logic                    write_valid;
+  logic [DATA_WIDTH  -1:0] write_data;
+  logic [DATA_WIDTH/8-1:0] write_strb;
+  logic                    write_ready;
+  logic                    write_complete;
 
-  logic              read_valid;
-  logic [XLEN  -1:0] read_data;
-  logic              read_ready;
+  logic                    read_valid;
+  logic [DATA_WIDTH  -1:0] read_data;
+  logic                    read_ready;
 
   peripheral_dbg_soc_osd_mam #(
-    .ADDR_WIDTH(PLEN),
-    .DATA_WIDTH(XLEN),
+    .DATA_WIDTH(DATA_WIDTH),
+    .ADDR_WIDTH(ADDR_WIDTH),
 
     .MAX_PKT_LEN(MAX_PKT_LEN),
     .REGIONS    (REGIONS),
@@ -140,8 +137,8 @@ module peripheral_dbg_soc_osd_mam_wb #(
   assign write_complete = 1'b1;
 
   peripheral_dbg_soc_osd_mam_if_wb #(
-    .XLEN(XLEN),
-    .PLEN(PLEN)
+    .DATA_WIDTH(DATA_WIDTH),
+    .ADDR_WIDTH(ADDR_WIDTH)
   ) u_mam_wb_if (
     .*
   );

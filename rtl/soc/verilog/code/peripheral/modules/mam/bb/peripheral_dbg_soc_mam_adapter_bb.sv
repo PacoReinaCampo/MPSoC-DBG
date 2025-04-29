@@ -42,75 +42,54 @@ import soc_optimsoc_functions::*;
 
 module peripheral_dbg_soc_mam_adapter_bb #(
   // address width
-  parameter PLEN = 32,
+  parameter AW = 32,
 
   // data width
-  parameter XLEN = 32,
+  parameter DW = 32,
 
   parameter USE_DEBUG = 1,
 
   // byte select width
-  localparam SW = (XLEN == 32) ? 4 : (XLEN == 16) ? 2 : (XLEN == 8) ? 1 : 'hx,
+  localparam SW = (DW == 32) ? 4 : (DW == 16) ? 2 : (DW == 8) ? 1 : 'hx,
 
   // +--------------+--------------+
   // | word address | byte in word |
   // +--------------+--------------+
   //     WORD_AW         BYTE_AW
-  //        +---- PLEN ----+
+  //        +----- AW -----+
 
   localparam BYTE_AW = SW >> 1,
-  localparam WORD_AW = PLEN - BYTE_AW
+  localparam WORD_AW = AW - BYTE_AW
 ) (
-  // AHB4 SLAVE interface: input side (to the CPU etc.)
-  input            bb_in_hsel_i,
-  input [PLEN-1:0] bb_in_haddr_i,
-  input [XLEN-1:0] bb_in_hwdata_i,
-  input            bb_in_hwrite_i,
-  input [     2:0] bb_in_hsize_i,
-  input [     2:0] bb_in_hburst_i,
-  input [SW  -1:0] bb_in_hprot_i,
-  input [     1:0] bb_in_htrans_i,
-  input            bb_in_hmastlock_i,
+  // Blackbone SLAVE interface: input side (to the CPU etc.)
+  input [AW-1:0] bb_in_addr_i,
+  input [DW-1:0] bb_in_din_i,
+  input          bb_in_en_i,
+  input          bb_in_we_i,
 
-  output [XLEN-1:0] bb_in_hrdata_o,
-  output            bb_in_hready_o,
-  output            bb_in_hresp_o,
+  output [DW-1:0] bb_in_dout_o,
 
   input bb_in_clk_i,
   input bb_in_rst_i,
 
-  // AHB4 SLAVE interface: output side (to the memory)
-  output            bb_out_hsel_i,
-  output [PLEN-1:0] bb_out_haddr_i,
-  output [XLEN-1:0] bb_out_hwdata_i,
-  output            bb_out_hwrite_i,
-  output [     2:0] bb_out_hsize_i,
-  output [     2:0] bb_out_hburst_i,
-  output [SW  -1:0] bb_out_hprot_i,
-  output [     1:0] bb_out_htrans_i,
-  output            bb_out_hmastlock_i,
+  // Blackbone SLAVE interface: output side (to the memory)
+  output [AW-1:0] bb_out_addr_i,
+  output [DW-1:0] bb_out_din_i,
+  output          bb_out_en_i,
+  output          bb_out_we_i,
 
-  input [XLEN-1:0] bb_out_hrdata_o,
-  input            bb_out_hready_o,
-  input            bb_out_hresp_o,
+  input [DW-1:0] bb_out_dout_o,
 
   output bb_out_clk_i,
   output bb_out_rst_i,
 
-  // MAM AHB4 MASTER interface (incoming)
-  input            bb_mam_hsel_o,
-  input [PLEN-1:0] bb_mam_haddr_o,
-  input [XLEN-1:0] bb_mam_hwdata_o,
-  input            bb_mam_hwrite_o,
-  input [     2:0] bb_mam_hsize_o,
-  input [     2:0] bb_mam_hburst_o,
-  input [SW  -1:0] bb_mam_hprot_o,
-  input [     1:0] bb_mam_htrans_o,
-  input            bb_mam_hmastlock_o,
+  // MAM Blackbone MASTER interface (incoming)
+  input [AW-1:0] bb_mam_addr_o,
+  input [DW-1:0] bb_mam_din_o,
+  input          bb_mam_en_o,
+  input          bb_mam_we_o,
 
-  output [XLEN-1:0] bb_mam_hrdata_i,
-  output            bb_mam_hready_i,
-  output            bb_mam_hresp_i
+  output [DW-1:0] bb_mam_dout_i
 );
 
   // we use a common clock for all this module!
@@ -153,9 +132,9 @@ module peripheral_dbg_soc_mam_adapter_bb #(
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
-          if (bb_mam_hmastlock_o == 1'b1) begin
+          if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end else if (bb_in_hmastlock_i == 1'b1) begin
+          end else if (bb_in_en_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
           end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
@@ -165,7 +144,7 @@ module peripheral_dbg_soc_mam_adapter_bb #(
         STATE_ARB_ACCESS_MAM: begin
           grant_access_mam = 1'b1;
 
-          if (bb_mam_hmastlock_o == 1'b1) begin
+          if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
@@ -174,9 +153,9 @@ module peripheral_dbg_soc_mam_adapter_bb #(
         // CPU may finish cycle before switching to MAM. May need changes if instant MAM access required
         STATE_ARB_ACCESS_CPU: begin
           grant_access_cpu = 1'b1;
-          if (bb_in_hmastlock_i == 1'b1) begin
+          if (bb_in_en_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end else if (bb_mam_hmastlock_o == 1'b1) begin
+          end else if (bb_mam_en_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
@@ -186,35 +165,20 @@ module peripheral_dbg_soc_mam_adapter_bb #(
     end
 
     // MUX of signals TO the memory
-    assign bb_out_hsel_i      = access_cpu ? bb_in_hsel_i : bb_mam_hsel_o;
-    assign bb_out_haddr_i     = access_cpu ? bb_in_haddr_i : bb_mam_haddr_o;
-    assign bb_out_hwdata_i    = access_cpu ? bb_in_hwdata_i : bb_mam_hwdata_o;
-    assign bb_out_hwrite_i    = access_cpu ? bb_in_hwrite_i : bb_mam_hwrite_o;
-    assign bb_out_hburst_i    = access_cpu ? bb_in_hburst_i : bb_mam_hburst_o;
-    assign bb_out_hprot_i     = access_cpu ? bb_in_hprot_i : bb_mam_hprot_o;
-    assign bb_out_htrans_i    = access_cpu ? bb_in_htrans_i : bb_mam_htrans_o;
-    assign bb_out_hmastlock_i = access_cpu ? bb_in_hmastlock_i : bb_mam_hmastlock_o;
-
+    assign bb_out_addr_i = access_cpu ? bb_in_addr_i : bb_mam_addr_o;
+    assign bb_out_din_i  = access_cpu ? bb_in_din_i : bb_mam_din_o;
+    assign bb_out_en_i   = access_cpu ? bb_in_en_i : bb_mam_en_o;
+    assign bb_out_we_i   = access_cpu ? bb_in_we_i : bb_mam_we_o;
     // MUX of signals FROM the memory
-    assign bb_in_hrdata_o     = access_cpu ? bb_out_hrdata_o : {XLEN{1'b0}};
-    assign bb_in_hready_o     = access_cpu ? bb_out_hready_o : 1'b0;
-    assign bb_in_hresp_o      = access_cpu ? bb_out_hresp_o : 1'b0;
+    assign bb_in_dout_o  = access_cpu ? bb_out_dout_o : {DW{1'b0}};
 
-    assign bb_mam_hrdata_i    = ~access_cpu ? bb_out_hrdata_o : {XLEN{1'b0}};
-    assign bb_mam_hready_i    = ~access_cpu ? bb_out_hready_o : 1'b0;
-    assign bb_mam_hresp_i     = ~access_cpu ? bb_out_hresp_o : 1'b0;
+    assign bb_mam_dout_i = ~access_cpu ? bb_out_dout_o : {DW{1'b0}};
   end else begin
-    assign bb_out_hsel_i      = bb_in_hsel_i;
-    assign bb_out_haddr_i     = bb_in_haddr_i;
-    assign bb_out_hwdata_i    = bb_in_hwdata_i;
-    assign bb_out_htrans_i    = bb_in_htrans_i;
-    assign bb_out_hburst_i    = bb_in_hburst_i;
-    assign bb_out_hprot_i     = bb_in_hprot_i;
-    assign bb_out_hwrite_i    = bb_in_hwrite_i;
-    assign bb_out_hmastlock_i = bb_in_hmastlock_i;
+    assign bb_out_addr_i = bb_in_addr_i;
+    assign bb_out_din_i  = bb_in_din_i;
+    assign bb_out_en_i   = bb_in_en_i;
+    assign bb_out_we_i   = bb_in_we_i;
 
-    assign bb_in_hrdata_o     = bb_out_hrdata_o;
-    assign bb_in_hready_o     = bb_out_hready_o;
-    assign bb_in_hresp_o      = bb_out_hresp_o;
+    assign bb_in_dout_o  = bb_out_dout_o;
   end
 endmodule

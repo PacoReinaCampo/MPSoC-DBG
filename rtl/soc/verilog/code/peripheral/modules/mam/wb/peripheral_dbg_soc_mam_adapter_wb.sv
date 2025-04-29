@@ -42,75 +42,75 @@ import soc_optimsoc_functions::*;
 
 module peripheral_dbg_soc_mam_adapter_wb #(
   // address width
-  parameter PLEN = 32,
+  parameter AW = 32,
 
   // data width
-  parameter XLEN = 32,
+  parameter DW = 32,
 
   parameter USE_DEBUG = 1,
 
   // byte select width
-  localparam SW = (XLEN == 32) ? 4 : (XLEN == 16) ? 2 : (XLEN == 8) ? 1 : 'hx,
+  localparam SW = (DW == 32) ? 4 : (DW == 16) ? 2 : (DW == 8) ? 1 : 'hx,
 
   // +--------------+--------------+
   // | word address | byte in word |
   // +--------------+--------------+
   //     WORD_AW         BYTE_AW
-  //        +---- PLEN ----+
+  //        +----- AW -----+
 
   localparam BYTE_AW = SW >> 1,
-  localparam WORD_AW = PLEN - BYTE_AW
+  localparam WORD_AW = AW - BYTE_AW
 ) (
-  // AHB4 SLAVE interface: input side (to the CPU etc.)
-  input            wb_in_hsel_i,
-  input [PLEN-1:0] wb_in_haddr_i,
-  input [XLEN-1:0] wb_in_hwdata_i,
-  input            wb_in_hwrite_i,
-  input [     2:0] wb_in_hsize_i,
-  input [     2:0] wb_in_hburst_i,
-  input [SW  -1:0] wb_in_hprot_i,
-  input [     1:0] wb_in_htrans_i,
-  input            wb_in_hmastlock_i,
+  // Blackbone SLAVE interface: input side (to the CPU etc.)
+  input [AW-1:0] wb_in_adr_i,
+  input [   1:0] wb_in_bte_i,
+  input [   2:0] wb_in_cti_i,
+  input          wb_in_cyc_i,
+  input [DW-1:0] wb_in_dat_i,
+  input [SW-1:0] wb_in_sel_i,
+  input          wb_in_stb_i,
+  input          wb_in_we_i,
 
-  output [XLEN-1:0] wb_in_hrdata_o,
-  output            wb_in_hready_o,
-  output            wb_in_hresp_o,
+  output          wb_in_ack_o,
+  output          wb_in_err_o,
+  output          wb_in_rty_o,
+  output [DW-1:0] wb_in_dat_o,
 
   input wb_in_clk_i,
   input wb_in_rst_i,
 
-  // AHB4 SLAVE interface: output side (to the memory)
-  output            wb_out_hsel_i,
-  output [PLEN-1:0] wb_out_haddr_i,
-  output [XLEN-1:0] wb_out_hwdata_i,
-  output            wb_out_hwrite_i,
-  output [     2:0] wb_out_hsize_i,
-  output [     2:0] wb_out_hburst_i,
-  output [SW  -1:0] wb_out_hprot_i,
-  output [     1:0] wb_out_htrans_i,
-  output            wb_out_hmastlock_i,
+  // Blackbone SLAVE interface: output side (to the memory)
+  output [AW-1:0] wb_out_adr_i,
+  output [   1:0] wb_out_bte_i,
+  output [   2:0] wb_out_cti_i,
+  output          wb_out_cyc_i,
+  output [DW-1:0] wb_out_dat_i,
+  output [SW-1:0] wb_out_sel_i,
+  output          wb_out_stb_i,
+  output          wb_out_we_i,
 
-  input [XLEN-1:0] wb_out_hrdata_o,
-  input            wb_out_hready_o,
-  input            wb_out_hresp_o,
+  input          wb_out_ack_o,
+  input          wb_out_err_o,
+  input          wb_out_rty_o,
+  input [DW-1:0] wb_out_dat_o,
 
   output wb_out_clk_i,
   output wb_out_rst_i,
 
-  // MAM AHB4 MASTER interface (incoming)
-  input            wb_mam_hsel_o,
-  input [PLEN-1:0] wb_mam_haddr_o,
-  input [XLEN-1:0] wb_mam_hwdata_o,
-  input            wb_mam_hwrite_o,
-  input [     2:0] wb_mam_hsize_o,
-  input [     2:0] wb_mam_hburst_o,
-  input [SW  -1:0] wb_mam_hprot_o,
-  input [     1:0] wb_mam_htrans_o,
-  input            wb_mam_hmastlock_o,
-
-  output [XLEN-1:0] wb_mam_hrdata_i,
-  output            wb_mam_hready_i,
-  output            wb_mam_hresp_i
+  // MAM Blackbone MASTER interface (incoming)
+  input  [AW-1:0] wb_mam_adr_o,
+  input           wb_mam_cyc_o,
+  input  [DW-1:0] wb_mam_dat_o,
+  input  [SW-1:0] wb_mam_sel_o,
+  input           wb_mam_stb_o,
+  input           wb_mam_we_o,
+  input           wb_mam_cab_o,
+  input  [   2:0] wb_mam_cti_o,
+  input  [   1:0] wb_mam_bte_o,
+  output          wb_mam_ack_i,
+  output          wb_mam_rty_i,
+  output          wb_mam_err_i,
+  output [DW-1:0] wb_mam_dat_i
 );
 
   // we use a common clock for all this module!
@@ -153,9 +153,9 @@ module peripheral_dbg_soc_mam_adapter_wb #(
 
       case (fsm_arb_state)
         STATE_ARB_IDLE: begin
-          if (wb_mam_hmastlock_o == 1'b1) begin
+          if (wb_mam_cyc_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
-          end else if (wb_in_hmastlock_i == 1'b1) begin
+          end else if (wb_in_cyc_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
           end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
@@ -165,7 +165,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
         STATE_ARB_ACCESS_MAM: begin
           grant_access_mam = 1'b1;
 
-          if (wb_mam_hmastlock_o == 1'b1) begin
+          if (wb_mam_cyc_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
@@ -174,9 +174,9 @@ module peripheral_dbg_soc_mam_adapter_wb #(
         // CPU may finish cycle before switching to MAM. May need changes if instant MAM access required
         STATE_ARB_ACCESS_CPU: begin
           grant_access_cpu = 1'b1;
-          if (wb_in_hmastlock_i == 1'b1) begin
+          if (wb_in_cyc_i == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_CPU;
-          end else if (wb_mam_hmastlock_o == 1'b1) begin
+          end else if (wb_mam_cyc_o == 1'b1) begin
             fsm_arb_state_next = STATE_ARB_ACCESS_MAM;
           end else begin
             fsm_arb_state_next = STATE_ARB_IDLE;
@@ -186,35 +186,38 @@ module peripheral_dbg_soc_mam_adapter_wb #(
     end
 
     // MUX of signals TO the memory
-    assign wb_out_hsel_i      = access_cpu ? wb_in_hsel_i : wb_mam_hsel_o;
-    assign wb_out_haddr_i     = access_cpu ? wb_in_haddr_i : wb_mam_haddr_o;
-    assign wb_out_hwdata_i    = access_cpu ? wb_in_hwdata_i : wb_mam_hwdata_o;
-    assign wb_out_hwrite_i    = access_cpu ? wb_in_hwrite_i : wb_mam_hwrite_o;
-    assign wb_out_hburst_i    = access_cpu ? wb_in_hburst_i : wb_mam_hburst_o;
-    assign wb_out_hprot_i     = access_cpu ? wb_in_hprot_i : wb_mam_hprot_o;
-    assign wb_out_htrans_i    = access_cpu ? wb_in_htrans_i : wb_mam_htrans_o;
-    assign wb_out_hmastlock_i = access_cpu ? wb_in_hmastlock_i : wb_mam_hmastlock_o;
+    assign wb_out_adr_i = access_cpu ? wb_in_adr_i : wb_mam_adr_o;
+    assign wb_out_bte_i = access_cpu ? wb_in_bte_i : wb_mam_bte_o;
+    assign wb_out_cti_i = access_cpu ? wb_in_cti_i : wb_mam_cti_o;
+    assign wb_out_cyc_i = access_cpu ? wb_in_cyc_i : wb_mam_cyc_o;
+    assign wb_out_dat_i = access_cpu ? wb_in_dat_i : wb_mam_dat_o;
+    assign wb_out_sel_i = access_cpu ? wb_in_sel_i : wb_mam_sel_o;
+    assign wb_out_stb_i = access_cpu ? wb_in_stb_i : wb_mam_stb_o;
+    assign wb_out_we_i  = access_cpu ? wb_in_we_i : wb_mam_we_o;
 
     // MUX of signals FROM the memory
-    assign wb_in_hrdata_o     = access_cpu ? wb_out_hrdata_o : {XLEN{1'b0}};
-    assign wb_in_hready_o     = access_cpu ? wb_out_hready_o : 1'b0;
-    assign wb_in_hresp_o      = access_cpu ? wb_out_hresp_o : 1'b0;
+    assign wb_in_ack_o  = access_cpu ? wb_out_ack_o : 1'b0;
+    assign wb_in_err_o  = access_cpu ? wb_out_err_o : 1'b0;
+    assign wb_in_rty_o  = access_cpu ? wb_out_rty_o : 1'b0;
+    assign wb_in_dat_o  = access_cpu ? wb_out_dat_o : {DW{1'b0}};
 
-    assign wb_mam_hrdata_i    = ~access_cpu ? wb_out_hrdata_o : {XLEN{1'b0}};
-    assign wb_mam_hready_i    = ~access_cpu ? wb_out_hready_o : 1'b0;
-    assign wb_mam_hresp_i     = ~access_cpu ? wb_out_hresp_o : 1'b0;
+    assign wb_mam_ack_i = ~access_cpu ? wb_out_ack_o : 1'b0;
+    assign wb_mam_err_i = ~access_cpu ? wb_out_err_o : 1'b0;
+    assign wb_mam_rty_i = ~access_cpu ? wb_out_rty_o : 1'b0;
+    assign wb_mam_dat_i = ~access_cpu ? wb_out_dat_o : {DW{1'b0}};
   end else begin
-    assign wb_out_hsel_i      = wb_in_hsel_i;
-    assign wb_out_haddr_i     = wb_in_haddr_i;
-    assign wb_out_hwdata_i    = wb_in_hwdata_i;
-    assign wb_out_htrans_i    = wb_in_htrans_i;
-    assign wb_out_hburst_i    = wb_in_hburst_i;
-    assign wb_out_hprot_i     = wb_in_hprot_i;
-    assign wb_out_hwrite_i    = wb_in_hwrite_i;
-    assign wb_out_hmastlock_i = wb_in_hmastlock_i;
+    assign wb_out_adr_i = wb_in_adr_i;
+    assign wb_out_bte_i = wb_in_bte_i;
+    assign wb_out_cti_i = wb_in_cti_i;
+    assign wb_out_cyc_i = wb_in_cyc_i;
+    assign wb_out_dat_i = wb_in_dat_i;
+    assign wb_out_sel_i = wb_in_sel_i;
+    assign wb_out_stb_i = wb_in_stb_i;
+    assign wb_out_we_i  = wb_in_we_i;
 
-    assign wb_in_hrdata_o     = wb_out_hrdata_o;
-    assign wb_in_hready_o     = wb_out_hready_o;
-    assign wb_in_hresp_o      = wb_out_hresp_o;
+    assign wb_in_ack_o  = wb_out_ack_o;
+    assign wb_in_err_o  = wb_out_err_o;
+    assign wb_in_rty_o  = wb_out_rty_o;
+    assign wb_in_dat_o  = wb_out_dat_o;
   end
 endmodule
