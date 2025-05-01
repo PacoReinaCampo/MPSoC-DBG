@@ -1,6 +1,5 @@
 code
 ├── core
-│   ├── peripheral_dbg_pu_riscv_biu.sv
 │   ├── peripheral_dbg_pu_riscv_bus_module_core.sv
 │   ├── peripheral_dbg_pu_riscv_bytefifo.sv
 │   ├── peripheral_dbg_pu_riscv_crc32.sv
@@ -8,11 +7,12 @@ code
 │   ├── peripheral_dbg_pu_riscv_module.sv
 │   ├── peripheral_dbg_pu_riscv_status_reg.sv
 │   ├── peripheral_dbg_pu_riscv_syncflop.sv
-│   └── peripheral_dbg_pu_riscv_syncreg.sv
+│   ├── peripheral_dbg_pu_riscv_syncreg.sv
+│   └── peripheral_dbg_pu_riscv_tl.sv
 ├── peripheral
 │   ├── ahb4
-│   │   ├── peripheral_dbg_pu_riscv_ahb4_biu.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_ahb4_biu.sv
+│   │   ├── peripheral_dbg_pu_riscv_ahb4_tl.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_ahb4_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
 │   │   ├── peripheral_dbg_pu_riscv_module_ahb4.sv
 │   │   └── peripheral_dbg_pu_riscv_top_ahb4.sv
@@ -35,10 +35,10 @@ code
 │   │   ├── peripheral_dbg_pu_riscv_module_bb.sv
 │   │   └── peripheral_dbg_pu_riscv_top_bb.sv
 │   ├── tl
-│   │   ├── peripheral_dbg_pu_riscv_biu_tl.sv
-│   │   ├── peripheral_dbg_pu_riscv_jsp_tl_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_jsp_module_apb4.sv
+│   │   ├── peripheral_dbg_pu_riscv_jsp_tl_tl.sv
 │   │   ├── peripheral_dbg_pu_riscv_module_tl.sv
+│   │   ├── peripheral_dbg_pu_riscv_tl_tl.sv
 │   │   └── peripheral_dbg_pu_riscv_top_tl.sv
 │   └── wb
 │       ├── peripheral_dbg_pu_riscv_jsp_module_wb.sv

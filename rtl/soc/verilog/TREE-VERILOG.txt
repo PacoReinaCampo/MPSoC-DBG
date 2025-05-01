@@ -70,21 +70,13 @@ code
 │   │   │   │   ├── peripheral_dbg_soc_mam_adapter_bb.sv
 │   │   │   │   ├── peripheral_dbg_soc_osd_mam_bb.sv
 │   │   │   │   └── peripheral_dbg_soc_osd_mam_if_bb.sv
-│   │   │   ├── tl
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_tl.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_tl.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_tl.sv
-│   │   │   ├── blackbone
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_bb.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_bb.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_if_bb.sv
 │   │   │   ├── common
 │   │   │   │   └── peripheral_dbg_soc_osd_mam.sv
-│   │   │   ├── wb
-│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_wb.sv
-│   │   │   │   ├── peripheral_dbg_soc_osd_mam_if_wb.sv
-│   │   │   │   └── peripheral_dbg_soc_osd_mam_wb.sv
-│   │   │   └── wishbone
+│   │   │   ├── tl
+│   │   │   │   ├── peripheral_dbg_soc_mam_adapter_tl.sv
+│   │   │   │   ├── peripheral_dbg_soc_osd_mam_if_tl.sv
+│   │   │   │   └── peripheral_dbg_soc_osd_mam_tl.sv
+│   │   │   └── wb
 │   │   │       ├── peripheral_dbg_soc_mam_adapter_wb.sv
 │   │   │       ├── peripheral_dbg_soc_osd_mam_if_wb.sv
 │   │   │       └── peripheral_dbg_soc_osd_mam_wb.sv
@@ -108,4 +100,4 @@ code
     ├── peripheral_dbg_pu_pkg.sv
     └── peripheral_dbg_soc_pkg.sv
 
-42 directories, 66 files
+40 directories, 60 files
