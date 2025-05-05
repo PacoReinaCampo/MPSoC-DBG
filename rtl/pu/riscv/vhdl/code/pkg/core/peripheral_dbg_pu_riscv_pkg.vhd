@@ -11,7 +11,7 @@
 --                                                                            --
 --              MPSoC-RISCV CPU                                               --
 --              Degub Interface                                               --
---              AMBA3 AHB-Lite Bus Interface                                  --
+--              AMBA4 AHB-Lite Bus Interface                                  --
 --              WishBone Bus Interface                                        --
 --                                                                            --
 --------------------------------------------------------------------------------
@@ -96,7 +96,7 @@ package peripheral_dbg_pu_riscv_pkg is
 
   constant DBG_JSP_DATAREG_LEN : integer := 64;
 
-  -- AMBA3 AHB-Lite Interface
+  -- AMBA4 AHB-Lite Interface
   -- The AHB4 debug module requires 53 bits
   constant DBG_AHB_DATAREG_LEN : integer := 64;
 
