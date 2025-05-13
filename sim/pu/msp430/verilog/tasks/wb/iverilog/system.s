@@ -47,7 +47,6 @@
 ../../../../../../../rtl/pu/msp430/verilog/code/peripheral/wb/main/peripheral_dbg_pu_msp430.sv
 ../../../../../../../rtl/pu/msp430/verilog/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_i2c.sv
 ../../../../../../../rtl/pu/msp430/verilog/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_uart.sv
-../../../../../../../rtl/pu/msp430/verilog/code/peripheral/wb/fuse/peripheral_dbg_pu_msp430_sync_cell.sv
 ../../../../../../../rtl/pu/msp430/verilog/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_hwbrk.sv
 
 

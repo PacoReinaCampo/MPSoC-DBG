@@ -1,8 +1,6 @@
 code
 ├── peripheral
 │   ├── ahb4
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
@@ -10,8 +8,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── apb4
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
@@ -19,8 +15,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── axi4
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
@@ -28,8 +22,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── bb
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
@@ -37,8 +29,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   ├── tl
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.vhd
 │   │   └── omsp
@@ -46,8 +36,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.vhd
 │   │       └── peripheral_dbg_pu_msp430_uart.vhd
 │   └── wb
-│       ├── fuse
-│       │   └── peripheral_dbg_pu_msp430_sync_cell.vhd
 │       ├── main
 │       │   └── peripheral_dbg_pu_msp430.vhd
 │       └── omsp
@@ -68,4 +56,4 @@ code
     └── wb
         └── peripheral_dbg_pu_msp430_pkg.vhd
 
-32 directories, 36 files
+26 directories, 30 files

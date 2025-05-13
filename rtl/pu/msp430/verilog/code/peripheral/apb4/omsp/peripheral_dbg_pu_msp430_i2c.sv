@@ -79,27 +79,33 @@ module peripheral_dbg_pu_msp430_i2c (
 
   // Synchronize SCL/SDA inputs
 
-  wire scl_sync_n;
+  reg [1:0] data_sync_scl;
 
-  peripheral_dbg_pu_msp430_sync_cell sync_cell_i2c_scl (
-    .data_out(scl_sync_n),
-    .data_in (~dbg_i2c_scl),
-    .clk     (dbg_clk),
-    .rst     (dbg_rst)
-  );
+  always @(posedge dbg_clk or posedge dbg_rst) begin
+    if (dbg_rst) begin
+      data_sync_scl <= 2'b00;
+    end else begin
+      data_sync_scl <= {data_sync_scl[0], ~dbg_i2c_scl};
+    end
+  end
+
+  wire scl_sync_n = data_sync_scl[1];
 
   wire scl_sync = ~scl_sync_n;
 
-  wire sda_in_sync_n;
+  reg [1:0] data_sync_sda_in;
 
-  peripheral_dbg_pu_msp430_sync_cell sync_cell_i2c_sda (
-    .data_out(sda_in_sync_n),
-    .data_in (~dbg_i2c_sda_in),
-    .clk     (dbg_clk),
-    .rst     (dbg_rst)
-  );
+  always @(posedge dbg_clk or posedge dbg_rst) begin
+    if (dbg_rst) begin
+      data_sync_sda_in <= 2'b00;
+    end else begin
+      data_sync_sda_in <= {data_sync_sda_in[0], ~dbg_i2c_sda_in};
+    end
+  end
 
-  wire       sda_in_sync = ~sda_in_sync_n;
+  wire sda_in_sync_n = data_sync_sda_in[1];
+
+  wire sda_in_sync = ~sda_in_sync_n;
 
   // SCL/SDA input buffers
 

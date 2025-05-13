@@ -77,14 +77,17 @@ module peripheral_dbg_pu_msp430_uart (
   // Synchronize RXD input
 `ifdef SYNC_DBG_UART_RXD
 
-  wire uart_rxd_n;
+  reg [1:0] data_sync;
 
-  peripheral_dbg_pu_msp430_sync_cell sync_cell_uart_rxd (
-    .data_out(uart_rxd_n),
-    .data_in (~dbg_uart_rxd),
-    .clk     (dbg_clk),
-    .rst     (dbg_rst)
-  );
+  always @(posedge dbg_clk or posedge dbg_rst) begin
+    if (dbg_rst) begin
+      data_sync <= 2'b00;
+    end else begin
+      data_sync <= {data_sync[0], ~dbg_uart_rxd};
+    end
+  end
+
+  wire uart_rxd_n = data_sync[1];
 
   wire uart_rxd = ~uart_rxd_n;
 `else

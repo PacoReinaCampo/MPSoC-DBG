@@ -92,6 +92,8 @@ architecture rtl of peripheral_dbg_pu_msp430_i2c is
   -- 9.          I2C_COMMUNICATION
   -- 9.1.                I2C RECEIVE LINE SYNCHRONIZTION & FILTERING
   -- 9.1.1.      Synchronize SCL/SDA inputs
+  signal data_sync_scl      : std_logic_vector (1 downto 0);
+  signal data_sync_sda_in   : std_logic_vector (1 downto 0);
   signal scl_sync_n         : std_logic;
   signal scl_sync           : std_logic;
   signal sda_in_sync_n      : std_logic;
@@ -209,22 +211,30 @@ begin
   begin
     -- 9.1.              I2C RECEIVE LINE SYNCHRONIZTION & FILTERING
     -- 9.1.1.    Synchronize SCL/SDA inputs
-    sync_cell_i2c_scl : peripheral_dbg_pu_msp430_sync_cell
-      port map (
-        data_out => scl_sync_n,
-        data_in  => not_dbg_i2c_scl,
-        clk      => dbg_clk,
-        rst      => dbg_rst);
+    process (dbg_clk, dbg_rst)
+    begin
+      if (dbg_rst = '1') then
+        data_sync_scl <= (others => '0');
+      elsif (rising_edge(dbg_clk)) then
+        data_sync_scl <= data_sync_scl(0) & not_dbg_i2c_scl;
+      end if;
+    end process;
+
+    scl_sync_n <= data_sync_scl(1);
 
     not_dbg_i2c_scl <= not dbg_i2c_scl;
     scl_sync        <= not scl_sync_n;
 
-    sync_cell_i2c_sda : peripheral_dbg_pu_msp430_sync_cell
-      port map (
-        data_out => sda_in_sync_n,
-        data_in  => not_dbg_i2c_sda_in,
-        clk      => dbg_clk,
-        rst      => dbg_rst);
+    process (dbg_clk, dbg_rst)
+    begin
+      if (dbg_rst = '1') then
+        data_sync_sda_in <= (others => '0');
+      elsif (rising_edge(dbg_clk)) then
+        data_sync_sda_in <= data_sync_sda_in(0) & not_dbg_i2c_sda_in;
+      end if;
+    end process;
+
+    sda_in_sync_n <= data_sync_sda_in(1);
 
     not_dbg_i2c_sda_in <= not dbg_i2c_sda_in;
     sda_in_sync        <= not sda_in_sync_n;

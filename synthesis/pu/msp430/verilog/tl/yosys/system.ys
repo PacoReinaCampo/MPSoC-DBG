@@ -48,7 +48,6 @@ verilog_defaults -add -I ../../../../../../rtl/pu/msp430/verilog/code/pkg/bb
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/tl/main/peripheral_dbg_pu_msp430.sv
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/tl/omsp/peripheral_dbg_pu_msp430_i2c.sv
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/tl/omsp/peripheral_dbg_pu_msp430_uart.sv
-read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/tl/fuse/peripheral_dbg_pu_msp430_sync_cell.sv
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/tl/omsp/peripheral_dbg_pu_msp430_hwbrk.sv
 
 read_verilog -sv peripheral_dbg_synthesis.sv

@@ -1,8 +1,6 @@
 code
 ├── peripheral
 │   ├── ahb4
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
@@ -10,8 +8,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── apb4
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
@@ -19,8 +15,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── axi4
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
@@ -28,8 +22,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── bb
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
@@ -37,8 +29,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   ├── tl
-│   │   ├── fuse
-│   │   │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │   │   ├── main
 │   │   │   └── peripheral_dbg_pu_msp430.sv
 │   │   └── omsp
@@ -46,8 +36,6 @@ code
 │   │       ├── peripheral_dbg_pu_msp430_i2c.sv
 │   │       └── peripheral_dbg_pu_msp430_uart.sv
 │   └── wb
-│       ├── fuse
-│       │   └── peripheral_dbg_pu_msp430_sync_cell.sv
 │       ├── main
 │       │   └── peripheral_dbg_pu_msp430.sv
 │       └── omsp
@@ -80,4 +68,4 @@ code
         ├── peripheral_dbg_pu_msp430_timescale.sv
         └── peripheral_dbg_pu_msp430_undefines.sv
 
-32 directories, 48 files
+26 directories, 42 files

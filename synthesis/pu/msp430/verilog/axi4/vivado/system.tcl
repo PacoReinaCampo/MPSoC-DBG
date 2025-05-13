@@ -45,7 +45,6 @@
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/axi4/main/peripheral_dbg_pu_msp430.sv
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/axi4/omsp/peripheral_dbg_pu_msp430_i2c.sv
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/axi4/omsp/peripheral_dbg_pu_msp430_uart.sv
-read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/axi4/fuse/peripheral_dbg_pu_msp430_sync_cell.sv
 read_verilog -sv ../../../../../../rtl/pu/msp430/verilog/code/peripheral/axi4/omsp/peripheral_dbg_pu_msp430_hwbrk.sv
 
 read_verilog -sv peripheral_dbg_synthesis.sv

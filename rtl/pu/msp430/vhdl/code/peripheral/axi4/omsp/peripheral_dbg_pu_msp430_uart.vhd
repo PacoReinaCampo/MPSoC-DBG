@@ -79,6 +79,7 @@ architecture rtl of peripheral_dbg_pu_msp430_uart is
   -- 8.          UART_COMMUNICATION                                              
   -- 8.1.                UART RECEIVE LINE SYNCHRONIZTION & FILTERING
   -- 8.1.1.      Synchronize RXD input
+  signal data_sync        : std_logic_vector (1 downto 0);
   signal uart_rxd         : std_logic;
   signal uart_rxd_n       : std_logic;
   signal not_dbg_uart_rxd : std_logic;
@@ -151,12 +152,16 @@ begin
     -- 8.1.              UART RECEIVE LINE SYNCHRONIZTION & FILTERING
     -- 8.1.1.    Synchronize RXD input
     sync_dbg_uart_rxd_on : if (SYNC_DBG_UART_RXD = '1') generate
-      sync_cell_uart_rxd : peripheral_dbg_pu_msp430_sync_cell
-        port map (
-          data_out => uart_rxd_n,
-          data_in  => not_dbg_uart_rxd,
-          clk      => dbg_clk,
-          rst      => dbg_rst);
+      process (dbg_clk, dbg_rst)
+      begin
+        if (dbg_rst = '1') then
+         data_sync <= (others => '0');
+        elsif (rising_edge(dbg_clk)) then
+          data_sync <= data_sync(0) & not_dbg_uart_rxd;
+        end if;
+      end process;
+
+      uart_rxd_n <= data_sync(1);
 
       not_dbg_uart_rxd <= not dbg_uart_rxd;
       uart_rxd         <= not uart_rxd_n;

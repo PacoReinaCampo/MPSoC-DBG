@@ -47,7 +47,6 @@
 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/main/peripheral_dbg_pu_msp430.vhd
 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_i2c.vhd
 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_uart.vhd
-../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/fuse/peripheral_dbg_pu_msp430_sync_cell.vhd
 ../../../../../../../rtl/pu/msp430/vhdl/code/peripheral/wb/omsp/peripheral_dbg_pu_msp430_hwbrk.vhd
 
 ../../../../../../../verification/tasks/pu/msp430/vhdl/code/tests/wb/peripheral_dbg_testbench.vhd

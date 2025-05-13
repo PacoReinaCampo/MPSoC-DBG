@@ -48,7 +48,6 @@ read_vhdl -vhdl2008 ../../../../../../rtl/pu/msp430/vhdl/code/peripheral/bb/main
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/msp430/vhdl/code/peripheral/bb/omsp/peripheral_dbg_pu_msp430_i2c.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/msp430/vhdl/code/peripheral/bb/omsp/peripheral_dbg_pu_msp430_uart.vhd
 read_vhdl -vhdl2008 ../../../../../../rtl/pu/msp430/vhdl/code/peripheral/bb/omsp/peripheral_dbg_pu_msp430_hwbrk.vhd
-read_vhdl -vhdl2008 ../../../../../../rtl/pu/msp430/vhdl/code/peripheral/bb/fuse/peripheral_dbg_pu_msp430_sync_cell.vhd
 
 read_vhdl -vhdl2008 peripheral_dbg_synthesis.vhd
 
