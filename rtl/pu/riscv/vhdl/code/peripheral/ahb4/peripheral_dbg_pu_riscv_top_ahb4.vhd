@@ -206,7 +206,7 @@ architecture rtl of peripheral_dbg_pu_riscv_top_ahb4 is
       );
   end component;
 
-  component peripheral_dbg_pu_riscv_jsp_module_apb4
+  component peripheral_dbg_pu_riscv_jsp_module_ahb4
     generic (
       DBG_JSP_DATAREG_LEN : integer := 64
       );
@@ -387,7 +387,7 @@ begin
       cpu_ack_i   => cpu_ack_i
       );
 
-  i_dbg_jsp : peripheral_dbg_pu_riscv_jsp_module_apb4
+  i_dbg_jsp : peripheral_dbg_pu_riscv_jsp_module_ahb4
     generic map (
       DBG_JSP_DATAREG_LEN => DBG_JSP_DATAREG_LEN
       )

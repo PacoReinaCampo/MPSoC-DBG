@@ -46,7 +46,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_biu_tl is
+entity peripheral_dbg_pu_riscv_tl_biu is
   generic (
     LITTLE_ENDIAN : std_logic := '1';
     ADDR_WIDTH    : integer   := 32;
@@ -81,9 +81,9 @@ entity peripheral_dbg_pu_riscv_biu_tl is
     HREADY    : in  std_logic;
     HRESP     : in  std_logic
     );
-end peripheral_dbg_pu_riscv_biu_tl;
+end peripheral_dbg_pu_riscv_tl_biu;
 
-architecture rtl of peripheral_dbg_pu_riscv_biu_tl is
+architecture rtl of peripheral_dbg_pu_riscv_tl_biu is
   ------------------------------------------------------------------------------
   -- Constants
   ------------------------------------------------------------------------------

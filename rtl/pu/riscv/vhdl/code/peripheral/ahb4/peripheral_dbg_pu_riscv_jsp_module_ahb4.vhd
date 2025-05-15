@@ -46,7 +46,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_jsp_module_apb4 is
+entity peripheral_dbg_pu_riscv_jsp_module_ahb4 is
   generic (
     DBG_JSP_DATAREG_LEN : integer := 64
     );
@@ -83,9 +83,9 @@ entity peripheral_dbg_pu_riscv_jsp_module_apb4 is
 
     int_o : out std_logic
     );
-end peripheral_dbg_pu_riscv_jsp_module_apb4;
+end peripheral_dbg_pu_riscv_jsp_module_ahb4;
 
-architecture rtl of peripheral_dbg_pu_riscv_jsp_module_apb4 is
+architecture rtl of peripheral_dbg_pu_riscv_jsp_module_ahb4 is
 
   ------------------------------------------------------------------------------
   -- Components

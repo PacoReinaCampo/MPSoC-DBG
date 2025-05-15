@@ -42,7 +42,7 @@
 `include "peripheral_dbg_pu_riscv_pkg.sv"
 
 // Module interface
-module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
+module peripheral_dbg_pu_riscv_jsp_module_axi4 #(
   parameter DBG_JSP_DATAREG_LEN = 64
 ) (
   input rst_i,

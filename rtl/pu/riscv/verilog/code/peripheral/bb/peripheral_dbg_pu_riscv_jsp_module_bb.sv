@@ -42,7 +42,7 @@
 `include "peripheral_dbg_pu_riscv_pkg.sv"
 
 // Module interface
-module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
+module peripheral_dbg_pu_riscv_jsp_module_bb #(
   parameter DBG_JSP_DATAREG_LEN = 64
 ) (
   input rst_i,
@@ -127,7 +127,7 @@ module peripheral_dbg_pu_riscv_jsp_module_apb4 #(
   );
 
   // Hookup JSP APB Interface
-  peripheral_dbg_pu_riscv_jsp_ahb4_biu jsp_tl_inst (
+  peripheral_dbg_pu_riscv_jsp_bb_tl jsp_tl_inst (
     // Debug interface signals
     .tck_i            (biu_clk),
     .rst_i            (biu_rst),

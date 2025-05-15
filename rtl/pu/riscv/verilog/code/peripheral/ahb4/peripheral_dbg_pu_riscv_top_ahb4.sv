@@ -232,7 +232,7 @@ module peripheral_dbg_pu_riscv_top_ahb4 #(
     .cpu_ack_i  (cpu_ack_i)
   );
 
-  peripheral_dbg_pu_riscv_jsp_module_apb4 #(
+  peripheral_dbg_pu_riscv_jsp_module_ahb4 #(
     .DBG_JSP_DATAREG_LEN(`DBG_JSP_DATAREG_LEN)
   ) i_dbg_jsp (
     .rst_i(tlr_i),

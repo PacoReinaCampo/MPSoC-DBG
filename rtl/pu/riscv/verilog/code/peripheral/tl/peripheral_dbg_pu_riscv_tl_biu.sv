@@ -42,7 +42,7 @@
 `include "peripheral_dbg_pu_riscv_pkg.sv"
 
 // Top module
-module peripheral_dbg_pu_riscv_biu_tl #(
+module peripheral_dbg_pu_riscv_tl_biu #(
   parameter LITTLE_ENDIAN = 1,
   parameter ADDR_WIDTH    = 32,
   parameter DATA_WIDTH    = 32

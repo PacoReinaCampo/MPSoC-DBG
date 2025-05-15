@@ -1,9 +1,9 @@
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/pkg/core/peripheral_dbg_pu_riscv_pkg.vhd
 
-ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_bb_tl.vhd
+ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_bb_biu.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_module_bb.vhd
-ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_bb_tl.vhd
-ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_module_apb4.vhd
+ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_bb_biu.vhd
+ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_jsp_module_bb.vhd
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/peripheral/bb/peripheral_dbg_pu_riscv_top_bb.vhd
 
 ghdl -a --std=08 ../../../../../../../rtl/pu/riscv/vhdl/code/core/peripheral_dbg_pu_riscv_bus_module_core.vhd

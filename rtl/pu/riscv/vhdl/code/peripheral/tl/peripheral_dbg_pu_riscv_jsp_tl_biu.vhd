@@ -46,7 +46,7 @@ use ieee.numeric_std.all;
 
 use work.peripheral_dbg_pu_riscv_pkg.all;
 
-entity peripheral_dbg_pu_riscv_jsp_tl_tl is
+entity peripheral_dbg_pu_riscv_jsp_tl_biu is
   port (
     -- Debug interface signals
     tck_i             : in  std_logic;
@@ -73,9 +73,9 @@ entity peripheral_dbg_pu_riscv_jsp_tl_tl is
 
     int_o : out std_logic
     );
-end peripheral_dbg_pu_riscv_jsp_tl_tl;
+end peripheral_dbg_pu_riscv_jsp_tl_biu;
 
-architecture rtl of peripheral_dbg_pu_riscv_jsp_tl_tl is
+architecture rtl of peripheral_dbg_pu_riscv_jsp_tl_biu is
 
   ------------------------------------------------------------------------------
   -- Components

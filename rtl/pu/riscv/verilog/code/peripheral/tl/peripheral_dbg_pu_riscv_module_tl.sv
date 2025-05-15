@@ -134,7 +134,7 @@ module peripheral_dbg_pu_riscv_module_tl #(
   );
 
   // Hookup AHB Bus Interface
-  peripheral_dbg_pu_riscv_biu_tl #(
+  peripheral_dbg_pu_riscv_tl_biu #(
     .ADDR_WIDTH(ADDR_WIDTH),
     .DATA_WIDTH(DATA_WIDTH)
   ) biulite_tl_i (

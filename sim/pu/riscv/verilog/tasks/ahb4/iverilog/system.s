@@ -47,7 +47,7 @@
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/ahb4/peripheral_dbg_pu_riscv_ahb4_biu.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/ahb4/peripheral_dbg_pu_riscv_module_ahb4.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/ahb4/peripheral_dbg_pu_riscv_jsp_ahb4_biu.sv
-../../../../../../../rtl/pu/riscv/verilog/code/peripheral/ahb4/peripheral_dbg_pu_riscv_jsp_module_apb4.sv
+../../../../../../../rtl/pu/riscv/verilog/code/peripheral/ahb4/peripheral_dbg_pu_riscv_jsp_module_ahb4.sv
 ../../../../../../../rtl/pu/riscv/verilog/code/peripheral/ahb4/peripheral_dbg_pu_riscv_top_ahb4.sv
 
 ../../../../../../../rtl/pu/riscv/verilog/code/core/peripheral_dbg_pu_riscv_bus_module_core.sv
