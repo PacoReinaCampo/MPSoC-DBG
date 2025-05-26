@@ -61,7 +61,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
   localparam BYTE_AW = SW >> 1,
   localparam WORD_AW = AW - BYTE_AW
 ) (
-  // Blackbone SLAVE interface: input side (to the CPU etc.)
+  // BackBone SLAVE interface: input side (to the CPU etc.)
   input [AW-1:0] wb_in_adr_i,
   input [   1:0] wb_in_bte_i,
   input [   2:0] wb_in_cti_i,
@@ -79,7 +79,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
   input wb_in_clk_i,
   input wb_in_rst_i,
 
-  // Blackbone SLAVE interface: output side (to the memory)
+  // BackBone SLAVE interface: output side (to the memory)
   output [AW-1:0] wb_out_adr_i,
   output [   1:0] wb_out_bte_i,
   output [   2:0] wb_out_cti_i,
@@ -97,7 +97,7 @@ module peripheral_dbg_soc_mam_adapter_wb #(
   output wb_out_clk_i,
   output wb_out_rst_i,
 
-  // MAM Blackbone MASTER interface (incoming)
+  // MAM BackBone MASTER interface (incoming)
   input  [AW-1:0] wb_mam_adr_o,
   input           wb_mam_cyc_o,
   input  [DW-1:0] wb_mam_dat_o,
